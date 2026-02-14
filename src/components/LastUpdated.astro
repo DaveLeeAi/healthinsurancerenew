@@ -1,0 +1,14 @@
+---
+interface Props {
+  date: string;
+}
+const { date } = Astro.props;
+const formatted = new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<p class="text-sm text-neutral-500 my-4">
+  <time datetime={date}>Last updated: {formatted}</time>
+</p>

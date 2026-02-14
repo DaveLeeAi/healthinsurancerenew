@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://healthinsurancerenew.com/sitemap-index.xml

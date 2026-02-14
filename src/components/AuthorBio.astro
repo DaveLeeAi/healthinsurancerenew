@@ -1,0 +1,22 @@
+---
+interface Props {
+  name?: string;
+  role?: string;
+  bio?: string;
+}
+const {
+  name = 'HealthInsuranceRenew Editorial Team',
+  role = 'Licensed Insurance Professionals',
+  bio = 'Our team of licensed insurance agents and editorial staff review all content for accuracy and compliance. We are committed to providing clear, unbiased educational information about health insurance options.',
+} = Astro.props;
+---
+<div class="flex items-start gap-4 bg-neutral-50 border border-neutral-200 rounded-lg p-5 my-6">
+  <div class="w-12 h-12 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center shrink-0 font-semibold text-lg">
+    {name.charAt(0)}
+  </div>
+  <div>
+    <p class="font-semibold text-neutral-800">{name}</p>
+    <p class="text-sm text-primary-600 mb-1">{role}</p>
+    <p class="text-sm text-neutral-600 leading-relaxed">{bio}</p>
+  </div>
+</div>

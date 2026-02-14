@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import { getBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Editorial Policy', url: '/editorial-policy' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+---
+<BaseLayout
+  title="Editorial Policy | HealthInsuranceRenew"
+  description="Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Our editorial policy ensures accuracy and transparency."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">Editorial Policy</h1>
+    <LastUpdated date="2025-10-15" />
+
+    <div class="prose prose-neutral max-w-none">
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        All content on this site goes through a structured review process before publication.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Guides, tools, and state-specific pages are developed by professionals with direct experience in ACA health insurance markets. Before any content is published, it is reviewed for factual accuracy, clarity, and compliance with current regulations. This process ensures that the information presented reflects the most current rules, including annual updates to federal poverty level guidelines, subsidy calculations, and enrollment procedures.
+      </p>
+
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        Accuracy is maintained through regular updates tied to the ACA plan year cycle.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Health insurance rules change from year to year. Premium tax credit thresholds, cost-sharing reduction parameters, and enrollment dates are updated on a regular schedule by the federal government. Content on this site is reviewed and revised to match these changes, typically ahead of each open enrollment period. When mid-year regulatory changes occur, affected content is updated promptly.
+      </p>
+
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        Content is created to educate, not to promote specific insurance products or carriers.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        The editorial approach is designed to explain how health insurance works in clear, accessible language. Guides do not recommend specific plans, carriers, or coverage levels. Instead, they provide the context readers need to evaluate their own options. When calculators and tools produce estimates, those estimates are based on publicly available government data and are presented for educational purposes only.
+      </p>
+
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        Transparency about limitations is part of the editorial standard.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Every page includes clear disclaimers about the educational nature of the content. Calculator results are approximate and should not be treated as guarantees of specific subsidy amounts or plan pricing. Readers are encouraged to verify information through official sources such as HealthCare.gov or their state's marketplace, and to consult licensed professionals when making enrollment decisions.
+      </p>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        If an error is identified in any published content, corrections are made as quickly as possible. The "last updated" date shown on each page reflects when the content was most recently reviewed or revised.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

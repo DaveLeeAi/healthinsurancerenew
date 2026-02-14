@@ -1,0 +1,63 @@
+{
+  "categories": [
+    {
+      "id": "new-to-aca",
+      "label": "New to ACA",
+      "icon": "book",
+      "response": "Here are some resources to help you get started with ACA health insurance:",
+      "links": [
+        { "title": "Individual & Family Health Insurance Guide", "url": "/guides/individual-family-health-insurance" },
+        { "title": "How ACA Subsidies Work in 2026", "url": "/guides/how-aca-subsidies-work-2026" }
+      ]
+    },
+    {
+      "id": "work-insurance",
+      "label": "Work Insurance",
+      "icon": "briefcase",
+      "response": "You can check whether your employer's plan meets ACA affordability standards:",
+      "links": [
+        { "title": "Is My Job's Health Plan Affordable?", "url": "/tools/job-plan-affordability" }
+      ]
+    },
+    {
+      "id": "lowering-costs",
+      "label": "Lowering Costs",
+      "icon": "dollar",
+      "response": "These tools can help you understand how income affects your health insurance costs:",
+      "links": [
+        { "title": "What Income Counts for Health Insurance?", "url": "/tools/what-income-counts" },
+        { "title": "Income & Savings Calculator", "url": "/tools/income-savings-calculator" }
+      ]
+    },
+    {
+      "id": "state-questions",
+      "label": "My State",
+      "icon": "map",
+      "response": "Select your state to see state-specific health insurance information:",
+      "links": [],
+      "isStatePicker": true
+    },
+    {
+      "id": "enrollment",
+      "label": "Enrollment",
+      "icon": "calendar",
+      "response": "Learn about when and how you can enroll in health insurance coverage:",
+      "links": [
+        { "title": "Open Enrollment 2026", "url": "/guides/open-enrollment-2026" },
+        { "title": "Special Enrollment Periods", "url": "/guides/special-enrollment-period" }
+      ]
+    },
+    {
+      "id": "plan-levels",
+      "label": "Plan Levels",
+      "icon": "layers",
+      "response": "Compare the different levels of ACA health insurance plans:",
+      "links": [
+        { "title": "Compare Bronze, Silver & Gold Plans", "url": "/tools/plan-comparison" }
+      ]
+    }
+  ],
+  "disclaimer": "This assistant helps you find educational resources on this site. It does not provide eligibility determinations, plan recommendations, quotes, or tax advice. For personalized guidance, speak with a licensed agent.",
+  "handoverText": "Talk to a Professional",
+  "handoverUrl": "/contact"
+}

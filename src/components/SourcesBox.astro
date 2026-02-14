@@ -1,0 +1,22 @@
+---
+interface Source {
+  title: string;
+  url: string;
+}
+interface Props {
+  sources: Source[];
+}
+const { sources } = Astro.props;
+---
+<div class="bg-neutral-50 border border-neutral-200 rounded-lg p-5 my-6">
+  <p class="text-sm font-semibold text-neutral-700 uppercase tracking-wider mb-3">Sources</p>
+  <ul class="space-y-1">
+    {sources.map((source) => (
+      <li>
+        <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-600 hover:text-primary-800 hover:underline transition-colors">
+          {source.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getBreadcrumbSchema } from '../../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Tools', url: '/tools' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+
+const tools = [
+  {
+    title: 'Health Insurance Income & Savings Calculator',
+    description: 'Estimate how your household income affects ACA marketplace subsidies and potential savings.',
+    url: '/tools/income-savings-calculator',
+    icon: 'calculator',
+  },
+  {
+    title: "Is My Job's Health Plan Affordable?",
+    description: 'Check whether your employer health plan meets ACA affordability standards.',
+    url: '/tools/job-plan-affordability',
+    icon: 'briefcase',
+  },
+  {
+    title: 'What Income Counts for Health Insurance?',
+    description: 'Understand how Modified Adjusted Gross Income (MAGI) is calculated for ACA purposes.',
+    url: '/tools/what-income-counts',
+    icon: 'document',
+  },
+  {
+    title: 'Compare Bronze, Silver & Gold Plans',
+    description: 'Explore the differences between ACA metal tier plans and find the right fit.',
+    url: '/tools/plan-comparison',
+    icon: 'layers',
+  },
+];
+---
+<BaseLayout
+  title="Health Insurance Tools & Calculators | HealthInsuranceRenew"
+  description="Free educational health insurance tools and calculators. Estimate subsidies, check employer plan affordability, understand income counting, and compare plan levels."
+  schemas={schemas}
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">Health Insurance Tools</h1>
+    <p class="text-lg text-neutral-600 mb-8 max-w-2xl">
+      Free educational tools to help you understand your health insurance options. These calculators provide general estimates for learning purposes only.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {tools.map((tool) => (
+        <a
+          href={tool.url}
+          class="group block p-6 rounded-xl border border-neutral-200 hover:border-primary-300 hover:shadow-md transition-all duration-200"
+        >
+          <div class="w-12 h-12 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-neutral-800 group-hover:text-primary-700 transition-colors mb-2">{tool.title}</h2>
+          <p class="text-sm text-neutral-600">{tool.description}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

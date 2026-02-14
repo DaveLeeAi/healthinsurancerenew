@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import AuthorBio from '../../components/AuthorBio.astro';
+import LastUpdated from '../../components/LastUpdated.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import SourcesBox from '../../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('states');
+  return entries.map((entry) => {
+    const slug = entry.id.replace(/\.md$/, '');
+    return {
+      params: { slug },
+      props: { entry, slug },
+    };
+  });
+}
+
+const { entry, slug } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, stateName, stateAbbr, exchange, datePublished, dateModified, faqs } = entry.data;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'States', url: '/states' },
+  { name: stateName, url: `/states/${slug}` },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({ title, description, url: `/states/${slug}`, datePublished, dateModified }),
+  ...(faqs?.length ? [getFAQSchema(faqs)] : []),
+].filter(Boolean);
+---
+<BaseLayout title={`${title} | HealthInsuranceRenew`} description={description} schemas={schemas}>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">{title}</h1>
+    <div class="flex items-center gap-3 mb-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-sm font-medium">
+        {stateAbbr}
+      </span>
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-neutral-100 text-neutral-600 text-sm">
+        Exchange: {exchange}
+      </span>
+    </div>
+    <LastUpdated date={dateModified} />
+    <AnswerBox answer={description} />
+    <div class="prose prose-neutral max-w-none prose-headings:font-bold prose-headings:text-neutral-900 prose-a:text-primary-600 hover:prose-a:text-primary-800">
+      <Content />
+    </div>
+    {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
+      { title: `${stateName} Insurance Department`, url: 'https://www.healthcare.gov/marketplace-in-your-state/' },
+    ]} />
+    <AuthorBio />
+  </article>
+</BaseLayout>

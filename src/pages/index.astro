@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBreadcrumbSchema } from '../lib/schema';
+import config from '../data/config.json';
+
+const schemas = [
+  getBreadcrumbSchema([{ name: 'Home', url: '/' }]),
+];
+
+const guides = [
+  {
+    title: 'Individual & Family Health Insurance',
+    description: 'A comprehensive overview of ACA marketplace coverage options for individuals and families.',
+    url: '/guides/individual-family-health-insurance',
+  },
+  {
+    title: 'Open Enrollment 2026',
+    description: 'Key dates, steps, and what to expect during the annual enrollment window.',
+    url: '/guides/open-enrollment-2026',
+  },
+  {
+    title: 'How ACA Subsidies Work in 2026',
+    description: 'Understand premium tax credits and cost-sharing reductions that can lower your costs.',
+    url: '/guides/how-aca-subsidies-work-2026',
+  },
+];
+
+const tools = [
+  {
+    title: 'Income & Savings Calculator',
+    description: 'Estimate how your household income may affect ACA marketplace subsidies.',
+    url: '/tools/income-savings-calculator',
+  },
+  {
+    title: "Job Plan Affordability Check",
+    description: 'See whether employer coverage meets ACA affordability standards.',
+    url: '/tools/job-plan-affordability',
+  },
+  {
+    title: 'What Income Counts',
+    description: 'Learn how Modified Adjusted Gross Income is calculated for ACA purposes.',
+    url: '/tools/what-income-counts',
+  },
+  {
+    title: 'Compare Plan Levels',
+    description: 'Explore differences between Bronze, Silver, Gold, and Platinum tiers.',
+    url: '/tools/plan-comparison',
+  },
+];
+---
+<BaseLayout
+  title="HealthInsuranceRenew | Understand Your ACA Health Insurance Options"
+  description="Educational ACA health insurance resource. Learn about marketplace plans, subsidies, enrollment periods, and compare coverage options. Licensed agents in 18 states."
+  schemas={schemas}
+>
+  <section class="bg-primary-50 border-b border-primary-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl sm:text-5xl font-bold text-neutral-900 leading-heading mb-6">
+          Understand Your Health Insurance Options
+        </h1>
+        <p class="text-lg text-neutral-600 mb-8 leading-relaxed">
+          Free educational resources to help you navigate ACA marketplace coverage, understand subsidies, and make informed decisions about health insurance for you and your family.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/guides/individual-family-health-insurance" class="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-sm">
+            Explore Guides
+          </a>
+          <a href="/tools" class="inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary-700 font-medium border border-primary-200 hover:bg-primary-50 transition-colors">
+            Try Our Tools
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold text-neutral-900 mb-2 leading-heading">Educational Guides</h2>
+    <p class="text-neutral-600 mb-8">Clear, unbiased information about how ACA health insurance works.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {guides.map((guide) => (
+        <a href={guide.url} class="group block p-6 rounded-xl border border-neutral-200 hover:border-primary-300 hover:shadow-md transition-all duration-200">
+          <h3 class="text-lg font-semibold text-neutral-800 group-hover:text-primary-700 transition-colors mb-2">{guide.title}</h3>
+          <p class="text-sm text-neutral-600">{guide.description}</p>
+          <span class="inline-flex items-center gap-1 text-sm text-primary-600 font-medium mt-4 group-hover:gap-2 transition-all">
+            Read guide
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-neutral-50 border-y border-neutral-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-2xl font-bold text-neutral-900 mb-2 leading-heading">Free Tools & Calculators</h2>
+      <p class="text-neutral-600 mb-8">Educational tools to help you estimate costs and compare options.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {tools.map((tool) => (
+          <a href={tool.url} class="group block p-5 rounded-xl bg-white border border-neutral-200 hover:border-primary-300 hover:shadow-md transition-all duration-200">
+            <h3 class="font-semibold text-neutral-800 group-hover:text-primary-700 transition-colors mb-1.5">{tool.title}</h3>
+            <p class="text-sm text-neutral-500">{tool.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold text-neutral-900 mb-2 leading-heading">Licensed agents are available in 18 states.</h2>
+    <p class="text-neutral-600 mb-8">Select your state to see local health insurance information and enrollment details.</p>
+    <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
+      {config.licensedStates.map((state) => (
+        <a
+          href={`/states/${state.slug}`}
+          class="flex flex-col items-center justify-center p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-all duration-150 group"
+        >
+          <span class="text-lg font-bold text-neutral-700 group-hover:text-primary-700 transition-colors">{state.abbr}</span>
+          <span class="text-xs text-neutral-500 mt-0.5">{state.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+{
+  "currentYear": 2026,
+  "siteName": "HealthInsuranceRenew.com",
+  "siteUrl": "https://healthinsurancerenew.com",
+  "siteDescription": "Educational ACA health insurance resource helping individuals and families understand their coverage options, subsidies, and enrollment periods.",
+  "updated": "2025-10-01",
+  "licensedStates": [
+    { "name": "Alabama", "abbr": "AL", "slug": "alabama" },
+    { "name": "California", "abbr": "CA", "slug": "california" },
+    { "name": "Georgia", "abbr": "GA", "slug": "georgia" },
+    { "name": "Iowa", "abbr": "IA", "slug": "iowa" },
+    { "name": "Kansas", "abbr": "KS", "slug": "kansas" },
+    { "name": "Maryland", "abbr": "MD", "slug": "maryland" },
+    { "name": "Michigan", "abbr": "MI", "slug": "michigan" },
+    { "name": "Missouri", "abbr": "MO", "slug": "missouri" },
+    { "name": "Mississippi", "abbr": "MS", "slug": "mississippi" },
+    { "name": "New Mexico", "abbr": "NM", "slug": "new-mexico" },
+    { "name": "Ohio", "abbr": "OH", "slug": "ohio" },
+    { "name": "Oregon", "abbr": "OR", "slug": "oregon" },
+    { "name": "South Carolina", "abbr": "SC", "slug": "south-carolina" },
+    { "name": "Tennessee", "abbr": "TN", "slug": "tennessee" },
+    { "name": "Texas", "abbr": "TX", "slug": "texas" },
+    { "name": "Utah", "abbr": "UT", "slug": "utah" },
+    { "name": "Virginia", "abbr": "VA", "slug": "virginia" },
+    { "name": "Washington", "abbr": "WA", "slug": "washington" }
+  ]
+}

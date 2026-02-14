@@ -1,0 +1,57 @@
+---
+import config from '../data/config.json';
+---
+<footer class="bg-neutral-900 text-neutral-300 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Guides</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/guides/individual-family-health-insurance" class="hover:text-white transition-colors">Individual & Family Insurance</a></li>
+          <li><a href="/guides/open-enrollment-2026" class="hover:text-white transition-colors">Open Enrollment 2026</a></li>
+          <li><a href="/guides/special-enrollment-period" class="hover:text-white transition-colors">Special Enrollment</a></li>
+          <li><a href="/guides/how-aca-subsidies-work-2026" class="hover:text-white transition-colors">How Subsidies Work</a></li>
+          <li><a href="/guides/what-affects-health-insurance-costs" class="hover:text-white transition-colors">What Affects Costs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Tools</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/tools/income-savings-calculator" class="hover:text-white transition-colors">Income & Savings Calculator</a></li>
+          <li><a href="/tools/job-plan-affordability" class="hover:text-white transition-colors">Job Plan Affordability</a></li>
+          <li><a href="/tools/what-income-counts" class="hover:text-white transition-colors">What Income Counts</a></li>
+          <li><a href="/tools/plan-comparison" class="hover:text-white transition-colors">Plan Comparison</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Trust & Legal</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/about" class="hover:text-white transition-colors">About Us</a></li>
+          <li><a href="/licensing" class="hover:text-white transition-colors">Licensing</a></li>
+          <li><a href="/editorial-policy" class="hover:text-white transition-colors">Editorial Policy</a></li>
+          <li><a href="/how-we-get-paid" class="hover:text-white transition-colors">How We Get Paid</a></li>
+          <li><a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a></li>
+          <li><a href="/terms" class="hover:text-white transition-colors">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contact</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/contact" class="hover:text-white transition-colors">Get Help</a></li>
+          <li><a href="/states" class="hover:text-white transition-colors">Available States</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-neutral-700 pt-8">
+      <div class="bg-neutral-800 rounded-lg p-4 mb-6">
+        <p class="text-xs text-neutral-400 leading-relaxed">
+          <strong class="text-neutral-300">Important:</strong> {config.siteName} is not a government website and is not affiliated with the federal Health Insurance Marketplace or any state exchange. This website is operated by licensed insurance agents and provides educational information about health insurance options. We may receive compensation from insurance carriers. Information on this site is for educational purposes only and does not constitute legal, tax, or benefits advice. Consult a qualified professional for advice specific to your situation.
+        </p>
+      </div>
+      <p class="text-xs text-neutral-500 text-center">
+        &copy; {new Date().getFullYear()} {config.siteName}. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

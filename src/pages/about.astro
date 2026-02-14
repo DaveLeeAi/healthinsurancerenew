@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import { getBreadcrumbSchema } from '../lib/schema';
+import config from '../data/config.json';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'About', url: '/about' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+---
+<BaseLayout
+  title="About Us | HealthInsuranceRenew"
+  description="Learn about HealthInsuranceRenew, an educational health insurance resource operated by licensed agents. Our mission is to provide clear, unbiased information about ACA marketplace coverage."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">About HealthInsuranceRenew</h1>
+    <LastUpdated date="2025-10-15" />
+
+    <div class="prose prose-neutral max-w-none">
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        This site is an educational health insurance resource operated by licensed insurance agents.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        HealthInsuranceRenew was created to address a common challenge: finding clear, straightforward information about health insurance options under the Affordable Care Act. The ACA marketplace can be difficult to navigate, with complex terminology, shifting enrollment windows, and financial assistance rules that change from year to year. This site exists to make that information more accessible.
+      </p>
+
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        Our mission is to provide accurate, unbiased health insurance education at no cost to consumers.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Every guide, tool, and state resource on this site is designed to help individuals and families understand how ACA marketplace coverage works. The content focuses on explaining concepts rather than steering decisions. Topics include how premium tax credits are calculated, what metal tier plans cover, when enrollment periods open, and how state-specific rules may apply. The goal is informed decision-making, not sales pressure.
+      </p>
+
+      <h2 class="text-xl font-semibold text-neutral-900 mt-8 mb-3">
+        Our approach prioritizes clarity, accuracy, and transparency in everything we publish.
+      </h2>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Content is developed and reviewed by professionals with direct experience in ACA health insurance markets. Guides are updated regularly to reflect current-year rules, federal poverty level guidelines, and marketplace changes. When readers are ready to speak with a licensed agent, that option is available -- but the educational content stands on its own regardless.
+      </p>
+      <p class="text-neutral-700 leading-relaxed mb-4">
+        Licensed agents associated with this site hold active appointments in {config.licensedStates.length} states. A full list of those states is available on the <a href="/licensing" class="text-primary-600 hover:text-primary-700 underline">licensing page</a>. Information about how this site is funded can be found on the <a href="/how-we-get-paid" class="text-primary-600 hover:text-primary-700 underline">How We Get Paid</a> page.
+      </p>
+
+      <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-5 mt-8">
+        <p class="text-sm text-neutral-600 leading-relaxed">
+          <strong class="text-neutral-700">Non-Government Disclaimer:</strong> {config.siteName} is not a government website. This site is not affiliated with the federal Health Insurance Marketplace, HealthCare.gov, or any state-based exchange. It is independently operated by licensed insurance agents and provides educational information only. Nothing on this site constitutes legal, tax, or benefits advice.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

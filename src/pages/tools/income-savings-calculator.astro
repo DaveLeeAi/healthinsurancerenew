@@ -1,0 +1,250 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import LastUpdated from '../../components/LastUpdated.astro';
+import AuthorBio from '../../components/AuthorBio.astro';
+import SourcesBox from '../../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema, getSoftwareApplicationSchema } from '../../lib/schema';
+import fplData from '../../data/fpl-current.json';
+import contributionData from '../../data/contribution-scale.json';
+import configData from '../../data/config.json';
+
+const entry = await getEntry('tools', 'income-savings-calculator');
+const { Content } = await render(entry);
+const { title, description, datePublished, dateModified, faqs } = entry.data;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Tools', url: '/tools' },
+  { name: 'Income & Savings Calculator', url: '/tools/income-savings-calculator' },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({ title, description, url: '/tools/income-savings-calculator', datePublished, dateModified }),
+  getSoftwareApplicationSchema({ name: title, description, url: '/tools/income-savings-calculator' }),
+  ...(faqs?.length ? [getFAQSchema(faqs)] : []),
+].filter(Boolean);
+---
+
+<BaseLayout title={title} description={description} schemas={schemas}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">{title}</h1>
+
+    <AnswerBox answer="Enter your household size and annual income to see an educational estimate of where your income falls relative to the Federal Poverty Level and what that may mean for ACA premium tax credits." />
+
+    <Disclaimer variant="tool" />
+
+    <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4 mb-6">
+      <p class="text-sm text-neutral-600 leading-relaxed">
+        This website is not affiliated with any federal or state government agency. Information provided here is for educational purposes only.
+      </p>
+    </div>
+
+    <!-- Calculator UI -->
+    <div class="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm mb-8">
+      <h2 class="text-xl font-semibold text-neutral-800 mb-4">Estimate Your Income-Based Savings</h2>
+
+      <form id="income-calc-form" class="space-y-5">
+        <div>
+          <label for="household-size" class="block text-sm font-medium text-neutral-700 mb-1">Household Size</label>
+          <select
+            id="household-size"
+            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          >
+            <option value="">Select household size</option>
+            <option value="1">1 person</option>
+            <option value="2">2 people</option>
+            <option value="3">3 people</option>
+            <option value="4">4 people</option>
+            <option value="5">5 people</option>
+            <option value="6">6 people</option>
+            <option value="7">7 people</option>
+            <option value="8">8 people</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="annual-income" class="block text-sm font-medium text-neutral-700 mb-1">Annual Household Income ($)</label>
+          <input
+            type="number"
+            id="annual-income"
+            placeholder="e.g. 45000"
+            min="0"
+            step="100"
+            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="state-select" class="block text-sm font-medium text-neutral-700 mb-1">State</label>
+          <select
+            id="state-select"
+            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          >
+            <option value="">Select your state</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            type="submit"
+            class="px-6 py-2.5 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+          >
+            Calculate Estimate
+          </button>
+          <button
+            type="button"
+            id="reset-btn"
+            class="px-6 py-2.5 rounded-lg border border-neutral-300 text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <!-- Results (hidden by default) -->
+      <div id="results" class="hidden mt-6 border-t border-neutral-200 pt-6">
+        <h3 class="text-lg font-semibold text-neutral-800 mb-4">Educational Estimate</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div class="bg-primary-50 rounded-lg p-4">
+            <p class="text-sm text-primary-700 font-medium">Federal Poverty Level</p>
+            <p id="result-fpl" class="text-2xl font-bold text-primary-900 mt-1">--</p>
+          </div>
+          <div class="bg-primary-50 rounded-lg p-4">
+            <p class="text-sm text-primary-700 font-medium">Income as % of FPL</p>
+            <p id="result-fpl-percent" class="text-2xl font-bold text-primary-900 mt-1">--</p>
+          </div>
+        </div>
+
+        <div class="bg-neutral-50 rounded-lg p-4 mb-4">
+          <p class="text-sm text-neutral-700 font-medium mb-1">Expected Contribution Range</p>
+          <p id="result-contribution" class="text-lg font-semibold text-neutral-900">--</p>
+        </div>
+
+        <div id="result-interpretation" class="bg-white border border-neutral-200 rounded-lg p-4">
+          <p class="text-sm text-neutral-700 font-medium mb-2">What This May Mean</p>
+          <p id="interpretation-text" class="text-sm text-neutral-600 leading-relaxed">--</p>
+        </div>
+
+        <p class="text-xs text-neutral-500 mt-4">
+          These figures are educational estimates based on general federal guidelines. They are not a determination of eligibility or a guarantee of any specific savings amount. Individual results vary based on location, plan selection, and other factors.
+        </p>
+      </div>
+    </div>
+
+    <!-- Content from collection -->
+    <div class="prose prose-neutral max-w-none mb-8">
+      <Content />
+    </div>
+
+    <LastUpdated date={dateModified} />
+
+    {faqs?.length > 0 && <FAQSection faqs={faqs} />}
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - How Savings Are Estimated', url: 'https://www.healthcare.gov/lower-costs/' },
+      { title: 'Federal Poverty Level Guidelines - ASPE', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
+      { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
+    ]} />
+
+    <AuthorBio />
+  </div>
+</BaseLayout>
+
+<script define:vars={{ fplData, contributionData, states: configData.licensedStates }}>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('income-calc-form');
+    const resultsDiv = document.getElementById('results');
+    const resetBtn = document.getElementById('reset-btn');
+    const stateSelect = document.getElementById('state-select');
+
+    // Populate state dropdown
+    states.forEach(function (state) {
+      const option = document.createElement('option');
+      option.value = state.abbr;
+      option.textContent = state.name;
+      stateSelect.appendChild(option);
+    });
+
+    function getFPL(size) {
+      if (size <= 6) {
+        return fplData.guidelines['household_' + size];
+      }
+      return fplData.guidelines['household_6'] + fplData.guidelines.additionalPerson * (size - 6);
+    }
+
+    function findBand(fplPercent) {
+      for (var i = 0; i < contributionData.bands.length; i++) {
+        var band = contributionData.bands[i];
+        if (fplPercent >= band.minFPL && fplPercent < band.maxFPL) {
+          return band;
+        }
+      }
+      return contributionData.bands[contributionData.bands.length - 1];
+    }
+
+    function getInterpretation(fplPercent) {
+      if (fplPercent < 150) {
+        return 'At this income level (below 150% FPL), individuals may be eligible for low-cost or no-cost coverage options, including Medicaid in states that have expanded eligibility. Marketplace plans with significant premium tax credits and cost-sharing reductions may also be available.';
+      } else if (fplPercent < 400) {
+        return 'At this income level (between 150% and 400% FPL), individuals generally may receive premium tax credits that reduce the monthly cost of a marketplace health insurance plan. The amount of financial assistance typically decreases as income increases.';
+      } else {
+        return 'At this income level (above 400% FPL), enhanced premium tax credits may still be available under current ACA provisions. Under extended subsidy rules, marketplace enrollees are generally not expected to pay more than a set percentage of income toward a benchmark plan premium.';
+      }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var sizeVal = document.getElementById('household-size').value;
+      var incomeVal = document.getElementById('annual-income').value;
+      var stateVal = stateSelect.value;
+
+      if (!sizeVal || !incomeVal || !stateVal) {
+        alert('Please complete all fields before calculating.');
+        return;
+      }
+
+      var size = parseInt(sizeVal, 10);
+      var income = parseFloat(incomeVal);
+
+      if (income <= 0) {
+        alert('Please enter a valid income amount greater than zero.');
+        return;
+      }
+
+      var fpl = getFPL(size);
+      var fplPercent = (income / fpl) * 100;
+      var band = findBand(fplPercent);
+
+      document.getElementById('result-fpl').textContent = '$' + fpl.toLocaleString();
+      document.getElementById('result-fpl-percent').textContent = fplPercent.toFixed(0) + '%';
+
+      if (band.minPercent === 0 && band.maxPercent === 0) {
+        document.getElementById('result-contribution').textContent = 'Estimated contribution: $0 (0% of income)';
+      } else {
+        var minContrib = Math.round((band.minPercent / 100) * income / 12);
+        var maxContrib = Math.round((band.maxPercent / 100) * income / 12);
+        document.getElementById('result-contribution').textContent =
+          'Estimated monthly contribution: $' + minContrib.toLocaleString() + ' - $' + maxContrib.toLocaleString() +
+          ' (' + band.minPercent.toFixed(1) + '% - ' + band.maxPercent.toFixed(1) + '% of income)';
+      }
+
+      document.getElementById('interpretation-text').textContent = getInterpretation(fplPercent);
+      resultsDiv.classList.remove('hidden');
+    });
+
+    resetBtn.addEventListener('click', function () {
+      form.reset();
+      resultsDiv.classList.add('hidden');
+    });
+  });
+</script>

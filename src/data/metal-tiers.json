@@ -1,0 +1,42 @@
+{
+  "tiers": [
+    {
+      "name": "Bronze",
+      "slug": "bronze",
+      "actuarialValue": 60,
+      "description": "Lower monthly premiums, higher out-of-pocket costs when you use care.",
+      "bestFor": "Generally healthy individuals who want protection against worst-case scenarios.",
+      "premiumLevel": "Lowest",
+      "outOfPocketLevel": "Highest"
+    },
+    {
+      "name": "Silver",
+      "slug": "silver",
+      "actuarialValue": 70,
+      "description": "Moderate premiums and moderate out-of-pocket costs. Silver plans are the basis for subsidy calculations.",
+      "bestFor": "Those who qualify for cost-sharing reductions (CSR) or want balanced coverage.",
+      "premiumLevel": "Moderate",
+      "outOfPocketLevel": "Moderate"
+    },
+    {
+      "name": "Gold",
+      "slug": "gold",
+      "actuarialValue": 80,
+      "description": "Higher monthly premiums but lower costs when you need care.",
+      "bestFor": "People who use healthcare services frequently or have ongoing medical needs.",
+      "premiumLevel": "Higher",
+      "outOfPocketLevel": "Lower"
+    },
+    {
+      "name": "Platinum",
+      "slug": "platinum",
+      "actuarialValue": 90,
+      "description": "Highest monthly premiums with the lowest out-of-pocket costs.",
+      "bestFor": "Those with significant healthcare needs who want maximum coverage.",
+      "premiumLevel": "Highest",
+      "outOfPocketLevel": "Lowest"
+    }
+  ],
+  "updated": "2025-10-01",
+  "source": "Healthcare.gov"
+}
