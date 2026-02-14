@@ -33,49 +33,49 @@ const schemas = [
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
 
-    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">{title}</h1>
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">{title}</h1>
 
     <AnswerBox answer="Enter your household income and employee-only monthly premium to see whether your employer plan may meet the ACA affordability standard. This is an educational estimate only." />
 
     <Disclaimer variant="tool" />
 
-    <div class="bg-white/70 backdrop-blur-sm border border-neutral-200/80 rounded-2xl p-4 mb-6">
-      <p class="text-sm text-neutral-600 leading-relaxed">
+    <div class="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-4 mb-6">
+      <p class="text-sm text-slate-600 leading-relaxed">
         This website is not affiliated with any federal or state government agency. Information provided here is for educational purposes only.
       </p>
     </div>
 
     <!-- Calculator UI -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl border border-neutral-200/80 p-6 shadow-lg mb-8">
-      <h2 class="text-xl font-semibold text-neutral-800 mb-2">Employer Plan Affordability Check</h2>
-      <p class="text-sm text-neutral-600 mb-5">
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold text-slate-800 mb-2">Employer Plan Affordability Check</h2>
+      <p class="text-sm text-slate-600 mb-5">
         The ACA affordability threshold for <span id="threshold-year">{affordabilityData.year}</span> is <strong id="threshold-display">{affordabilityData.thresholdPercent}%</strong> of household income for employee-only coverage.
       </p>
 
       <form id="affordability-form" class="space-y-5">
         <div>
-          <label for="household-income" class="block text-sm font-medium text-neutral-700 mb-1">Annual Household Income ($)</label>
+          <label for="household-income" class="block text-sm font-medium text-slate-700 mb-1">Annual Household Income ($)</label>
           <input
             type="number"
             id="household-income"
             placeholder="e.g. 55000"
             min="0"
             step="100"
-            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-federal-500 focus:border-federal-500 outline-none"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           />
         </div>
 
         <div>
-          <label for="monthly-premium" class="block text-sm font-medium text-neutral-700 mb-1">Monthly Employee-Only Premium ($)</label>
+          <label for="monthly-premium" class="block text-sm font-medium text-slate-700 mb-1">Monthly Employee-Only Premium ($)</label>
           <input
             type="number"
             id="monthly-premium"
             placeholder="e.g. 350"
             min="0"
             step="1"
-            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-federal-500 focus:border-federal-500 outline-none"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           />
-          <p class="text-xs text-neutral-500 mt-1">Enter the cost for the lowest-cost employee-only plan offered by the employer.</p>
+          <p class="text-xs text-slate-500 mt-1">Enter the cost for the lowest-cost employee-only plan offered by the employer.</p>
         </div>
 
         <div class="flex gap-3">
@@ -88,7 +88,7 @@ const schemas = [
           <button
             type="button"
             id="reset-btn"
-            class="px-6 py-2.5 rounded-lg border border-neutral-300 text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+            class="px-6 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors"
           >
             Reset
           </button>
@@ -96,21 +96,21 @@ const schemas = [
       </form>
 
       <!-- Results (hidden by default) -->
-      <div id="results" class="hidden mt-6 border-t border-neutral-200 pt-6">
-        <h3 class="text-lg font-semibold text-neutral-800 mb-4">Educational Estimate</h3>
+      <div id="results" class="hidden mt-6 border-t border-slate-200 pt-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-4">Educational Estimate</h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-          <div class="bg-federal-50/80 backdrop-blur-sm rounded-xl p-4">
-            <p class="text-sm text-neutral-600 font-medium">Annual Premium</p>
-            <p id="result-annual-premium" class="text-xl font-bold text-neutral-900 mt-1">--</p>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">Annual Premium</p>
+            <p id="result-annual-premium" class="text-xl font-bold text-slate-900 mt-1">--</p>
           </div>
-          <div class="bg-federal-50/80 backdrop-blur-sm rounded-xl p-4">
-            <p class="text-sm text-neutral-600 font-medium">Premium as % of Income</p>
-            <p id="result-percent" class="text-xl font-bold text-neutral-900 mt-1">--</p>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">Premium as % of Income</p>
+            <p id="result-percent" class="text-xl font-bold text-slate-900 mt-1">--</p>
           </div>
-          <div class="bg-federal-50/80 backdrop-blur-sm rounded-xl p-4">
-            <p class="text-sm text-neutral-600 font-medium">ACA Threshold</p>
-            <p id="result-threshold" class="text-xl font-bold text-neutral-900 mt-1">--</p>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">ACA Threshold</p>
+            <p id="result-threshold" class="text-xl font-bold text-slate-900 mt-1">--</p>
           </div>
         </div>
 
@@ -119,14 +119,14 @@ const schemas = [
           <p id="determination-text" class="text-sm leading-relaxed">--</p>
         </div>
 
-        <p class="text-xs text-neutral-500 mt-4">
+        <p class="text-xs text-slate-500 mt-4">
           This is a general educational estimate. Actual affordability determinations are made by the Health Insurance Marketplace based on verified information. Multiple factors beyond the premium percentage can affect eligibility for marketplace coverage and subsidies.
         </p>
       </div>
     </div>
 
     <!-- Content from collection -->
-    <div class="prose prose-neutral max-w-none mb-8 prose-headings:font-bold prose-headings:text-neutral-900 prose-a:text-federal-600 hover:prose-a:text-federal-800 font-serif">
+    <div class="prose prose-neutral max-w-none mb-8 prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-primary-600 hover:prose-a:text-primary-800 font-serif">
       <Content />
     </div>
 

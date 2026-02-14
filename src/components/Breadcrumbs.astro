@@ -8,19 +8,19 @@ interface Props {
 }
 const { items } = Astro.props;
 ---
-<nav aria-label="Breadcrumb" class="text-sm text-neutral-500 mb-6">
+<nav aria-label="Breadcrumb" class="text-sm text-slate-500 mb-6">
   <ol class="flex flex-wrap items-center gap-1">
     {items.map((item, i) => (
       <li class="flex items-center gap-1">
         {i > 0 && (
-          <svg class="w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
         )}
         {i === items.length - 1 ? (
-          <span class="text-neutral-700 font-medium">{item.name}</span>
+          <span class="text-slate-700 font-medium">{item.name}</span>
         ) : (
-          <a href={item.url} class="hover:text-federal-600 transition-colors">{item.name}</a>
+          <a href={item.url} class="hover:text-primary-600 transition-colors">{item.name}</a>
         )}
       </li>
     ))}

@@ -44,8 +44,8 @@ const tools = [
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
-    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">Health Insurance Tools</h1>
-    <p class="text-lg text-neutral-600 mb-8 max-w-2xl font-serif">
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Health Insurance Tools</h1>
+    <p class="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
       Free educational tools to help you understand your health insurance options. These calculators provide general estimates for learning purposes only.
     </p>
 
@@ -53,15 +53,15 @@ const tools = [
       {tools.map((tool) => (
         <a
           href={tool.url}
-          class="group block p-6 rounded-2xl bg-white/70 backdrop-blur-sm border border-neutral-200/80 shadow-sm hover:shadow-xl hover:bg-white hover:border-federal-300 transition-all duration-300"
+          class="group block p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
         >
-          <div class="w-12 h-12 rounded-xl bg-federal-50 text-federal-600 flex items-center justify-center mb-4 group-hover:bg-federal-100 transition-colors">
+          <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={tool.icon}/>
             </svg>
           </div>
-          <h2 class="text-lg font-semibold text-neutral-800 group-hover:text-federal-600 transition-colors mb-2">{tool.title}</h2>
-          <p class="text-sm text-neutral-600 font-serif">{tool.description}</p>
+          <h2 class="text-lg font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-2">{tool.title}</h2>
+          <p class="text-sm text-slate-600 font-serif">{tool.description}</p>
         </a>
       ))}
     </div>

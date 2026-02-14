@@ -35,28 +35,28 @@ const schemas = [
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
 
-    <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-heading mb-4">{title}</h1>
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">{title}</h1>
 
     <AnswerBox answer="Enter your household size and annual income to see an educational estimate of where your income falls relative to the Federal Poverty Level and what that may mean for ACA premium tax credits." />
 
     <Disclaimer variant="tool" />
 
-    <div class="bg-white/70 backdrop-blur-sm border border-neutral-200/80 rounded-2xl p-4 mb-6">
-      <p class="text-sm text-neutral-600 leading-relaxed">
+    <div class="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-4 mb-6">
+      <p class="text-sm text-slate-600 leading-relaxed">
         This website is not affiliated with any federal or state government agency. Information provided here is for educational purposes only.
       </p>
     </div>
 
     <!-- Calculator UI -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl border border-neutral-200/80 p-6 shadow-lg mb-8">
-      <h2 class="text-xl font-semibold text-neutral-800 mb-4">Estimate Your Income-Based Savings</h2>
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold text-slate-800 mb-4">Estimate Your Income-Based Savings</h2>
 
       <form id="income-calc-form" class="space-y-5">
         <div>
-          <label for="household-size" class="block text-sm font-medium text-neutral-700 mb-1">Household Size</label>
+          <label for="household-size" class="block text-sm font-medium text-slate-700 mb-1">Household Size</label>
           <select
             id="household-size"
-            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-federal-500 focus:border-federal-500 outline-none"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           >
             <option value="">Select household size</option>
             <option value="1">1 person</option>
@@ -71,22 +71,22 @@ const schemas = [
         </div>
 
         <div>
-          <label for="annual-income" class="block text-sm font-medium text-neutral-700 mb-1">Annual Household Income ($)</label>
+          <label for="annual-income" class="block text-sm font-medium text-slate-700 mb-1">Annual Household Income ($)</label>
           <input
             type="number"
             id="annual-income"
             placeholder="e.g. 45000"
             min="0"
             step="100"
-            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-federal-500 focus:border-federal-500 outline-none"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           />
         </div>
 
         <div>
-          <label for="state-select" class="block text-sm font-medium text-neutral-700 mb-1">State</label>
+          <label for="state-select" class="block text-sm font-medium text-slate-700 mb-1">State</label>
           <select
             id="state-select"
-            class="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-federal-500 focus:border-federal-500 outline-none"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           >
             <option value="">Select your state</option>
           </select>
@@ -102,7 +102,7 @@ const schemas = [
           <button
             type="button"
             id="reset-btn"
-            class="px-6 py-2.5 rounded-lg border border-neutral-300 text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+            class="px-6 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors"
           >
             Reset
           </button>
@@ -110,38 +110,38 @@ const schemas = [
       </form>
 
       <!-- Results (hidden by default) -->
-      <div id="results" class="hidden mt-6 border-t border-neutral-200 pt-6">
-        <h3 class="text-lg font-semibold text-neutral-800 mb-4">Educational Estimate</h3>
+      <div id="results" class="hidden mt-6 border-t border-slate-200 pt-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-4">Educational Estimate</h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div class="bg-federal-50/80 backdrop-blur-sm rounded-xl p-4">
-            <p class="text-sm text-federal-700 font-medium">Federal Poverty Level</p>
-            <p id="result-fpl" class="text-2xl font-bold text-federal-900 mt-1">--</p>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-primary-700 font-medium">Federal Poverty Level</p>
+            <p id="result-fpl" class="text-2xl font-bold text-primary-900 mt-1">--</p>
           </div>
-          <div class="bg-federal-50/80 backdrop-blur-sm rounded-xl p-4">
-            <p class="text-sm text-federal-700 font-medium">Income as % of FPL</p>
-            <p id="result-fpl-percent" class="text-2xl font-bold text-federal-900 mt-1">--</p>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-primary-700 font-medium">Income as % of FPL</p>
+            <p id="result-fpl-percent" class="text-2xl font-bold text-primary-900 mt-1">--</p>
           </div>
         </div>
 
-        <div class="bg-white/60 backdrop-blur-sm rounded-xl border border-neutral-200/60 p-4 mb-4">
-          <p class="text-sm text-neutral-700 font-medium mb-1">Expected Contribution Range</p>
-          <p id="result-contribution" class="text-lg font-semibold text-neutral-900">--</p>
+        <div class="bg-white/60 backdrop-blur-sm rounded-xl border border-slate-200/60 p-4 mb-4">
+          <p class="text-sm text-slate-700 font-medium mb-1">Expected Contribution Range</p>
+          <p id="result-contribution" class="text-lg font-semibold text-slate-900">--</p>
         </div>
 
-        <div id="result-interpretation" class="bg-white/70 backdrop-blur-sm border border-neutral-200/80 rounded-xl p-4">
-          <p class="text-sm text-neutral-700 font-medium mb-2">What This May Mean</p>
-          <p id="interpretation-text" class="text-sm text-neutral-600 leading-relaxed">--</p>
+        <div id="result-interpretation" class="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-xl p-4">
+          <p class="text-sm text-slate-700 font-medium mb-2">What This May Mean</p>
+          <p id="interpretation-text" class="text-sm text-slate-600 leading-relaxed">--</p>
         </div>
 
-        <p class="text-xs text-neutral-500 mt-4">
+        <p class="text-xs text-slate-500 mt-4">
           These figures are educational estimates based on general federal guidelines. They are not a determination of eligibility or a guarantee of any specific savings amount. Individual results vary based on location, plan selection, and other factors.
         </p>
       </div>
     </div>
 
     <!-- Content from collection -->
-    <div class="prose prose-neutral max-w-none mb-8 prose-headings:font-bold prose-headings:text-neutral-900 prose-a:text-federal-600 hover:prose-a:text-federal-800 font-serif">
+    <div class="prose prose-neutral max-w-none mb-8 prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-primary-600 hover:prose-a:text-primary-800 font-serif">
       <Content />
     </div>
 
