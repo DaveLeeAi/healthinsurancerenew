@@ -1,0 +1,65 @@
+{
+  "$ref": "#/definitions/states",
+  "definitions": {
+    "states": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "stateName": {
+          "type": "string"
+        },
+        "stateAbbr": {
+          "type": "string"
+        },
+        "datePublished": {
+          "type": "string"
+        },
+        "dateModified": {
+          "type": "string"
+        },
+        "exchange": {
+          "type": "string",
+          "default": "Healthcare.gov"
+        },
+        "faqs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "question",
+              "answer"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "stateName",
+        "stateAbbr",
+        "datePublished",
+        "dateModified"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
