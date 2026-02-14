@@ -54,11 +54,6 @@ const schemas = [
       <Content />
     </div>
     {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
-    <SourcesBox sources={[
-      { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
-      { title: `${stateName} Insurance Department`, url: 'https://www.healthcare.gov/marketplace-in-your-state/' },
-    ]} />
-    <AuthorBio />
 
     <div class="mt-12 rounded-2xl bg-white border border-neutral-200/80 shadow-sm shadow-neutral-200/50 p-8 sm:p-10 text-center">
       <h2 class="text-2xl sm:text-3xl font-bold text-neutral-900 leading-heading mb-6">
@@ -76,5 +71,11 @@ const schemas = [
         You are leaving HealthInsuranceRenew.com and entering a separate enrollment platform operated by licensed agents.
       </p>
     </div>
+
+    <AuthorBio />
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
+      { title: `${stateName} Insurance Department`, url: 'https://www.healthcare.gov/marketplace-in-your-state/' },
+    ]} />
   </article>
 </BaseLayout>
