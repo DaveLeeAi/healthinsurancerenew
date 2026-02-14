@@ -4,7 +4,7 @@ description: "Learn about ACA health insurance options, subsidies, and enrollmen
 stateName: "Georgia"
 stateAbbr: "GA"
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 exchange: "Healthcare.gov"
 faqs:
   - question: "How many health insurance companies offer ACA plans in Georgia?"

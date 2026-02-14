@@ -2,7 +2,7 @@
 title: "Compare Bronze, Silver & Gold Plans"
 description: "Understand the differences between ACA metal tier plans. Educational comparison of Bronze, Silver, Gold, and Platinum health insurance levels."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 toolType: "plan-comparison"
 faqs:
   - question: "What is the difference between Bronze, Silver, and Gold plans?"

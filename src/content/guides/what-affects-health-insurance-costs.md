@@ -2,7 +2,7 @@
 title: "What Affects Health Insurance Costs: Age, Location, Tobacco Use, Plan Level, and Income"
 description: "An overview of the primary factors that influence health insurance premiums and out-of-pocket costs, including age, geographic location, tobacco use, metal tier selection, and household income."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 faqs:
   - question: "Why do health insurance premiums vary so much by location?"
     answer: "Premiums vary by location because the cost of medical care, the number of insurers competing in a region, and state regulatory requirements differ across geographic areas. Urban areas with more hospital systems may see different pricing than rural areas with fewer providers, and each state's insurance market conditions influence plan availability and cost."

@@ -4,7 +4,7 @@ description: "Learn about ACA health insurance options, subsidies, and enrollmen
 stateName: "Kansas"
 stateAbbr: "KS"
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 exchange: "Healthcare.gov"
 faqs:
   - question: "Has Kansas expanded Medicaid under the Affordable Care Act?"

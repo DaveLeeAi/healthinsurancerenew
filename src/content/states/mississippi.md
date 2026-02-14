@@ -4,7 +4,7 @@ description: "Learn about ACA health insurance options, subsidies, and enrollmen
 stateName: "Mississippi"
 stateAbbr: "MS"
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 exchange: "Healthcare.gov"
 faqs:
   - question: "Has Mississippi expanded Medicaid under the ACA?"

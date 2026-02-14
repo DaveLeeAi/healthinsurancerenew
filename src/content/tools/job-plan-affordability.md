@@ -2,7 +2,7 @@
 title: "Is My Job's Health Plan Affordable?"
 description: "Check whether your employer health plan meets ACA affordability standards. Educational tool for understanding the employer coverage threshold."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 toolType: "job-plan-affordability"
 faqs:
   - question: "What is the ACA affordability threshold?"

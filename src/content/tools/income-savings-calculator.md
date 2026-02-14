@@ -2,7 +2,7 @@
 title: "Health Insurance Income & Savings Calculator"
 description: "Estimate how your household income affects ACA marketplace subsidies. Educational calculator for understanding premium tax credits."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 toolType: "income-savings-calculator"
 faqs:
   - question: "How does income affect health insurance subsidies?"

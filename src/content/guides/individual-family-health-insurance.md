@@ -2,7 +2,7 @@
 title: "Individual & Family Health Insurance: A Guide to ACA Marketplace Options"
 description: "Learn how individual and family health insurance works through the ACA marketplace, including plan types, metal tiers, and how to choose coverage that fits your household's needs."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 faqs:
   - question: "What is the difference between individual health insurance and employer-sponsored coverage?"
     answer: "Individual health insurance is purchased directly through the ACA marketplace or a private insurer, while employer-sponsored coverage is offered and partially funded by an employer. Both must meet ACA minimum essential coverage standards, but individual plans may be eligible for premium tax credits based on household income."

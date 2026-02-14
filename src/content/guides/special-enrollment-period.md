@@ -2,7 +2,7 @@
 title: "Special Enrollment Period: Qualifying Life Events and How to Enroll Outside Open Enrollment"
 description: "Understand how special enrollment periods work, which qualifying life events trigger eligibility, and the steps required to enroll in ACA marketplace coverage outside the standard open enrollment window."
 datePublished: "2025-10-15"
-dateModified: "2025-10-15"
+dateModified: "2026-02-15"
 faqs:
   - question: "How long does a special enrollment period last?"
     answer: "Most special enrollment periods last 60 days from the date of the qualifying life event. Some events, such as losing Medicaid coverage, may carry different timelines. Acting promptly is important because coverage cannot be backdated, and delays may result in gaps."
