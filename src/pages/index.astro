@@ -53,26 +53,109 @@ const tools = [
   description="Educational ACA health insurance resource. Learn about marketplace plans, subsidies, enrollment periods, and compare coverage options. Licensed agents in 18 states."
   schemas={schemas}
 >
-  <section class="bg-primary-50 border-b border-primary-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+  <section id="hero" class="relative overflow-hidden border-b border-neutral-200" style="aspect-ratio:16/5;">
+    <div id="hero-bg" class="absolute inset-0">
+      <img
+        src="/images/hero/hero-1.webp"
+        alt=""
+        width="1600"
+        height="900"
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-500"
+        data-index="0"
+      />
+      <img
+        src="/images/hero/hero-2.webp"
+        alt=""
+        width="1600"
+        height="900"
+        loading="lazy"
+        class="hero-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
+        data-index="1"
+      />
+      <img
+        src="/images/hero/hero-3.webp"
+        alt=""
+        width="1600"
+        height="900"
+        loading="lazy"
+        class="hero-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
+        data-index="2"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-neutral-900/80 via-neutral-900/60 to-neutral-900/30"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 flex items-center min-h-[320px] sm:min-h-[400px]">
       <div class="max-w-2xl">
-        <h1 class="text-4xl sm:text-5xl font-bold text-neutral-900 leading-heading mb-6">
-          Understand Your Health Insurance Options
-        </h1>
-        <p class="text-lg text-neutral-600 mb-8 leading-relaxed">
-          Free educational resources to help you navigate ACA marketplace coverage, understand subsidies, and make informed decisions about health insurance for you and your family.
+        <div id="hero-headline" class="h-[4.5rem] sm:h-[7rem] mb-4 overflow-hidden relative" aria-live="polite">
+          <h1
+            class="hero-text absolute inset-0 text-3xl sm:text-5xl font-bold text-white leading-heading transition-all duration-500 opacity-100 translate-y-0"
+            data-index="0"
+          >
+            Explore Your 2026 Health Insurance Options
+          </h1>
+          <h1
+            class="hero-text absolute inset-0 text-3xl sm:text-5xl font-bold text-white leading-heading transition-all duration-500 opacity-0 translate-y-4"
+            data-index="1"
+          >
+            See How Income May Affect Monthly Costs
+          </h1>
+          <h1
+            class="hero-text absolute inset-0 text-3xl sm:text-5xl font-bold text-white leading-heading transition-all duration-500 opacity-0 translate-y-4"
+            data-index="2"
+          >
+            Get State-Specific Guidance From Licensed Professionals
+          </h1>
+        </div>
+        <p class="text-base sm:text-lg text-neutral-200 mb-8 leading-relaxed max-w-xl">
+          Free educational resources to help you navigate ACA marketplace coverage, understand subsidies, and make informed decisions.
         </p>
         <div class="flex flex-wrap gap-4">
-          <a href="/guides/individual-family-health-insurance" class="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-sm">
+          <a href="/guides/individual-family-health-insurance" class="inline-flex items-center px-6 py-3 rounded-lg bg-white text-neutral-900 font-medium hover:bg-neutral-100 transition-colors shadow-sm">
             Explore Guides
           </a>
-          <a href="/tools" class="inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary-700 font-medium border border-primary-200 hover:bg-primary-50 transition-colors">
+          <a href="/tools" class="inline-flex items-center px-6 py-3 rounded-lg bg-white/15 text-white font-medium border border-white/30 hover:bg-white/25 backdrop-blur-sm transition-colors">
             Try Our Tools
           </a>
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.innerWidth < 768;
+      if (prefersReduced || isMobile) return;
+
+      const imgs = document.querySelectorAll('.hero-img');
+      const texts = document.querySelectorAll('.hero-text');
+      const hero = document.getElementById('hero');
+      const total = imgs.length;
+      let current = 0;
+      let paused = false;
+
+      hero?.addEventListener('mouseenter', () => { paused = true; });
+      hero?.addEventListener('mouseleave', () => { paused = false; });
+
+      setInterval(() => {
+        if (paused) return;
+        const prev = current;
+        current = (current + 1) % total;
+
+        imgs[prev].classList.remove('opacity-100');
+        imgs[prev].classList.add('opacity-0');
+        imgs[current].classList.remove('opacity-0');
+        imgs[current].classList.add('opacity-100');
+
+        texts[prev].classList.remove('opacity-100', 'translate-y-0');
+        texts[prev].classList.add('opacity-0', 'translate-y-4');
+        texts[current].classList.remove('opacity-0', 'translate-y-4');
+        texts[current].classList.add('opacity-100', 'translate-y-0');
+      }, 7000);
+    })();
+  </script>
 
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <h2 class="text-2xl font-bold text-neutral-900 mb-2 leading-heading">Educational Guides</h2>
