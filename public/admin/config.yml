@@ -1,0 +1,281 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+site_url: https://healthinsurancerenew.com
+display_url: https://healthinsurancerenew.com
+logo_url: /favicon.svg
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+# ---------------------------------------------------------------------------
+# Content Collections
+# ---------------------------------------------------------------------------
+collections:
+
+  # -------------------------------------------------------------------------
+  # Guides
+  # -------------------------------------------------------------------------
+  - name: guides
+    label: Guides
+    label_singular: Guide
+    folder: src/content/guides
+    create: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: ["title", "dateModified"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Date Published, name: datePublished, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Date Modified, name: dateModified, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: FAQs
+        name: faqs
+        widget: list
+        required: false
+        fields:
+          - { label: Question, name: question, widget: string }
+          - { label: Answer, name: answer, widget: text }
+      - { label: Body, name: body, widget: markdown }
+
+  # -------------------------------------------------------------------------
+  # States
+  # -------------------------------------------------------------------------
+  - name: states
+    label: States
+    label_singular: State
+    folder: src/content/states
+    create: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{stateName}} ({{stateAbbr}})"
+    sortable_fields: ["stateName", "dateModified"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: State Name, name: stateName, widget: string }
+      - { label: State Abbreviation, name: stateAbbr, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Exchange, name: exchange, widget: string, default: "Healthcare.gov" }
+      - { label: Date Published, name: datePublished, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Date Modified, name: dateModified, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: FAQs
+        name: faqs
+        widget: list
+        required: false
+        fields:
+          - { label: Question, name: question, widget: string }
+          - { label: Answer, name: answer, widget: text }
+      - { label: Body, name: body, widget: markdown }
+
+  # -------------------------------------------------------------------------
+  # Tools
+  # -------------------------------------------------------------------------
+  - name: tools
+    label: Tools
+    label_singular: Tool
+    folder: src/content/tools
+    create: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    sortable_fields: ["title", "dateModified"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Tool Type, name: toolType, widget: string }
+      - { label: Date Published, name: datePublished, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Date Modified, name: dateModified, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: FAQs
+        name: faqs
+        widget: list
+        required: false
+        fields:
+          - { label: Question, name: question, widget: string }
+          - { label: Answer, name: answer, widget: text }
+      - { label: Body, name: body, widget: markdown }
+
+  # -------------------------------------------------------------------------
+  # FAQ Pages (prepared for Phase B)
+  # -------------------------------------------------------------------------
+  - name: faq
+    label: FAQ Pages
+    label_singular: FAQ Page
+    folder: src/content/faq
+    create: true
+    format: frontmatter
+    extension: md
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Date Published, name: datePublished, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Date Modified, name: dateModified, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - label: FAQs
+        name: faqs
+        widget: list
+        required: false
+        fields:
+          - { label: Question, name: question, widget: string }
+          - { label: Answer, name: answer, widget: text }
+      - { label: Body, name: body, widget: markdown }
+
+  # -------------------------------------------------------------------------
+  # Data Files
+  # -------------------------------------------------------------------------
+
+  # FPL Guidelines
+  - name: fpl-current
+    label: FPL Guidelines
+    editor:
+      preview: false
+    files:
+      - name: fpl-current
+        label: Federal Poverty Level Guidelines
+        file: src/data/fpl-current.json
+        format: json
+        fields:
+          - { label: Year, name: year, widget: number, value_type: int }
+          - label: Guidelines
+            name: guidelines
+            widget: object
+            fields:
+              - { label: Household of 1, name: household_1, widget: number, value_type: int }
+              - { label: Household of 2, name: household_2, widget: number, value_type: int }
+              - { label: Household of 3, name: household_3, widget: number, value_type: int }
+              - { label: Household of 4, name: household_4, widget: number, value_type: int }
+              - { label: Household of 5, name: household_5, widget: number, value_type: int }
+              - { label: Household of 6, name: household_6, widget: number, value_type: int }
+              - { label: Additional Person, name: additionalPerson, widget: number, value_type: int }
+          - { label: Updated, name: updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { label: Source, name: source, widget: string }
+
+  # Affordability Threshold
+  - name: affordability-threshold
+    label: Affordability Threshold
+    editor:
+      preview: false
+    files:
+      - name: affordability-threshold
+        label: Employer Affordability Threshold
+        file: src/data/affordability-threshold.json
+        format: json
+        fields:
+          - { label: Year, name: year, widget: number, value_type: int }
+          - { label: Threshold Percent, name: thresholdPercent, widget: number, value_type: float, step: 0.01 }
+          - { label: Description, name: description, widget: text }
+          - { label: Updated, name: updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { label: Source, name: source, widget: string }
+
+  # Metal Tiers
+  - name: metal-tiers
+    label: Metal Tiers
+    editor:
+      preview: false
+    files:
+      - name: metal-tiers
+        label: ACA Metal Tier Definitions
+        file: src/data/metal-tiers.json
+        format: json
+        fields:
+          - label: Tiers
+            name: tiers
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Slug, name: slug, widget: string }
+              - { label: Actuarial Value (%), name: actuarialValue, widget: number, value_type: int }
+              - { label: Description, name: description, widget: text }
+              - { label: Best For, name: bestFor, widget: text }
+              - { label: Premium Level, name: premiumLevel, widget: string }
+              - { label: Out-of-Pocket Level, name: outOfPocketLevel, widget: string }
+          - { label: Updated, name: updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { label: Source, name: source, widget: string }
+
+  # Contribution Scale
+  - name: contribution-scale
+    label: Contribution Scale
+    editor:
+      preview: false
+    files:
+      - name: contribution-scale
+        label: Premium Contribution Scale
+        file: src/data/contribution-scale.json
+        format: json
+        fields:
+          - { label: Year, name: year, widget: number, value_type: int }
+          - { label: Description, name: description, widget: text }
+          - label: Bands
+            name: bands
+            widget: list
+            fields:
+              - { label: Min FPL (%), name: minFPL, widget: number, value_type: int }
+              - { label: Max FPL (%), name: maxFPL, widget: number, value_type: int }
+              - { label: Min Contribution (%), name: minPercent, widget: number, value_type: float, step: 0.1 }
+              - { label: Max Contribution (%), name: maxPercent, widget: number, value_type: float, step: 0.1 }
+          - { label: Updated, name: updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { label: Source, name: source, widget: string }
+
+  # Site Config
+  - name: site-config
+    label: Site Config
+    editor:
+      preview: false
+    files:
+      - name: config
+        label: General Configuration
+        file: src/data/config.json
+        format: json
+        fields:
+          - { label: Current Year, name: currentYear, widget: number, value_type: int }
+          - { label: Site Name, name: siteName, widget: string }
+          - { label: Site URL, name: siteUrl, widget: string }
+          - { label: Site Description, name: siteDescription, widget: text }
+          - { label: Updated, name: updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - label: Licensed States
+            name: licensedStates
+            widget: list
+            fields:
+              - { label: State Name, name: name, widget: string }
+              - { label: Abbreviation, name: abbr, widget: string }
+              - { label: URL Slug, name: slug, widget: string }
+
+  # Chat Routing
+  - name: chat-routing
+    label: Chat Routing
+    editor:
+      preview: false
+    files:
+      - name: chat-routing
+        label: Chat Widget Routing
+        file: src/data/chat-routing.json
+        format: json
+        fields:
+          - label: Categories
+            name: categories
+            widget: list
+            fields:
+              - { label: ID, name: id, widget: string }
+              - { label: Label, name: label, widget: string }
+              - { label: Icon, name: icon, widget: string }
+              - { label: Response Text, name: response, widget: text }
+              - label: Links
+                name: links
+                widget: list
+                required: false
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: URL, name: url, widget: string }
+              - { label: Is State Picker, name: isStatePicker, widget: boolean, required: false, default: false }
+          - { label: Disclaimer, name: disclaimer, widget: text }
+          - { label: Handover Button Text, name: handoverText, widget: string }
+          - { label: Handover URL, name: handoverUrl, widget: string }
