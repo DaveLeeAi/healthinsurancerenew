@@ -39,7 +39,7 @@ const allSchemas = [orgSchema, webSiteSchema, ...schemas];
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -63,7 +63,7 @@ const allSchemas = [orgSchema, webSiteSchema, ...schemas];
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-neutral-800 font-sans leading-body antialiased">
+  <body class="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 font-sans leading-body antialiased">
     <Header />
     <main class="flex-1">
       <slot />

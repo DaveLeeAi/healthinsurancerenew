@@ -8,12 +8,12 @@ interface Props {
 }
 const { sources } = Astro.props;
 ---
-<div class="bg-neutral-50 border border-neutral-200 rounded-lg p-5 my-6">
-  <p class="text-sm font-semibold text-neutral-700 uppercase tracking-wider mb-3">Sources</p>
+<div class="bg-white/70 backdrop-blur-sm border border-neutral-200/80 rounded-2xl p-5 my-6">
+  <p class="text-xs font-semibold text-neutral-600 uppercase tracking-wider mb-3">Sources</p>
   <ul class="space-y-1">
     {sources.map((source) => (
       <li>
-        <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sm text-primary-600 hover:text-primary-800 hover:underline transition-colors">
+        <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sm text-federal-600 hover:text-federal-800 hover:underline transition-colors">
           {source.title}
         </a>
       </li>

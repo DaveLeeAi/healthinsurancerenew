@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "thresholdPercent": 9.02,
+  "thresholdPercent": 9.96,
   "description": "The maximum percentage of household income an employer plan can cost for employee-only coverage to be considered affordable under the ACA.",
   "updated": "2025-10-01",
   "source": "IRS Revenue Procedure (projected)"

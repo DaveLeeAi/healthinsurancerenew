@@ -9,6 +9,18 @@ const formatted = new Date(date).toLocaleDateString('en-US', {
   day: 'numeric',
 });
 ---
-<p class="text-sm text-neutral-500 my-4">
-  <time datetime={date}>Last updated: {formatted}</time>
-</p>
+<div class="flex items-center gap-3 text-sm text-neutral-500 my-4">
+  <time datetime={date} class="flex items-center gap-1.5">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    Last updated: {formatted}
+  </time>
+  <span class="text-neutral-300">|</span>
+  <span class="flex items-center gap-1.5 text-federal-600">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+    </svg>
+    Fact-Checked
+  </span>
+</div>

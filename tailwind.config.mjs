@@ -4,6 +4,32 @@ export default {
   theme: {
     extend: {
       colors: {
+        navy: {
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#627d98',
+          600: '#486581',
+          700: '#334e68',
+          800: '#243b53',
+          900: '#1a2b3c',
+          950: '#0f1926',
+        },
+        federal: {
+          50: '#e6f2ff',
+          100: '#b3d4ff',
+          200: '#80b7ff',
+          300: '#4d99ff',
+          400: '#1a7cff',
+          500: '#0071bc',
+          600: '#005f9e',
+          700: '#004d80',
+          800: '#003b62',
+          900: '#002944',
+          950: '#001726',
+        },
         primary: {
           50: '#eff8ff',
           100: '#dbeefe',
@@ -97,8 +123,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        heading: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        heading: ['"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Lora', 'Georgia', 'Cambria', 'serif'],
       },
       spacing: {
         '18': '4.5rem',
@@ -107,6 +134,9 @@ export default {
       lineHeight: {
         'body': '1.5',
         'heading': '1.2',
+      },
+      backdropBlur: {
+        'glass': '16px',
       },
     },
   },

@@ -11,16 +11,16 @@ const { faqs } = Astro.props;
 {faqs.length > 0 && (
   <section class="my-8">
     <h2 class="text-2xl font-bold text-neutral-900 mb-6 leading-heading">Frequently Asked Questions</h2>
-    <div class="space-y-4">
+    <div class="space-y-3">
       {faqs.map((faq) => (
-        <details class="group bg-white border border-neutral-200 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between cursor-pointer px-5 py-4 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors">
+        <details class="group bg-white/70 backdrop-blur-sm border border-neutral-200/80 rounded-2xl overflow-hidden">
+          <summary class="flex items-center justify-between cursor-pointer px-5 py-4 text-neutral-800 font-medium hover:bg-white transition-colors">
             <span>{faq.question}</span>
             <svg class="w-5 h-5 text-neutral-400 transition-transform group-open:rotate-180 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </summary>
-          <div class="px-5 pb-4 text-neutral-600 leading-relaxed border-t border-neutral-100 pt-3">
+          <div class="px-5 pb-4 text-neutral-600 leading-relaxed border-t border-neutral-100 pt-3 font-serif">
             {faq.answer}
           </div>
         </details>
