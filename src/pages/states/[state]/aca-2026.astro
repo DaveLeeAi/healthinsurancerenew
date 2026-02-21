@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import LastUpdated from '../../../components/LastUpdated.astro';
+import AnswerBox from '../../../components/AnswerBox.astro';
+import FAQSection from '../../../components/FAQSection.astro';
+import SourcesBox from '../../../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../../../lib/schema';
+import allStatesData from '../../../data/all-states.json';
+import fplData from '../../../data/fpl-current.json';
+import csrData from '../../../data/csr-tiers.json';
+import contributionData from '../../../data/contribution-scale.json';
+
+export function getStaticPaths() {
+  return allStatesData.states.map((s) => ({
+    params: { state: s.slug },
+    props: { stateInfo: s },
+  }));
+}
+
+const { stateInfo } = Astro.props;
+const g = fplData.guidelines;
+
+function fmt(n: number) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const isExpanded = stateInfo.medicaidExpanded;
+const exchangeName = stateInfo.exchange;
+const usesOwn = stateInfo.ownExchange;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'States', url: '/states' },
+  { name: stateInfo.name, url: `/states/${stateInfo.slug}` },
+  { name: 'ACA 2026', url: `/states/${stateInfo.slug}/aca-2026` },
+];
+
+const faqs = [
+  {
+    question: `Does ${stateInfo.name} use Healthcare.gov or its own exchange?`,
+    answer: usesOwn
+      ? `${stateInfo.name} operates its own state-based exchange called ${exchangeName}. Residents enroll through this platform rather than Healthcare.gov. The plans, subsidies, and enrollment rules follow federal ACA guidelines, but the enrollment website and deadlines may differ slightly from the federal marketplace.`
+      : `${stateInfo.name} uses the federal marketplace at Healthcare.gov for ACA enrollment. Residents apply, compare plans, and enroll through Healthcare.gov during the annual open enrollment period or during a special enrollment period after a qualifying life event.`,
+  },
+  {
+    question: `Has ${stateInfo.name} expanded Medicaid?`,
+    answer: isExpanded
+      ? `Yes. ${stateInfo.name} has expanded Medicaid under the ACA. Adults with household income at or below 138% of the Federal Poverty Level (about ${fmt(Math.round(g.household_1 * 1.38))} for a single person in 2026) generally qualify for Medicaid coverage with minimal or no monthly premiums.`
+      : `No. As of early 2026, ${stateInfo.name} has not expanded Medicaid under the ACA. This means there may be a coverage gap for adults who earn too much for traditional Medicaid but too little for marketplace premium tax credits. Traditional Medicaid in non-expansion states typically has very low income thresholds.`,
+  },
+  {
+    question: `What ACA savings can I get in ${stateInfo.name} in 2026?`,
+    answer: `The same federal premium tax credits and cost-sharing reductions are available in ${stateInfo.name} as in other states. Your savings depend on your household income as a percentage of the Federal Poverty Level, your household size, and the cost of the benchmark Silver plan in your area. People with income between 100% and 400% FPL typically qualify for premium help.`,
+  },
+  {
+    question: `When is open enrollment for ${stateInfo.name} in 2026?`,
+    answer: usesOwn
+      ? `${stateInfo.name} runs its own exchange (${exchangeName}), which may have enrollment dates that differ from the federal marketplace. Check the ${exchangeName} website for the most current open enrollment dates. Special enrollment periods are available year-round for qualifying life events.`
+      : `${stateInfo.name} follows the federal marketplace enrollment schedule. Open enrollment typically runs from November 1 through January 15. Special enrollment periods are available if you experience a qualifying life event such as losing coverage, getting married, having a baby, or moving to a new area.`,
+  },
+  {
+    question: `Do I qualify for cost-sharing reductions in ${stateInfo.name}?`,
+    answer: `Cost-sharing reductions are a federal benefit available in every state, including ${stateInfo.name}. If your household income is between 100% and 250% of the Federal Poverty Level and you enroll in a Silver plan through the marketplace, you may receive reduced deductibles, copays, and out-of-pocket maximums. The amount of savings depends on which CSR tier you fall into.`,
+  },
+  {
+    question: `Can I get Marketplace coverage in ${stateInfo.name} if I lost my job?`,
+    answer: `Yes. Losing job-based health coverage is a qualifying life event that triggers a 60-day special enrollment period. You can apply for marketplace coverage in ${stateInfo.name} through ${exchangeName} within 60 days of losing your employer plan. Your new income level may qualify you for premium tax credits that significantly reduce costs compared to COBRA.`,
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: `${stateInfo.name} ACA Health Insurance Guide for 2026`,
+    description: `ACA marketplace guide for ${stateInfo.name} in 2026. Medicaid expansion status, exchange information, eligibility, costs, and savings.`,
+    url: `/states/${stateInfo.slug}/aca-2026`,
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title={`${stateInfo.name} ACA Health Insurance Guide 2026 | HealthInsuranceRenew`}
+  description={`ACA health insurance guide for ${stateInfo.name} in 2026. ${isExpanded ? 'Medicaid expanded state.' : 'Non-expansion state.'} Learn about eligibility, costs, CSR savings, and enrollment through ${exchangeName}.`}
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">
+      {stateInfo.name} ACA Health Insurance Guide for 2026
+    </h1>
+    <div class="flex flex-wrap items-center gap-3 mb-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-sm font-medium">
+        {stateInfo.abbr}
+      </span>
+      <span class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${isExpanded ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'}`}>
+        {isExpanded ? 'Medicaid Expanded' : 'Not Expanded'}
+      </span>
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm">
+        {exchangeName}
+      </span>
+    </div>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer={`This page covers ACA health insurance in ${stateInfo.name} for 2026, including Medicaid expansion status, how to enroll, what savings are available, and how cost-sharing reductions work. ${stateInfo.name} ${isExpanded ? 'has expanded Medicaid, meaning adults below 138% FPL may qualify for Medicaid.' : 'has not expanded Medicaid, which affects coverage options for lower-income residents.'}`} />
+
+    <!-- Overview Section -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Overview</h2>
+
+      <div class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">Medicaid Expansion Status</h3>
+          {isExpanded ? (
+            <p class="text-slate-700 leading-relaxed font-serif">
+              {stateInfo.name} <strong>has expanded</strong> Medicaid under the ACA. Adults with household income at or below 138% of the Federal Poverty Level -- about {fmt(Math.round(g.household_1 * 1.38))} per year for a single person, or {fmt(Math.round(g.household_4 * 1.38))} for a family of four -- generally qualify for Medicaid coverage. Medicaid in expansion states typically has minimal or no monthly premiums and very low cost-sharing.
+            </p>
+          ) : (
+            <div>
+              <p class="text-slate-700 leading-relaxed font-serif mb-3">
+                {stateInfo.name} <strong>has not expanded</strong> Medicaid under the ACA. This means traditional Medicaid eligibility in {stateInfo.name} is limited to specific categories (pregnant women, children, people with disabilities, very low-income parents) and the income thresholds are much lower than in expansion states.
+              </p>
+              <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                <p class="text-sm text-amber-800">
+                  <strong>Coverage gap:</strong> In non-expansion states, some adults earn too much for traditional Medicaid but less than 100% FPL ({fmt(g.household_1)} for a single person). These individuals may fall into a gap where neither Medicaid nor marketplace premium tax credits are available.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">Exchange and Enrollment</h3>
+          {usesOwn ? (
+            <p class="text-slate-700 leading-relaxed font-serif">
+              {stateInfo.name} operates its own state-based marketplace called <strong>{exchangeName}</strong>. Residents enroll through this platform rather than Healthcare.gov. The available plans, premium tax credits, and cost-sharing reductions follow federal ACA guidelines. However, open enrollment dates and enrollment procedures may vary from the federal schedule.
+            </p>
+          ) : (
+            <p class="text-slate-700 leading-relaxed font-serif">
+              {stateInfo.name} uses the federal marketplace at <strong>Healthcare.gov</strong> for ACA enrollment. The standard federal open enrollment period runs from November 1 through January 15. Residents can compare plans, check eligibility for premium tax credits, and enroll in coverage through the Healthcare.gov website or with help from local navigators and licensed agents.
+            </p>
+          )}
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">Open Enrollment Dates</h3>
+          <p class="text-slate-700 leading-relaxed font-serif mb-2">
+            {usesOwn
+              ? `Check the ${exchangeName} website for the most current ${stateInfo.name} open enrollment dates. State-run exchanges sometimes extend deadlines beyond the federal window.`
+              : `${stateInfo.name} follows the federal open enrollment period, typically November 1 through January 15. Plans selected by December 15 usually take effect January 1.`
+            }
+          </p>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            Outside of open enrollment, you can enroll if you have a qualifying life event such as losing employer coverage, getting married, having a baby, or moving to a new area. You generally have 60 days from the event to sign up.
+          </p>
+          <p class="text-sm text-slate-500 mt-2">
+            Related: <a href="/guides/open-enrollment-2026" class="text-primary-600 hover:text-primary-700 underline">Open Enrollment 2026 Guide</a> |
+            <a href="/guides/special-enrollment-period" class="text-primary-600 hover:text-primary-700 underline">Special Enrollment Periods</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Income & Eligibility Section -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Income and Eligibility in {stateInfo.name}</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Your eligibility for ACA savings in {stateInfo.name} depends on your household income, measured as a percentage of the Federal Poverty Level (FPL). The same federal rules apply in every state, but {isExpanded ? 'because ' + stateInfo.name + ' has expanded Medicaid, there is a smoother transition between Medicaid and marketplace coverage.' : 'because ' + stateInfo.name + ' has not expanded Medicaid, lower-income residents may face a coverage gap.'}
+      </p>
+
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Income Range (% FPL)</th>
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Single Person (Annual)</th>
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">What Likely Applies</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isExpanded && (
+                <tr class="border-b border-slate-100 bg-green-50/30">
+                  <td class="px-4 py-3 text-slate-700">Below 138% FPL</td>
+                  <td class="px-4 py-3 text-slate-700">Below {fmt(Math.round(g.household_1 * 1.38))}</td>
+                  <td class="px-4 py-3 text-slate-700">Likely qualifies for Medicaid</td>
+                </tr>
+              )}
+              {!isExpanded && (
+                <tr class="border-b border-slate-100 bg-amber-50/30">
+                  <td class="px-4 py-3 text-slate-700">Below 100% FPL</td>
+                  <td class="px-4 py-3 text-slate-700">Below {fmt(g.household_1)}</td>
+                  <td class="px-4 py-3 text-slate-700">May fall in coverage gap (no expansion)</td>
+                </tr>
+              )}
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-slate-700">100%--150% FPL</td>
+                <td class="px-4 py-3 text-slate-700">{fmt(g.household_1)}--{fmt(Math.round(g.household_1 * 1.5))}</td>
+                <td class="px-4 py-3 text-slate-700">$0 premium + 94% CSR Silver</td>
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 text-slate-700">150%--200% FPL</td>
+                <td class="px-4 py-3 text-slate-700">{fmt(Math.round(g.household_1 * 1.5))}--{fmt(g.household_1 * 2)}</td>
+                <td class="px-4 py-3 text-slate-700">Low premium + 87% CSR Silver</td>
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-slate-700">200%--250% FPL</td>
+                <td class="px-4 py-3 text-slate-700">{fmt(g.household_1 * 2)}--{fmt(Math.round(g.household_1 * 2.5))}</td>
+                <td class="px-4 py-3 text-slate-700">Moderate premium + 73% CSR Silver</td>
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 text-slate-700">250%--400% FPL</td>
+                <td class="px-4 py-3 text-slate-700">{fmt(Math.round(g.household_1 * 2.5))}--{fmt(g.household_1 * 4)}</td>
+                <td class="px-4 py-3 text-slate-700">Premium tax credit, no CSR</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-slate-700">Above 400% FPL</td>
+                <td class="px-4 py-3 text-slate-700">Above {fmt(g.household_1 * 4)}</td>
+                <td class="px-4 py-3 text-slate-700">Premium capped at 8.5% of income (if enhanced rules apply)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="text-sm text-slate-500 mb-4">
+        Income figures shown for a single person using 2026 FPL guidelines. <a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">See the full FPL table</a> for all household sizes.
+      </p>
+      <p class="text-sm text-slate-500">
+        Related: <a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Check your eligibility</a> |
+        <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What income counts?</a>
+      </p>
+    </section>
+
+    <!-- Cost Expectations Section -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">What Health Insurance Costs in {stateInfo.name}</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Health insurance premiums in {stateInfo.name} vary by age, ZIP code, tobacco use, and plan tier. The marketplace offers Bronze, Silver, Gold, and Platinum plans, each covering a different share of average medical costs.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        The amount you actually pay depends on the <strong>premium tax credit</strong> you qualify for. This credit is based on the gap between the cost of the second-lowest-cost Silver plan in your area (the "benchmark") and the percentage of income you are expected to contribute. People with income below 150% FPL currently pay $0 toward the benchmark plan.
+      </p>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-4">
+        <h3 class="font-semibold text-slate-800 mb-3">How the Silver Benchmark Works</h3>
+        <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-2">
+          <li>The marketplace identifies the second-lowest-cost Silver plan available in your area</li>
+          <li>Based on your income, it calculates the percentage you are expected to pay</li>
+          <li>The difference between the benchmark cost and your expected payment is your premium tax credit</li>
+          <li>You can apply this credit to any metal tier plan -- not just Silver</li>
+        </ol>
+      </div>
+      <p class="text-sm text-slate-500">
+        Related: <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate your savings</a> |
+        <a href="/guides/what-affects-health-insurance-costs" class="text-primary-600 hover:text-primary-700 underline">What affects health insurance costs</a>
+      </p>
+    </section>
+
+    <!-- CSR Availability Section -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Cost-Sharing Reductions in {stateInfo.name}</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Cost-sharing reductions (CSR) are available in {stateInfo.name}, just as in every state. CSRs lower your deductible, copays, and out-of-pocket maximum on Silver plans. They are applied automatically when you enroll in a Silver plan and your income qualifies.
+      </p>
+
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">CSR Tier</th>
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Income Range</th>
+                <th class="text-right px-4 py-3 font-semibold text-slate-700">Deductible</th>
+                <th class="text-right px-4 py-3 font-semibold text-slate-700">OOP Max</th>
+              </tr>
+            </thead>
+            <tbody>
+              {csrData.tiers.slice(0, 3).map((tier, i) => (
+                <tr class={`border-b border-slate-100 ${i % 2 === 1 ? 'bg-slate-50/50' : ''}`}>
+                  <td class="px-4 py-3 font-medium text-slate-800">{tier.name}</td>
+                  <td class="px-4 py-3 text-slate-700">{tier.minFPL}%--{tier.maxFPL}% FPL</td>
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.deductible)}</td>
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.oopMax)}</td>
+                </tr>
+              ))}
+              <tr>
+                <td class="px-4 py-3 font-medium text-slate-800">Standard Silver</td>
+                <td class="px-4 py-3 text-slate-700">Above 250% FPL</td>
+                <td class="px-4 py-3 text-right text-slate-700">{fmt(csrData.tiers[3].deductible)}</td>
+                <td class="px-4 py-3 text-right text-slate-700">{fmt(csrData.tiers[3].oopMax)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="text-sm text-slate-500">
+        Related: <a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">CSR tiers explained in detail</a> |
+        <a href="/tools/csr-estimator" class="text-primary-600 hover:text-primary-700 underline">Check your CSR eligibility</a>
+      </p>
+    </section>
+
+    <!-- Related Resources -->
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
+      <h2 class="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings in 2026?</a></li>
+        <li><a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">2026 Federal Poverty Level Guidelines</a></li>
+        <li><a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
+        <li><a href="/aca-income-guide-2026" class="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+        <li><a href="/guides/job-loss-health-insurance-2026" class="text-primary-600 hover:text-primary-700 underline">Lost Your Job? Your Health Insurance Options</a></li>
+        <li><a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
+      </ul>
+    </div>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
+      { title: 'KFF - Status of Medicaid Expansion', url: 'https://www.kff.org/medicaid/issue-brief/status-of-state-medicaid-expansion-decisions/' },
+      { title: 'CMS - Marketplace Open Enrollment', url: 'https://www.cms.gov/newsroom/fact-sheets' },
+      { title: 'HHS Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
+    ]} />
+  </div>
+</BaseLayout>

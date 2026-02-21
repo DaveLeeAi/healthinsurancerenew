@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Guides', url: '/guides' },
+  { name: 'Self-Employed Coverage', url: '/self-employed-health-insurance-2026' },
+];
+
+const faqs = [
+  {
+    question: 'Can self-employed people get ACA marketplace subsidies?',
+    answer: 'Yes. Self-employed individuals are eligible for ACA premium tax credits based on projected Modified Adjusted Gross Income. Net self-employment income (after business deductions) is the primary figure used. Many freelancers and gig workers qualify for substantial savings, especially in years with lower net income.',
+  },
+  {
+    question: 'How do I estimate income for ACA subsidies if my earnings vary?',
+    answer: 'Base your estimate on your prior year tax return, adjusted for known changes in contracts or business conditions. The marketplace allows you to update your income projection at any time during the year, which adjusts your monthly premium credit going forward. Updating regularly helps avoid surprise repayments at tax time.',
+  },
+  {
+    question: 'Can I deduct health insurance premiums as a self-employed person?',
+    answer: 'Yes. Self-employed individuals can deduct 100% of health insurance premiums (after subtracting the advance premium tax credit) as an above-the-line deduction on their federal tax return. This reduces your adjusted gross income, which can in turn increase your ACA subsidy eligibility.',
+  },
+  {
+    question: 'Should self-employed workers choose Bronze or Silver plans?',
+    answer: 'If your income is below 250% FPL, a Silver plan with cost-sharing reductions usually provides the best value -- lower deductibles, copays, and out-of-pocket costs. If you are healthy and have higher income, a Bronze plan paired with a Health Savings Account offers lower premiums and tax advantages.',
+  },
+  {
+    question: 'Can I use an HSA if I am self-employed?',
+    answer: 'Yes. If you enroll in a high-deductible health plan (HDHP), typically a Bronze plan, you can contribute to a Health Savings Account. HSA contributions are tax-deductible, growth is tax-free, and withdrawals for medical expenses are tax-free. HSA contributions also reduce your MAGI, potentially increasing your ACA subsidy.',
+  },
+  {
+    question: 'When can self-employed people enroll in marketplace coverage?',
+    answer: 'You can enroll during the annual open enrollment period. If you are newly self-employed and just lost employer coverage, that is a qualifying life event that opens a 60-day special enrollment period. If you were already self-employed without coverage, you must wait for open enrollment unless you have another qualifying event.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'Self-Employed Health Insurance in 2026: ACA Options and Tax Strategies',
+    description: 'Health insurance options for freelancers, gig workers, and self-employed individuals in 2026. ACA marketplace plans, subsidies, tax deductions, HSA strategies, and managing variable income.',
+    url: '/self-employed-health-insurance-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="Self-Employed Health Insurance in 2026 | HealthInsuranceRenew"
+  description="Health insurance for freelancers and self-employed workers in 2026. Learn about ACA marketplace options, premium tax credits, the self-employed deduction, and HSA strategies."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Self-Employed Health Insurance in 2026: Your Options</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="The ACA marketplace is the primary source of individual health insurance for self-employed workers. Premium tax credits based on your net income can reduce costs significantly. You can also deduct premiums as a business expense, and pair a high-deductible plan with an HSA for additional tax savings." />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Marketplace Coverage for Freelancers and Gig Workers</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Whether you are a freelancer, independent contractor, gig worker, or small business owner, the ACA marketplace is designed for people who do not get insurance through an employer. You apply through Healthcare.gov or your state exchange, and your subsidy is based on your projected annual household income.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Self-employed income is calculated as net income after business deductions (revenue minus business expenses). This is the number from Schedule C on your tax return. A lower net income means a higher premium tax credit.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Managing Variable Income</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        The biggest challenge for self-employed marketplace enrollees is projecting annual income accurately. Freelance and gig income fluctuates, and your subsidy is based on a full-year projection.
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-4">
+        <li><strong>Overestimating income</strong> means a smaller advance credit each month, but you get a refund at tax time</li>
+        <li><strong>Underestimating income</strong> means a larger advance credit each month, but you may owe money back at tax time</li>
+        <li><strong>Updating mid-year</strong> is allowed and recommended -- the marketplace adjusts your credit going forward</li>
+      </ul>
+      <p class="text-slate-700 leading-relaxed font-serif">
+        Best practice: base your projection on the most recent tax return, adjust for known changes, and update quarterly if income shifts significantly.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">The Self-Employed Health Insurance Deduction</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Self-employed workers can deduct 100% of health insurance premiums for themselves and dependents as an above-the-line deduction on their federal tax return. This deduction:
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-4">
+        <li>Applies to the net premium after subtracting the advance premium tax credit</li>
+        <li>Reduces your adjusted gross income, which can increase your ACA subsidy</li>
+        <li>Is available regardless of whether you itemize deductions</li>
+        <li>Creates a circular calculation (deduction increases subsidy, which reduces the deductible premium) -- tax software handles this automatically</li>
+      </ul>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">HSA Strategy for Self-Employed Workers</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        If you enroll in an HSA-eligible high-deductible health plan (typically Bronze), you can contribute to a Health Savings Account with a triple tax benefit: contributions are deductible, growth is tax-free, and withdrawals for medical expenses are tax-free.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        HSA contributions also reduce your MAGI, which can increase your ACA premium tax credit. This makes the HSA strategy particularly powerful for self-employed workers.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif">
+        This approach works best for people who are generally healthy and can tolerate the higher deductible in exchange for lower premiums and tax savings.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Choosing the Right Plan Tier</h2>
+      <div class="space-y-3">
+        <div class="bg-white border border-slate-200 rounded-2xl p-4">
+          <h3 class="font-semibold text-slate-800 mb-1">Silver (Best for income below 250% FPL)</h3>
+          <p class="text-slate-700 text-sm font-serif">Cost-sharing reductions lower your deductible, copays, and OOP max. Best overall value at lower income levels.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-4">
+          <h3 class="font-semibold text-slate-800 mb-1">Bronze + HSA (Best for healthy, higher earners)</h3>
+          <p class="text-slate-700 text-sm font-serif">Lowest premiums. HSA provides tax advantages. Best for people who rarely use health care.</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-2xl p-4">
+          <h3 class="font-semibold text-slate-800 mb-1">Gold (Best for frequent care users)</h3>
+          <p class="text-slate-700 text-sm font-serif">Higher premiums but lower cost-sharing. Worth considering if you have ongoing treatments or expensive prescriptions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Step-by-Step: Getting Covered</h2>
+      <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-3">
+        <li><strong>Calculate your net self-employment income.</strong> Revenue minus business deductions.</li>
+        <li><strong>Estimate your household MAGI.</strong> Include all income sources for your tax household. See <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What Income Counts</a>.</li>
+        <li><strong>Check your estimated savings.</strong> Use the <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a> tool.</li>
+        <li><strong>Decide on a plan tier.</strong> Compare Silver (with CSR if eligible) vs. Bronze + HSA.</li>
+        <li><strong>Enroll during open enrollment</strong> through <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> or your state exchange.</li>
+        <li><strong>Update your income estimate</strong> during the year if it changes significantly.</li>
+      </ol>
+    </section>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
+      <h2 class="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+        <li><a href="/aca-income-guide-2026" class="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+        <li><a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
+        <li><a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
+        <li><a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What Income Counts?</a></li>
+        <li><a href="/guides/self-employed-health-insurance-2026" class="text-primary-600 hover:text-primary-700 underline">Full Self-Employed Guide (Detailed)</a></li>
+      </ul>
+    </div>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Self-Employed', url: 'https://www.healthcare.gov/self-employed/' },
+      { title: 'IRS - Self-Employed Health Insurance Deduction', url: 'https://www.irs.gov/taxtopics/tc502' },
+      { title: 'IRS - HSA Contribution Limits', url: 'https://www.irs.gov/publications/p969' },
+      { title: 'Healthcare.gov - Estimating Income', url: 'https://www.healthcare.gov/income-and-household-information/how-to-report/' },
+    ]} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+import fplData from '../data/fpl-current.json';
+import csrData from '../data/csr-tiers.json';
+import contributionData from '../data/contribution-scale.json';
+
+const g = fplData.guidelines;
+
+function fmt(n: number) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'ACA Savings by Income', url: '/aca-income-guide-2026' },
+];
+
+const faqs = [
+  {
+    question: 'What ACA savings do I get if I earn below 138% of the poverty level?',
+    answer: 'If you live in a Medicaid expansion state and earn below 138% FPL, you likely qualify for Medicaid, which has minimal or no monthly premiums and very low out-of-pocket costs. In non-expansion states, you may fall into a coverage gap if your income is below 100% FPL.',
+  },
+  {
+    question: 'What ACA help is available between 138% and 200% of the poverty level?',
+    answer: 'This income range qualifies for significant help. Your benchmark Silver plan premium is very low (0% to 2% of income), and you qualify for the 87% CSR tier on Silver plans. That means a typical deductible around $650 and an out-of-pocket maximum around $2,900.',
+  },
+  {
+    question: 'Do I get any help above 400% of the poverty level?',
+    answer: 'Under the enhanced subsidy rules (if still in effect for 2026), your premium is capped at 8.5% of household income regardless of how high your income is. Under the original ACA rules, no premium tax credit is available above 400% FPL. Check which rules apply for the year you are enrolling.',
+  },
+  {
+    question: 'How do I know which income band I fall into?',
+    answer: 'Calculate your household Modified Adjusted Gross Income (MAGI), then compare it to the Federal Poverty Level for your household size. For example, a single person earning $25,000 in 2026 would be at about 160% FPL. Use our FPL table or the Estimate Your Savings tool for a quick lookup.',
+  },
+  {
+    question: 'Does my state affect which income band benefits I receive?',
+    answer: 'Premium tax credits and CSR tiers are federal benefits and work the same in every state. However, Medicaid eligibility depends on whether your state has expanded Medicaid. In non-expansion states, the Medicaid threshold is much lower than 138% FPL for adults.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'ACA Savings by Income Level: 2026 Guide',
+    description: 'Understand what ACA savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
+    url: '/aca-income-guide-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+
+const clusters = [
+  {
+    id: 'below-138-fpl',
+    title: 'Below 138% FPL: The Medicaid Band',
+    singleMax: Math.round(g.household_1 * 1.38),
+    familyMax: Math.round(g.household_4 * 1.38),
+    color: 'green',
+    bgClass: 'bg-green-50 border-green-200',
+    badgeClass: 'bg-green-100 text-green-800',
+    summary: 'If your state has expanded Medicaid, you likely qualify for Medicaid coverage with minimal or no monthly cost. In non-expansion states, you may face a coverage gap.',
+    details: [
+      'Medicaid in expansion states covers adults with income at or below 138% FPL',
+      'Medicaid has little to no monthly premiums and very low cost-sharing',
+      'In non-expansion states, adults below 100% FPL may fall in a coverage gap',
+      'Medicaid applications are accepted year-round (no open enrollment window)',
+      'If you earn just above this threshold, you transition to marketplace coverage with substantial help',
+    ],
+    csrNote: 'Not applicable -- Medicaid provides its own cost-sharing structure',
+    premiumNote: 'Medicaid: $0 or minimal monthly cost',
+    medicaidNote: 'Yes (in expansion states)',
+    stateNote: 'Medicaid eligibility at this level depends entirely on whether your state has expanded Medicaid. Check your state page for details.',
+  },
+  {
+    id: '138-200-fpl',
+    title: '138%--200% FPL: High CSR Band',
+    singleMin: Math.round(g.household_1 * 1.38),
+    singleMax: g.household_1 * 2,
+    familyMin: Math.round(g.household_4 * 1.38),
+    familyMax: g.household_4 * 2,
+    color: 'blue',
+    bgClass: 'bg-blue-50 border-blue-200',
+    badgeClass: 'bg-blue-100 text-blue-800',
+    summary: 'This is where ACA marketplace savings are most generous. Very low premiums, and Silver plans come with strong cost-sharing reductions that dramatically lower deductibles and copays.',
+    details: [
+      'Between 138% and 150% FPL: $0 benchmark Silver plan premium + 94% CSR (deductible around $75, OOP max around $1,300)',
+      'Between 150% and 200% FPL: very low premium (0%--2% of income) + 87% CSR (deductible around $650, OOP max around $2,900)',
+      'A Silver plan with 87% or 94% CSR performs like a Gold or Platinum plan at a fraction of the cost',
+      'Premium tax credits can be applied to any metal tier, but CSRs only apply to Silver plans',
+      'This income range benefits most from choosing a Silver plan specifically',
+    ],
+    csrNote: '94% CSR (100--150% FPL) or 87% CSR (150--200% FPL)',
+    premiumNote: '$0 to very low monthly payment for benchmark Silver',
+    medicaidNote: 'In expansion states, people right at 138% may qualify for either Medicaid or marketplace coverage',
+    stateNote: 'In expansion states, the 138% cutoff is where you transition from Medicaid to marketplace coverage. In non-expansion states, marketplace coverage starts at 100% FPL.',
+  },
+  {
+    id: '200-250-fpl',
+    title: '200%--250% FPL: Moderate CSR Band',
+    singleMin: g.household_1 * 2,
+    singleMax: Math.round(g.household_1 * 2.5),
+    familyMin: g.household_4 * 2,
+    familyMax: Math.round(g.household_4 * 2.5),
+    color: 'slate',
+    bgClass: 'bg-slate-50 border-slate-200',
+    badgeClass: 'bg-slate-200 text-slate-800',
+    summary: 'You still qualify for premium tax credits and moderate cost-sharing reductions on Silver plans. The 73% CSR tier provides a modest improvement over standard Silver coverage.',
+    details: [
+      'Expected premium contribution: 2%--4% of household income',
+      '73% CSR on Silver plans: deductible around $3,500, OOP max around $6,800',
+      'The CSR savings are more modest here than in the lower bands',
+      'At this level, comparing a CSR Silver plan against a Gold plan can be worthwhile',
+      'Premium tax credits are still substantial and reduce monthly costs meaningfully',
+    ],
+    csrNote: '73% CSR (moderate improvement over standard Silver)',
+    premiumNote: 'Monthly contribution around 2%--4% of income',
+    medicaidNote: 'Not eligible for Medicaid at this income level',
+    stateNote: 'Premiums vary by state and county based on local benchmark plan costs. Rural areas may have fewer plan choices but the credit formula adjusts for local pricing.',
+  },
+  {
+    id: '250-400-fpl',
+    title: '250%--400% FPL: Premium Credit Only',
+    singleMin: Math.round(g.household_1 * 2.5),
+    singleMax: g.household_1 * 4,
+    familyMin: Math.round(g.household_4 * 2.5),
+    familyMax: g.household_4 * 4,
+    color: 'slate',
+    bgClass: 'bg-slate-50 border-slate-200',
+    badgeClass: 'bg-slate-200 text-slate-800',
+    summary: 'You qualify for premium tax credits but not cost-sharing reductions. Your monthly premium contribution is moderate, and you pay standard cost-sharing amounts.',
+    details: [
+      'Expected premium contribution: 4%--8.5% of household income',
+      'No cost-sharing reductions available at this income level',
+      'Standard Silver deductible applies (around $5,000)',
+      'Premium tax credits still reduce monthly costs, especially at the lower end of this range',
+      'Bronze plans with HSAs may offer better value for healthy individuals in this band',
+      'Gold plans may be worth considering if you expect to use health care frequently',
+    ],
+    csrNote: 'Not eligible for CSR',
+    premiumNote: 'Monthly contribution around 4%--8.5% of income',
+    medicaidNote: 'Not eligible for Medicaid',
+    stateNote: 'At this income level, plan choice matters more than at lower levels because there are no CSR subsidies. Compare all metal tiers carefully.',
+  },
+  {
+    id: 'above-400-fpl',
+    title: 'Above 400% FPL: The Subsidy Cliff',
+    singleMin: g.household_1 * 4,
+    familyMin: g.household_4 * 4,
+    color: 'slate',
+    bgClass: 'bg-slate-50 border-slate-200',
+    badgeClass: 'bg-slate-200 text-slate-800',
+    summary: 'Under enhanced subsidy rules, your premium is capped at 8.5% of income regardless of how much you earn. Under the original ACA rules, no premium help is available above 400% FPL.',
+    details: [
+      'Under the enhanced rules (American Rescue Plan / Inflation Reduction Act): premium capped at 8.5% of income',
+      'Under the original ACA rules (if enhanced rules expire): no premium tax credit above 400% FPL',
+      'No cost-sharing reductions at any plan level',
+      'The difference between these two rule sets matters enormously for people near the 400% line',
+      'Check which rules are in effect for the plan year you are enrolling in',
+      'Even without subsidies, marketplace plans may be competitively priced in areas with strong insurer competition',
+    ],
+    csrNote: 'Not eligible for CSR',
+    premiumNote: 'Capped at 8.5% of income (enhanced rules) or full premium (original rules)',
+    medicaidNote: 'Not eligible for Medicaid',
+    stateNote: 'Marketplace plan pricing varies significantly by state and county. In some areas, unsubsidized premiums may be lower than in others due to insurer competition.',
+  },
+];
+---
+<BaseLayout
+  title="ACA Savings by Income Level: 2026 Guide | HealthInsuranceRenew"
+  description="Understand what ACA savings you qualify for at every income level in 2026. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage band."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">ACA Savings by Income Level: 2026 Guide</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="Your ACA savings depend on where your income falls relative to the Federal Poverty Level. Lower income means more help: Medicaid for the lowest earners, strong cost-sharing reductions and premium credits in the middle, and capped premiums at the top. This page breaks down what applies at each income level." />
+
+    <p class="text-slate-700 leading-relaxed font-serif mb-4">
+      The ACA does not give everyone the same level of help. Instead, it uses a sliding scale tied to the <a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">Federal Poverty Level</a>. The less you earn (relative to your household size), the more assistance you receive. This page explains what to expect at each income band.
+    </p>
+    <p class="text-slate-700 leading-relaxed font-serif mb-8">
+      All income figures below are based on the 2026 FPL guidelines and use a single person and a family of four as examples. <a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">See the full FPL table</a> for all household sizes.
+    </p>
+
+    <nav class="bg-white border border-slate-200 rounded-2xl p-5 mb-10">
+      <p class="text-sm font-semibold text-slate-600 uppercase tracking-wider mb-3">Jump to an Income Band</p>
+      <ul class="space-y-2 text-sm">
+        {clusters.map((c) => (
+          <li>
+            <a href={`#${c.id}`} class="text-primary-600 hover:text-primary-700 underline">{c.title}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {clusters.map((c) => (
+      <section id={c.id} class="mb-12 scroll-mt-24">
+        <div class={`${c.bgClass} border rounded-2xl p-6`}>
+          <div class="flex items-center gap-3 mb-3">
+            <span class={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${c.badgeClass}`}>
+              {c.title.split(':')[0]}
+            </span>
+          </div>
+          <h2 class="text-xl font-bold text-slate-900 leading-heading mb-3">{c.title}</h2>
+
+          {'singleMin' in c && 'singleMax' in c && (
+            <div class="flex flex-wrap gap-4 mb-4 text-sm text-slate-600">
+              <span>Single: {fmt(c.singleMin as number)}--{fmt(c.singleMax as number)}/yr</span>
+              <span>Family of 4: {fmt(c.familyMin as number)}--{fmt(c.familyMax as number)}/yr</span>
+            </div>
+          )}
+          {'singleMax' in c && !('singleMin' in c) && (
+            <div class="flex flex-wrap gap-4 mb-4 text-sm text-slate-600">
+              <span>Single: below {fmt(c.singleMax as number)}/yr</span>
+              <span>Family of 4: below {fmt(c.familyMax as number)}/yr</span>
+            </div>
+          )}
+          {'singleMin' in c && !('singleMax' in c) && (
+            <div class="flex flex-wrap gap-4 mb-4 text-sm text-slate-600">
+              <span>Single: above {fmt(c.singleMin as number)}/yr</span>
+              <span>Family of 4: above {fmt(c.familyMin as number)}/yr</span>
+            </div>
+          )}
+
+          <p class="text-slate-700 leading-relaxed font-serif mb-4">{c.summary}</p>
+
+          <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-5">
+            {c.details.map((d) => (
+              <li>{d}</li>
+            ))}
+          </ul>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-white/80 rounded-xl p-3">
+              <p class="text-xs text-slate-500 mb-1">CSR Eligibility</p>
+              <p class="text-sm font-medium text-slate-800">{c.csrNote}</p>
+            </div>
+            <div class="bg-white/80 rounded-xl p-3">
+              <p class="text-xs text-slate-500 mb-1">Expected Premium</p>
+              <p class="text-sm font-medium text-slate-800">{c.premiumNote}</p>
+            </div>
+            <div class="bg-white/80 rounded-xl p-3">
+              <p class="text-xs text-slate-500 mb-1">Medicaid</p>
+              <p class="text-sm font-medium text-slate-800">{c.medicaidNote}</p>
+            </div>
+            <div class="bg-white/80 rounded-xl p-3">
+              <p class="text-xs text-slate-500 mb-1">State Variation</p>
+              <p class="text-sm font-medium text-slate-800">{c.stateNote}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mt-3 text-sm">
+          <a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Check eligibility</a>
+          <a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">FPL tables</a>
+          <a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">CSR details</a>
+          <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate savings</a>
+          <a href="/states" class="text-primary-600 hover:text-primary-700 underline">State pages</a>
+        </div>
+      </section>
+    ))}
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'HHS Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
+      { title: 'Healthcare.gov - Savings Overview', url: 'https://www.healthcare.gov/lower-costs/' },
+      { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
+      { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
+    ]} />
+  </div>
+</BaseLayout>

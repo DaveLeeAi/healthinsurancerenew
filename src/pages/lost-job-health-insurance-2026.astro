@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+import fplData from '../data/fpl-current.json';
+
+const g = fplData.guidelines;
+
+function fmt(n: number) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Guides', url: '/guides' },
+  { name: 'Lost Your Job', url: '/lost-job-health-insurance-2026' },
+];
+
+const faqs = [
+  {
+    question: 'What are my health insurance options if I just lost my job?',
+    answer: 'You have three main options: enroll in a marketplace plan (often the cheapest if you qualify for subsidies), continue your employer plan through COBRA (same coverage, but you pay the full premium), or apply for Medicaid (if your income is low enough). You have 60 days from losing coverage to act.',
+  },
+  {
+    question: 'Is COBRA or a marketplace plan cheaper after losing a job?',
+    answer: 'A marketplace plan with subsidies is almost always cheaper. COBRA typically costs $600 to $750 per month for a single person because you pay the full premium. A marketplace Silver plan with tax credits might cost $50 to $300 per month depending on your income. COBRA only makes sense if you are mid-treatment or have met your deductible.',
+  },
+  {
+    question: 'How long do I have to enroll after losing job-based coverage?',
+    answer: 'You have 60 days from the date your employer coverage ends to enroll in a marketplace plan through a Special Enrollment Period. COBRA also has a 60-day election window. Medicaid has no enrollment deadline -- you can apply any time of year.',
+  },
+  {
+    question: 'Can I get free health insurance after losing my job?',
+    answer: 'Possibly. If your income after job loss is below 138% of the Federal Poverty Level (about ' + fmt(Math.round(g.household_1 * 1.38)) + ' for a single person in 2026) and you live in a Medicaid expansion state, you may qualify for Medicaid, which has minimal to no monthly cost. Even marketplace plans can be $0 per month for very low-income enrollees.',
+  },
+  {
+    question: 'Should I go uninsured while job searching?',
+    answer: 'Going uninsured is risky. An unexpected medical event could result in thousands of dollars in bills. Even a brief gap can be dangerous. Marketplace plans with subsidies or Medicaid can provide affordable coverage while you search for a new job.',
+  },
+  {
+    question: 'What if I get a new job quickly -- should I still sign up for marketplace coverage?',
+    answer: 'Yes. Most new employers have a waiting period (up to 90 days) before benefits begin. A marketplace plan or short-term COBRA can bridge that gap. You can cancel marketplace coverage once your employer plan starts.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'Lost Your Job? Health Insurance Options for 2026',
+    description: 'Health insurance options after losing your job in 2026. Compare COBRA, marketplace plans, and Medicaid. Understand costs, deadlines, and how to get covered quickly.',
+    url: '/lost-job-health-insurance-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="Lost Your Job? Health Insurance Options for 2026 | HealthInsuranceRenew"
+  description="Lost your job and health insurance? Compare COBRA, ACA marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Lost Your Job? Health Insurance Options for 2026</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="Losing your job triggers a 60-day window to enroll in a new health plan. A marketplace plan with income-based subsidies is usually the cheapest option. COBRA lets you keep your old plan at full cost. Medicaid may be free if your income qualifies. Act within 60 days." />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Your Three Options at a Glance</h2>
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Option</th>
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Typical Monthly Cost</th>
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Deadline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 font-medium text-slate-800">ACA Marketplace</td>
+                <td class="px-4 py-3 text-slate-700">$0--$300 (with subsidies)</td>
+                <td class="px-4 py-3 text-slate-700">60 days from loss of coverage</td>
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 font-medium text-slate-800">COBRA</td>
+                <td class="px-4 py-3 text-slate-700">$600--$750+ (full premium)</td>
+                <td class="px-4 py-3 text-slate-700">60 days from notice</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 font-medium text-slate-800">Medicaid</td>
+                <td class="px-4 py-3 text-slate-700">$0 or minimal</td>
+                <td class="px-4 py-3 text-slate-700">Apply any time</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Why the Marketplace Is Usually the Best Choice</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        After losing your job, your projected income for the rest of the year is likely lower than your full-year working income. The marketplace calculates premium tax credits based on your projected annual income, so a mid-year job loss often means you qualify for larger subsidies than you might expect.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        If your projected income falls below 150% FPL, you may pay $0 per month for a benchmark Silver plan and receive the most generous cost-sharing reductions. Even at higher income levels, marketplace plans with subsidies are typically hundreds of dollars cheaper per month than COBRA.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Step-by-Step: What to Do Right Now</h2>
+      <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-3">
+        <li><strong>Find out when your employer coverage ends.</strong> Ask HR for the exact date your benefits stop.</li>
+        <li><strong>Estimate your income for the year.</strong> Include what you earned so far, plus any projected income (severance, unemployment, freelance work). See <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What Income Counts</a>.</li>
+        <li><strong>Check your estimated savings.</strong> Use the <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a> tool.</li>
+        <li><strong>Compare COBRA vs. marketplace.</strong> See our <a href="/guides/cobra-vs-marketplace-after-job-loss" class="text-primary-600 hover:text-primary-700 underline">detailed comparison</a>.</li>
+        <li><strong>Apply within 60 days.</strong> Enroll through <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> or your state exchange.</li>
+      </ol>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">When COBRA Might Make Sense</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        COBRA is usually more expensive, but it can be the right choice in specific situations:
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2">
+        <li>You are in the middle of treatment with a provider who is not in marketplace plan networks</li>
+        <li>You have already met your deductible for the year on the employer plan</li>
+        <li>Your severance package covers COBRA costs</li>
+        <li>You expect to start a new job with benefits within a few weeks</li>
+      </ul>
+    </section>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
+      <h2 class="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/guides/cobra-vs-marketplace-after-job-loss" class="text-primary-600 hover:text-primary-700 underline">COBRA vs. Marketplace: Full Comparison</a></li>
+        <li><a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Check Your Eligibility</a></li>
+        <li><a href="/aca-income-guide-2026" class="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+        <li><a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
+        <li><a href="/guides/special-enrollment-period" class="text-primary-600 hover:text-primary-700 underline">Special Enrollment Periods</a></li>
+        <li><a href="/states" class="text-primary-600 hover:text-primary-700 underline">Find Your State</a></li>
+      </ul>
+    </div>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Job Loss and Coverage', url: 'https://www.healthcare.gov/have-job-based-coverage/if-you-lose-job-based-coverage/' },
+      { title: 'DOL - COBRA Information', url: 'https://www.dol.gov/general/topic/health-plans/cobra' },
+      { title: 'Healthcare.gov - Special Enrollment Period', url: 'https://www.healthcare.gov/glossary/special-enrollment-period/' },
+      { title: 'Medicaid.gov', url: 'https://www.medicaid.gov/' },
+    ]} />
+  </div>
+</BaseLayout>

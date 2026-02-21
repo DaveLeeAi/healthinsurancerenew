@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getBreadcrumbSchema } from '../../lib/schema';
 import config from '../../data/config.json';
+import allStatesData from '../../data/all-states.json';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -10,34 +11,69 @@ const breadcrumbs = [
 ];
 
 const schemas = [getBreadcrumbSchema(breadcrumbs)];
+
+const licensedSlugs = new Set(config.licensedStates.map((s) => s.slug));
 ---
 <BaseLayout
   title="Health Insurance by State | HealthInsuranceRenew"
-  description="Find ACA health insurance information for your state. We serve 18 states with licensed agents ready to help."
+  description="ACA health insurance information for every U.S. state. Find eligibility details, Medicaid expansion status, exchange info, and 2026 enrollment guides."
   schemas={schemas}
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
     <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Health Insurance by State</h1>
     <p class="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
-      Select your state below to learn about ACA marketplace options, enrollment processes, and financial assistance available in your area.
+      Select your state to learn about ACA marketplace options, Medicaid expansion status, and 2026 enrollment information. Licensed agents are available in 18 states.
     </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {config.licensedStates.map((state) => (
-        <a
-          href={`/states/${state.slug}`}
-          class="group flex items-center gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-200"
-        >
-          <span class="w-10 h-10 rounded-xl bg-primary-50 text-primary-700 flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-primary-100 transition-colors">
-            {state.abbr}
-          </span>
-          <div>
-            <p class="font-medium text-slate-800 group-hover:text-primary-600 transition-colors">{state.name}</p>
-            <p class="text-xs text-slate-500">View guide</p>
-          </div>
-        </a>
-      ))}
-    </div>
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-slate-900 mb-4">Licensed Agent States</h2>
+      <p class="text-sm text-slate-600 mb-4">Licensed agents can help you enroll in these states.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {config.licensedStates.map((state) => (
+          <a
+            href={`/states/${state.slug}`}
+            class="group flex items-center gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-200"
+          >
+            <span class="w-10 h-10 rounded-xl bg-primary-50 text-primary-700 flex items-center justify-center font-bold text-sm shrink-0 group-hover:bg-primary-100 transition-colors">
+              {state.abbr}
+            </span>
+            <div>
+              <p class="font-medium text-slate-800 group-hover:text-primary-600 transition-colors">{state.name}</p>
+              <p class="text-xs text-slate-500">Licensed agent state</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-xl font-bold text-slate-900 mb-4">All 50 States + D.C. -- 2026 ACA Guides</h2>
+      <p class="text-sm text-slate-600 mb-4">Every state has an ACA guide covering Medicaid expansion, exchange details, eligibility, and costs.</p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {allStatesData.states.map((state) => (
+          <a
+            href={`/states/${state.slug}/aca-2026`}
+            class={`group flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${
+              licensedSlugs.has(state.slug)
+                ? 'bg-white border-primary-200 hover:border-primary-400 hover:shadow-md'
+                : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-md'
+            }`}
+          >
+            <span class={`text-lg font-bold transition-colors ${
+              licensedSlugs.has(state.slug)
+                ? 'text-primary-700 group-hover:text-primary-600'
+                : 'text-slate-700 group-hover:text-slate-900'
+            }`}>{state.abbr}</span>
+            <span class="text-xs text-slate-500 text-center mt-0.5">{state.name}</span>
+            {state.medicaidExpanded ? (
+              <span class="text-[10px] text-green-600 mt-1">Expanded</span>
+            ) : (
+              <span class="text-[10px] text-amber-600 mt-1">Not expanded</span>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
   </div>
 </BaseLayout>

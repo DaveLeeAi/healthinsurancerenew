@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Guides', url: '/guides' },
+  { name: 'Employer Coverage Unaffordable', url: '/employer-coverage-unaffordable-2026' },
+];
+
+const faqs = [
+  {
+    question: 'How do I know if my employer plan is unaffordable under ACA rules?',
+    answer: 'An employer plan is considered unaffordable if the employee-only premium costs more than approximately 9.96% of your household income for 2026. Only the cost for the employee alone matters for this test -- not the cost to add a spouse or children. If the plan exceeds this threshold, you may qualify for marketplace premium tax credits.',
+  },
+  {
+    question: 'Does the affordability test count the cost for my whole family?',
+    answer: 'No. The ACA affordability test looks only at the cost of employee-only coverage, not the cost of adding dependents. Starting in 2023, the "family glitch" fix allows family members to qualify for marketplace subsidies separately if the cost to cover the full family is unaffordable, even if the employee-only cost is affordable.',
+  },
+  {
+    question: 'Can I get marketplace subsidies if my employer offers insurance?',
+    answer: 'Yes, in two situations. First, if the employer plan is unaffordable (employee-only premium exceeds 9.96% of household income). Second, if the plan does not meet minimum value standards (it must cover at least 60% of average costs). In either case, you can decline the employer plan and get marketplace coverage with premium tax credits.',
+  },
+  {
+    question: 'What is the "family glitch" fix and does it help me?',
+    answer: 'Before 2023, the ACA only looked at employee-only costs when testing affordability. This meant family members were locked out of subsidies even when adding them to the plan was unaffordable. The family glitch fix changed the rule so each family member\'s affordability is assessed based on the cost to cover them, not just the employee.',
+  },
+  {
+    question: 'What happens if I decline my employer plan for a marketplace plan?',
+    answer: 'If you qualify for marketplace subsidies because the employer plan is unaffordable, you can safely decline the employer plan and buy marketplace coverage with premium tax credits. You should only do this if you have confirmed the plan fails the affordability test. If the employer plan is technically affordable, you will not qualify for marketplace help.',
+  },
+  {
+    question: 'How do I calculate if my employer plan is affordable?',
+    answer: 'Take the monthly employee-only premium, multiply by 12 to get the annual cost, then divide by your total household income. If the result is above 0.0996 (9.96%), the plan fails the affordability test for 2026. Use our employer affordability tool for a quick check.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'Employer Coverage Unaffordable? Your ACA Options in 2026',
+    description: 'What to do if your employer health plan costs too much. ACA affordability rules, the family glitch fix, and how to get marketplace coverage with subsidies instead.',
+    url: '/employer-coverage-unaffordable-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="Employer Coverage Unaffordable? Your ACA Options in 2026 | HealthInsuranceRenew"
+  description="Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Employer Coverage Unaffordable? Your ACA Options in 2026</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="If your employer's health plan costs more than about 9.96% of your household income for employee-only coverage, it may be considered unaffordable under ACA rules. In that case, you can decline the employer plan and get marketplace coverage with premium tax credits instead." />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">The ACA Affordability Test</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Having employer coverage does not automatically lock you out of marketplace savings. The ACA has a specific test: if the <strong>employee-only premium</strong> costs more than a set percentage of your household income, the plan is considered unaffordable, and you can qualify for marketplace help.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        For 2026, that threshold is approximately <strong>9.96%</strong> of household income.
+      </p>
+
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-4">
+        <h3 class="font-semibold text-slate-800 mb-3">How to Run the Test</h3>
+        <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-2">
+          <li>Find the <strong>employee-only</strong> monthly premium on your benefits summary (not family or employee+spouse)</li>
+          <li>Multiply by 12 to get the annual cost</li>
+          <li>Divide by your total household income</li>
+          <li>If the result is above 0.0996 (9.96%), the plan fails the affordability test</li>
+        </ol>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-4">
+        <h3 class="font-semibold text-slate-800 mb-3">Example</h3>
+        <p class="text-slate-700 leading-relaxed font-serif mb-2">
+          Employee-only premium: $500/month ($6,000/year). Household income: $55,000.
+        </p>
+        <p class="text-slate-700 leading-relaxed font-serif">
+          $6,000 / $55,000 = 10.9%. This is above 9.96%, so the plan is <strong>unaffordable</strong> under ACA rules. You could qualify for marketplace premium tax credits.
+        </p>
+      </div>
+
+      <p class="text-sm text-slate-500">
+        Related: <a href="/tools/job-plan-affordability" class="text-primary-600 hover:text-primary-700 underline">Run the affordability check</a>
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">The Family Glitch Fix</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Before 2023, the ACA only tested affordability based on the employee-only premium. This created a "family glitch" -- even if adding your spouse and kids to the employer plan cost $1,200/month, the plan was considered "affordable" as long as the employee-only cost was below the threshold.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        The family glitch fix changed this. Now, each family member's affordability is assessed separately. If the cost to cover your family through the employer plan is unaffordable, your spouse and dependents can qualify for marketplace subsidies on their own -- even if the employee-only coverage passes the test.
+      </p>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-4">
+        <h3 class="font-semibold text-slate-800 mb-3">What This Means in Practice</h3>
+        <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2">
+          <li>Employee-only premium: $300/month (affordable for employee)</li>
+          <li>Family premium: $1,400/month (potentially unaffordable)</li>
+          <li>Under the fix: the employee stays on the employer plan, but the spouse and children can get marketplace plans with premium tax credits</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Minimum Value Requirement</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Even if an employer plan passes the affordability test, it must also meet <strong>minimum value</strong> -- meaning it covers at least 60% of average health care costs. If the plan does not meet minimum value, you can qualify for marketplace subsidies regardless of the premium cost.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif">
+        Most employer plans meet minimum value. Plans that might not include very limited benefit plans or certain HRAs that do not provide comprehensive coverage.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Step-by-Step: What to Do</h2>
+      <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-3">
+        <li><strong>Get your premium numbers.</strong> Find the employee-only premium from your benefits enrollment materials or HR department.</li>
+        <li><strong>Calculate your household income.</strong> Add up all income sources for everyone on your tax return. See <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What Income Counts</a>.</li>
+        <li><strong>Run the affordability test.</strong> Use our <a href="/tools/job-plan-affordability" class="text-primary-600 hover:text-primary-700 underline">employer plan affordability tool</a>.</li>
+        <li><strong>If unaffordable:</strong> Apply through <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> or your state exchange. Report that you have an offer of employer coverage and the premium amount. The system will verify affordability.</li>
+        <li><strong>If affordable:</strong> The employer plan is your primary option. You can still buy a marketplace plan, but you will not receive premium tax credits.</li>
+      </ol>
+    </section>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
+      <h2 class="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+        <li><a href="/tools/job-plan-affordability" class="text-primary-600 hover:text-primary-700 underline">Does My Employer Plan Count?</a></li>
+        <li><a href="/aca-income-guide-2026" class="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+        <li><a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
+        <li><a href="/guides/cobra-vs-marketplace-after-job-loss" class="text-primary-600 hover:text-primary-700 underline">COBRA vs. Marketplace</a></li>
+      </ul>
+    </div>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Employer Coverage Affordability', url: 'https://www.healthcare.gov/have-job-based-coverage/if-its-unaffordable/' },
+      { title: 'IRS - Employer Shared Responsibility', url: 'https://www.irs.gov/affordable-care-act/employers/employer-shared-responsibility-provisions' },
+      { title: 'CMS - Family Glitch Fix Rule', url: 'https://www.cms.gov/newsroom/fact-sheets/fact-sheet-2023-marketplace-related-rules' },
+      { title: 'Healthcare.gov - Premium Tax Credit', url: 'https://www.healthcare.gov/lower-costs/qualifying-for-lower-costs/' },
+    ]} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Guides', url: '/guides' },
+  { name: 'Turning 26', url: '/turning-26-health-insurance-options' },
+];
+
+const faqs = [
+  {
+    question: 'When do I lose my parents\' health insurance after turning 26?',
+    answer: 'You stay on your parent\'s plan until the end of the month you turn 26, or until the end of the plan year in which you turn 26, depending on the insurer and state rules. Most employer plans drop you at the end of the birth month. Check with the insurer for the exact date.',
+  },
+  {
+    question: 'Is turning 26 a qualifying life event for the ACA marketplace?',
+    answer: 'Yes. Aging off a parent\'s plan is a qualifying life event that opens a 60-day special enrollment period. You can use this window to enroll in a marketplace plan even if it is not open enrollment season. The 60 days start from the date your parent\'s coverage ends.',
+  },
+  {
+    question: 'What if I can\'t afford health insurance after turning 26?',
+    answer: 'The ACA marketplace offers premium tax credits based on your income. Many young adults qualify for help that brings the monthly premium down to $0 to $100 for a Silver plan. If your income is below 138% of the Federal Poverty Level in an expansion state, you may qualify for Medicaid.',
+  },
+  {
+    question: 'Should I get a Bronze or Silver plan at 26?',
+    answer: 'It depends on your income and how much care you expect to use. If your income qualifies for cost-sharing reductions (below 250% FPL), a Silver plan gives you the best value. If you rarely see a doctor and want the lowest monthly premium, a Bronze plan may work -- especially if paired with a Health Savings Account.',
+  },
+  {
+    question: 'Can I stay on my parent\'s plan if I\'m married or have my own job?',
+    answer: 'Yes, until you turn 26. Under the ACA, you can remain on a parent\'s plan regardless of your marital status, employment status, student status, or whether you live with your parents. You do not need to be a tax dependent to stay on the plan.',
+  },
+  {
+    question: 'What if my employer offers insurance but it\'s expensive?',
+    answer: 'If the employee-only premium costs more than about 9.96% of your household income, the plan may be considered unaffordable under ACA rules. In that case, you could qualify for marketplace premium tax credits instead. Use our employer affordability tool to check.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'Turning 26? Your Health Insurance Options Explained',
+    description: 'What to do when you age off a parent\'s health insurance plan at 26. Covers marketplace enrollment, deadlines, costs, and how to find affordable coverage.',
+    url: '/turning-26-health-insurance-options',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="Turning 26? Health Insurance Options for 2026 | HealthInsuranceRenew"
+  description="Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including ACA marketplace enrollment, Medicaid, employer coverage, and key deadlines."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Turning 26? Your Health Insurance Options Explained</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="When you turn 26, you lose eligibility to stay on a parent's health plan. This is a qualifying life event that gives you 60 days to enroll in your own coverage through the ACA marketplace, an employer plan, or Medicaid. Most people find affordable options through the marketplace with premium tax credits." />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">What Happens When You Turn 26</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Under the ACA, you can stay on a parent's health insurance plan until you turn 26. After that, the plan drops you. The exact date depends on the insurer: some end coverage on your birthday, some at the end of the birth month, and some at the end of the plan year. Check with the insurer to know the exact cutoff.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Losing this coverage triggers a <strong>Special Enrollment Period</strong> -- a 60-day window where you can enroll in a new plan even if it is not open enrollment season. This applies to the ACA marketplace and, in most cases, to employer plans as well.
+      </p>
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+        <p class="text-sm text-amber-800">
+          <strong>Do not wait.</strong> The 60-day window starts when your parent's coverage ends. If you miss it, you may be uninsured until the next open enrollment period.
+        </p>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Your Four Main Options</h2>
+
+      <div class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">1. ACA Marketplace Plan</h3>
+          <p class="text-slate-700 leading-relaxed font-serif mb-2">
+            The marketplace is the most common path for young adults aging off a parent's plan. You can compare plans, check eligibility for premium tax credits, and enroll through Healthcare.gov or your state exchange.
+          </p>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            Many 26-year-olds qualify for significant premium help based on their income. If you are just starting a career or working part-time, your monthly cost for a Silver plan could be very low.
+          </p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">2. Employer-Sponsored Coverage</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            If your employer offers health insurance, losing a parent's plan is usually a qualifying event that lets you enroll outside the employer's normal enrollment window. Employer plans may be a good option if your employer contributes to the premium, but compare the cost to marketplace options -- especially if the employer plan is expensive.
+          </p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">3. Medicaid</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            If your income is low enough and you live in a state that has expanded Medicaid, you may qualify for Medicaid coverage with little to no monthly cost. You can apply for Medicaid year-round -- there is no enrollment deadline.
+          </p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">4. Short-Term or Catastrophic Coverage</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            If you are between coverage options, a catastrophic plan (available to people under 30) provides basic protection at a lower premium. These plans have high deductibles and are mainly intended to protect you from worst-case scenarios. They do not qualify for premium tax credits.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Step-by-Step: What to Do</h2>
+      <ol class="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-3">
+        <li><strong>Find out your exact coverage end date.</strong> Contact your parent's insurer or HR department to confirm when you will lose coverage.</li>
+        <li><strong>Calculate your income.</strong> Your marketplace savings depend on your <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">Modified Adjusted Gross Income</a>. Gather your pay stubs or tax return.</li>
+        <li><strong>Compare your options.</strong> Check both employer plans (if available) and marketplace plans. Use the <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a> tool.</li>
+        <li><strong>Apply within 60 days.</strong> Enroll through <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a>, your state exchange, or your employer's benefits portal.</li>
+        <li><strong>Confirm coverage start date.</strong> Make sure you know when your new plan begins so there is no gap.</li>
+      </ol>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Key Deadlines</h2>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5">
+        <ul class="space-y-3 text-slate-700 leading-relaxed font-serif">
+          <li><strong>60 days</strong> from losing parent's coverage to enroll in a marketplace plan</li>
+          <li><strong>30 days</strong> from a qualifying event to enroll in most employer plans (check your employer's policy)</li>
+          <li><strong>No deadline</strong> for Medicaid applications -- you can apply any time of year</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
+      <h2 class="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+        <li><a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
+        <li><a href="/aca-income-guide-2026" class="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+        <li><a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
+        <li><a href="/guides/special-enrollment-period" class="text-primary-600 hover:text-primary-700 underline">Special Enrollment Periods</a></li>
+      </ul>
+    </div>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Young Adults and the ACA', url: 'https://www.healthcare.gov/young-adults/children-under-26/' },
+      { title: 'Healthcare.gov - Special Enrollment Period', url: 'https://www.healthcare.gov/glossary/special-enrollment-period/' },
+      { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
+    ]} />
+  </div>
+</BaseLayout>
