@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import { getBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Data & Methodology', url: '/data-methodology' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+---
+<BaseLayout
+  title="Data & Methodology | HealthInsuranceRenew"
+  description="Where our numbers come from. Learn about the data sources, formulas, and update process behind the tools and guides on HealthInsuranceRenew."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Data & Methodology</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <div class="prose prose-neutral max-w-none">
+      <h2 class="text-xl font-semibold text-slate-900 mt-8 mb-3">
+        Where our numbers come from
+      </h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Every figure used in our tools and guides comes from official, publicly available government data. We do not create our own estimates from scratch or use proprietary models. The primary sources include:
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed mb-4 space-y-2">
+        <li><strong>Federal Poverty Level (FPL) guidelines</strong> -- Published annually by the U.S. Department of Health and Human Services (HHS). We update these as soon as the new figures are released, typically in January.</li>
+        <li><strong>Premium contribution percentages</strong> -- Based on IRS Revenue Procedures that set how much of your income you are expected to pay toward a benchmark plan. These are updated annually.</li>
+        <li><strong>Affordability threshold</strong> -- Set by the IRS each year. This determines whether an employer plan is considered affordable under the ACA.</li>
+        <li><strong>Cost-sharing reduction tiers</strong> -- Based on actuarial value standards published by the Centers for Medicare & Medicaid Services (CMS).</li>
+        <li><strong>Benchmark premium estimates</strong> -- National average second-lowest-cost Silver plan premiums, sourced from CMS and the Kaiser Family Foundation (KFF).</li>
+      </ul>
+
+      <h2 class="text-xl font-semibold text-slate-900 mt-8 mb-3">
+        How the calculators work
+      </h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Our tools use straightforward math based on the official formulas described in ACA regulations. For the savings estimator, the calculation is:
+      </p>
+      <ol class="list-decimal pl-5 text-slate-700 leading-relaxed mb-4 space-y-2">
+        <li>Determine the Federal Poverty Level for your household size.</li>
+        <li>Calculate your income as a percentage of FPL.</li>
+        <li>Look up the expected contribution percentage for your FPL range.</li>
+        <li>Multiply your income by that percentage to get your expected annual contribution.</li>
+        <li>Subtract your expected contribution from the benchmark plan cost to get the estimated tax credit.</li>
+      </ol>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        The CSR estimator and family cost estimator follow similar logic, using published tier data and benchmark premium averages. No machine learning, scoring models, or proprietary algorithms are involved.
+      </p>
+
+      <h2 class="text-xl font-semibold text-slate-900 mt-8 mb-3">
+        What the results mean -- and what they don't
+      </h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        Tool results are educational estimates, not exact quotes. Actual health insurance costs depend on your specific age, location (down to the county level), tobacco use, and the specific plans available in your area. Our estimates use national averages and general formulas to give you a ballpark understanding of where you stand.
+      </p>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        For accurate premium quotes and subsidy amounts, visit <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> or your state marketplace, where you can see real plan prices based on your exact information.
+      </p>
+
+      <h2 class="text-xl font-semibold text-slate-900 mt-8 mb-3">
+        How we keep data current
+      </h2>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        All data files are reviewed and updated ahead of each open enrollment period. When the government publishes new FPL guidelines, contribution percentages, or affordability thresholds, we update the corresponding data within our tools. Each page shows a "last updated" date so you know when the content was most recently reviewed.
+      </p>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        If you spot a number that looks wrong, please let us know through the <a href="/contact" class="text-primary-600 hover:text-primary-700 underline">contact page</a>. We take accuracy seriously and will correct any errors as quickly as possible.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

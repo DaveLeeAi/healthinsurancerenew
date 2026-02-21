@@ -9,71 +9,86 @@ const schemas = [
 
 const guides = [
   {
-    title: 'Individual & Family Health Insurance',
-    description: 'A comprehensive overview of ACA marketplace coverage options for individuals and families.',
+    title: 'Health Insurance for Individuals & Families',
+    description: 'A plain-English look at ACA marketplace plans, what they cover, and who qualifies.',
     url: '/guides/individual-family-health-insurance',
   },
   {
     title: 'Open Enrollment 2026',
-    description: 'Key dates, steps, and what to expect during the annual enrollment window.',
+    description: 'Important dates, how to sign up, and what to expect this year.',
     url: '/guides/open-enrollment-2026',
   },
   {
-    title: 'How ACA Subsidies Work in 2026',
-    description: 'Understand premium tax credits and cost-sharing reductions that can lower your costs.',
+    title: 'How ACA Savings Work in 2026',
+    description: 'Find out how premium tax credits and cost-sharing reductions can lower your costs.',
     url: '/guides/how-aca-subsidies-work-2026',
   },
   {
-    title: 'Special Enrollment Periods',
-    description: 'Qualifying life events and how to enroll outside the standard open enrollment window.',
+    title: 'Missed Open Enrollment?',
+    description: 'Life changes that let you sign up outside the regular enrollment window.',
     url: '/guides/special-enrollment-period',
   },
   {
-    title: 'What Affects Health Insurance Costs',
-    description: 'How age, location, tobacco use, plan level, and income influence your premiums.',
+    title: 'What Makes Health Insurance Cost More (or Less)',
+    description: 'How your age, location, income, and plan choice affect what you pay.',
     url: '/guides/what-affects-health-insurance-costs',
+  },
+  {
+    title: 'Lost Your Job? Compare COBRA vs. Marketplace',
+    description: 'Side-by-side cost breakdown to help you pick the better option after leaving a job.',
+    url: '/guides/cobra-vs-marketplace-after-job-loss',
   },
 ];
 
 const tools = [
   {
-    title: 'Income & Savings Calculator',
-    description: 'Estimate how your household income may affect ACA marketplace subsidies.',
+    title: 'Estimate Your Savings',
+    description: 'See how your income could lower your monthly health insurance costs.',
     url: '/tools/income-savings-calculator',
   },
   {
-    title: "Job Plan Affordability Check",
-    description: 'See whether employer coverage meets ACA affordability standards.',
+    title: 'Does My Employer Plan Count?',
+    description: 'Find out if your job-based health plan is considered affordable under ACA rules.',
     url: '/tools/job-plan-affordability',
   },
   {
-    title: 'What Income Counts',
-    description: 'Learn how Modified Adjusted Gross Income is calculated for ACA purposes.',
+    title: 'What Income Counts?',
+    description: 'Learn which types of income the marketplace uses to figure out your savings.',
     url: '/tools/what-income-counts',
   },
   {
     title: 'Compare Plan Levels',
-    description: 'Explore differences between Bronze, Silver, Gold, and Platinum tiers.',
+    description: 'See the differences between Bronze, Silver, Gold, and Platinum plans.',
     url: '/tools/plan-comparison',
+  },
+  {
+    title: 'Check for Extra Savings on Silver Plans',
+    description: 'Find out if you qualify for lower copays and deductibles on a Silver plan.',
+    url: '/tools/csr-estimator',
+  },
+  {
+    title: 'Estimate Your Family\'s Costs',
+    description: 'See what your whole family might pay each month across all plan levels.',
+    url: '/tools/family-coverage-estimator',
   },
 ];
 
 const heroTools = [
   {
-    title: 'Income & Savings Calculator',
-    description: 'Estimate how income may affect your ACA marketplace premium tax credits.',
+    title: 'Estimate Your Savings',
+    description: 'See how your income could lower your monthly health insurance costs.',
     url: '/tools/income-savings-calculator',
     icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
   },
   {
-    title: 'Affordability Check',
-    description: 'Check whether your employer plan meets ACA affordability standards.',
+    title: 'Does My Employer Plan Count?',
+    description: 'Check if your job-based health plan is considered affordable under ACA rules.',
     url: '/tools/job-plan-affordability',
     icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
   },
   {
-    title: 'State Finder',
-    description: 'Get state-specific information for your ACA marketplace enrollment.',
+    title: 'Find Your State',
+    description: 'See health insurance details and enrollment info for your state.',
     url: '/states',
     icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z',
   },
@@ -92,18 +107,32 @@ const heroTools = [
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-8">
       <div class="text-center max-w-3xl mx-auto mb-12">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-heading mb-4 tracking-tight">
-          Check Your 2026 Health Insurance Options
+          2026 ACA Health Insurance Made Simple
         </h1>
         <h2 class="text-lg sm:text-xl text-slate-600 font-normal leading-relaxed">
-          Simple tools and guides to help you understand eligibility and next steps.
+          Free tools and clear guides to help you understand your savings, eligibility, and next steps.
         </h2>
         <div class="flex flex-wrap justify-center gap-4 mt-8">
-          <a href="/contact" class="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/20">
-            Get Help
+          <a href="/tools/income-savings-calculator" class="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/20">
+            Check My Options
           </a>
           <a href="/tools" class="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-white text-slate-700 font-semibold border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
-            Tools
+            Explore Tools
           </a>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6 mt-6">
+          <span class="inline-flex items-center gap-1.5 text-sm text-slate-500">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            U.S. Coverage
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-sm text-slate-500">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            2026 Updated
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-sm text-slate-500">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            No Account Required
+          </span>
         </div>
       </div>
 
@@ -129,8 +158,8 @@ const heroTools = [
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Educational Guides</h2>
-        <p class="text-slate-600">Clear, unbiased information about how ACA health insurance works.</p>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Learn How It Works</h2>
+        <p class="text-slate-600">Clear, plain-English guides about ACA health insurance -- no jargon, no sales pressure.</p>
       </div>
       <a href="/guides" class="hidden sm:inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors whitespace-nowrap">
         View all guides
@@ -165,9 +194,9 @@ const heroTools = [
 
   <section class="bg-slate-50 border-y border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Free Tools & Calculators</h2>
-      <p class="text-slate-600 mb-8">Educational tools to help you estimate costs and compare options.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Free Tools</h2>
+      <p class="text-slate-600 mb-8">Answer a few questions and get a quick estimate. No sign-up needed.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {tools.map((tool) => (
           <a href={tool.url} class="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
             <h3 class="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">{tool.title}</h3>
@@ -181,9 +210,9 @@ const heroTools = [
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
       <div>
-        <h2 class="text-2xl font-bold text-slate-900 mb-4 leading-heading">Trusted Health Insurance Guidance</h2>
+        <h2 class="text-2xl font-bold text-slate-900 mb-4 leading-heading">Honest, Up-to-Date Health Insurance Help</h2>
         <p class="text-slate-600 mb-6 font-serif leading-relaxed">
-          We provide educational resources to help you make informed decisions about ACA marketplace coverage. Our licensed agents are available in 18 states to answer your questions.
+          Everything on this site is free. We explain how ACA marketplace coverage works in plain English so you can make the best choice for your situation. Licensed agents are available in 18 states if you need personal help.
         </p>
         <div class="grid grid-cols-3 gap-4 mb-6">
           <div class="text-center p-4 rounded-xl bg-primary-50/50 border border-primary-100">
@@ -191,11 +220,11 @@ const heroTools = [
             <p class="text-xs text-slate-600 mt-1">Licensed States</p>
           </div>
           <div class="text-center p-4 rounded-xl bg-secondary-50/50 border border-secondary-100">
-            <p class="text-2xl font-bold text-secondary-700">4</p>
+            <p class="text-2xl font-bold text-secondary-700">6</p>
             <p class="text-xs text-slate-600 mt-1">Free Tools</p>
           </div>
           <div class="text-center p-4 rounded-xl bg-accent-50/50 border border-accent-100">
-            <p class="text-2xl font-bold text-accent-700">5</p>
+            <p class="text-2xl font-bold text-accent-700">10</p>
             <p class="text-xs text-slate-600 mt-1">In-Depth Guides</p>
           </div>
         </div>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import { getBreadcrumbSchema, getFAQSchema } from '../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Glossary', url: '/glossary' },
+];
+
+const terms = [
+  {
+    term: 'Deductible',
+    definition: 'The amount you pay for covered health care services before your insurance starts to pay. For example, with a $2,000 deductible, you pay the first $2,000 of covered services yourself. After that, your plan begins to share the cost.',
+  },
+  {
+    term: 'Out-of-Pocket Maximum',
+    definition: 'The most you have to pay for covered services in a plan year. After you spend this amount on deductibles, copays, and coinsurance, your insurance pays 100% of covered services for the rest of the year.',
+  },
+  {
+    term: 'Cost-Sharing Reduction (CSR)',
+    definition: 'A discount that lowers how much you pay out of pocket for deductibles, copays, and coinsurance. CSRs are only available on Silver plans through the marketplace, and only if your income is below 250% of the Federal Poverty Level.',
+  },
+  {
+    term: 'Federal Poverty Level (FPL)',
+    definition: 'A measure of income set by the government each year. The ACA uses it to decide who qualifies for Medicaid, premium tax credits, and cost-sharing reductions. For example, 150% FPL for a single person in 2026 is about $23,475.',
+  },
+  {
+    term: 'Modified Adjusted Gross Income (MAGI)',
+    definition: 'The income number the marketplace uses to decide your savings. It includes wages, self-employment income, Social Security, and a few other sources. It is not exactly the same as the income on your paycheck or your tax refund amount.',
+  },
+  {
+    term: 'Subsidy Cliff',
+    definition: 'The income level where ACA premium help used to completely disappear. Under the original ACA rules, all premium tax credits stopped at 400% of the Federal Poverty Level. Enhanced subsidies have softened this cliff, but they may expire depending on future legislation.',
+  },
+  {
+    term: 'Affordability Test',
+    definition: 'A rule that determines whether your employer health plan is considered affordable. If the employee-only premium costs more than about 9.96% of your household income, the plan may be considered unaffordable, and you could qualify for marketplace savings instead.',
+  },
+  {
+    term: 'Minimum Essential Coverage (MEC)',
+    definition: 'Health coverage that meets the ACA requirement. This includes employer plans, marketplace plans, Medicare, Medicaid, CHIP, and most other major medical coverage. Short-term plans and health sharing ministries generally do not count as MEC.',
+  },
+  {
+    term: 'Special Enrollment Period (SEP)',
+    definition: 'A time outside the regular open enrollment window when you can sign up for health insurance. You qualify for an SEP after certain life changes, like losing job-based coverage, getting married, having a baby, or moving to a new state.',
+  },
+  {
+    term: 'Benchmark Plan',
+    definition: 'The second-lowest-cost Silver plan available in your area. The government uses the price of this specific plan to calculate how much premium help you get. Your tax credit is the difference between the benchmark price and the amount you are expected to pay based on your income.',
+  },
+  {
+    term: 'Premium Tax Credit',
+    definition: 'Money from the government that lowers your monthly health insurance premium. The amount depends on your income, household size, and the cost of plans in your area. You can take it in advance each month or claim it when you file your taxes.',
+  },
+  {
+    term: 'Copay',
+    definition: 'A fixed amount you pay for a covered health care service after you have paid your deductible. For example, you might pay $25 for a doctor visit or $10 for a generic prescription.',
+  },
+  {
+    term: 'Coinsurance',
+    definition: 'Your share of the cost of a covered service, shown as a percentage. For example, if your plan pays 80% and your coinsurance is 20%, you pay 20% of the allowed amount for a covered service.',
+  },
+  {
+    term: 'Metal Tiers (Bronze, Silver, Gold, Platinum)',
+    definition: 'The four levels of marketplace health plans. Bronze plans have the lowest premiums but highest out-of-pocket costs. Platinum plans have the highest premiums but lowest out-of-pocket costs. Silver plans are the only tier that qualifies for cost-sharing reductions.',
+  },
+  {
+    term: 'COBRA',
+    definition: 'A federal law that lets you keep your employer health plan after you leave a job, usually for up to 18 months. You pay the full premium yourself, which is often much more expensive than a marketplace plan with subsidies.',
+  },
+  {
+    term: 'Open Enrollment',
+    definition: 'The annual period when anyone can sign up for or change their health insurance plan through the marketplace. For 2026 coverage, open enrollment typically runs from November 1 through mid-January.',
+  },
+];
+
+const faqs = terms.map((t) => ({
+  question: `What does "${t.term}" mean in health insurance?`,
+  answer: t.definition,
+}));
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="Health Insurance Glossary | Plain-English ACA Terms | HealthInsuranceRenew"
+  description="Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon -- just clear explanations."
+  schemas={schemas}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Health Insurance Glossary</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <p class="text-lg text-slate-600 mb-8 font-serif leading-relaxed">
+      Health insurance has a lot of confusing terms. Here they are in plain English.
+    </p>
+
+    <div class="space-y-6">
+      {terms.map((item) => (
+        <div id={item.term.toLowerCase().replace(/[^a-z0-9]+/g, '-')} class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm scroll-mt-24">
+          <h2 class="text-lg font-semibold text-slate-900 mb-2">{item.term}</h2>
+          <p class="text-slate-700 leading-relaxed font-serif">{item.definition}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 mt-10">
+      <p class="text-sm text-slate-600 leading-relaxed">
+        <strong class="text-slate-700">Note:</strong> These definitions are simplified for general understanding. For official definitions and current rules, visit <a href="https://www.healthcare.gov/glossary/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov's glossary</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

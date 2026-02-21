@@ -18,7 +18,7 @@ const { title, description, datePublished, dateModified, faqs } = entry.data;
 const breadcrumbs = [
   { name: 'Home', url: '/' },
   { name: 'Tools', url: '/tools' },
-  { name: 'Job Plan Affordability', url: '/tools/job-plan-affordability' },
+  { name: 'Does My Employer Plan Count?', url: '/tools/job-plan-affordability' },
 ];
 
 const schemas = [
@@ -35,7 +35,7 @@ const schemas = [
 
     <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">{title}</h1>
 
-    <AnswerBox answer="Enter your household income and employee-only monthly premium to see whether your employer plan may meet the ACA affordability standard. This is an educational estimate only." />
+    <AnswerBox answer="Enter your income and what your employer charges for health insurance to find out if it counts as 'affordable' under ACA rules -- and whether you might qualify for marketplace savings instead." />
 
     <Disclaimer variant="tool" />
 
