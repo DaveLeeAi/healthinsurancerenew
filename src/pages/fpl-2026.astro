@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+import fplData from '../data/fpl-current.json';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: '2026 FPL Guidelines', url: '/fpl-2026' },
+];
+
+const g = fplData.guidelines;
+
+const householdSizes = [
+  { size: 1, base: g.household_1 },
+  { size: 2, base: g.household_2 },
+  { size: 3, base: g.household_3 },
+  { size: 4, base: g.household_4 },
+  { size: 5, base: g.household_5 },
+  { size: 6, base: g.household_6 },
+  { size: 7, base: g.household_6 + g.additionalPerson },
+  { size: 8, base: g.household_6 + g.additionalPerson * 2 },
+];
+
+const fplPercentages = [100, 138, 150, 200, 250, 300, 400];
+
+function fmt(n: number) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const faqs = [
+  {
+    question: 'What is the Federal Poverty Level (FPL)?',
+    answer: 'The Federal Poverty Level is an income measure published each year by the U.S. Department of Health and Human Services. The ACA uses it as the yardstick to decide who qualifies for Medicaid, premium tax credits, and cost-sharing reductions. Your eligibility is based on your income as a percentage of FPL for your household size.',
+  },
+  {
+    question: 'When are the 2026 FPL guidelines released?',
+    answer: 'HHS typically publishes updated poverty guidelines in January of each year. The numbers on this page reflect the most recently available guidelines. If updated figures have been released since this page was last reviewed, we update them as quickly as possible.',
+  },
+  {
+    question: 'What does "138% of FPL" mean for Medicaid?',
+    answer: 'In states that expanded Medicaid under the ACA, adults with income at or below 138% of the Federal Poverty Level generally qualify for Medicaid. For a single person using the current guidelines, that is about ' + fmt(Math.round(g.household_1 * 1.38)) + ' per year. For a family of four, it is about ' + fmt(Math.round(g.household_4 * 1.38)) + ' per year.',
+  },
+  {
+    question: 'What does "400% of FPL" mean for premium tax credits?',
+    answer: 'Under the original ACA rules, premium tax credits were available to people with income between 100% and 400% of FPL. At 400% FPL for a single person, that is about ' + fmt(g.household_1 * 4) + ' per year. Under enhanced subsidy rules (if still in effect for 2026), people above 400% FPL may still receive some help, with premiums capped at 8.5% of income.',
+  },
+  {
+    question: 'How does MAGI relate to FPL?',
+    answer: 'Modified Adjusted Gross Income (MAGI) is the income number the marketplace uses. Once your MAGI is determined, it is compared against the FPL for your household size to calculate your percentage of FPL. That percentage then determines your premium tax credit amount and CSR eligibility.',
+  },
+  {
+    question: 'Do the FPL guidelines differ by state?',
+    answer: 'The FPL guidelines used for the ACA marketplace are the same across all 48 contiguous states and Washington, D.C. Alaska and Hawaii have higher poverty guidelines. The numbers on this page apply to the 48 contiguous states and D.C.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: '2026 Federal Poverty Level (FPL) Guidelines for ACA Eligibility',
+    description: 'Official FPL income guidelines used to determine ACA marketplace eligibility for premium tax credits, cost-sharing reductions, and Medicaid in 2026.',
+    url: '/fpl-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="2026 Federal Poverty Level (FPL) Guidelines | HealthInsuranceRenew"
+  description="2026 FPL income guidelines for ACA eligibility. See the poverty level amounts by household size at 100% through 400% FPL, and how they affect your savings."
+  schemas={schemas}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">2026 Federal Poverty Level (FPL) Guidelines for ACA Eligibility</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="The Federal Poverty Level is the income yardstick the government uses to decide who qualifies for ACA savings. Your income as a percentage of FPL determines the size of your premium help and whether you qualify for extra savings on Silver plans." />
+
+    <div class="prose prose-neutral max-w-none mb-8">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mt-8 mb-4">What is the Federal Poverty Level?</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        The Federal Poverty Level (FPL) is a set of income numbers published each year by the U.S. Department of Health and Human Services. It varies by household size. The ACA uses these numbers as the baseline for determining who qualifies for different types of help with health insurance costs.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        When you apply for marketplace coverage, the system compares your household income (specifically, your <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">Modified Adjusted Gross Income</a>) against the FPL for your household size. The result is expressed as a percentage -- like "250% of FPL" -- which determines exactly how much help you get.
+      </p>
+
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mt-10 mb-4">Why the ACA Uses Percentages of FPL</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Rather than setting a single income cutoff, the ACA uses a sliding scale tied to the FPL. This means:
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-4">
+        <li><strong>Below 138% FPL:</strong> You may qualify for Medicaid (in expansion states)</li>
+        <li><strong>100%--150% FPL:</strong> You pay $0 per month for a benchmark Silver plan and qualify for the highest cost-sharing reductions</li>
+        <li><strong>150%--200% FPL:</strong> Small monthly premiums and strong cost-sharing reductions</li>
+        <li><strong>200%--250% FPL:</strong> Moderate premiums and some cost-sharing reductions</li>
+        <li><strong>250%--400% FPL:</strong> Premium tax credits available, but no cost-sharing reductions</li>
+        <li><strong>Above 400% FPL:</strong> Under enhanced rules, premiums are capped at 8.5% of income. Under original ACA rules, no premium help above this level</li>
+      </ul>
+      <p class="text-sm text-slate-500 mb-4">
+        Related: <a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">What are cost-sharing reductions?</a> |
+        <a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Check your eligibility</a>
+      </p>
+    </div>
+
+    <!-- FPL Base Table -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">2026 FPL Base Amounts by Household Size</h2>
+      <p class="text-slate-600 font-serif mb-4">
+        These are the 100% FPL amounts -- the starting point. The table below shows what different percentages look like for each household size.
+      </p>
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Household Size</th>
+                <th class="text-right px-4 py-3 font-semibold text-slate-700">100% FPL (Annual)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {householdSizes.map((row, i) => (
+                <tr class={`border-b border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+                  <td class="px-4 py-3 text-slate-700">{row.size} {row.size === 1 ? 'person' : 'people'}</td>
+                  <td class="px-4 py-3 text-right font-medium text-slate-900">{fmt(row.base)}</td>
+                </tr>
+              ))}
+              <tr class="bg-slate-50/50 border-t border-slate-200">
+                <td class="px-4 py-3 text-slate-600 italic" colspan="2">Each additional person: add {fmt(g.additionalPerson)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500">
+        Source: U.S. Department of Health and Human Services. These figures apply to the 48 contiguous states and D.C. Alaska and Hawaii have separate, higher guidelines.
+      </p>
+    </section>
+
+    <!-- Full FPL Percentage Table -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Income at Key FPL Percentages</h2>
+      <p class="text-slate-600 font-serif mb-4">
+        This table shows the annual income amounts at each FPL percentage that matters for ACA eligibility. Find your household size and see where your income falls.
+      </p>
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-3 py-3 font-semibold text-slate-700 sticky left-0 bg-slate-50">HH Size</th>
+                {fplPercentages.map((pct) => (
+                  <th class="text-right px-3 py-3 font-semibold text-slate-700 whitespace-nowrap">{pct}%</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {householdSizes.map((row, i) => (
+                <tr class={`border-b border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+                  <td class="px-3 py-3 font-medium text-slate-700 sticky left-0 bg-inherit">{row.size}</td>
+                  {fplPercentages.map((pct) => (
+                    <td class="px-3 py-3 text-right text-slate-700 whitespace-nowrap">{fmt(Math.round(row.base * pct / 100))}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 mb-4">
+        <p class="text-sm text-amber-800 leading-relaxed">
+          <strong>Note:</strong> These figures are based on the most recently published HHS guidelines for the 48 contiguous states and D.C. If updated 2026 guidelines have been issued since the last review date shown above, these numbers may be slightly different. Always verify with <a href="https://www.healthcare.gov/" class="text-amber-900 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> when enrolling.
+        </p>
+      </div>
+    </section>
+
+    <!-- How FPL Affects Your Benefits -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">How FPL Affects Your Health Insurance Costs</h2>
+
+      <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">Premium Tax Credits</h3>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Premium tax credits lower your monthly insurance bill. The amount you receive depends on the gap between the cost of the benchmark Silver plan in your area and the percentage of income you are expected to contribute. People with income below 150% FPL pay $0 toward the benchmark plan. As income rises, your expected contribution increases gradually. See the <a href="/tools/income-savings-calculator" class="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a> tool for a personalized estimate.
+      </p>
+
+      <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">Cost-Sharing Reductions (CSR)</h3>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        If your income is below 250% FPL, you may also qualify for cost-sharing reductions on Silver plans. These lower your deductible, copays, and out-of-pocket maximum -- meaning you pay less when you actually use health care. The biggest savings go to people below 150% FPL. See our <a href="/csr-explained-2026" class="text-primary-600 hover:text-primary-700 underline">CSR explanation page</a> for details on the three tiers.
+      </p>
+
+      <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">Medicaid Eligibility</h3>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        In states that have expanded Medicaid, adults with income at or below 138% FPL generally qualify for Medicaid, which has minimal or no monthly costs. In non-expansion states, the income threshold is much lower and many adults may fall into a coverage gap. Check your <a href="/states" class="text-primary-600 hover:text-primary-700 underline">state page</a> for details.
+      </p>
+    </section>
+
+    <!-- MAGI Explanation -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">What Is MAGI and How Does It Connect to FPL?</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        Modified Adjusted Gross Income (MAGI) is the specific income number the marketplace uses. Once you calculate your MAGI, you compare it to the FPL for your household size to find your FPL percentage. That percentage then determines:
+      </p>
+      <ul class="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-4">
+        <li>Whether you qualify for Medicaid</li>
+        <li>How much premium tax credit you receive</li>
+        <li>Whether you qualify for cost-sharing reductions</li>
+        <li>How much you are expected to pay toward a benchmark plan</li>
+      </ul>
+      <p class="text-slate-700 leading-relaxed font-serif">
+        For a full explanation of what goes into MAGI, see <a href="/tools/what-income-counts" class="text-primary-600 hover:text-primary-700 underline">What Income Counts?</a>
+      </p>
+    </section>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'HHS Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
+      { title: 'Healthcare.gov - Income Levels That Qualify', url: 'https://www.healthcare.gov/lower-costs/' },
+      { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
+      { title: 'CMS - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
+    ]} />
+  </div>
+</BaseLayout>

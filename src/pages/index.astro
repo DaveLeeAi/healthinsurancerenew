@@ -81,10 +81,10 @@ const heroTools = [
     icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
   },
   {
-    title: 'Does My Employer Plan Count?',
-    description: 'Check if your job-based health plan is considered affordable under ACA rules.',
-    url: '/tools/job-plan-affordability',
-    icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+    title: 'Check If You Qualify',
+    description: 'Walk through the main eligibility factors to see where you stand.',
+    url: '/eligibility-check',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
   },
   {
     title: 'Find Your State',
@@ -204,6 +204,25 @@ const heroTools = [
           </a>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">2026 ACA Reference Pages</h2>
+    <p class="text-slate-600 mb-6">In-depth explanations of the rules and numbers behind ACA coverage.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <a href="/eligibility-check" class="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
+        <h3 class="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">Do I Qualify for ACA Savings?</h3>
+        <p class="text-sm text-slate-600 font-serif">Step-by-step walkthrough of the main eligibility factors.</p>
+      </a>
+      <a href="/fpl-2026" class="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
+        <h3 class="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">2026 FPL Guidelines</h3>
+        <p class="text-sm text-slate-600 font-serif">Income tables by household size at every key FPL percentage.</p>
+      </a>
+      <a href="/csr-explained-2026" class="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
+        <h3 class="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">Cost-Sharing Reductions Explained</h3>
+        <p class="text-sm text-slate-600 font-serif">How CSR tiers lower your deductibles, copays, and out-of-pocket costs.</p>
+      </a>
     </div>
   </section>
 

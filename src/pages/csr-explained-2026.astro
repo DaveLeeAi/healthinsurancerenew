@@ -1,0 +1,309 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LastUpdated from '../components/LastUpdated.astro';
+import AnswerBox from '../components/AnswerBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import SourcesBox from '../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../lib/schema';
+import csrData from '../data/csr-tiers.json';
+import fplData from '../data/fpl-current.json';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'CSR Explained 2026', url: '/csr-explained-2026' },
+];
+
+const tiers = csrData.tiers;
+const g = fplData.guidelines;
+
+function fmt(n: number) {
+  return '$' + n.toLocaleString('en-US');
+}
+
+const faqs = [
+  {
+    question: 'What is a cost-sharing reduction (CSR)?',
+    answer: 'A cost-sharing reduction is a discount that lowers the amount you pay out of pocket when you use health care. It reduces your deductible, copays, and out-of-pocket maximum. CSRs are only available on Silver plans bought through the ACA marketplace.',
+  },
+  {
+    question: 'Why do CSRs only apply to Silver plans?',
+    answer: 'This is how the ACA was written. Silver plans were chosen as the baseline because they offer a moderate level of coverage (70% actuarial value). CSRs effectively upgrade a Silver plan to cover 73%, 87%, or 94% of costs depending on your income, which can make a Silver plan perform like a Gold or Platinum plan at a lower price.',
+  },
+  {
+    question: 'How do I know which CSR tier I qualify for?',
+    answer: 'Your CSR tier depends on your income as a percentage of the Federal Poverty Level. If your income is between 100% and 150% FPL, you get the 94% CSR (the most generous). Between 150% and 200% FPL gets you the 87% CSR. Between 200% and 250% FPL gets you the 73% CSR. Above 250% FPL, no CSR is available.',
+  },
+  {
+    question: 'Do I have to do anything special to get CSRs?',
+    answer: 'No. If you qualify based on your income and you select a Silver plan through the marketplace, the cost-sharing reductions are applied automatically. You do not need to fill out a separate application. The lower deductibles and copays are built into the plan you receive.',
+  },
+  {
+    question: 'Can I get a CSR if I buy a Bronze or Gold plan?',
+    answer: 'No. Cost-sharing reductions are only available on Silver-tier plans purchased through the ACA marketplace. If you choose a Bronze, Gold, or Platinum plan, you will not receive CSR benefits, even if your income qualifies. You will still receive any premium tax credit you qualify for on any metal tier.',
+  },
+  {
+    question: 'What is the difference between a premium tax credit and a CSR?',
+    answer: 'A premium tax credit lowers your monthly insurance payment (the premium). A cost-sharing reduction lowers what you pay when you actually use health care (deductibles, copays, out-of-pocket maximum). You can receive both at the same time if you qualify and choose a Silver plan.',
+  },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({
+    title: 'What Is Cost-Sharing Reduction (CSR) in 2026?',
+    description: 'A clear explanation of ACA cost-sharing reductions for 2026, including the three CSR tiers, who qualifies, and how they lower your health care costs.',
+    url: '/csr-explained-2026',
+    datePublished: '2025-10-15',
+    dateModified: '2026-02-21',
+  }),
+  getFAQSchema(faqs),
+];
+---
+<BaseLayout
+  title="What Is Cost-Sharing Reduction (CSR) in 2026? | HealthInsuranceRenew"
+  description="Plain-English explanation of ACA cost-sharing reductions for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs."
+  schemas={schemas}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">What Is Cost-Sharing Reduction (CSR) in 2026?</h1>
+    <LastUpdated date="2026-02-21" />
+
+    <AnswerBox answer="Cost-sharing reductions lower what you pay when you actually use health care -- your deductible, copays, and out-of-pocket maximum. They are only available on Silver plans through the marketplace. The amount of savings depends on your income." />
+
+    <!-- What CSR Is -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mt-8 mb-4">What CSR Means in Practice</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        When you buy health insurance, you pay in two ways: your monthly <strong>premium</strong> (the bill to keep the plan) and your <strong>cost-sharing</strong> (deductibles, copays, and coinsurance when you get care). Premium tax credits help with the first part. Cost-sharing reductions help with the second.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        With a CSR, your Silver plan is upgraded to cover a larger share of your medical costs. A standard Silver plan covers about 70% of average costs. With CSRs, that jumps to 73%, 87%, or 94% depending on your income. The premium stays the same -- you just pay less when you visit the doctor, fill a prescription, or go to the hospital.
+      </p>
+      <p class="text-sm text-slate-500">
+        Related: <a href="/glossary#cost-sharing-reduction--csr-" class="text-primary-600 hover:text-primary-700 underline">Glossary: CSR</a> |
+        <a href="/glossary#deductible" class="text-primary-600 hover:text-primary-700 underline">Glossary: Deductible</a>
+      </p>
+    </section>
+
+    <!-- Why Silver Only -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Why CSRs Only Apply to Silver Plans</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        This is a rule set by the ACA itself. Silver plans were designated as the tier that qualifies for cost-sharing reductions. If you pick a Bronze, Gold, or Platinum plan, you will not get CSR benefits -- even if your income qualifies. You will still get your premium tax credit on any tier, but the out-of-pocket savings from CSRs are Silver-only.
+      </p>
+      <p class="text-slate-700 leading-relaxed font-serif mb-4">
+        This is why financial advisors and enrollment counselors often recommend Silver plans for people with lower incomes. A Silver plan with a 94% CSR can actually provide better coverage than a Platinum plan, at a fraction of the monthly cost.
+      </p>
+      <p class="text-sm text-slate-500">
+        Related: <a href="/tools/plan-comparison" class="text-primary-600 hover:text-primary-700 underline">Compare Plan Levels</a>
+      </p>
+    </section>
+
+    <!-- The Three Tiers -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">The Three CSR Tiers</h2>
+      <p class="text-slate-700 leading-relaxed font-serif mb-6">
+        Each tier corresponds to an income range based on the <a href="/fpl-2026" class="text-primary-600 hover:text-primary-700 underline">Federal Poverty Level</a>. The lower your income, the more generous the cost-sharing reduction.
+      </p>
+
+      <!-- 94% CSR -->
+      <div class="bg-green-50 border border-green-200 rounded-2xl p-5 mb-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-semibold">94% CSR</span>
+          <span class="text-sm text-slate-600">Income: 100% -- 150% FPL</span>
+        </div>
+        <p class="text-slate-700 leading-relaxed font-serif mb-3">
+          This is the most generous level. Your Silver plan covers about 94% of average medical costs (up from the standard 70%). This means very low deductibles, tiny copays, and a low cap on what you spend out of pocket for the year.
+        </p>
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Typical Deductible</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[0].deductible)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Out-of-Pocket Max</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[0].oopMax)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Doctor Visit Copay</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[0].copayPrimary)}</p>
+          </div>
+        </div>
+        <p class="text-sm text-slate-600 mt-3 font-serif">
+          <strong>Example:</strong> A single person earning about {fmt(Math.round(g.household_1 * 1.25))} per year (roughly 125% FPL) would qualify. A family of four earning about {fmt(Math.round(g.household_4 * 1.25))} per year would also qualify at this level.
+        </p>
+      </div>
+
+      <!-- 87% CSR -->
+      <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold">87% CSR</span>
+          <span class="text-sm text-slate-600">Income: 150% -- 200% FPL</span>
+        </div>
+        <p class="text-slate-700 leading-relaxed font-serif mb-3">
+          Still very strong savings. Your Silver plan covers about 87% of average costs. Deductibles and copays are noticeably higher than the 94% tier but still well below a standard Silver plan.
+        </p>
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Typical Deductible</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[1].deductible)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Out-of-Pocket Max</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[1].oopMax)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Doctor Visit Copay</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[1].copayPrimary)}</p>
+          </div>
+        </div>
+        <p class="text-sm text-slate-600 mt-3 font-serif">
+          <strong>Example:</strong> A single person earning about {fmt(Math.round(g.household_1 * 1.75))} per year (roughly 175% FPL) would qualify. A family of four earning about {fmt(Math.round(g.household_4 * 1.75))} per year would also qualify.
+        </p>
+      </div>
+
+      <!-- 73% CSR -->
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-5">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-200 text-slate-800 text-sm font-semibold">73% CSR</span>
+          <span class="text-sm text-slate-600">Income: 200% -- 250% FPL</span>
+        </div>
+        <p class="text-slate-700 leading-relaxed font-serif mb-3">
+          Moderate savings. Your Silver plan covers about 73% of average costs -- a small improvement over the standard 70%. The deductible and out-of-pocket maximum are lower than a standard Silver plan, but the difference is less dramatic.
+        </p>
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Typical Deductible</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[2].deductible)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Out-of-Pocket Max</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[2].oopMax)}</p>
+          </div>
+          <div class="bg-white rounded-xl p-3">
+            <p class="text-xs text-slate-500 mb-1">Doctor Visit Copay</p>
+            <p class="text-lg font-bold text-slate-900">{fmt(tiers[2].copayPrimary)}</p>
+          </div>
+        </div>
+        <p class="text-sm text-slate-600 mt-3 font-serif">
+          <strong>Example:</strong> A single person earning about {fmt(Math.round(g.household_1 * 2.25))} per year (roughly 225% FPL) would qualify. A family of four earning about {fmt(Math.round(g.household_4 * 2.25))} per year would also qualify.
+        </p>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">Side-by-Side Comparison</h2>
+      <p class="text-slate-600 font-serif mb-4">
+        This table shows how the numbers change across all CSR tiers compared to a standard Silver plan with no cost-sharing reduction.
+      </p>
+      <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200">
+                <th class="text-left px-4 py-3 font-semibold text-slate-700">Feature</th>
+                {tiers.map((tier) => (
+                  <th class="text-right px-4 py-3 font-semibold text-slate-700 whitespace-nowrap">{tier.name}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-slate-600">Income Range (% FPL)</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{tier.minFPL}%--{tier.maxFPL === 999 ? '400%+' : tier.maxFPL + '%'}</td>
+                ))}
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 text-slate-600">Plan Covers (Actuarial Value)</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right font-medium text-slate-900">{tier.actuarialValue}%</td>
+                ))}
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-slate-600">Typical Deductible</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.deductible)}</td>
+                ))}
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 text-slate-600">Out-of-Pocket Maximum</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.oopMax)}</td>
+                ))}
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-slate-600">Doctor Visit Copay</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.copayPrimary)}</td>
+                ))}
+              </tr>
+              <tr class="border-b border-slate-100 bg-slate-50/50">
+                <td class="px-4 py-3 text-slate-600">Specialist Copay</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.copaySpecialist)}</td>
+                ))}
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-slate-600">Generic Rx Copay</td>
+                {tiers.map((tier) => (
+                  <td class="px-4 py-3 text-right text-slate-700">{fmt(tier.copayGenericRx)}</td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 mb-4">
+        <p class="text-sm text-amber-800 leading-relaxed">
+          <strong>Note:</strong> These are representative amounts based on published CMS data and insurer averages. Actual plan cost-sharing varies by insurer and location. Always check your specific plan details when enrolling.
+        </p>
+      </div>
+    </section>
+
+    <!-- Consumer Examples -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">What This Looks Like for Real People</h2>
+
+      <div class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">Maria, single, earning about {fmt(Math.round(g.household_1 * 1.30))} per year</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            Maria's income is about 130% of FPL, so she qualifies for the <strong>94% CSR</strong>. Her Silver plan has a {fmt(tiers[0].deductible)} deductible and a {fmt(tiers[0].copayPrimary)} copay for doctor visits. She pays $0 per month for her benchmark plan (because her income is below 150% FPL). Without the CSR, her standard Silver plan deductible would have been {fmt(tiers[3].deductible)}.
+          </p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">James and Sarah, family of 4, earning about {fmt(Math.round(g.household_4 * 1.75))} per year</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            Their household income is about 175% of FPL for a family of four, so they qualify for the <strong>87% CSR</strong>. Each family member's Silver plan has a {fmt(tiers[1].deductible)} deductible and a {fmt(tiers[1].copayPrimary)} copay. Their total monthly premium after tax credits would be modest, and they save thousands per year in reduced cost-sharing compared to a standard Silver plan.
+          </p>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-5">
+          <h3 class="font-semibold text-slate-800 mb-2">David, single, earning about {fmt(Math.round(g.household_1 * 2.20))} per year</h3>
+          <p class="text-slate-700 leading-relaxed font-serif">
+            David's income is about 220% of FPL, so he qualifies for the <strong>73% CSR</strong>. His Silver plan has a {fmt(tiers[2].deductible)} deductible -- better than the standard {fmt(tiers[3].deductible)}, but the savings are more modest. David might also want to compare a CSR Silver plan against a Gold plan to see which gives him better overall value for his expected health care usage.
+          </p>
+        </div>
+      </div>
+
+      <p class="text-sm text-slate-500 mt-4">
+        Related: <a href="/tools/csr-estimator" class="text-primary-600 hover:text-primary-700 underline">Check for Extra Savings on Silver Plans</a> |
+        <a href="/eligibility-check" class="text-primary-600 hover:text-primary-700 underline">Check your eligibility</a>
+      </p>
+    </section>
+
+    <FAQSection faqs={faqs} />
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Save on Out-of-Pocket Costs', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
+      { title: 'CMS - Actuarial Value and Cost Sharing', url: 'https://www.cms.gov/cciio/resources/data-resources/marketplace-puf' },
+      { title: 'Healthcare.gov - Plan Categories', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
+      { title: 'KFF - Cost-Sharing Charges Explanation', url: 'https://www.kff.org/health-reform/issue-brief/cost-sharing-charges-under-the-affordable-care-act/' },
+    ]} />
+  </div>
+</BaseLayout>

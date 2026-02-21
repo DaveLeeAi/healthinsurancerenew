@@ -10,19 +10,46 @@ const breadcrumbs = [
 
 const schemas = [getBreadcrumbSchema(breadcrumbs)];
 
-const tools = [
+const primaryTools = [
   {
     title: 'Estimate Your Savings',
-    description: 'See how your income could lower your monthly health insurance costs.',
+    description: 'See how your income could lower your monthly health insurance costs. Enter your household size and income to get a quick estimate of your potential premium tax credit.',
     url: '/tools/income-savings-calculator',
+    cta: 'Estimate Now',
     icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+    related: '/guides/how-aca-subsidies-work-2026',
+    relatedLabel: 'Guide: How ACA Savings Work',
+  },
+  {
+    title: 'Check If You Qualify',
+    description: 'Walk through the main eligibility factors step by step -- employer coverage, income, household size, Medicaid, and special enrollment. Understand where you stand before you apply.',
+    url: '/eligibility-check',
+    cta: 'Start Eligibility Check',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+    related: '/fpl-2026',
+    relatedLabel: 'Guide: 2026 FPL Guidelines',
   },
   {
     title: 'Does My Employer Plan Count?',
-    description: 'Find out if your job-based health plan is considered affordable under ACA rules.',
+    description: 'Find out if your job-based health plan is considered affordable under ACA rules. If it is not, you may qualify for marketplace savings instead.',
     url: '/tools/job-plan-affordability',
+    cta: 'Check Affordability',
     icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+    related: '/guides/cobra-vs-marketplace-after-job-loss',
+    relatedLabel: 'Guide: COBRA vs. Marketplace',
   },
+  {
+    title: 'Compare COBRA vs. Marketplace',
+    description: 'Lost your job? See how COBRA stacks up against a marketplace plan with subsidies. Understand the cost difference, coverage tradeoffs, and deadlines.',
+    url: '/guides/cobra-vs-marketplace-after-job-loss',
+    cta: 'Compare Options',
+    icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
+    related: '/guides/job-loss-health-insurance-2026',
+    relatedLabel: 'Guide: Lost Your Job in 2026?',
+  },
+];
+
+const moreTools = [
   {
     title: 'What Income Counts?',
     description: 'Learn which types of income the marketplace uses to figure out your savings.',
@@ -50,32 +77,78 @@ const tools = [
 ];
 ---
 <BaseLayout
-  title="Free Health Insurance Tools | HealthInsuranceRenew"
-  description="Free tools to estimate your health insurance savings, check employer plan affordability, compare plan levels, and see what your family might pay. No sign-up required."
+  title="Free 2026 ACA Tools | HealthInsuranceRenew"
+  description="Free tools to estimate your ACA savings, check eligibility, compare employer plans to marketplace options, and understand COBRA vs. marketplace costs. No sign-up required."
   schemas={schemas}
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
-    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Free Health Insurance Tools</h1>
-    <p class="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Free 2026 ACA Tools</h1>
+    <p class="text-lg text-slate-600 mb-10 max-w-2xl font-serif">
       Answer a few simple questions and get a quick estimate. No account needed. These tools give general estimates for learning purposes only.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {tools.map((tool) => (
+    <div class="space-y-5 mb-12">
+      {primaryTools.map((tool) => (
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={tool.icon}/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-lg font-semibold text-slate-800 mb-2">{tool.title}</h2>
+              <p class="text-sm text-slate-600 font-serif leading-relaxed mb-4">{tool.description}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                <a
+                  href={tool.url}
+                  class="inline-flex items-center px-5 py-2.5 rounded-xl bg-primary-600 text-white font-medium text-sm hover:bg-primary-700 transition-colors shadow-sm"
+                >
+                  {tool.cta}
+                </a>
+                <a href={tool.related} class="text-sm text-primary-600 hover:text-primary-700 underline">{tool.relatedLabel}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <h2 class="text-2xl font-bold text-slate-900 leading-heading mb-4">More Tools</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+      {moreTools.map((tool) => (
         <a
           href={tool.url}
-          class="group block p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
+          class="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
         >
-          <div class="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-3 group-hover:bg-primary-100 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={tool.icon}/>
             </svg>
           </div>
-          <h2 class="text-lg font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-2">{tool.title}</h2>
+          <h3 class="text-base font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1">{tool.title}</h3>
           <p class="text-sm text-slate-600 font-serif">{tool.description}</p>
         </a>
       ))}
     </div>
+
+    <section class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+      <h2 class="text-xl font-bold text-slate-900 mb-4">How These Tools Help You</h2>
+      <div class="text-slate-700 leading-relaxed font-serif space-y-4">
+        <p>
+          Every tool on this page uses the same official data that the ACA marketplace uses -- Federal Poverty Level guidelines, IRS contribution percentages, and CMS cost-sharing standards. We run straightforward math with your inputs to give you a ballpark estimate.
+        </p>
+        <p>
+          The goal is to help you understand your situation <em>before</em> you start the enrollment process. Knowing roughly what you qualify for means fewer surprises when you apply and makes it easier to compare your options.
+        </p>
+        <p>
+          These estimates are not exact quotes. Your actual costs depend on your specific age, ZIP code, tobacco use, and the plans available in your area. For official numbers, apply through <a href="https://www.healthcare.gov/" class="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">Healthcare.gov</a> or your state marketplace.
+        </p>
+        <p class="text-sm text-slate-500 pt-2">
+          Want to understand how we calculate these numbers? See our <a href="/data-methodology" class="text-primary-600 hover:text-primary-700 underline">Data & Methodology</a> page.
+        </p>
+      </div>
+    </section>
   </div>
 </BaseLayout>
