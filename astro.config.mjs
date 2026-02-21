@@ -5,6 +5,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://healthinsurancerenew.com',
+  output: 'static',
+  trailingSlash: 'never',
   integrations: [
     tailwind(),
     sitemap(),

@@ -92,6 +92,8 @@ const schemas = [
           </select>
         </div>
 
+        <div id="form-error" class="hidden rounded-lg bg-error-50 border border-error-200 px-4 py-2.5 text-sm text-error-700" role="alert" aria-live="polite"></div>
+
         <div class="flex gap-3">
           <button
             type="submit"
@@ -201,15 +203,27 @@ const schemas = [
       }
     }
 
+    var errorDiv = document.getElementById('form-error');
+
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorDiv.classList.add('hidden');
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      hideError();
 
       var sizeVal = document.getElementById('household-size').value;
       var incomeVal = document.getElementById('annual-income').value;
       var stateVal = stateSelect.value;
 
       if (!sizeVal || !incomeVal || !stateVal) {
-        alert('Please complete all fields before calculating.');
+        showError('Please complete all fields before calculating.');
         return;
       }
 
@@ -217,7 +231,7 @@ const schemas = [
       var income = parseFloat(incomeVal);
 
       if (income <= 0) {
-        alert('Please enter a valid income amount greater than zero.');
+        showError('Please enter a valid income amount greater than zero.');
         return;
       }
 
@@ -245,6 +259,7 @@ const schemas = [
     resetBtn.addEventListener('click', function () {
       form.reset();
       resultsDiv.classList.add('hidden');
+      hideError();
     });
   });
 </script>

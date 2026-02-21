@@ -78,6 +78,8 @@ const schemas = [
           <p class="text-xs text-slate-500 mt-1">Enter the cost for the lowest-cost employee-only plan offered by the employer.</p>
         </div>
 
+        <div id="form-error" class="hidden rounded-lg bg-error-50 border border-error-200 px-4 py-2.5 text-sm text-error-700" role="alert" aria-live="polite"></div>
+
         <div class="flex gap-3">
           <button
             type="submit"
@@ -151,14 +153,26 @@ const schemas = [
     var resetBtn = document.getElementById('reset-btn');
     var threshold = affordabilityData.thresholdPercent;
 
+    var errorDiv = document.getElementById('form-error');
+
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorDiv.classList.add('hidden');
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      hideError();
 
       var incomeVal = document.getElementById('household-income').value;
       var premiumVal = document.getElementById('monthly-premium').value;
 
       if (!incomeVal || !premiumVal) {
-        alert('Please complete all fields before calculating.');
+        showError('Please complete all fields before calculating.');
         return;
       }
 
@@ -166,12 +180,12 @@ const schemas = [
       var monthlyPremium = parseFloat(premiumVal);
 
       if (income <= 0) {
-        alert('Please enter a valid income amount greater than zero.');
+        showError('Please enter a valid income amount greater than zero.');
         return;
       }
 
       if (monthlyPremium < 0) {
-        alert('Please enter a valid premium amount.');
+        showError('Please enter a valid premium amount.');
         return;
       }
 
@@ -216,6 +230,7 @@ const schemas = [
     resetBtn.addEventListener('click', function () {
       form.reset();
       resultsDiv.classList.add('hidden');
+      hideError();
     });
   });
 </script>

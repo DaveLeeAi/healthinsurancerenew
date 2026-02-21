@@ -110,6 +110,8 @@ const schemas = [
           </div>
         </div>
 
+        <div id="form-error" class="hidden rounded-lg bg-error-50 border border-error-200 px-4 py-2.5 text-sm text-error-700" role="alert" aria-live="polite"></div>
+
         <div class="flex gap-3">
           <button
             type="submit"
@@ -196,17 +198,29 @@ const schemas = [
     var resultsDiv = document.getElementById('results');
     var resetBtn = document.getElementById('reset-btn');
 
+    var errorDiv = document.getElementById('form-error');
+
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorDiv.classList.add('hidden');
+    }
+
     function formatCurrency(amount) {
       return '$' + amount.toLocaleString();
     }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      hideError();
 
       var agiVal = document.getElementById('agi').value;
 
       if (!agiVal) {
-        alert('Please enter your Adjusted Gross Income (AGI).');
+        showError('Please enter your Adjusted Gross Income (AGI).');
         return;
       }
 
@@ -246,6 +260,7 @@ const schemas = [
     resetBtn.addEventListener('click', function () {
       form.reset();
       resultsDiv.classList.add('hidden');
+      hideError();
     });
   });
 </script>

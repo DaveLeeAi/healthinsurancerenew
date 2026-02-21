@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page Not Found | HealthInsuranceRenew" description="The page you are looking for could not be found." noIndex={true}>
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+    <p class="text-6xl font-bold text-slate-200 mb-4">404</p>
+    <h1 class="text-2xl font-bold text-slate-900 mb-3">Page not found</h1>
+    <p class="text-slate-600 mb-8 max-w-md mx-auto">
+      The page you are looking for may have been moved or no longer exists. Try one of the links below.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-sm">
+        Go home
+      </a>
+      <a href="/guides" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-white text-slate-700 font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+        Browse guides
+      </a>
+      <a href="/tools" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-white text-slate-700 font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors">
+        Use tools
+      </a>
+    </div>
+  </div>
+</BaseLayout>
