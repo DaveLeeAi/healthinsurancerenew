@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getBreadcrumbSchema } from '../../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'FAQ', url: '/faq' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+
+const entries = await getCollection('faq');
+
+const faqs = entries.map((entry) => ({
+  title: entry.data.title,
+  description: entry.data.description,
+  slug: entry.id.replace(/\.md$/, ''),
+}));
+---
+<BaseLayout
+  title="Frequently Asked Questions | HealthInsuranceRenew"
+  description="Answers to common questions about ACA marketplace health insurance, subsidies, enrollment, and coverage options."
+  schemas={schemas}
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Frequently Asked Questions</h1>
+    <p class="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
+      Find answers to common questions about ACA marketplace coverage, financial assistance, and enrollment.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {faqs.map((faq) => (
+        <a
+          href={`/faq/${faq.slug}`}
+          class="group block p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
+        >
+          <div class="w-10 h-10 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4 group-hover:bg-primary-100 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-2">{faq.title}</h2>
+          <p class="text-sm text-slate-600 font-serif leading-relaxed">{faq.description}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

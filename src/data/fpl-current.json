@@ -1,5 +1,5 @@
 {
-  "year": 2025,
+  "year": 2026,
   "guidelines": {
     "household_1": 15650,
     "household_2": 21150,
@@ -9,6 +9,6 @@
     "household_6": 43150,
     "additionalPerson": 5500
   },
-  "updated": "2025-01-01",
+  "updated": "2025-10-01",
   "source": "U.S. Department of Health and Human Services"
 }

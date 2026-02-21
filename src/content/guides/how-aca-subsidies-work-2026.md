@@ -3,6 +3,11 @@ title: "How ACA Subsidies Work in 2026: Premium Tax Credits and Cost-Sharing Red
 description: "A breakdown of how ACA subsidies reduce health insurance costs in 2026, including how premium tax credits are calculated, what cost-sharing reductions cover, and how household income determines assistance levels."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
+keyTakeaways:
+  - "Premium tax credits reduce monthly premiums and are available across all metal tiers."
+  - "Cost-sharing reductions lower out-of-pocket costs but apply only to Silver plans."
+  - "Both forms of assistance are based on household income relative to the federal poverty level."
+  - "Advance credits are reconciled at tax time and may require repayment if income was underestimated."
 faqs:
   - question: "What is the difference between premium tax credits and cost-sharing reductions?"
     answer: "Premium tax credits lower the monthly premium paid for a marketplace plan and are available across all metal tiers. Cost-sharing reductions lower out-of-pocket costs like deductibles, copays, and coinsurance but apply only to Silver-tier plans. Both are based on household income relative to the federal poverty level."

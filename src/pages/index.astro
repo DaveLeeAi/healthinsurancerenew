@@ -23,6 +23,16 @@ const guides = [
     description: 'Understand premium tax credits and cost-sharing reductions that can lower your costs.',
     url: '/guides/how-aca-subsidies-work-2026',
   },
+  {
+    title: 'Special Enrollment Periods',
+    description: 'Qualifying life events and how to enroll outside the standard open enrollment window.',
+    url: '/guides/special-enrollment-period',
+  },
+  {
+    title: 'What Affects Health Insurance Costs',
+    description: 'How age, location, tobacco use, plan level, and income influence your premiums.',
+    url: '/guides/what-affects-health-insurance-costs',
+  },
 ];
 
 const tools = [
@@ -117,9 +127,19 @@ const heroTools = [
   </section>
 
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Educational Guides</h2>
-    <p class="text-slate-600 mb-8">Clear, unbiased information about how ACA health insurance works.</p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Educational Guides</h2>
+        <p class="text-slate-600">Clear, unbiased information about how ACA health insurance works.</p>
+      </div>
+      <a href="/guides" class="hidden sm:inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors whitespace-nowrap">
+        View all guides
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {guides.map((guide) => (
         <a href={guide.url} class="group block p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
           <h3 class="text-lg font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-2">{guide.title}</h3>
@@ -132,6 +152,14 @@ const heroTools = [
           </span>
         </a>
       ))}
+    </div>
+    <div class="mt-6 text-center sm:hidden">
+      <a href="/guides" class="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+        View all guides
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
     </div>
   </section>
 
@@ -151,8 +179,60 @@ const heroTools = [
   </section>
 
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Licensed agents are available in 18 states.</h2>
-    <p class="text-slate-600 mb-8">Select your state to see local health insurance information and enrollment details.</p>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-4 leading-heading">Trusted Health Insurance Guidance</h2>
+        <p class="text-slate-600 mb-6 font-serif leading-relaxed">
+          We provide educational resources to help you make informed decisions about ACA marketplace coverage. Our licensed agents are available in 18 states to answer your questions.
+        </p>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+          <div class="text-center p-4 rounded-xl bg-primary-50/50 border border-primary-100">
+            <p class="text-2xl font-bold text-primary-700">18</p>
+            <p class="text-xs text-slate-600 mt-1">Licensed States</p>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-secondary-50/50 border border-secondary-100">
+            <p class="text-2xl font-bold text-secondary-700">4</p>
+            <p class="text-xs text-slate-600 mt-1">Free Tools</p>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-accent-50/50 border border-accent-100">
+            <p class="text-2xl font-bold text-accent-700">5</p>
+            <p class="text-xs text-slate-600 mt-1">In-Depth Guides</p>
+          </div>
+        </div>
+        <a href="/about" class="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+          Learn about us
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <img
+          src="/images/hero/hero-1.webp"
+          alt="Family reviewing health insurance options together"
+          class="rounded-2xl shadow-lg w-full h-48 object-cover"
+          loading="lazy"
+        />
+        <img
+          src="/images/hero/hero-2.webp"
+          alt="Person using a laptop to compare health plans"
+          class="rounded-2xl shadow-lg w-full h-48 object-cover mt-6"
+          loading="lazy"
+        />
+        <img
+          src="/images/hero/hero-3.webp"
+          alt="Healthcare professional assisting a patient"
+          class="rounded-2xl shadow-lg w-full h-48 object-cover col-span-2"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-2xl font-bold text-slate-900 mb-2 leading-heading">Licensed agents are available in 18 states.</h2>
+      <p class="text-slate-600 mb-8">Select your state to see local health insurance information and enrollment details.</p>
     <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
       {config.licensedStates.map((state) => (
         <a
@@ -163,6 +243,7 @@ const heroTools = [
           <span class="text-xs text-slate-500 mt-0.5">{state.name}</span>
         </a>
       ))}
+      </div>
     </div>
   </section>
 </BaseLayout>

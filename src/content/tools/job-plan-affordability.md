@@ -6,14 +6,14 @@ dateModified: "2026-02-15"
 toolType: "job-plan-affordability"
 faqs:
   - question: "What is the ACA affordability threshold?"
-    answer: "For 2026, employer coverage is generally considered affordable if the employee-only premium does not exceed approximately 9.02% of household income."
+    answer: "For 2026, employer coverage is generally considered affordable if the employee-only premium does not exceed approximately 9.96% of household income."
   - question: "What happens if my employer plan is not affordable?"
     answer: "If employer coverage is considered unaffordable under ACA guidelines, household members may be eligible to explore marketplace coverage with potential premium tax credits."
 ---
 
 ## What This Tool Does
 
-This tool helps determine whether an employer-sponsored health plan meets the ACA affordability standard. The ACA defines employer coverage as affordable when the employee-only premium for the lowest-cost plan does not exceed a set percentage of household income -- approximately 9.02% for 2026.
+This tool helps determine whether an employer-sponsored health plan meets the ACA affordability standard. The ACA defines employer coverage as affordable when the employee-only premium for the lowest-cost plan does not exceed a set percentage of household income -- approximately 9.96% for 2026.
 
 Understanding this threshold matters because access to affordable employer coverage generally affects eligibility for marketplace premium tax credits. If employer-sponsored insurance is considered affordable under ACA rules, household members covered by that offer typically cannot receive marketplace subsidies. Conversely, if the employer plan exceeds the affordability threshold, marketplace options with financial assistance may become available.
 

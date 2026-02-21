@@ -2,16 +2,12 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import AnswerBox from '../../components/AnswerBox.astro';
-import KeyTakeaways from '../../components/KeyTakeaways.astro';
 import AuthorBio from '../../components/AuthorBio.astro';
 import LastUpdated from '../../components/LastUpdated.astro';
-import FAQSection from '../../components/FAQSection.astro';
-import SourcesBox from '../../components/SourcesBox.astro';
-import { getBreadcrumbSchema, getArticleSchema, getFAQSchema } from '../../lib/schema';
+import { getBreadcrumbSchema, getArticleSchema } from '../../lib/schema';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('guides');
+  const entries = await getCollection('faq');
   return entries.map((entry) => {
     const slug = entry.id.replace(/\.md$/, '');
     return {
@@ -23,35 +19,27 @@ export async function getStaticPaths() {
 
 const { entry, slug } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, datePublished, dateModified, keyTakeaways, faqs } = entry.data;
+const { title, description, datePublished, dateModified } = entry.data;
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
-  { name: 'Guides', url: '/guides' },
-  { name: title, url: `/guides/${slug}` },
+  { name: 'FAQ', url: '/faq' },
+  { name: title, url: `/faq/${slug}` },
 ];
 
 const schemas = [
   getBreadcrumbSchema(breadcrumbs),
-  getArticleSchema({ title, description, url: `/guides/${slug}`, datePublished, dateModified }),
-  ...(faqs?.length ? [getFAQSchema(faqs)] : []),
-].filter(Boolean);
+  getArticleSchema({ title, description, url: `/faq/${slug}`, datePublished, dateModified }),
+];
 ---
 <BaseLayout title={`${title} | HealthInsuranceRenew`} description={description} schemas={schemas}>
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <Breadcrumbs items={breadcrumbs} />
     <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">{title}</h1>
     <LastUpdated date={dateModified} />
-    <AnswerBox answer={description} />
-    {keyTakeaways && keyTakeaways.length > 0 && <KeyTakeaways items={keyTakeaways} />}
     <div class="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-primary-600 hover:prose-a:text-primary-700 font-serif">
       <Content />
     </div>
-    {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
-    <SourcesBox sources={[
-      { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
-      { title: 'IRS - Affordable Care Act', url: 'https://www.irs.gov/affordable-care-act' },
-    ]} />
     <AuthorBio />
   </article>
 </BaseLayout>

@@ -7,6 +7,7 @@ const guides = defineCollection({
     description: z.string(),
     datePublished: z.string(),
     dateModified: z.string(),
+    keyTakeaways: z.array(z.string()).optional().default([]),
     faqs: z.array(z.object({
       question: z.string(),
       answer: z.string(),

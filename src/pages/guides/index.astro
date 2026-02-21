@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getBreadcrumbSchema } from '../../lib/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Guides', url: '/guides' },
+];
+
+const schemas = [getBreadcrumbSchema(breadcrumbs)];
+
+const entries = await getCollection('guides');
+
+const guides = entries.map((entry) => ({
+  title: entry.data.title,
+  description: entry.data.description,
+  dateModified: entry.data.dateModified,
+  slug: entry.id.replace(/\.md$/, ''),
+})).sort((a, b) => new Date(b.dateModified).getTime() - new Date(a.dateModified).getTime());
+---
+<BaseLayout
+  title="Health Insurance Guides | HealthInsuranceRenew"
+  description="Educational guides about ACA health insurance, marketplace enrollment, subsidies, special enrollment periods, and factors that affect coverage costs."
+  schemas={schemas}
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Health Insurance Guides</h1>
+    <p class="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
+      Clear, unbiased information about how ACA marketplace health insurance works, from enrollment to subsidies.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {guides.map((guide) => (
+        <a
+          href={`/guides/${guide.slug}`}
+          class="group block p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
+        >
+          <h2 class="text-lg font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-2">{guide.title}</h2>
+          <p class="text-sm text-slate-600 font-serif leading-relaxed mb-4">{guide.description}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400">Updated {guide.dateModified}</span>
+            <span class="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold group-hover:gap-2 transition-all">
+              Read
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

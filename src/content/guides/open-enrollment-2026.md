@@ -3,6 +3,11 @@ title: "Open Enrollment 2026: Dates, Process, and What to Expect"
 description: "A guide to the 2026 open enrollment period for ACA marketplace health insurance, including key dates, how to enroll, and what changes to anticipate for the upcoming plan year."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
+keyTakeaways:
+  - "Open enrollment for 2026 runs November 1, 2025 through January 15, 2026 on the federal exchange."
+  - "Enrolling by December 15 typically ensures coverage starts January 1."
+  - "Existing enrollees are auto-renewed but should review plans annually as costs and networks change."
+  - "State-based marketplaces may have different deadlines that extend beyond the federal window."
 faqs:
   - question: "What happens if the open enrollment deadline is missed?"
     answer: "Missing the open enrollment deadline means marketplace coverage cannot be obtained until the next enrollment period unless a qualifying life event triggers a special enrollment period. Examples of qualifying events include losing other health coverage, getting married, having a baby, or moving to a new state."
