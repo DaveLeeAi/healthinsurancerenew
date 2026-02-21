@@ -1,82 +1,183 @@
 ---
 import config from '../data/config.json';
+
+const currentYear = new Date().getFullYear();
+
+const aboutLinks = [
+  { label: 'About Health Insurance Renew', url: '/about' },
+  { label: 'Editorial Policy', url: '/editorial-policy' },
+  { label: 'How We Get Paid', url: '/how-we-get-paid' },
+  { label: 'Licensing Disclosures', url: '/licensing' },
+  { label: 'Privacy Policy', url: '/privacy' },
+  { label: 'Terms', url: '/terms' },
+  { label: 'Contact', url: '/contact' },
+];
+
+const guideLinks = [
+  { label: '2026 ACA Income Limits', url: '/aca-income-guide-2026' },
+  { label: 'What Income Counts (MAGI)', url: '/tools/what-income-counts' },
+  { label: 'Special Enrollment Periods', url: '/guides/special-enrollment-period' },
+  { label: 'Employer Affordability Test', url: '/employer-coverage-unaffordable-2026' },
+  { label: 'Self-Employed ACA Guide', url: '/self-employed-health-insurance-2026' },
+  { label: 'Early Retirement ACA Strategy', url: '/early-retirement-health-insurance-2026' },
+  { label: 'Open Enrollment 2026', url: '/guides/open-enrollment-2026' },
+];
+
+const stateLinks = config.licensedStates.map((s: { name: string; slug: string }) => ({
+  label: s.name,
+  url: `/states/${s.slug}`,
+}));
 ---
-<footer class="bg-slate-900 text-slate-300 mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+<footer class="bg-white border-t border-slate-200 mt-auto">
+  <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="hidden lg:grid lg:grid-cols-4 gap-10 mb-10">
       <div>
-        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Guides</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/guides/individual-family-health-insurance" class="hover:text-primary-300 transition-colors">Individual & Family Insurance</a></li>
-          <li><a href="/guides/open-enrollment-2026" class="hover:text-primary-300 transition-colors">Open Enrollment 2026</a></li>
-          <li><a href="/guides/how-aca-subsidies-work-2026" class="hover:text-primary-300 transition-colors">How Savings Work</a></li>
-          <li><a href="/guides/cobra-vs-marketplace-after-job-loss" class="hover:text-primary-300 transition-colors">COBRA vs. Marketplace</a></li>
-          <li><a href="/lost-job-health-insurance-2026" class="hover:text-primary-300 transition-colors">Lost Your Job?</a></li>
-          <li><a href="/self-employed-health-insurance-2026" class="hover:text-primary-300 transition-colors">Self-Employed Coverage</a></li>
-          <li><a href="/turning-26-health-insurance-options" class="hover:text-primary-300 transition-colors">Turning 26</a></li>
-          <li><a href="/early-retirement-health-insurance-2026" class="hover:text-primary-300 transition-colors">Early Retirement</a></li>
+        <h3 class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider mb-4">About</h3>
+        <ul class="space-y-2.5">
+          {aboutLinks.map((link) => (
+            <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+          ))}
         </ul>
       </div>
+
       <div>
-        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Tools</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/tools/income-savings-calculator" class="hover:text-primary-300 transition-colors">Estimate Your Savings</a></li>
-          <li><a href="/eligibility-check" class="hover:text-primary-300 transition-colors">Check If You Qualify</a></li>
-          <li><a href="/tools/job-plan-affordability" class="hover:text-primary-300 transition-colors">Does My Employer Plan Count?</a></li>
-          <li><a href="/tools/plan-comparison" class="hover:text-primary-300 transition-colors">Compare Plan Levels</a></li>
-          <li><a href="/tools/csr-estimator" class="hover:text-primary-300 transition-colors">Extra Savings on Silver</a></li>
-          <li><a href="/tools/family-coverage-estimator" class="hover:text-primary-300 transition-colors">Family Cost Estimator</a></li>
+        <h3 class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider mb-4">ACA Guides</h3>
+        <ul class="space-y-2.5">
+          {guideLinks.map((link) => (
+            <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+          ))}
         </ul>
       </div>
+
       <div>
-        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Reference</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/fpl-2026" class="hover:text-primary-300 transition-colors">2026 FPL Guidelines</a></li>
-          <li><a href="/csr-explained-2026" class="hover:text-primary-300 transition-colors">CSR Explained</a></li>
-          <li><a href="/aca-income-guide-2026" class="hover:text-primary-300 transition-colors">Savings by Income Level</a></li>
-          <li><a href="/glossary" class="hover:text-primary-300 transition-colors">Glossary</a></li>
-          <li><a href="/tools/what-income-counts" class="hover:text-primary-300 transition-colors">What Income Counts?</a></li>
-          <li><a href="/states" class="hover:text-primary-300 transition-colors">All 50 State Pages</a></li>
-          <li><a href="/employer-coverage-unaffordable-2026" class="hover:text-primary-300 transition-colors">Employer Plan Unaffordable?</a></li>
+        <h3 class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider mb-4">Licensed States</h3>
+        <ul class="space-y-2">
+          {stateLinks.map((link: { label: string; url: string }) => (
+            <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+          ))}
         </ul>
       </div>
+
       <div>
-        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Trust & Legal</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/about" class="hover:text-primary-300 transition-colors">About Us</a></li>
-          <li><a href="/editorial-policy" class="hover:text-primary-300 transition-colors">Editorial Policy</a></li>
-          <li><a href="/how-we-get-paid" class="hover:text-primary-300 transition-colors">How We Get Paid</a></li>
-          <li><a href="/licensing" class="hover:text-primary-300 transition-colors">Licensed Agent Disclosure</a></li>
-          <li><a href="/data-methodology" class="hover:text-primary-300 transition-colors">Data & Methodology</a></li>
-          <li><a href="/privacy" class="hover:text-primary-300 transition-colors">Privacy Policy</a></li>
-          <li><a href="/terms" class="hover:text-primary-300 transition-colors">Terms of Use</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contact</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/contact" class="hover:text-primary-300 transition-colors">Get Help</a></li>
-          <li><a href="/states" class="hover:text-primary-300 transition-colors">Available States</a></li>
-        </ul>
+        <h3 class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider mb-4">Trust & Compliance</h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm font-semibold text-[#0B1F3B]">Licensed U.S. Health Insurance Agent</p>
+            <p class="text-sm text-slate-600 mt-1">NPN: 7578729</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-slate-700">CMS Marketplace Certified</p>
+            <p class="text-xs text-slate-500 mt-1">Recognized for enrollment excellence during the 2023 Open Enrollment Period.</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-slate-700">Secure & Private Consultations</p>
+            <p class="text-xs text-slate-500 mt-1">Your information is handled with care and never sold to third parties.</p>
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Serving clients in {config.licensedStates.length} states: {config.licensedStates.map((s: { abbr: string }) => s.abbr).join(', ')}.
+            </p>
+          </div>
+          <ul class="space-y-2 pt-2 border-t border-slate-100">
+            <li><a href="/circle-of-champions" class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Circle of Champions Recognition</a></li>
+            <li><a href="/data-methodology" class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Data & Methodology</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="border-t border-slate-700 pt-8">
-      <div class="bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-700/60 p-4 mb-6">
-        <p class="text-xs text-slate-400 leading-relaxed">
-          <strong class="text-slate-300">Important:</strong> {config.siteName} is not a government website and is not affiliated with the federal Health Insurance Marketplace or any state exchange. This website is operated by licensed insurance agents and provides educational information about health insurance options. We may receive compensation from insurance carriers when you enroll through a licensed agent. Information on this site is for educational purposes only and does not constitute legal, tax, or benefits advice. Consult a qualified professional for advice specific to your situation.
+    <div class="lg:hidden space-y-0 mb-8" id="footer-accordion">
+      <div class="border-b border-slate-100">
+        <button class="footer-accordion-btn w-full flex items-center justify-between py-4 text-left" aria-expanded="false">
+          <span class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider">About</span>
+          <svg class="footer-chevron w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="footer-accordion-panel hidden pb-4">
+          <ul class="space-y-2.5">
+            {aboutLinks.map((link) => (
+              <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-b border-slate-100">
+        <button class="footer-accordion-btn w-full flex items-center justify-between py-4 text-left" aria-expanded="false">
+          <span class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider">ACA Guides</span>
+          <svg class="footer-chevron w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="footer-accordion-panel hidden pb-4">
+          <ul class="space-y-2.5">
+            {guideLinks.map((link) => (
+              <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-b border-slate-100">
+        <button class="footer-accordion-btn w-full flex items-center justify-between py-4 text-left" aria-expanded="false">
+          <span class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider">Licensed States</span>
+          <svg class="footer-chevron w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="footer-accordion-panel hidden pb-4">
+          <ul class="space-y-2">
+            {stateLinks.map((link: { label: string; url: string }) => (
+              <li><a href={link.url} class="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-b border-slate-100">
+        <button class="footer-accordion-btn w-full flex items-center justify-between py-4 text-left" aria-expanded="false">
+          <span class="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider">Trust & Compliance</span>
+          <svg class="footer-chevron w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="footer-accordion-panel hidden pb-4">
+          <div class="space-y-3">
+            <p class="text-sm font-semibold text-[#0B1F3B]">Licensed U.S. Health Insurance Agent</p>
+            <p class="text-sm text-slate-600">NPN: 7578729</p>
+            <p class="text-xs text-slate-500">CMS Marketplace Certified. Recognized for enrollment excellence during the 2023 Open Enrollment Period.</p>
+            <p class="text-xs text-slate-500">Serving clients in {config.licensedStates.length} states.</p>
+            <a href="/circle-of-champions" class="block text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Circle of Champions Recognition</a>
+            <a href="/data-methodology" class="block text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Data & Methodology</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-200 pt-8">
+      <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 mb-6">
+        <p class="text-xs text-slate-500 leading-relaxed">
+          <strong class="text-slate-600">Important:</strong> {config.siteName} is not a government website and is not affiliated with Healthcare.gov or any government agency. This website is operated by a licensed health insurance agent (NPN: 7578729) and provides educational information about health insurance options. We may receive compensation from insurance carriers when you enroll through a licensed agent. Information on this site is for educational purposes only and does not constitute legal, tax, or benefits advice.
         </p>
       </div>
-      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-slate-500 mb-4">
-        <a href="/editorial-policy" class="hover:text-slate-400 transition-colors">Editorial Policy</a>
-        <a href="/how-we-get-paid" class="hover:text-slate-400 transition-colors">How We Make Money</a>
-        <a href="/data-methodology" class="hover:text-slate-400 transition-colors">Data Sources</a>
-        <a href="/licensing" class="hover:text-slate-400 transition-colors">Licensed Agent Disclosure</a>
-        <a href="/contact" class="hover:text-slate-400 transition-colors">Contact</a>
-      </div>
-      <p class="text-xs text-slate-500 text-center">
-        &copy; {new Date().getFullYear()} {config.siteName}. All rights reserved.
+      <p class="text-xs text-slate-400 text-center">
+        &copy; {currentYear} {config.siteName}. All rights reserved.
       </p>
     </div>
   </div>
 </footer>
+
+<script>
+  document.querySelectorAll('.footer-accordion-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = btn.nextElementSibling;
+      const chevron = btn.querySelector('.footer-chevron');
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      document.querySelectorAll('.footer-accordion-btn').forEach((otherBtn) => {
+        if (otherBtn !== btn) {
+          otherBtn.setAttribute('aria-expanded', 'false');
+          otherBtn.nextElementSibling?.classList.add('hidden');
+          otherBtn.querySelector('.footer-chevron')?.classList.remove('rotate-180');
+        }
+      });
+
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      panel?.classList.toggle('hidden');
+      chevron?.classList.toggle('rotate-180');
+    });
+  });
+</script>
