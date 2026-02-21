@@ -16,6 +16,13 @@
         "dateModified": {
           "type": "string"
         },
+        "keyTakeaways": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
         "faqs": {
           "type": "array",
           "items": {
