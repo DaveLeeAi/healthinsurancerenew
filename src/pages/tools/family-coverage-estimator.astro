@@ -1,0 +1,288 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AnswerBox from '../../components/AnswerBox.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import LastUpdated from '../../components/LastUpdated.astro';
+import AuthorBio from '../../components/AuthorBio.astro';
+import SourcesBox from '../../components/SourcesBox.astro';
+import { getBreadcrumbSchema, getArticleSchema, getFAQSchema, getSoftwareApplicationSchema } from '../../lib/schema';
+import fplData from '../../data/fpl-current.json';
+import contributionData from '../../data/contribution-scale.json';
+import benchmarkData from '../../data/family-coverage-benchmarks.json';
+import metalTiers from '../../data/metal-tiers.json';
+
+const entry = await getEntry('tools', 'family-coverage-estimator');
+const { Content } = await render(entry);
+const { title, description, datePublished, dateModified, faqs } = entry.data;
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Tools', url: '/tools' },
+  { name: 'Family Coverage Estimator', url: '/tools/family-coverage-estimator' },
+];
+
+const schemas = [
+  getBreadcrumbSchema(breadcrumbs),
+  getArticleSchema({ title, description, url: '/tools/family-coverage-estimator', datePublished, dateModified }),
+  getSoftwareApplicationSchema({ name: title, description, url: '/tools/family-coverage-estimator' }),
+  ...(faqs?.length ? [getFAQSchema(faqs)] : []),
+].filter(Boolean);
+---
+
+<BaseLayout title={title} description={description} schemas={schemas}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">{title}</h1>
+
+    <AnswerBox answer="Enter your family size and income to estimate monthly health insurance costs across plan tiers, including potential premium tax credit savings." />
+
+    <Disclaimer variant="tool" />
+
+    <div class="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-4 mb-6">
+      <p class="text-sm text-slate-600 leading-relaxed">
+        This website is not affiliated with any federal or state government agency. Information provided here is for educational purposes only.
+      </p>
+    </div>
+
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-semibold text-slate-800 mb-2">Family Coverage Cost Estimator</h2>
+      <p class="text-sm text-slate-600 mb-5">
+        Estimate monthly premiums and potential subsidy savings for your family across Bronze, Silver, Gold, and Platinum plan tiers.
+      </p>
+
+      <form id="family-form" class="space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="num-adults" class="block text-sm font-medium text-slate-700 mb-1">Number of Adults</label>
+            <select
+              id="num-adults"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            >
+              <option value="1">1 adult</option>
+              <option value="2" selected>2 adults</option>
+            </select>
+          </div>
+          <div>
+            <label for="num-children" class="block text-sm font-medium text-slate-700 mb-1">Number of Children (under 21)</label>
+            <select
+              id="num-children"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            >
+              <option value="0">0 children</option>
+              <option value="1">1 child</option>
+              <option value="2" selected>2 children</option>
+              <option value="3">3 children</option>
+              <option value="4">4 children</option>
+              <option value="5">5 children</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="annual-income" class="block text-sm font-medium text-slate-700 mb-1">Annual Household Income ($)</label>
+          <input
+            type="number"
+            id="annual-income"
+            placeholder="e.g. 65000"
+            min="0"
+            step="100"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          />
+        </div>
+
+        <div id="form-error" class="hidden rounded-lg bg-error-50 border border-error-200 px-4 py-2.5 text-sm text-error-700" role="alert" aria-live="polite"></div>
+
+        <div class="flex gap-3">
+          <button
+            type="submit"
+            class="px-6 py-2.5 rounded-xl bg-navy-900 text-white font-medium hover:bg-navy-800 transition-colors"
+          >
+            Estimate Family Costs
+          </button>
+          <button
+            type="button"
+            id="reset-btn"
+            class="px-6 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <div id="results" class="hidden mt-6 border-t border-slate-200 pt-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-4">Educational Estimate</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">Household Size</p>
+            <p id="result-household" class="text-xl font-bold text-slate-900 mt-1">--</p>
+          </div>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">Income as % of FPL</p>
+            <p id="result-fpl-percent" class="text-xl font-bold text-slate-900 mt-1">--</p>
+          </div>
+          <div class="bg-primary-50/80 backdrop-blur-sm rounded-xl p-4">
+            <p class="text-sm text-slate-600 font-medium">Est. Monthly Tax Credit</p>
+            <p id="result-credit" class="text-xl font-bold text-green-700 mt-1">--</p>
+          </div>
+        </div>
+
+        <h4 class="text-base font-semibold text-slate-800 mb-3">Estimated Monthly Cost by Plan Tier</h4>
+        <div id="tier-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4"></div>
+
+        <div id="result-context" class="rounded-lg p-4 mb-4 bg-primary-50 border border-primary-200">
+          <p id="context-text" class="text-sm leading-relaxed text-primary-700">--</p>
+        </div>
+
+        <p class="text-xs text-slate-500 mt-4">
+          This is a general educational estimate using national average benchmark premiums. Actual costs depend on age, location, tobacco use, and specific plan selection. Use Healthcare.gov or a state exchange for accurate premium quotes.
+        </p>
+      </div>
+    </div>
+
+    <div class="prose prose-neutral max-w-none mb-8 prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-primary-600 hover:prose-a:text-primary-800 font-serif">
+      <Content />
+    </div>
+
+    <LastUpdated date={dateModified} />
+
+    {faqs?.length > 0 && <FAQSection faqs={faqs} />}
+
+    <SourcesBox sources={[
+      { title: 'Healthcare.gov - Health Coverage for Families', url: 'https://www.healthcare.gov/see-plans/' },
+      { title: 'KFF Health Insurance Marketplace Calculator', url: 'https://www.kff.org/interactive/subsidy-calculator/' },
+      { title: 'HHS Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
+      { title: 'CMS - Premium Tax Credit Information', url: 'https://www.cms.gov/marketplace/technical-assistance-resources/aptc-csr' },
+    ]} />
+
+    <AuthorBio />
+  </div>
+</BaseLayout>
+
+<script define:vars={{ fplData, contributionData, benchmarkData, metalTiers }}>
+  document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('family-form');
+    var resultsDiv = document.getElementById('results');
+    var resetBtn = document.getElementById('reset-btn');
+    var errorDiv = document.getElementById('form-error');
+
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorDiv.classList.add('hidden');
+    }
+
+    function getFPL(size) {
+      if (size <= 6) {
+        return fplData.guidelines['household_' + size];
+      }
+      return fplData.guidelines['household_6'] + fplData.guidelines.additionalPerson * (size - 6);
+    }
+
+    function findBand(fplPercent) {
+      for (var i = 0; i < contributionData.bands.length; i++) {
+        var band = contributionData.bands[i];
+        if (fplPercent >= band.minFPL && fplPercent < band.maxFPL) {
+          return band;
+        }
+      }
+      return contributionData.bands[contributionData.bands.length - 1];
+    }
+
+    function getBenchmarkPremium(adults, children) {
+      return adults * benchmarkData.adultBasePremium + Math.min(children, 3) * benchmarkData.childOnlyPremium;
+    }
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString();
+    }
+
+    var tierMultipliers = { Bronze: 0.80, Silver: 1.0, Gold: 1.18, Platinum: 1.35 };
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      hideError();
+
+      var adults = parseInt(document.getElementById('num-adults').value, 10);
+      var children = parseInt(document.getElementById('num-children').value, 10);
+      var incomeVal = document.getElementById('annual-income').value;
+
+      if (!incomeVal) {
+        showError('Please enter your annual household income.');
+        return;
+      }
+
+      var income = parseFloat(incomeVal);
+      if (income <= 0) {
+        showError('Please enter a valid income amount greater than zero.');
+        return;
+      }
+
+      var householdSize = adults + children;
+      var fpl = getFPL(householdSize);
+      var fplPercent = (income / fpl) * 100;
+      var band = findBand(fplPercent);
+
+      var benchmarkMonthly = getBenchmarkPremium(adults, children);
+      var maxContribPercent = band.maxPercent;
+      var monthlyContrib = (maxContribPercent / 100) * income / 12;
+      var monthlyCredit = Math.max(0, benchmarkMonthly - monthlyContrib);
+
+      document.getElementById('result-household').textContent = householdSize + (householdSize === 1 ? ' person' : ' people');
+      document.getElementById('result-fpl-percent').textContent = fplPercent.toFixed(0) + '%';
+      document.getElementById('result-credit').textContent = fmt(monthlyCredit) + '/mo';
+
+      var cardsContainer = document.getElementById('tier-cards');
+      cardsContainer.innerHTML = '';
+
+      metalTiers.tiers.forEach(function (tier) {
+        var multiplier = tierMultipliers[tier.name] || 1.0;
+        var tierPremium = benchmarkMonthly * multiplier;
+        var afterCredit = Math.max(0, tierPremium - monthlyCredit);
+
+        var card = document.createElement('div');
+        var borderColor = tier.name === 'Silver' ? 'border-primary-300 ring-2 ring-primary-100' : 'border-slate-200';
+        card.className = 'rounded-xl border ' + borderColor + ' bg-white p-4';
+
+        var badge = tier.name === 'Silver' ? '<span class="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-medium ml-2">Benchmark</span>' : '';
+
+        card.innerHTML =
+          '<p class="text-sm font-semibold text-slate-800 mb-3">' + tier.name + badge + '</p>' +
+          '<p class="text-xs text-slate-500 mb-1">Full premium</p>' +
+          '<p class="text-sm text-slate-400 line-through">' + fmt(tierPremium) + '/mo</p>' +
+          '<p class="text-xs text-slate-500 mt-2 mb-1">After estimated credit</p>' +
+          '<p class="text-2xl font-bold text-slate-900">' + fmt(afterCredit) + '<span class="text-sm font-normal text-slate-500">/mo</span></p>' +
+          '<p class="text-xs text-slate-500 mt-2">' + tier.actuarialValue + '% actuarial value</p>';
+
+        cardsContainer.appendChild(card);
+      });
+
+      var contextText = '';
+      if (fplPercent < 100) {
+        contextText = 'At income below 100% of the Federal Poverty Level, Medicaid may be available in states that have expanded eligibility. Marketplace premium tax credits generally require income at or above 100% FPL.';
+      } else if (fplPercent < 250) {
+        contextText = 'At ' + fplPercent.toFixed(0) + '% of FPL, this household may also qualify for cost-sharing reductions (CSRs) on Silver plans, which lower deductibles and copays. Selecting a Silver plan could provide additional savings beyond the premium tax credit shown above.';
+      } else if (fplPercent < 400) {
+        contextText = 'At ' + fplPercent.toFixed(0) + '% of FPL, this household is estimated to be eligible for premium tax credits. While cost-sharing reductions are not available above 250% FPL, the monthly premium credit can significantly reduce costs across all plan tiers.';
+      } else {
+        contextText = 'At ' + fplPercent.toFixed(0) + '% of FPL, under current enhanced subsidy rules, marketplace enrollees are generally not expected to pay more than 8.5% of income for a benchmark Silver plan. Premium tax credits may still be available to reduce monthly costs.';
+      }
+
+      document.getElementById('context-text').textContent = contextText;
+      resultsDiv.classList.remove('hidden');
+    });
+
+    resetBtn.addEventListener('click', function () {
+      form.reset();
+      resultsDiv.classList.add('hidden');
+      hideError();
+    });
+  });
+</script>

@@ -1,0 +1,38 @@
+{
+  "year": 2026,
+  "benchmarks": {
+    "individual": {
+      "avgBenchmarkPremium": 520,
+      "label": "1 Adult"
+    },
+    "couple": {
+      "avgBenchmarkPremium": 1040,
+      "label": "2 Adults"
+    },
+    "singleParent1": {
+      "avgBenchmarkPremium": 780,
+      "label": "1 Adult + 1 Child"
+    },
+    "singleParent2": {
+      "avgBenchmarkPremium": 1040,
+      "label": "1 Adult + 2 Children"
+    },
+    "family3": {
+      "avgBenchmarkPremium": 1300,
+      "label": "2 Adults + 1 Child"
+    },
+    "family4": {
+      "avgBenchmarkPremium": 1560,
+      "label": "2 Adults + 2 Children"
+    },
+    "family5": {
+      "avgBenchmarkPremium": 1820,
+      "label": "2 Adults + 3 Children"
+    }
+  },
+  "childOnlyPremium": 260,
+  "adultBasePremium": 520,
+  "note": "Benchmark premiums are approximate national averages for second-lowest-cost Silver plans. Actual premiums vary significantly by location, age, and tobacco use.",
+  "updated": "2025-10-01",
+  "source": "KFF Health Insurance Marketplace Calculator, CMS ASPE Research"
+}

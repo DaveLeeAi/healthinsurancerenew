@@ -1,0 +1,55 @@
+{
+  "year": 2026,
+  "tiers": [
+    {
+      "name": "Silver 94",
+      "minFPL": 100,
+      "maxFPL": 150,
+      "actuarialValue": 94,
+      "deductible": 75,
+      "oopMax": 1300,
+      "description": "Highest level of cost-sharing reductions. Very low deductibles and out-of-pocket costs.",
+      "copayPrimary": 5,
+      "copaySpecialist": 10,
+      "copayGenericRx": 3
+    },
+    {
+      "name": "Silver 87",
+      "minFPL": 150,
+      "maxFPL": 200,
+      "actuarialValue": 87,
+      "deductible": 650,
+      "oopMax": 2900,
+      "description": "Strong cost-sharing reductions with moderate deductibles and low out-of-pocket maximums.",
+      "copayPrimary": 15,
+      "copaySpecialist": 30,
+      "copayGenericRx": 5
+    },
+    {
+      "name": "Silver 73",
+      "minFPL": 200,
+      "maxFPL": 250,
+      "actuarialValue": 73,
+      "deductible": 3500,
+      "oopMax": 6800,
+      "description": "Moderate cost-sharing reductions. Lower costs than a standard Silver plan.",
+      "copayPrimary": 35,
+      "copaySpecialist": 55,
+      "copayGenericRx": 15
+    },
+    {
+      "name": "Standard Silver",
+      "minFPL": 250,
+      "maxFPL": 999,
+      "actuarialValue": 70,
+      "deductible": 5000,
+      "oopMax": 9200,
+      "description": "Standard Silver plan without enhanced cost-sharing reductions.",
+      "copayPrimary": 45,
+      "copaySpecialist": 75,
+      "copayGenericRx": 20
+    }
+  ],
+  "updated": "2025-10-01",
+  "source": "Healthcare.gov, CMS Actuarial Value Calculator"
+}
