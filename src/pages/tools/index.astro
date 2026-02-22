@@ -13,7 +13,7 @@ const schemas = [getBreadcrumbSchema(breadcrumbs)];
 const primaryTools = [
   {
     title: 'Estimate Your Savings',
-    description: 'See how your income could lower your monthly health insurance costs. Enter your household size and income to get a quick estimate of your potential premium tax credit.',
+    description: 'Calculate how much your income could reduce your monthly premiums. Enter your household size and income to see your potential tax credit.',
     url: '/tools/income-savings-calculator',
     cta: 'Estimate Now',
     icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
@@ -22,7 +22,7 @@ const primaryTools = [
   },
   {
     title: 'Check If You Qualify',
-    description: 'Walk through the main eligibility factors step by step -- employer coverage, income, household size, Medicaid, and special enrollment. Understand where you stand before you apply.',
+    description: 'Assess your eligibility based on income, household size, employer coverage, and Medicaid status. Understand your position before applying.',
     url: '/eligibility-check',
     cta: 'Start Eligibility Check',
     icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
@@ -31,7 +31,7 @@ const primaryTools = [
   },
   {
     title: 'Does My Employer Plan Count?',
-    description: 'Find out if your job-based health plan is considered affordable under ACA rules. If it is not, you may qualify for marketplace savings instead.',
+    description: 'Check if your job-based coverage meets ACA affordability standards. If it falls short, you may qualify for marketplace subsidies.',
     url: '/tools/job-plan-affordability',
     cta: 'Check Affordability',
     icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
@@ -40,7 +40,7 @@ const primaryTools = [
   },
   {
     title: 'Compare COBRA vs. Marketplace',
-    description: 'Lost your job? See how COBRA stacks up against a marketplace plan with subsidies. Understand the cost difference, coverage tradeoffs, and deadlines.',
+    description: 'Compare costs, coverage, and deadlines if you\'ve lost your job. See how marketplace plans with subsidies stack up against COBRA.',
     url: '/guides/cobra-vs-marketplace-after-job-loss',
     cta: 'Compare Options',
     icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
@@ -52,25 +52,25 @@ const primaryTools = [
 const moreTools = [
   {
     title: 'What Income Counts?',
-    description: 'Learn which types of income the marketplace uses to figure out your savings.',
+    description: 'Discover which types of earnings the marketplace counts when calculating your eligibility.',
     url: '/tools/what-income-counts',
     icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
   },
   {
     title: 'Compare Plan Levels',
-    description: 'See the differences between Bronze, Silver, Gold, and Platinum plans side by side.',
+    description: 'Compare Bronze, Silver, Gold, and Platinum plans side by side to understand coverage and costs.',
     url: '/tools/plan-comparison',
     icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',
   },
   {
     title: 'Check for Extra Savings on Silver Plans',
-    description: 'See if you qualify for lower copays, deductibles, and out-of-pocket costs on a Silver plan.',
+    description: 'Determine your eligibility for reduced copays and deductibles on Silver plan coverage.',
     url: '/tools/csr-estimator',
     icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
   },
   {
     title: 'Estimate Your Family\'s Costs',
-    description: 'See what your whole family might pay each month across all plan levels.',
+    description: 'Project your family\'s total monthly costs across all plan tiers.',
     url: '/tools/family-coverage-estimator',
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
   },
@@ -85,7 +85,7 @@ const moreTools = [
     <Breadcrumbs items={breadcrumbs} />
     <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 leading-heading mb-4">Free 2026 ACA Tools</h1>
     <p class="text-lg text-slate-600 mb-10 max-w-2xl font-serif">
-      Answer a few simple questions and get a quick estimate. No account needed. These tools give general estimates for learning purposes only.
+      Get personalized estimates with our free tools. These calculations use official federal guidelines and help you understand your coverage options before you apply.
     </p>
 
     <div class="space-y-5 mb-12">
@@ -137,7 +137,7 @@ const moreTools = [
       <h2 class="text-xl font-bold text-slate-900 mb-4">How These Tools Help You</h2>
       <div class="text-slate-700 leading-relaxed font-serif space-y-4">
         <p>
-          Every tool on this page uses the same official data that the ACA marketplace uses -- Federal Poverty Level guidelines, IRS contribution percentages, and CMS cost-sharing standards. We run straightforward math with your inputs to give you a ballpark estimate.
+          Every tool uses official ACA data -- Federal Poverty Level guidelines, IRS contribution percentages, and CMS cost-sharing standards. We perform straightforward calculations to give you an accurate preliminary estimate.
         </p>
         <p>
           The goal is to help you understand your situation <em>before</em> you start the enrollment process. Knowing roughly what you qualify for means fewer surprises when you apply and makes it easier to compare your options.
