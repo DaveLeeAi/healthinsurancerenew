@@ -64,16 +64,16 @@ def main() -> None:
         return
 
     print(f"\n{'=' * 70}")
-    print(f"PUF FILE INSPECTION — {len(files)} file(s)")
+    print(f"PUF FILE INSPECTION -- {len(files)} file(s)")
     print(f"{'=' * 70}")
 
     for filepath in files:
         result = inspect_csv(filepath)
-        print(f"\n{'─' * 70}")
-        print(f"📄 {result['file']}  ({result['size_mb']} MB)")
+        print(f"\n{'-' * 70}")
+        print(f"FILE: {result['file']}  ({result['size_mb']} MB)")
 
         if "error" in result:
-            print(f"   ❌ Error: {result['error']}")
+            print(f"   ERROR: {result['error']}")
             continue
 
         print(f"   Rows: {result['rows']:,}")

@@ -134,9 +134,9 @@ def main() -> None:
     for slug, files in results.items():
         for f in files:
             size_mb = f.stat().st_size / 1024 / 1024
-            print(f"  ✓ {f.name} ({size_mb:.1f} MB)")
+            print(f"  OK {f.name} ({size_mb:.1f} MB)")
     for slug, err in errors.items():
-        print(f"  ✗ {slug}: {err}")
+        print(f"  FAIL {slug}: {err}")
     print(f"\nSuccess: {len(results)}/{len(slugs)} | Failed: {len(errors)}/{len(slugs)}")
 
 
