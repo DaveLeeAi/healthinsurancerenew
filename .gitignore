@@ -153,6 +153,8 @@ data/processed/formulary_sample.json
 data/processed/sbc_decoded.json
 # Regenerate with: python scripts/fetch/fetch_formulary_full.py
 data/processed/formulary_intelligence.json
+data/processed/formulary_intelligence.meta.json
+data/processed/formulary_errors.json
 
 # Python
 __pycache__/

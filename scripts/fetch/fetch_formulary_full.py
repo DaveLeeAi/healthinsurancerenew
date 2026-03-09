@@ -297,9 +297,18 @@ class StreamingJsonWriter:
         self._started = False
 
     def write_header(self, metadata: dict[str, Any]) -> None:
-        """Write the opening JSON structure with metadata placeholder."""
+        """Write the opening JSON structure with a fixed-size metadata placeholder.
+
+        We reserve METADATA_RESERVE bytes for the metadata JSON so that finalize()
+        can overwrite it in-place without rewriting the entire multi-GB file.
+        """
+        self.METADATA_RESERVE = 2048  # bytes reserved for metadata JSON
+        meta_json = json.dumps(metadata, default=str)
+        # Pad with spaces to fill the reserved block
+        padded = meta_json.ljust(self.METADATA_RESERVE)
         self.f.write('{\n  "metadata": ')
-        json.dump(metadata, self.f, default=str)
+        self._meta_offset = self.f.tell()  # save position for later overwrite
+        self.f.write(padded)
         self.f.write(',\n  "data": [\n')
         self._started = True
 
@@ -312,22 +321,29 @@ class StreamingJsonWriter:
             self.record_count += 1
 
     def finalize(self, metadata: dict[str, Any]) -> None:
-        """Close the JSON structure. Rewrites the file header with final metadata."""
+        """Close the JSON array and overwrite the metadata placeholder in-place.
+
+        Uses the reserved fixed-size block written by write_header() so we never
+        need to read the entire multi-GB file back into memory.
+        """
         self.f.write("\n  ]\n}\n")
+        self.f.flush()
         self.f.close()
 
-        # Now rewrite the metadata at the top with final counts
-        # Read the data portion back
-        with open(self.path, "r", encoding="utf-8") as f:
-            content = f.read()
+        # Overwrite the metadata placeholder in-place using the reserved block
+        meta_json = json.dumps(metadata, default=str)
+        if len(meta_json) > self.METADATA_RESERVE:
+            logger.warning(f"Metadata JSON ({len(meta_json)} bytes) exceeds reserved "
+                           f"block ({self.METADATA_RESERVE} bytes). Writing to sidecar file.")
+            sidecar = self.path.with_suffix(".meta.json")
+            with open(sidecar, "w") as f:
+                json.dump(metadata, f, indent=2, default=str)
+            return
 
-        # Find where data array starts and replace metadata
-        data_start = content.index('"data": [')
-        new_header = '{\n  "metadata": ' + json.dumps(metadata, default=str) + ',\n  '
-        final_content = new_header + content[content.index('"data":'):]
-
-        with open(self.path, "w", encoding="utf-8") as f:
-            f.write(final_content)
+        padded = meta_json.ljust(self.METADATA_RESERVE)
+        with open(self.path, "r+", encoding="utf-8") as f:
+            f.seek(self._meta_offset)
+            f.write(padded)
 
     def close_without_finalize(self) -> None:
         """Emergency close."""
