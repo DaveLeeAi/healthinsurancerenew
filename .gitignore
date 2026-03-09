@@ -144,6 +144,10 @@ data/raw/*
 *.csv
 *.zip
 
+# Large processed datasets (>100MB, exceed GitHub limit)
+# Regenerate with: python scripts/etl/build_plan_intelligence.py
+data/processed/plan_intelligence.json
+
 # Python
 __pycache__/
 *.pyc
