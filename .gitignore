@@ -149,6 +149,8 @@ data/raw/*
 data/processed/plan_intelligence.json
 # Regenerate with: python scripts/fetch/fetch_formulary.py
 data/processed/formulary_sample.json
+# Regenerate with: python scripts/etl/build_sbc_from_puf.py
+data/processed/sbc_decoded.json
 
 # Python
 __pycache__/
