@@ -147,6 +147,8 @@ data/raw/*
 # Large processed datasets (>100MB, exceed GitHub limit)
 # Regenerate with: python scripts/etl/build_plan_intelligence.py
 data/processed/plan_intelligence.json
+# Regenerate with: python scripts/fetch/fetch_formulary.py
+data/processed/formulary_sample.json
 
 # Python
 __pycache__/
