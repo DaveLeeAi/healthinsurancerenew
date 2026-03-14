@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /c/Users/Stuart/Downloads/\"Claude Code\"/healthinsurancerenew)",
+      "Bash(for dir in scripts/fetch scripts/etl scripts/generate data/processed data/schema site docs)",
+      "Bash(do touch \"$dir/.gitkeep\")",
+      "Bash(done)",
+      "WebFetch(domain:data.healthcare.gov)",
+      "WebFetch(domain:www.cms.gov)",
+      "Bash(python scripts/fetch/fetch_puf.py --only service-area-puf plan-attributes-puf rate-puf machine-readable-url-puf benefits-and-cost-sharing-puf)",
+      "Bash(ls /c/Python*/python.exe)",
+      "Read(//c/Users/Stuart/AppData/Local/Programs/**)",
+      "Bash(py --version)",
+      "Bash(where.exe python)",
+      "Read(//c/Users/Stuart/miniconda3/**)",
+      "Read(//c/Users/Stuart/anaconda3/**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/Stuart/.pyenv/pyenv-win/**)",
+      "Bash(winget install Python.Python.3.11 --accept-package-agreements --accept-source-agreements)",
+      "Bash(export PATH=\"/c/Users/Stuart/AppData/Local/Programs/Python/Python311:/c/Users/Stuart/AppData/Local/Programs/Python/Python311/Scripts:$PATH\")",
+      "Bash(pip install -r /c/Users/Stuart/Downloads/\"Claude Code\"/healthinsurancerenew/requirements.txt)",
+      "Bash(python scripts/fetch/inspect_puf.py)",
+      "Bash(python -c \":*)",
+      "Bash(pip install openpyxl)",
+      "Bash(python scripts/etl/build_plan_intelligence.py)",
+      "Bash(python scripts/etl/build_subsidy_engine.py)",
+      "Bash(python scripts/etl/build_rate_volatility.py)",
+      "Bash(ls -lh data/processed/*.json)",
+      "Bash(python scripts/fetch/fetch_formulary.py --limit 10)",
+      "Bash(python scripts/fetch/fetch_formulary.py --limit 20)",
+      "Bash(/c/Users/Stuart/AppData/Local/Programs/Python/Python311/python.exe -c \":*)",
+      "Bash(/c/Users/Stuart/AppData/Local/Programs/Python/Python311/python.exe scripts/etl/build_sbc_from_puf.py)",
+      "Bash(/c/Users/Stuart/AppData/Local/Programs/Python/Python311/python.exe scripts/fetch/fetch_formulary_full.py --limit 5)",
+      "Bash(/c/Users/Stuart/AppData/Local/Programs/Python/Python311/python.exe scripts/fetch/fetch_formulary_full.py --limit 0)",
+      "Read(//c/Users/Stuart/AppData/Local/Temp/claude/c--Users-Stuart-Downloads-Claude-Code-healthinsurancerenew/tasks/**)",
+      "Bash(tasklist)",
+      "Bash(/c/Users/Stuart/AppData/Local/Programs/Python/Python311/python.exe -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d[''metadata''],indent=2\\)\\); print\\(f\"\"\\\\nTotal errors so far: {len\\(d[''errors'']\\)}\"\"\\)\")",
+      "Read(//c/Users/Stuart/Downloads/Claude Code/healthinsurancerenew/**)"
+    ]
+  }
+}
