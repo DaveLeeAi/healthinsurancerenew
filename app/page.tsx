@@ -17,6 +17,8 @@ const guides = [
   { title: 'Turning 26? Your Insurance Options', description: "Aging off a parent's plan? Understand your marketplace, employer, and Medicaid options.", url: '/turning-26-health-insurance-options' },
   { title: 'Early Retirement Health Insurance', description: 'Bridge the gap between retirement and Medicare with ACA marketplace coverage.', url: '/early-retirement-health-insurance-2026' },
   { title: 'ACA Savings by Income Level', description: 'Understand subsidies and assistance at every income level, from Medicaid to coverage limits.', url: '/aca-income-guide-2026' },
+  { title: 'Lost Your Job? Health Insurance Options', description: 'Compare ACA marketplace plans, COBRA, and Medicaid after a job loss. Includes 2026 costs and enrollment deadlines.', url: '/lost-job-health-insurance-2026' },
+  { title: 'Self-Employed Health Insurance 2026', description: 'How self-employed individuals can maximize ACA subsidies, deduct premiums, and choose the right plan on variable income.', url: '/self-employed-health-insurance-2026' },
 ]
 
 const tools = [

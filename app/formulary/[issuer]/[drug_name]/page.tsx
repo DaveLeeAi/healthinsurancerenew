@@ -336,7 +336,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                   className="block p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
                 >
                   <span className="text-sm font-medium text-primary-700">
-                    {ins.name ?? `Issuer ${ins.id}`}
+                    {ins.name}
                   </span>
                   {ins.tier && (
                     <span className="block text-xs text-neutral-500 mt-0.5">
@@ -417,7 +417,7 @@ function titleCase(str: string): string {
 
 interface IssuerInfo {
   id: string
-  name?: string
+  name: string
   tier?: string
 }
 
@@ -463,7 +463,9 @@ function getUniqueIssuers(drugs: FormularyDrug[]): IssuerInfo[] {
     const ids = d.issuer_ids ?? (d.issuer_id ? [d.issuer_id] : [])
     for (const id of ids) {
       if (!seen.has(id)) {
-        seen.set(id, { id, name: d.issuer_name, tier: d.drug_tier })
+        const name = getIssuerName(id)
+        if (!name) continue
+        seen.set(id, { id, name, tier: d.drug_tier })
       }
     }
   }

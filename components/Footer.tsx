@@ -42,6 +42,8 @@ const resourceLinks = [
   { label: 'Tools', url: '/tools' },
   { label: 'States', url: '/states' },
   { label: 'Glossary', url: '/glossary' },
+  { label: 'Lost Your Job?', url: '/lost-job-health-insurance-2026' },
+  { label: 'Self-Employed Coverage', url: '/self-employed-health-insurance-2026' },
 ]
 
 const companyLinks = [

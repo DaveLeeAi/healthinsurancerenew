@@ -1,0 +1,11 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Family Coverage Estimator | HealthInsuranceRenew',
+  description:
+    'Estimate ACA health insurance costs for your family in 2025. Compare premiums, deductibles, and out-of-pocket maximums across metal tiers and family sizes.',
+}
+
+export default function FamilyCoverageEstimatorLayout({ children }: { children: React.ReactNode }) {
+  return children
+}

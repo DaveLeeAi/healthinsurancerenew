@@ -171,7 +171,7 @@ export default function LifeEventsIndexPage() {
             situation and determine your enrollment options at no cost.
           </p>
           <a
-            href="https://healthinsurancerenew.com/contact"
+            href="/contact"
             className="inline-block px-6 py-2.5 bg-federal-700 text-white text-sm font-semibold rounded-lg hover:bg-federal-800 transition-colors"
           >
             Get Free Help
