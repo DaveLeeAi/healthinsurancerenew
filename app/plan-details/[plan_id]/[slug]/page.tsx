@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function dollars(val: number | undefined | null): string {
-  if (val == null) return 'N/A'
+  if (val == null) return 'See plan documents'
   return `$${val.toLocaleString()}`
 }
 
@@ -116,8 +116,12 @@ export default async function PlanDetailsPage({ params }: Props) {
 
   const sbc = await getSbcByPlanVariantId(plan.plan_variant_id ?? params.plan_id)
 
-  // Editorial content
-  const editorial = sbc ? generateSbcContent({ plan, sbc, planYear: PLAN_YEAR }) : null
+  // Editorial content — always generate; fall back to empty sbc shell when data not available
+  const editorial = generateSbcContent({
+    plan,
+    sbc: sbc ?? { plan_variant_id: plan.plan_variant_id ?? '', cost_sharing_grid: {}, exclusions: [] },
+    planYear: PLAN_YEAR,
+  })
 
   // Entity links
   const hasDentalEquivalent = getDentalByState(plan.state_code).some(
@@ -237,6 +241,12 @@ export default async function PlanDetailsPage({ params }: Props) {
           />
         </section>
 
+        {/* What This Means For You */}
+        <WhatThisMeansForYou metalLevel={plan.metal_level} />
+
+        {/* Real-World Cost Examples */}
+        <RealWorldCostExamples metalLevel={plan.metal_level} deductibleIndividual={plan.deductible_individual} />
+
         {/* Cost-sharing grid */}
         {sbc ? (
           <div className="mb-10">
@@ -335,6 +345,120 @@ export default async function PlanDetailsPage({ params }: Props) {
         />
       </main>
     </>
+  )
+}
+
+// ─── What This Means For You ─────────────────────────────────────────────────
+
+const METAL_GUIDANCE: Record<string, string> = {
+  bronze:
+    "This is a lower-premium plan. You'll pay less each month but more when you use care. Best for healthy people who rarely visit the doctor and want protection against major medical bills.",
+  expanded_bronze:
+    "This is a lower-premium plan. You'll pay less each month but more when you use care. Best for healthy people who rarely visit the doctor and want protection against major medical bills.",
+  silver:
+    'The most popular metal level. Balanced premiums and out-of-pocket costs. If your income is under 250% FPL, Silver plans offer extra savings through Cost Sharing Reductions.',
+  gold:
+    'Higher monthly premium but lower costs when you use care. Good choice if you see doctors regularly, take multiple medications, or have a planned surgery.',
+  platinum:
+    'Highest premium but lowest out-of-pocket costs. Best for people with ongoing medical needs who want predictable costs.',
+  catastrophic:
+    'Very low premiums but very high deductible. Only available to people under 30 or with a hardship exemption. Covers 3 primary care visits and preventive care before the deductible.',
+}
+
+function WhatThisMeansForYou({ metalLevel }: { metalLevel: string }) {
+  const key = metalLevel.toLowerCase().replace(/\s+/g, '_')
+  const description = METAL_GUIDANCE[key]
+  if (!description) return null
+  return (
+    <section
+      aria-labelledby="what-this-means-heading"
+      className="mb-6 rounded-xl border border-green-200 bg-green-50/50 p-5"
+    >
+      <h2 id="what-this-means-heading" className="text-base font-semibold text-green-900 mb-2">
+        What This Means For You
+      </h2>
+      <p className="text-sm text-green-800 leading-relaxed">{description}</p>
+    </section>
+  )
+}
+
+// ─── Real-World Cost Examples ─────────────────────────────────────────────────
+
+const METAL_COINSURANCE: Record<string, number> = {
+  bronze: 0.40,
+  expanded_bronze: 0.40,
+  silver: 0.30,
+  gold: 0.20,
+  platinum: 0.10,
+  catastrophic: 0.40,
+}
+
+const COST_EXAMPLES = [
+  { service: 'Primary Care Visit', typicalCharge: 150 },
+  { service: 'Specialist Visit', typicalCharge: 300 },
+  { service: 'Urgent Care Visit', typicalCharge: 250 },
+  { service: 'Emergency Room Visit', typicalCharge: 1500 },
+  { service: 'Generic Drug (30-day)', typicalCharge: 15 },
+  { service: 'Branded Drug (30-day)', typicalCharge: 200 },
+]
+
+function RealWorldCostExamples({
+  metalLevel,
+  deductibleIndividual,
+}: {
+  metalLevel: string
+  deductibleIndividual: number | null | undefined
+}) {
+  const key = metalLevel.toLowerCase().replace(/\s+/g, '_')
+  const coinsurance = METAL_COINSURANCE[key]
+  if (coinsurance == null) return null
+
+  const pct = Math.round(coinsurance * 100)
+  const deductibleDisplay =
+    deductibleIndividual != null ? `$${deductibleIndividual.toLocaleString()}` : 'your'
+  const levelDisplay = metalLevel.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+
+  return (
+    <section aria-labelledby="cost-examples-heading" className="mb-10">
+      <h2 id="cost-examples-heading" className="text-xl font-semibold text-navy-800 mb-1">
+        Real-World Cost Examples
+      </h2>
+      <p className="text-sm text-neutral-500 mb-4">
+        Estimates based on {levelDisplay} tier (~{pct}% coinsurance). Before your{' '}
+        {deductibleDisplay} deductible is met, you pay the full charge. After your deductible,
+        you pay your coinsurance percentage.
+      </p>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-neutral-50 text-left text-xs uppercase tracking-wide text-neutral-500">
+              <th className="px-4 py-2 font-semibold">Service</th>
+              <th className="px-4 py-2 font-semibold">Typical Charge</th>
+              <th className="px-4 py-2 font-semibold">Before Deductible</th>
+              <th className="px-4 py-2 font-semibold">After Deductible</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COST_EXAMPLES.map((ex) => (
+              <tr key={ex.service} className="border-t border-neutral-100">
+                <td className="px-4 py-2 font-medium text-neutral-700">{ex.service}</td>
+                <td className="px-4 py-2 text-neutral-600">~${ex.typicalCharge.toLocaleString()}</td>
+                <td className="px-4 py-2 text-neutral-600">
+                  ~${ex.typicalCharge.toLocaleString()}{' '}
+                  <span className="text-neutral-400 text-xs">(full cost)</span>
+                </td>
+                <td className="px-4 py-2 font-medium text-primary-700">
+                  ~${Math.round(ex.typicalCharge * coinsurance).toLocaleString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-xs text-neutral-400 mt-3">
+        Estimates only. Actual costs depend on your network provider, specific service codes, and plan cost-sharing rules. Check your Evidence of Coverage for exact amounts.
+      </p>
+    </section>
   )
 }
 

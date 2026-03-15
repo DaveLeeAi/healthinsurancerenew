@@ -233,20 +233,31 @@ export default async function FormularyDrugPage({ params }: Props) {
               <StatusCard
                 label="Formulary Tier"
                 value={tiers.join(', ') || 'Not specified'}
+                subtitle={getTierCostContext(tiers)}
               />
               <StatusCard
                 label="Prior Authorization"
-                value={hasPriorAuth ? 'Required' : 'Not required'}
+                value={hasPriorAuth ? 'Required' : 'No approval needed'}
+                subtitle={
+                  hasPriorAuth
+                    ? 'Your doctor must get insurer approval before prescribing'
+                    : 'Your doctor can prescribe this directly'
+                }
                 highlight={hasPriorAuth}
               />
               <StatusCard
                 label="Step Therapy"
-                value={hasStepTherapy ? 'Required' : 'Not required'}
+                value={hasStepTherapy ? 'Required' : "No 'fail first' requirement"}
+                subtitle={
+                  hasStepTherapy
+                    ? 'You may need to try a lower-cost drug first'
+                    : "You don't need to try a cheaper drug first"
+                }
                 highlight={hasStepTherapy}
               />
               <StatusCard
                 label="Quantity Limit"
-                value={hasQuantityLimit ? 'Applies' : 'No limit'}
+                value={hasQuantityLimit ? 'Applies' : 'No monthly fill limit'}
                 highlight={hasQuantityLimit}
               />
             </div>
@@ -256,6 +267,49 @@ export default async function FormularyDrugPage({ params }: Props) {
                 typically at a lower tier and lower out-of-pocket cost.
               </div>
             )}
+          </section>
+        )}
+
+        {/* ── How to Save on This Medication ── */}
+        {results.length > 0 && (
+          <section aria-labelledby="save-tips-heading" className="rounded-xl border border-green-200 bg-green-50/50 p-5">
+            <h2 id="save-tips-heading" className="text-base font-semibold text-green-900 mb-3">
+              How to Save on {titleCase(drugDisplay)}
+            </h2>
+            <ul className="space-y-2.5 text-sm text-green-800">
+              {isGenericAvailable && (
+                <li className="flex gap-2">
+                  <span className="text-green-600 font-bold shrink-0">✓</span>
+                  <span>
+                    <strong>Generic available:</strong> A generic version of {titleCase(drugDisplay)} is on
+                    this formulary at a lower tier. Ask your doctor to prescribe the generic to reduce your cost.
+                  </span>
+                </li>
+              )}
+              <li className="flex gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span>
+                  <strong>90-day mail order:</strong> Many plans offer a lower per-dose cost for 90-day
+                  supplies through mail-order pharmacy. Ask your plan about mail-order options.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span>
+                  <strong>Manufacturer copay cards:</strong> Most brand-name drugs have copay assistance
+                  programs that can reduce your cost to $0–$35/month. Search &ldquo;{drugDisplay} copay
+                  card&rdquo; or visit the manufacturer&apos;s website.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-green-600 font-bold shrink-0">✓</span>
+                <span>
+                  <strong>Compare plans at open enrollment:</strong> Formulary tiers change yearly. A drug
+                  on Tier 3 this year may move to Tier 2 next year — always check the formulary when
+                  comparing plans.
+                </span>
+              </li>
+            </ul>
           </section>
         )}
 
@@ -383,6 +437,45 @@ export default async function FormularyDrugPage({ params }: Props) {
           </section>
         )}
 
+        {/* ── What If Your Plan Doesn't Cover This Drug? ── */}
+        {results.length > 0 && (
+          <section aria-labelledby="not-covered-heading" className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+            <h2 id="not-covered-heading" className="text-base font-semibold text-navy-800 mb-4">
+              What If Your Plan Doesn&apos;t Cover This Drug?
+            </h2>
+            <div className="space-y-4 text-sm text-neutral-700">
+              <div>
+                <h3 className="font-semibold mb-1">Formulary Exception Request</h3>
+                <p className="text-neutral-600">
+                  You can ask your insurer to cover a non-formulary drug by filing a formulary exception.
+                  Your doctor must submit a letter of medical necessity explaining why listed alternatives
+                  won&apos;t work for you.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Internal Appeal</h3>
+                <p className="text-neutral-600">
+                  If your exception request is denied, you have the right to file an internal appeal with
+                  your insurer. Under ACA rules, they must respond within{' '}
+                  <strong>72 hours for urgent requests</strong> or 30 days for standard requests.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">External Review</h3>
+                <p className="text-neutral-600">
+                  If your internal appeal is denied, you can request an independent external review. You
+                  have this right under federal law for all non-grandfathered ACA plans. The external
+                  reviewer&apos;s decision is binding on your insurer.
+                </p>
+              </div>
+              <p className="text-xs text-neutral-400 pt-2 border-t border-neutral-200">
+                Source: ACA §2719, 45 CFR §147.136. Contact your state insurance commissioner or a
+                licensed health insurance agent for specific guidance.
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* ── Entity Links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
@@ -428,6 +521,17 @@ interface FormulationGroup {
   step_therapy?: boolean
   quantity_limit?: boolean
   planCount: number
+}
+
+function getTierCostContext(tiers: string[]): string | undefined {
+  if (tiers.length === 0) return undefined
+  const tierStr = tiers.join(' ').toUpperCase()
+  if (tierStr.includes('SPECIALTY')) return 'Highest cost — typically 25–33% coinsurance, could be $100–500+ per fill'
+  if (tierStr.includes('NON-PREFERRED') || tierStr.includes('NON_PREFERRED') || tierStr.includes('NONPREFERRED'))
+    return 'Higher cost — typically $60–100+ copay or 25–40% coinsurance'
+  if (tierStr.includes('PREFERRED')) return 'Moderate cost — typically $30–60 copay per fill'
+  if (tierStr.includes('GENERIC')) return 'Lowest cost — typically $5–20 copay per fill'
+  return undefined
 }
 
 function groupByFormulation(drugs: FormularyDrug[]): FormulationGroup[] {
@@ -479,10 +583,12 @@ function getUniqueIssuers(drugs: FormularyDrug[]): IssuerInfo[] {
 function StatusCard({
   label,
   value,
+  subtitle,
   highlight = false,
 }: {
   label: string
   value: string
+  subtitle?: string
   highlight?: boolean
 }) {
   return (
@@ -495,6 +601,9 @@ function StatusCard({
         {label}
       </div>
       <div className="text-sm font-semibold text-navy-800">{value}</div>
+      {subtitle && (
+        <div className="text-xs text-neutral-500 mt-1 leading-snug">{subtitle}</div>
+      )}
     </div>
   )
 }
