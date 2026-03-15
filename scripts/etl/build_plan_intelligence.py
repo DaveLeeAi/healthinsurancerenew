@@ -57,7 +57,11 @@ def load_plan_attributes() -> pd.DataFrame:
 
 
 def parse_dollar_amount(val: Any) -> float | None:
-    """Parse dollar amounts from PUF fields. Handles 'Not Applicable', NaN, and currency strings."""
+    """Parse dollar amounts from PUF fields.
+
+    Handles 'Not Applicable', NaN, currency strings, and family deductible
+    values that include trailing text like '$12000 per group'.
+    """
     if pd.isna(val):
         return None
     s = str(val).strip()
@@ -65,6 +69,11 @@ def parse_dollar_amount(val: Any) -> float | None:
         return None
     # Remove $ and commas
     s = s.replace("$", "").replace(",", "")
+    # Strip trailing qualifiers like " per group", " per person"
+    for suffix in (" per group", " per person", " per family"):
+        if s.lower().endswith(suffix):
+            s = s[: -len(suffix)].strip()
+            break
     try:
         return float(s)
     except ValueError:
@@ -125,14 +134,29 @@ def load_service_areas() -> pd.DataFrame:
 
 
 def load_rates() -> pd.DataFrame:
-    """Load Rate PUF. Pivot age bands into columns per plan+rating_area."""
-    logger.info("Loading Rate PUF...")
-    df = pd.read_csv(
+    """Load Rate PUF. Pivot age bands into columns per plan+rating_area.
+
+    Uses chunked reading to handle the 268 MB file on memory-constrained machines.
+    """
+    logger.info("Loading Rate PUF (chunked, 268 MB)...")
+    chunks: list[pd.DataFrame] = []
+    total_raw = 0
+    for chunk in pd.read_csv(
         RAW_DIR / "rate-puf.csv",
         usecols=["PlanId", "RatingAreaId", "Age", "Tobacco", "IndividualRate"],
         low_memory=False,
-    )
-    logger.info(f"  Raw: {len(df):,} rows")
+        chunksize=500_000,
+    ):
+        total_raw += len(chunk)
+        filtered = chunk[
+            (chunk["Tobacco"].isin(["No Preference", "No Tobacco"]))
+            & (chunk["Age"].isin(AGE_BANDS))
+        ]
+        if not filtered.empty:
+            chunks.append(filtered)
+    df = pd.concat(chunks, ignore_index=True)
+    logger.info(f"  Raw rows processed: {total_raw:,}")
+    logger.info(f"  Filtered (non-tobacco, key ages): {len(df):,} rows")
 
     # Filter to non-tobacco rates and our target age bands
     df = df[
@@ -203,8 +227,8 @@ def build_plan_intelligence() -> list[dict[str, Any]]:
             "plan_type": row["PlanType"],
             "rating_area": row["RatingAreaId"],
             "premiums": {},
-            "deductible_individual": parse_dollar_amount(row.get("MEHBDedInnTier1Individual")),
-            "deductible_family": parse_dollar_amount(row.get("MEHBDedInnTier1FamilyPerGroup")),
+            "deductible_individual": parse_dollar_amount(row.get("TEHBDedInnTier1Individual")),
+            "deductible_family": parse_dollar_amount(row.get("TEHBDedInnTier1FamilyPerGroup")),
             "oop_max_individual": parse_dollar_amount(row.get("TEHBInnTier1IndividualMOOP")),
             "oop_max_family": parse_dollar_amount(row.get("TEHBInnTier1FamilyPerGroupMOOP")),
             "sbc_url": row.get("URLForSummaryofBenefitsCoverage") if pd.notna(row.get("URLForSummaryofBenefitsCoverage")) else None,
@@ -273,7 +297,8 @@ def save(records: list[dict[str, Any]]) -> Path:
             "unique_counties": len(set(r["county_fips"] for r in records if r["county_fips"])),
             "states": sorted(set(r["state_code"] for r in records)),
             "generated_at": pd.Timestamp.now().isoformat(),
-            "schema_version": "1.0",
+            "schema_version": "1.1",
+            "notes": "deductible_individual/family use TEHBDedInnTier1 (Total EHB, 90% coverage) not MEHBDedInnTier1 (Medical-only, 10% coverage)",
         },
         "data": records,
     }
