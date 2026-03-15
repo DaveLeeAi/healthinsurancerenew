@@ -9,6 +9,7 @@ import type { FormularyDrug } from '@/lib/types'
 import {
   buildFormularyDrugSchema,
   buildBreadcrumbSchema,
+  buildFAQSchema,
 } from '@/lib/schema-markup'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
@@ -137,6 +138,38 @@ export default async function FormularyDrugPage({ params }: Props) {
     { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
   ])
 
+  // ── Feature 4: FAQ data ───────────────────────────────────────────────────
+  const tierCostContext = getTierCostContext(tiers)
+  const formularyFaqs = [
+    {
+      question: `Does ${issuerName} cover ${titleCase(drugDisplay)}?`,
+      answer: results.length > 0
+        ? `Yes, ${issuerName} covers ${titleCase(drugDisplay)} on their ${PLAN_YEAR} ACA formulary across ${results.length} plan${results.length === 1 ? '' : 's'}. It is listed as ${tiers.join(', ') || 'specified in plan documents'}. Formulary coverage can vary by plan and county — always verify with your specific plan documents or the insurer directly.`
+        : `${titleCase(drugDisplay)} was not found on the ${issuerName} formulary in the ${PLAN_YEAR} CMS dataset. You may be able to request a formulary exception through your insurer if your doctor demonstrates medical necessity.`,
+    },
+    {
+      question: `Is prior authorization required for ${titleCase(drugDisplay)}?`,
+      answer: hasPriorAuth
+        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on this formulary. Your doctor must submit a request to ${issuerName} before prescribing, demonstrating that the medication is medically necessary. Without prior authorization, claims may be denied. Prior authorization requirements can change during the plan year.`
+        : `No prior authorization is required for ${titleCase(drugDisplay)} on this formulary. Your doctor can prescribe it directly without needing insurer approval beforehand. However, this can change during the plan year, so confirm with your insurer before filling.`,
+    },
+    {
+      question: `How much does ${titleCase(drugDisplay)} cost with insurance?`,
+      answer: tierCostContext
+        ? `${titleCase(drugDisplay)} is placed on a ${tiers.join('/')} tier on this formulary. ${tierCostContext}. Actual cost depends on whether your deductible has been met, your specific plan variant, and your pharmacy network. A 90-day mail-order supply often reduces the per-dose cost significantly.`
+        : `Cost depends on the tier placement and your plan's specific cost-sharing structure. Check your plan's Summary of Benefits and Coverage for exact copay or coinsurance amounts. A 90-day mail-order supply may reduce your per-dose cost.`,
+    },
+    {
+      question: `What if ${titleCase(drugDisplay)} is not on my plan's formulary?`,
+      answer: `If your drug is not covered, you have several options. First, request a formulary exception — your doctor submits a letter of medical necessity explaining why listed alternatives won't work for you. If denied, file an internal appeal (the insurer must respond within 72 hours for urgent requests or 30 days for standard requests). If still denied, request an independent external review, which is binding on the insurer under federal ACA law (ACA §2719, 45 CFR §147.136).`,
+    },
+    {
+      question: `What is the difference between generic and brand-name drugs on a formulary?`,
+      answer: `Generic drugs contain the same active ingredients as brand-name drugs and are FDA-approved as therapeutically equivalent. They are typically placed on lower formulary tiers (Tier 1–2) with lower copays or coinsurance — often $5–20 per fill. Brand-name drugs are usually Tier 3 or higher with higher cost-sharing. ${isGenericAvailable ? `A generic version of ${titleCase(drugDisplay)} is available on this formulary at a lower tier and lower cost.` : `Ask your doctor whether a generic alternative is available for your condition.`}`,
+    },
+  ]
+  const faqSchema = buildFAQSchema(formularyFaqs)
+
   // --- Editorial content ---
   const editorial = results.length > 0
     ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName })
@@ -167,6 +200,7 @@ export default async function FormularyDrugPage({ params }: Props) {
       <SchemaScript schema={drugSchema} id="drug-schema" />
       <SchemaScript schema={healthPlanSchema} id="health-plan-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={faqSchema} id="faq-schema" />
 
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
 
@@ -196,6 +230,64 @@ export default async function FormularyDrugPage({ params }: Props) {
           </ol>
         </nav>
 
+        {/* ── Feature 5: Drug Coverage Snapshot Card ── */}
+        {results.length > 0 && (
+          <div className="bg-primary-50 border border-primary-200 rounded-xl p-4">
+            <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-3">
+              {titleCase(drugDisplay)} Coverage Snapshot
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Drug Tier</div>
+                <div className="text-sm font-semibold text-navy-800">
+                  {tiers.join(', ') || '—'}
+                </div>
+                {tierCostContext && (
+                  <div className="text-xs text-neutral-500 mt-0.5 leading-snug">{tierCostContext.split('—')[0]}</div>
+                )}
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Prior Authorization</div>
+                <div className={`text-sm font-semibold ${hasPriorAuth ? 'text-amber-700' : 'text-green-700'}`}>
+                  {hasPriorAuth ? 'Required' : 'Not required'}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Step Therapy</div>
+                <div className={`text-sm font-semibold ${hasStepTherapy ? 'text-amber-700' : 'text-green-700'}`}>
+                  {hasStepTherapy ? 'Required' : 'Not required'}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Quantity Limit</div>
+                <div className={`text-sm font-semibold ${hasQuantityLimit ? 'text-amber-700' : 'text-neutral-700'}`}>
+                  {hasQuantityLimit ? 'Applies' : 'No limit'}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Plans Covering It</div>
+                <div className="text-sm font-semibold text-navy-800">{results.length}</div>
+              </div>
+              <div>
+                <div className="text-xs text-neutral-500 mb-1">Generic Available</div>
+                <div className={`text-sm font-semibold ${isGenericAvailable ? 'text-green-700' : 'text-neutral-600'}`}>
+                  {isGenericAvailable ? 'Yes — lower cost' : 'Not on formulary'}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Feature 6: Estimated Out-of-Pocket Cost Visual ── */}
+        {results.length > 0 && tiers.length > 0 && (
+          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+            <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-2">
+              Estimated Out-of-Pocket Cost per Fill
+            </p>
+            <EstimatedCostVisual tiers={tiers} drugDisplay={drugDisplay} />
+          </div>
+        )}
+
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
@@ -217,6 +309,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                 dataset. Try searching across all insurers.
               </>
             )}
+          </p>
+          {/* ── Feature 3: Data Version Bar ── */}
+          <p className="text-xs text-neutral-400 mt-3">
+            Last Updated: March 2026 · Data Version: CMS Marketplace PUF 2025 · Plan Year: 2025
           </p>
         </section>
 
@@ -479,6 +575,78 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── Entity Links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
+        {/* ── Feature 4: FAQ Section ── */}
+        <section aria-labelledby="faq-heading">
+          <h2 id="faq-heading" className="text-xl font-semibold text-navy-800 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            {formularyFaqs.map((faq, i) => (
+              <details key={i} className="group border border-neutral-200 rounded-xl overflow-hidden">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-neutral-50 transition-colors list-none">
+                  <span className="font-medium text-navy-800 text-sm pr-4">{faq.question}</span>
+                  <svg className="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 text-sm text-neutral-600 leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Feature 2: Data Methodology Block ── */}
+        <section aria-labelledby="methodology-heading" className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+          <h2 id="methodology-heading" className="text-sm font-semibold text-neutral-700 mb-2">Data Methodology</h2>
+          <p className="text-sm text-neutral-600 leading-relaxed">
+            Plan cost-sharing numbers and formulary information are derived from CMS Marketplace Public Use Files
+            for plan year 2025. Plan details may vary by county and plan variant. Users should confirm coverage
+            with the insurer before enrollment. Data is updated when CMS publishes new PUF releases.
+          </p>
+        </section>
+
+        {/* ── Feature 1: Source Citations ── */}
+        <section aria-labelledby="sources-heading" className="rounded-xl border border-neutral-200 p-5">
+          <h2 id="sources-heading" className="text-sm font-semibold text-neutral-700 mb-3">Sources</h2>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a
+                href="https://www.cms.gov/marketplace/resources/data/public-use-files"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 hover:underline font-medium"
+              >
+                CMS Machine-Readable PUF
+              </a>
+              <span className="text-neutral-500"> — Carrier formulary JSON files mandated by CMS for all ACA marketplace plans.</span>
+            </li>
+            <li>
+              <a
+                href="https://data.cms.gov/tools/medicare-plan-finder"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 hover:underline font-medium"
+              >
+                CMS Formulary Reference File
+              </a>
+              <span className="text-neutral-500"> — Drug tier, prior authorization, step therapy, and quantity limit data by plan.</span>
+            </li>
+            <li>
+              <a
+                href="https://www.healthcare.gov/glossary/formulary/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 hover:underline font-medium"
+              >
+                Healthcare.gov Formulary Information
+              </a>
+              <span className="text-neutral-500"> — Official guidance on how formularies work in ACA marketplace plans.</span>
+            </li>
+          </ul>
+        </section>
+
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
@@ -497,6 +665,66 @@ export default async function FormularyDrugPage({ params }: Props) {
 
       </main>
     </>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// EstimatedCostVisual sub-component (Feature 6)
+// ---------------------------------------------------------------------------
+
+const TIER_COST_RANGES: Record<string, { label: string; low: string; high: string; color: string; bg: string; border: string }> = {
+  GENERIC:        { label: 'Generic',          low: '$5',    high: '$20',   color: 'text-green-700',  bg: 'bg-green-50',   border: 'border-green-200' },
+  PREFERRED:      { label: 'Preferred Brand',  low: '$30',   high: '$60',   color: 'text-blue-700',   bg: 'bg-blue-50',    border: 'border-blue-200' },
+  NON_PREFERRED:  { label: 'Non-Preferred',    low: '$60',   high: '$100',  color: 'text-amber-700',  bg: 'bg-amber-50',   border: 'border-amber-200' },
+  NONPREFERRED:   { label: 'Non-Preferred',    low: '$60',   high: '$100',  color: 'text-amber-700',  bg: 'bg-amber-50',   border: 'border-amber-200' },
+  SPECIALTY:      { label: 'Specialty',         low: '$100',  high: '$500+', color: 'text-red-700',    bg: 'bg-red-50',     border: 'border-red-200' },
+}
+
+function normalizeTierKey(tier: string): string {
+  return tier.toUpperCase().replace(/[-\s]+/g, '_')
+}
+
+function EstimatedCostVisual({ tiers, drugDisplay }: { tiers: string[]; drugDisplay: string }) {
+  const matchedEntries = tiers
+    .map((t) => {
+      const key = normalizeTierKey(t)
+      const found = Object.entries(TIER_COST_RANGES).find(([k]) => key.includes(k))
+      return found ? { tier: t, ...found[1] } : null
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null)
+
+  if (matchedEntries.length === 0) {
+    return (
+      <p className="text-sm text-neutral-500">
+        Cost estimate unavailable for tier: {tiers.join(', ')}. Check your plan&apos;s Summary of Benefits.
+      </p>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      {matchedEntries.map((entry, i) => (
+        <div key={i} className={`rounded-lg border ${entry.border} ${entry.bg} p-4`}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <span className={`text-xs font-semibold uppercase tracking-wide ${entry.color}`}>{entry.label}</span>
+              <div className={`text-2xl font-bold mt-1 ${entry.color}`}>
+                {entry.low} – {entry.high}
+                <span className="text-sm font-normal ml-1">per fill</span>
+              </div>
+              <p className="text-xs text-neutral-500 mt-1">
+                Estimated copay range for {titleCase(drugDisplay)} at this tier.
+                Actual cost varies by plan deductible status and pharmacy network.
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+      <p className="text-xs text-neutral-400">
+        Ranges are general estimates based on typical ACA marketplace cost-sharing for this tier.
+        Confirm exact amounts in your plan&apos;s Summary of Benefits and Coverage.
+      </p>
+    </div>
   )
 }
 
