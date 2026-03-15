@@ -10,6 +10,7 @@ import {
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import { generateBillingContent } from '@/lib/content-templates'
 import type { BillingScenario, BillingCodeEntry } from '@/lib/types'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -189,6 +190,9 @@ export default function BillingScenarioPage({ params }: Props) {
     pageType: 'billing',
     billingCategory: scenario.billing_category,
   })
+
+  // --- Editorial content ---
+  const editorial = generateBillingContent({ scenario })
 
   // --- FAQs ---
   const faqs = buildFAQs(scenario)
@@ -479,21 +483,8 @@ export default function BillingScenarioPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── Author attribution + data sources ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About This Guide</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Billing scenario research compiled by the HealthInsuranceRenew editorial team using
-            ACA regulatory guidance, CMS billing policies, and AMA CPT code references.
-            Information reflects federal rules as of plan year 2026. State-specific billing
-            protections may provide additional consumer rights. Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-          </p>
-          <p className="text-sm text-neutral-500 mt-2">
-            Content reviewed by Dave Lee, licensed health insurance agent. CMS Elite Circle of
-            Champions recognition. Licensed in 20+ states.
-          </p>
-        </section>
+        {/* ── Editorial content ── */}
+        <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />

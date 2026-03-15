@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-
   images: {
     unoptimized: true,
   },
@@ -11,6 +9,8 @@ const nextConfig = {
 
   experimental: {
     serverComponentsExternalPackages: [],
+    // Limit to 1 worker to reduce per-worker memory pressure on large datasets
+    cpus: 1,
   },
 }
 

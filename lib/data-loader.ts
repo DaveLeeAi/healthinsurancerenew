@@ -86,10 +86,14 @@ function getBlobUrl(filename: string): string | null {
 // ---------------------------------------------------------------------------
 const datasetCache = new Map<string, unknown>()
 
-function loadCached<T>(filename: string): T {
+function loadCached<T>(filename: string, fallback?: T): T {
   if (datasetCache.has(filename)) return datasetCache.get(filename) as T
   const filepath = path.join(DATA_DIR, filename)
   if (!fs.existsSync(filepath)) {
+    if (fallback !== undefined) {
+      console.warn(`[data-loader] Dataset file not found — using empty fallback: ${filepath}`)
+      return fallback
+    }
     throw new Error(`[data-loader] Dataset file not found: ${filepath}`)
   }
   const data = JSON.parse(fs.readFileSync(filepath, 'utf-8')) as T
@@ -150,7 +154,7 @@ function loadFormularyIndex(): FormularyBlockIndex {
 // Pillar 1 — Plan Intelligence (102 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadPlanIntelligence(): PlanIntelligenceDataset {
-  return loadCached<PlanIntelligenceDataset>('plan_intelligence.json')
+  return loadCached<PlanIntelligenceDataset>('plan_intelligence.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getPlansByCounty(stateCode: string, countyFips: string): PlanRecord[] {
@@ -169,7 +173,7 @@ export function getPlanById(planId: string): PlanRecord | undefined {
 // Pillar 2 — Subsidy Engine (2.7 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadSubsidyEngine(): SubsidyDataset {
-  return loadCached<SubsidyDataset>('subsidy_engine.json')
+  return loadCached<SubsidyDataset>('subsidy_engine.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getSubsidyByCounty(stateCode: string, countyFips: string): SubsidyRecord | undefined {
@@ -215,7 +219,7 @@ export async function getSbcByPlanVariantId(planVariantId: string): Promise<SbcR
 // Pillar 4 — Rate Volatility (0.6 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadRateVolatility(): RateVolatilityDataset {
-  return loadCached<RateVolatilityDataset>('rate_volatility.json')
+  return loadCached<RateVolatilityDataset>('rate_volatility.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getRatesByCounty(stateCode: string, countyFips: string): RateVolatilityRecord | undefined {
@@ -228,7 +232,7 @@ export function getRatesByCounty(stateCode: string, countyFips: string): RateVol
 // Pillar 5 — Friction Q&A (0.1 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadFrictionQA(): FrictionQADataset {
-  return loadCached<FrictionQADataset>('friction_qa.json')
+  return loadCached<FrictionQADataset>('friction_qa.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getFrictionQAByCategory(category: string): FrictionQA[] {
@@ -373,7 +377,7 @@ async function searchFormularySample(params: FormularySearchParams): Promise<For
 // Pillar 7 — Dental Coverage (4.2 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadDentalCoverage(): DentalDataset {
-  return loadCached<DentalDataset>('dental_coverage.json')
+  return loadCached<DentalDataset>('dental_coverage.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getDentalByState(stateCode: string): DentalRecord[] {
@@ -388,7 +392,7 @@ export function getDentalByPlanVariant(planVariantId: string): DentalRecord | un
 // Pillar 8 — Billing Intelligence (0.1 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadBillingIntel(): BillingDataset {
-  return loadCached<BillingDataset>('billing_intel.json')
+  return loadCached<BillingDataset>('billing_intel.json', { metadata: { generated_at: '', source: '', record_count: 0, cpt_code_disclaimer: '', disclaimer: '' }, data: [] })
 }
 
 export function getBillingByCptCode(cptCode: string): BillingScenario[] {
@@ -417,7 +421,7 @@ export function getBillingAllCategories(): BillingScenario[] {
 // Pillar 9 — Life Events (0.05 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadLifeEvents(): LifeEventsDataset {
-  return loadCached<LifeEventsDataset>('life_events.json')
+  return loadCached<LifeEventsDataset>('life_events.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
 }
 
 export function getLifeEventBySlug(slug: string): LifeEventRecord | undefined {
@@ -432,7 +436,7 @@ export function getAllLifeEventSlugs(): string[] {
 // Pillar 10 — Policy Scenarios (65 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadPolicyScenarios(): PolicyScenariosDataset {
-  return loadCached<PolicyScenariosDataset>('policy_scenarios.json')
+  return loadCached<PolicyScenariosDataset>('policy_scenarios.json', { metadata: { generated_at: '', source: '', record_count: 0 }, records: [] })
 }
 
 export function getPolicyByCounty(
@@ -451,6 +455,22 @@ export function getPolicyByCounty(
 /** Returns all plan_variant_ids from the SBC byte-offset index (~20K entries). */
 export function getAllSbcPlanVariantIds(): string[] {
   return Object.keys(loadSbcIndex())
+}
+
+/**
+ * Returns id + name pairs for every entry in the SBC index.
+ * Used by generateStaticParams and the sitemap to build slugged URLs.
+ */
+export function getAllSbcPlans(): { plan_variant_id: string; plan_name: string }[] {
+  const nameMap = new Map<string, string>()
+  for (const p of loadPlanIntelligence().data) {
+    if (p.plan_variant_id) nameMap.set(p.plan_variant_id, p.plan_name)
+    nameMap.set(p.plan_id, p.plan_name)
+  }
+  return Object.keys(loadSbcIndex()).map((id) => ({
+    plan_variant_id: id,
+    plan_name: nameMap.get(id) ?? id,
+  }))
 }
 
 // ---------------------------------------------------------------------------

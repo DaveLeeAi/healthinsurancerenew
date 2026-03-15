@@ -7,7 +7,7 @@
  *   /sitemaps/subsidies       — /subsidies/[state]/[county]
  *   /sitemaps/rates           — /rates/[state]/[county]
  *   /sitemaps/enhanced-credits— /enhanced-credits/[state]/[county]
- *   /sitemaps/sbc             — /plan-details/[plan_variant_id]
+ *   /sitemaps/sbc             — /plan-details/[plan_variant_id]/[slug]
  *   /sitemaps/formulary       — /formulary/[issuer]/[drug] (static seed only)
  *   /sitemaps/dental          — /dental/[state]/[plan_variant]
  *   /sitemaps/faq             — /faq/[category]/[slug]
@@ -19,13 +19,17 @@ import {
   getAllPlanStateCountyCombos,
   getAllSubsidyStateCountyCombos,
   getAllStateCountyCombos,
-  getAllSbcPlanVariantIds,
+  getAllSbcPlans,
   getTopIssuerIds,
   getAllLifeEventParams,
   loadFrictionQA,
   loadBillingIntel,
   loadDentalCoverage,
 } from '@/lib/data-loader'
+
+function slugify(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
 
 const BASE = 'https://healthinsurancerenew.com'
 
@@ -169,11 +173,11 @@ function buildEnhancedCreditEntries(): SitemapEntry[] {
   }))
 }
 
-// ── SBC / Plan Details — /plan-details/[plan_variant_id] ────────────────────
+// ── SBC / Plan Details — /plan-details/[plan_variant_id]/[slug] ──────────────
 
 function buildSbcEntries(): SitemapEntry[] {
-  return getAllSbcPlanVariantIds().map((id) => ({
-    loc: `${BASE}/plan-details/${id}`,
+  return getAllSbcPlans().map(({ plan_variant_id, plan_name }) => ({
+    loc: `${BASE}/plan-details/${plan_variant_id}/${slugify(plan_name)}`,
     changefreq: 'yearly',
     priority: 0.5,
   }))

@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import ChatWidget from '../components/ChatWidget'
 
 export const metadata: Metadata = {
   title: {
@@ -19,9 +22,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="font-sans bg-white text-neutral-900 antialiased">
-        {children}
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-neutral-50 text-neutral-800 font-sans leading-body antialiased">
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+        <ChatWidget />
       </body>
     </html>
   )

@@ -231,40 +231,6 @@ export default function FAQDetailPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── Still Have Questions? CTA ── */}
-        <section className="bg-primary-50 border border-primary-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-primary-900 mb-2">
-            Still Have Questions?
-          </h2>
-          <p className="text-sm text-primary-700 leading-relaxed">
-            As a licensed health insurance agent with CMS Elite Circle of Champions
-            recognition, I can help you navigate these decisions. Every situation is
-            different — contact me for personalized guidance on your coverage options,
-            subsidy eligibility, and enrollment deadlines.
-          </p>
-          <a
-            href="/"
-            className="inline-block mt-4 px-5 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Get Personalized Help →
-          </a>
-        </section>
-
-        {/* ── Author attribution ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About This Answer</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Written by the HealthInsuranceRenew editorial team based on current ACA
-            regulations, CMS guidance, and real client scenarios. Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-            {qa.regulatory_citation && (
-              <>
-                {' '}Regulatory basis: {qa.regulatory_citation}.
-              </>
-            )}
-          </p>
-        </section>
-
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Resources" variant="bottom" />
 

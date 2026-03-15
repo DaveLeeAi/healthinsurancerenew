@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import {
   getSubsidyByCounty,
   getPolicyByCounty,
-  getAllSubsidyStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -21,13 +20,8 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// ---------------------------------------------------------------------------
-// Static params — sourced from subsidy_engine.json
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  return getAllSubsidyStateCountyCombos()
-}
+// Dynamic rendering — renders on-demand via SSR
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata

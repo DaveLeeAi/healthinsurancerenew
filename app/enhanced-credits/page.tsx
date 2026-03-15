@@ -6,6 +6,9 @@ import SchemaScript from '@/components/SchemaScript'
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'
 
+// Dynamic rendering — policy_scenarios.json (65 MB) rendered on-demand
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: `Enhanced ACA Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
   description:

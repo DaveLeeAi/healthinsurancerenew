@@ -137,30 +137,6 @@ export default function DentalIndexPage() {
           </div>
         </section>
 
-        {/* ── Source attribution ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About This Data</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Dental plan data compiled from the{' '}
-            <a
-              href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-              className="text-primary-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CMS SADP Plan Attributes PUF
-            </a>{' '}
-            and BenCS PUF for plan year {PLAN_YEAR}. Coverage percentages represent the plan&apos;s
-            share of costs. Not all states participate in the federal Marketplace — states with
-            their own exchanges (e.g., CA, NY, CO) manage dental plan data separately. Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-          </p>
-          <p className="text-sm text-neutral-500 mt-2">
-            Content reviewed by Dave Lee, licensed health insurance agent. CMS Elite Circle of
-            Champions recognition. Licensed in 20+ states.
-          </p>
-        </section>
-
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
             This page is for informational purposes only and does not constitute dental or insurance

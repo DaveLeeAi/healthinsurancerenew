@@ -243,18 +243,6 @@ export default function FAQCategoryPage({ params }: Props) {
           </a>
         </div>
 
-        {/* ── CTA ── */}
-        <section className="bg-primary-50 border border-primary-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-primary-900 mb-2">
-            Need Personalized Help?
-          </h2>
-          <p className="text-sm text-primary-700 leading-relaxed">
-            Every situation is different. As a licensed health insurance agent with CMS
-            Elite Circle of Champions recognition, I can help you navigate your specific{' '}
-            {label.toLowerCase()} questions. Contact me for free guidance.
-          </p>
-        </section>
-
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

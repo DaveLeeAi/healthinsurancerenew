@@ -3,7 +3,6 @@ import {
   getPlansByCounty,
   getSubsidyByCounty,
   getRatesByCounty,
-  getAllPlanStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -14,6 +13,7 @@ import {
 import SchemaScript from '@/components/SchemaScript'
 import PlanComparisonTable from '@/components/PlanComparisonTable'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import { generatePlanComparisonContent } from '@/lib/content-templates'
 
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -22,13 +22,9 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// ---------------------------------------------------------------------------
-// Static params — sourced from plan_intelligence.json (all counties with data)
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  return getAllPlanStateCountyCombos()
-}
+// Dynamic rendering — plan_intelligence.json (107 MB) is too large to
+// process during build. Pages render on-demand via SSR.
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -102,6 +98,11 @@ export default function PlansPage({ params }: Props) {
 
   // Subsidy at 250% FPL (representative median tier)
   const medianSubsidy = subsidy?.subsidy_estimates?.fpl_250
+
+  // --- Editorial content ---
+  const editorial = plans.length > 0
+    ? generatePlanComparisonContent({ countyName: countyDisplay, stateCode: stateUpper, plans, planYear: PLAN_YEAR })
+    : null
 
   // --- Entity links ---
   const entityLinks = getRelatedEntities({
@@ -289,6 +290,11 @@ export default function PlansPage({ params }: Props) {
               </a>
             </p>
           </section>
+        )}
+
+        {/* ── Editorial content ── */}
+        {editorial && (
+          <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
         )}
 
         {/* ── Entity links ── */}

@@ -195,22 +195,6 @@ export default function BillingIndexPage() {
           )
         })}
 
-        {/* ── Source attribution ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About These Guides</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Billing scenario research compiled by the HealthInsuranceRenew editorial team using
-            ACA regulatory guidance, CMS billing policies, the No Surprises Act, and AMA CPT code
-            references. Scenarios reflect common billing situations for ACA Marketplace enrollees.
-            Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-          </p>
-          <p className="text-sm text-neutral-500 mt-2">
-            Content reviewed by Dave Lee, licensed health insurance agent. CMS Elite Circle of
-            Champions recognition.
-          </p>
-        </section>
-
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
             CPT codes &copy; American Medical Association. This page is for informational purposes

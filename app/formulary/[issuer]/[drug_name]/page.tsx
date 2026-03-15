@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import {
   searchFormulary,
-  getTopIssuerIds,
   getIssuerName,
+  getPlanById,
 } from '@/lib/data-loader'
 import type { FormularyDrug } from '@/lib/types'
 import {
@@ -13,6 +13,7 @@ import {
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import { generateFormularyContent } from '@/lib/content-templates'
 
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -28,26 +29,9 @@ interface Props {
   params: { issuer: string; drug_name: string }
 }
 
-// ---------------------------------------------------------------------------
-// ISR — revalidate once per day (86 400 s)
-// ---------------------------------------------------------------------------
-
-export const revalidate = 86400
-
-// ---------------------------------------------------------------------------
-// Static params — top 20 drugs × top 20 issuers (400 pages at build time)
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  const topIssuers = getTopIssuerIds(20)
-  const params: { issuer: string; drug_name: string }[] = []
-  for (const issuer of topIssuers) {
-    for (const drug of SEED_DRUGS) {
-      params.push({ issuer, drug_name: drug })
-    }
-  }
-  return params
-}
+// Dynamic rendering — getTopIssuerIds() loads plan_intelligence.json (107 MB),
+// too large to process during build. Pages render on-demand via SSR.
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -153,17 +137,26 @@ export default async function FormularyDrugPage({ params }: Props) {
     { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
   ])
 
+  // --- Editorial content ---
+  const editorial = results.length > 0
+    ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName })
+    : null
+
   // --- Entity links ---
-  const relatedPlanIds = results
+  const relatedPlans = results
     .map((r) => r.plan_id)
     .filter((id): id is string => id != null)
     .slice(0, 5)
+    .map((id) => {
+      const plan = getPlanById(id)
+      return { id, name: plan?.plan_name ?? id }
+    })
 
   const entityLinks = getRelatedEntities({
     pageType: 'formulary',
     drugName: drugDisplay,
     issuer: issuerName,
-    relatedPlanIds,
+    relatedPlans,
   })
 
   // --- Other drugs to cross-link ---
@@ -213,8 +206,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               <>
                 <strong>{titleCase(drugDisplay)}</strong> is listed on{' '}
                 <strong>{issuerName}</strong>&apos;s {PLAN_YEAR} ACA formulary
-                with {results.length} coverage{' '}
-                {results.length === 1 ? 'entry' : 'entries'}.
+                across {results.length} plan{results.length === 1 ? '' : 's'}.
                 {rxnormId && <> RxNorm ID: {rxnormId}.</>}{' '}
                 Source: CMS Machine-Readable PUF.
               </>
@@ -267,6 +259,11 @@ export default async function FormularyDrugPage({ params }: Props) {
           </section>
         )}
 
+        {/* ── Editorial content ── */}
+        {editorial && (
+          <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
+        )}
+
         {/* ── Coverage Details Table ── */}
         {results.length > 0 && (
           <section aria-labelledby="coverage-table-heading">
@@ -274,7 +271,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               id="coverage-table-heading"
               className="text-xl font-semibold text-navy-800 mb-4"
             >
-              Coverage Details by Plan
+              Coverage Details
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
@@ -285,30 +282,30 @@ export default async function FormularyDrugPage({ params }: Props) {
                     <th className="px-4 py-2 font-semibold text-navy-700">Prior Auth</th>
                     <th className="px-4 py-2 font-semibold text-navy-700">Step Therapy</th>
                     <th className="px-4 py-2 font-semibold text-navy-700">Qty Limit</th>
-                    <th className="px-4 py-2 font-semibold text-navy-700">Plan Year</th>
+                    <th className="px-4 py-2 font-semibold text-navy-700">Plans</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {results.map((d, i) => (
+                  {groupByFormulation(results).map((g, i) => (
                     <tr
                       key={i}
                       className="border-t border-neutral-100 hover:bg-neutral-50"
                     >
-                      <td className="px-4 py-2 font-medium">{d.drug_name}</td>
+                      <td className="px-4 py-2 font-medium">{g.drug_name}</td>
                       <td className="px-4 py-2">
-                        <TierBadge tier={d.drug_tier} />
+                        <TierBadge tier={g.drug_tier} />
                       </td>
                       <td className="px-4 py-2">
-                        <RestrictionBadge active={d.prior_authorization} label="PA" />
+                        <RestrictionBadge active={g.prior_authorization} label="PA" />
                       </td>
                       <td className="px-4 py-2">
-                        <RestrictionBadge active={d.step_therapy} label="ST" />
+                        <RestrictionBadge active={g.step_therapy} label="ST" />
                       </td>
                       <td className="px-4 py-2">
-                        <RestrictionBadge active={d.quantity_limit} label="QL" />
+                        <RestrictionBadge active={g.quantity_limit} label="QL" />
                       </td>
-                      <td className="px-4 py-2 text-neutral-500">
-                        {d.plan_year ?? '—'}
+                      <td className="px-4 py-2 text-neutral-500 whitespace-nowrap">
+                        {g.planCount} {g.planCount === 1 ? 'plan' : 'plans'}
                       </td>
                     </tr>
                   ))}
@@ -422,6 +419,42 @@ interface IssuerInfo {
   id: string
   name?: string
   tier?: string
+}
+
+interface FormulationGroup {
+  drug_name: string
+  drug_tier?: string
+  prior_authorization?: boolean
+  step_therapy?: boolean
+  quantity_limit?: boolean
+  planCount: number
+}
+
+function groupByFormulation(drugs: FormularyDrug[]): FormulationGroup[] {
+  const map = new Map<string, FormulationGroup>()
+  for (const d of drugs) {
+    const key = [
+      d.drug_name ?? '',
+      d.drug_tier ?? '',
+      String(!!d.prior_authorization),
+      String(!!d.step_therapy),
+      String(!!d.quantity_limit),
+    ].join('|')
+    const existing = map.get(key)
+    if (existing) {
+      existing.planCount += 1
+    } else {
+      map.set(key, {
+        drug_name: d.drug_name ?? '',
+        drug_tier: d.drug_tier,
+        prior_authorization: d.prior_authorization,
+        step_therapy: d.step_therapy,
+        quantity_limit: d.quantity_limit,
+        planCount: 1,
+      })
+    }
+  }
+  return [...map.values()]
 }
 
 function getUniqueIssuers(drugs: FormularyDrug[]): IssuerInfo[] {

@@ -3,6 +3,13 @@
 import type { PlanRecord } from './types'
 
 const BASE_URL = 'https://healthinsurancerenew.com'
+
+export function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
 const CURRENT_YEAR = new Date().getFullYear()
 
 // ─── Core types ──────────────────────────────────────────────────────────────
@@ -44,6 +51,7 @@ export interface CanonicalParams {
   state?: string
   county?: string
   plan_id?: string
+  plan_name?: string
   plan_variant?: string
   issuer?: string
   drug_name?: string
@@ -71,8 +79,12 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
     case 'policy-scenario':
       return `${BASE_URL}/enhanced-credits/${st}/${county}`
     case 'plan-detail':
-    case 'sbc':
-      return `${BASE_URL}/plan-details/${params.plan_id ?? ''}`
+    case 'sbc': {
+      const nameSlug = params.plan_name ? slugify(params.plan_name) : ''
+      return nameSlug
+        ? `${BASE_URL}/plan-details/${params.plan_id ?? ''}/${nameSlug}`
+        : `${BASE_URL}/plan-details/${params.plan_id ?? ''}`
+    }
     case 'formulary': {
       const drugSlug = (params.drug_name ?? '').toLowerCase().replace(/\s+/g, '-')
       return `${BASE_URL}/formulary/${params.issuer ?? 'all'}/${drugSlug}`
@@ -92,7 +104,7 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
 
 export function planLink(planId: string, planName: string): EntityLink {
   return {
-    href: `/plan-details/${planId}`,
+    href: `/plan-details/${planId}/${slugify(planName)}`,
     label: `View full plan details and SBC for ${planName}`,
     type: 'plan',
     relevanceScore: 80,
@@ -207,7 +219,7 @@ export function dentalLink(
 
 export function sbcLink(planId: string, planName: string): EntityLink {
   return {
-    href: `/plan-details/${planId}`,
+    href: `/plan-details/${planId}/${slugify(planName)}`,
     label: `View full SBC cost-sharing details for ${planName}`,
     type: 'sbc',
     relevanceScore: 75,
@@ -267,8 +279,8 @@ export type PageContext =
       pageType: 'formulary'
       drugName: string
       issuer: string
-      /** Plan IDs that include this drug — used to link to plan detail pages */
-      relatedPlanIds: string[]
+      /** Plans that include this drug — used to link to plan detail pages */
+      relatedPlans: { id: string; name: string }[]
       state?: string
       county?: string
       countyName?: string
@@ -446,7 +458,7 @@ function buildCountyLinks(
     relevanceScore: 65,
   })
   links.push({
-    href: '/faq/enrollment/when-is-aca-open-enrollment',
+    href: '/faq/sep_triggers/sep_001',
     label: 'When does ACA open enrollment start and end each year?',
     type: 'faq',
     relevanceScore: 60,
@@ -513,13 +525,13 @@ function buildPlanDetailLinks(
   }
 
   links.push({
-    href: '/faq/cost_sharing/what-counts-toward-deductible',
+    href: '/faq/billing_scenarios/bil_001',
     label: 'What medical expenses count toward my ACA deductible?',
     type: 'faq',
     relevanceScore: 68,
   })
   links.push({
-    href: '/faq/enrollment/can-i-switch-plans-mid-year',
+    href: '/faq/sep_triggers/sep_002',
     label: 'Can I switch ACA plans mid-year without a qualifying life event?',
     type: 'faq',
     relevanceScore: 62,
@@ -538,7 +550,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
   const links: EntityLink[] = []
 
   links.push({
-    href: `/plan-details/${plan.plan_id}`,
+    href: `/plan-details/${plan.plan_id}/${slugify(plan.plan_name)}`,
     label: `Full plan overview for ${plan.plan_name}`,
     type: 'plan',
     relevanceScore: 95,
@@ -567,7 +579,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
     relevanceScore: 80,
   })
   links.push({
-    href: '/faq/cost_sharing/how-does-coinsurance-work',
+    href: '/faq/billing_scenarios/bil_002',
     label: 'How does coinsurance work after meeting your ACA deductible?',
     type: 'faq',
     relevanceScore: 72,
@@ -593,12 +605,12 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
 function buildFormularyLinks(
   ctx: Extract<PageContext, { pageType: 'formulary' }>
 ): EntityLink[] {
-  const { drugName, issuer, relatedPlanIds, state, county, countyName } = ctx
+  const { drugName, issuer, relatedPlans, state, county, countyName } = ctx
   const links: EntityLink[] = []
 
-  relatedPlanIds.slice(0, 3).forEach((planId, i) => {
+  relatedPlans.slice(0, 3).forEach(({ id, name }, i) => {
     links.push({
-      href: `/plan-details/${planId}`,
+      href: `/plan-details/${id}/${slugify(name)}`,
       label: `View plan details and full SBC for an ACA plan covering ${drugName}`,
       type: 'plan',
       relevanceScore: 90 - i * 4,
@@ -630,13 +642,13 @@ function buildFormularyLinks(
   }
 
   links.push({
-    href: '/faq/formulary/what-is-prior-authorization',
+    href: '/faq/prior_authorization/pa_001',
     label: 'What is prior authorization and how do I appeal a denial?',
     type: 'faq',
     relevanceScore: 75,
   })
   links.push({
-    href: '/faq/formulary/generic-vs-brand-drug-coverage',
+    href: '/faq/prior_authorization/pa_003',
     label: 'Generic vs brand-name drugs — which tier costs less on ACA plans?',
     type: 'faq',
     relevanceScore: 68,
@@ -693,36 +705,33 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
   }
 
   const categoryLinkMap: Partial<Record<string, EntityLink[]>> = {
-    cost_sharing: [
+    billing_scenarios: [
       { href: '/billing/split_billing', label: 'How split billing works at in-network facilities', type: 'billing', relevanceScore: 82 },
       { href: '/billing/prior_auth', label: 'Prior authorization — when your insurer requires pre-approval', type: 'billing', relevanceScore: 78 },
       { href: '/billing/surprise_billing', label: 'Surprise billing — federal protections under the No Surprises Act', type: 'billing', relevanceScore: 74 },
     ],
-    enrollment: [
-      { href: '/life-events/job-loss', label: 'Lost employer coverage — your 60-day SEP window explained', type: 'life-event', relevanceScore: 82 },
-      { href: '/life-events/turning-26', label: 'Turning 26 and aging off a parent plan — how to enroll', type: 'life-event', relevanceScore: 78 },
-      { href: '/life-events/marriage', label: 'Getting married — adding a spouse to ACA coverage', type: 'life-event', relevanceScore: 74 },
-    ],
-    sep: [
+    sep_triggers: [
       { href: '/life-events/job-loss', label: 'Job loss SEP — what triggers it and when your window opens', type: 'life-event', relevanceScore: 88 },
       { href: '/life-events/marriage', label: 'Marriage SEP — 60 days to enroll or change your ACA plan', type: 'life-event', relevanceScore: 82 },
       { href: '/life-events/move', label: 'Moving to a new area — does your current ACA plan transfer?', type: 'life-event', relevanceScore: 78 },
     ],
-    subsidy: [
+    turning_26: [
+      { href: '/life-events/job-loss', label: 'Lost employer coverage — your 60-day SEP window explained', type: 'life-event', relevanceScore: 82 },
+      { href: '/life-events/turning-26', label: 'Turning 26 and aging off a parent plan — how to enroll', type: 'life-event', relevanceScore: 78 },
+      { href: '/life-events/marriage', label: 'Getting married — adding a spouse to ACA coverage', type: 'life-event', relevanceScore: 74 },
+    ],
+    income_changes: [
       { href: '/life-events/income-change', label: 'Income change mid-year — updating your APTC the right way', type: 'life-event', relevanceScore: 84 },
       { href: '/billing/premium_tax_credit', label: 'How premium tax credits are reconciled at tax filing time', type: 'billing', relevanceScore: 80 },
       { href: '/enhanced-credits', label: 'Enhanced ACA credits — what happens if they expire', type: 'policy-scenario', relevanceScore: 76 },
     ],
-    formulary: [
+    prior_authorization: [
       { href: '/billing/prescription', label: 'ACA prescription drug billing — how tiers and copays work', type: 'billing', relevanceScore: 82 },
-      { href: '/billing/prior_auth', label: 'Prior authorization for specialty drugs — your appeal rights', type: 'billing', relevanceScore: 78 },
-    ],
-    appeals: [
       { href: '/billing/prior_auth', label: 'Prior authorization denial — your right to internal and external appeal', type: 'billing', relevanceScore: 88 },
-      { href: '/faq/appeals/how-to-file-external-appeal', label: 'How to file an external appeal for a denied ACA claim', type: 'faq', relevanceScore: 82 },
+      { href: '/faq/prior_authorization/pa_002', label: 'How to file an external appeal for a denied ACA claim', type: 'faq', relevanceScore: 82 },
       { href: '/billing/surprise_billing', label: 'Surprise billing dispute process — step by step', type: 'billing', relevanceScore: 76 },
     ],
-    dental: [
+    dental_surprises: [
       { href: '/dental', label: 'Compare stand-alone dental plans (SADPs) on the ACA marketplace', type: 'dental', relevanceScore: 85 },
       { href: '/billing/preventive', label: 'Preventive dental care — what ACA plans must cover at no cost', type: 'billing', relevanceScore: 78 },
     ],
@@ -779,7 +788,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
 
   if (billingCategory === 'prior_auth' || billingCategory === 'appeals') {
     links.push({
-      href: '/faq/appeals/how-to-appeal-prior-auth-denial',
+      href: '/faq/prior_authorization/pa_002',
       label: 'How to appeal a prior authorization denial — step-by-step guide',
       type: 'faq',
       relevanceScore: 90,
@@ -787,7 +796,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
   }
   if (billingCategory === 'surprise_billing') {
     links.push({
-      href: '/faq/billing/no-surprises-act-protections',
+      href: '/faq/billing_scenarios/bil_003',
       label: 'Your rights under the No Surprises Act for unexpected out-of-network bills',
       type: 'faq',
       relevanceScore: 88,
@@ -801,7 +810,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
       relevanceScore: 82,
     })
     links.push({
-      href: '/faq/formulary/what-is-prior-authorization',
+      href: '/faq/prior_authorization/pa_001',
       label: 'What is prior authorization for prescription drugs?',
       type: 'faq',
       relevanceScore: 78,
@@ -809,7 +818,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
   }
   if (billingCategory === 'mental_health') {
     links.push({
-      href: '/faq/cost_sharing/mental-health-parity-aca',
+      href: '/faq/billing_scenarios/bil_004',
       label: 'Mental health parity under the ACA — what plans are required to cover',
       type: 'faq',
       relevanceScore: 85,
@@ -888,7 +897,7 @@ function buildLifeEventLinks(
 
   if (tagSet.has('cobra')) {
     links.push({
-      href: '/faq/enrollment/cobra-vs-aca-marketplace',
+      href: '/faq/turning_26/t26_003',
       label: 'COBRA vs ACA marketplace — which is cheaper after job loss?',
       type: 'faq',
       relevanceScore: 88,
@@ -896,7 +905,7 @@ function buildLifeEventLinks(
   }
   if (tagSet.has('sep')) {
     links.push({
-      href: '/faq/sep/what-qualifies-as-a-sep',
+      href: '/faq/sep_triggers/sep_001',
       label: 'What events qualify as a Special Enrollment Period trigger?',
       type: 'faq',
       relevanceScore: 85,
@@ -904,7 +913,7 @@ function buildLifeEventLinks(
   }
   if (tagSet.has('aptc') || tagSet.has('subsidy') || tagSet.has('fpl')) {
     links.push({
-      href: '/faq/subsidy/reporting-income-change',
+      href: '/faq/income_changes/inc_002',
       label: 'How to report income changes mid-year and avoid APTC repayment',
       type: 'faq',
       relevanceScore: 82,
@@ -912,7 +921,7 @@ function buildLifeEventLinks(
   }
   if (tagSet.has('young_adult')) {
     links.push({
-      href: '/faq/enrollment/best-plans-for-young-adults',
+      href: '/faq/turning_26/t26_003',
       label: 'Best ACA plan types for young adults — bronze vs silver vs catastrophic',
       type: 'faq',
       relevanceScore: 80,
@@ -920,7 +929,7 @@ function buildLifeEventLinks(
   }
   if (tagSet.has('medicare') || tagSet.has('turning_65')) {
     links.push({
-      href: '/faq/sep/aca-to-medicare-at-65',
+      href: '/faq/medicare_65/med65_001',
       label: 'Transitioning from ACA marketplace coverage to Medicare at age 65',
       type: 'faq',
       relevanceScore: 84,
@@ -989,19 +998,19 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
     relevanceScore: 88,
   })
   links.push({
-    href: '/faq/dental/does-aca-cover-dental',
+    href: '/faq/dental_surprises/dnt_003',
     label: 'Does ACA marketplace coverage include dental benefits?',
     type: 'faq',
     relevanceScore: 85,
   })
   links.push({
-    href: '/faq/dental/what-is-an-sadp',
+    href: '/faq/dental_surprises/dnt_004',
     label: 'What is a stand-alone dental plan (SADP) and who should get one?',
     type: 'faq',
     relevanceScore: 80,
   })
   links.push({
-    href: '/faq/dental/orthodontia-aca-coverage',
+    href: '/faq/dental_surprises/dnt_005',
     label: 'Does ACA dental coverage include orthodontia for adults?',
     type: 'faq',
     relevanceScore: 74,

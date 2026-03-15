@@ -1,0 +1,89 @@
+import type { Metadata } from 'next'
+import Breadcrumbs from '../../components/Breadcrumbs'
+
+export const metadata: Metadata = {
+  title: 'Terms of Use | HealthInsuranceRenew',
+  description:
+    'Terms of use for HealthInsuranceRenew. Understand the conditions for using this educational health insurance resource, including disclaimers and limitations.',
+}
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Terms of Use', url: '/terms' },
+]
+
+export default function TermsPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <Breadcrumbs items={breadcrumbs} />
+      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Terms of Use</h1>
+
+      <div className="prose prose-neutral max-w-none">
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          By using this site, visitors agree to the terms and conditions outlined below.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          These terms of use govern access to and use of HealthInsuranceRenew.com and all content, tools, and services
+          available through the site. If any part of these terms is not acceptable, the site should not be used.
+          HealthInsuranceRenew.com reserves the right to update these terms at any time, and continued use of the site
+          after changes are posted constitutes acceptance of the revised terms.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          This site provides educational information only and does not constitute professional advice.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          All content on this site, including guides, calculators, state-specific resources, and blog posts, is
+          provided for educational and informational purposes only. Nothing on this site should be interpreted as legal
+          advice, tax advice, benefits counseling, or a recommendation to purchase any specific insurance product.
+          Individual circumstances vary, and readers should consult qualified professionals — including licensed
+          insurance agents, tax advisors, or legal counsel — before making decisions about health insurance coverage.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          Acceptable use requires that visitors engage with the site in good faith and for lawful purposes.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Visitors may browse the site, use the educational tools, and interact with the chat feature for their
+          personal, non-commercial use. The following activities are prohibited: attempting to gain unauthorized access
+          to the site's systems, using automated tools to scrape or download content in bulk, misrepresenting identity
+          or affiliation when interacting with agents, and using the site to engage in any activity that violates
+          applicable law.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          Calculator results and estimates are approximate and should not be relied upon as guarantees.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          The tools and calculators on this site produce estimates based on publicly available data, including federal
+          poverty level guidelines and ACA subsidy formulas. These results are intended to illustrate general concepts
+          and are not precise quotes or guarantees of eligibility, pricing, or savings. Actual results will depend on
+          specific household circumstances, income documentation, and marketplace plan availability.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          Liability is limited to the fullest extent permitted by law.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          HealthInsuranceRenew.com, its operators, and affiliated agents are not liable for any direct, indirect,
+          incidental, or consequential damages arising from the use of this site or reliance on its content. The site
+          is provided &quot;as is&quot; without warranties of any kind, express or implied, including but not limited
+          to warranties of accuracy, completeness, or fitness for a particular purpose. Users assume all risk
+          associated with their use of the site and its information.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          Questions about these terms can be submitted through the contact page.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Visitors who have questions about these terms of use or need clarification on any provision are welcome to
+          reach out through the{' '}
+          <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+            contact page
+          </a>
+          . These terms are governed by applicable federal and state law.
+        </p>
+      </div>
+    </div>
+  )
+}

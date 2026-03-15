@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import {
   getPolicyByCounty,
   getSubsidyByCounty,
-  getAllPolicyStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -14,6 +13,7 @@ import {
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplScenarioDetail, AgeScenario } from '@/lib/types'
+import { generatePolicyScenarioContent } from '@/lib/content-templates'
 
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -22,13 +22,9 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// ---------------------------------------------------------------------------
-// Static params — 1,852 counties from policy_scenarios.json
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  return getAllPolicyStateCountyCombos()
-}
+// Dynamic rendering — policy_scenarios.json (65 MB) is too large to
+// process during build. Pages render on-demand via SSR.
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -133,6 +129,14 @@ export default function EnhancedCreditsPage({ params }: Props) {
       </>
     )
   }
+
+  // --- Editorial content ---
+  const editorial = generatePolicyScenarioContent({
+    countyName: countyDisplay,
+    stateCode: stateUpper,
+    record: scenario,
+    planYear: PLAN_YEAR,
+  })
 
   // --- Derived data ---
   const { headline } = scenario
@@ -562,34 +566,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ── Author attribution + data sources ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About This Data</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Enhanced credit expiration analysis compiled by the HealthInsuranceRenew editorial team
-            using{' '}
-            <a
-              href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-              className="text-primary-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CMS QHP Rate Public Use Files
-            </a>{' '}
-            (benchmark silver premiums) and{' '}
-            <a
-              href="https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
-              className="text-primary-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              IRS/HHS Federal Poverty Level guidelines
-            </a>
-            . All scenarios model a single enrollee (household size {scenario.household_size}) at
-            the {PLAN_YEAR} FPL base of ${scenario.fpl_base.toLocaleString()}. Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-          </p>
-        </section>
+        {/* ── Editorial content ── */}
+        <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />

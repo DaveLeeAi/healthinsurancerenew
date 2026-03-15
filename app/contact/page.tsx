@@ -1,0 +1,81 @@
+import type { Metadata } from 'next'
+import Breadcrumbs from '../../components/Breadcrumbs'
+import config from '../../data/astro/config.json'
+
+export const metadata: Metadata = {
+  title: 'Contact Us | HealthInsuranceRenew',
+  description:
+    'Get in touch with licensed health insurance agents at HealthInsuranceRenew. Learn how to reach our team for questions about ACA marketplace coverage.',
+}
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Contact', url: '/contact' },
+]
+
+export default function ContactPage() {
+  return (
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <Breadcrumbs items={breadcrumbs} />
+      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Contact Us</h1>
+
+      <div className="prose prose-neutral max-w-none">
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          There are several ways to connect with a licensed agent through this site.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          HealthInsuranceRenew is staffed by licensed health insurance agents who can answer questions about ACA
+          marketplace coverage, enrollment periods, and financial assistance options. Whether the question is about
+          understanding a specific plan type or learning how premium tax credits work, the team is available to help.
+        </p>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          Every inquiry is routed to a licensed professional in the relevant state.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Agents hold active licenses in {config.licensedStates.length} states across the country. When a question
+          relates to a specific state's marketplace, it is handled by an agent who is licensed and appointed in that
+          state. This ensures that any guidance provided complies with state-specific regulations and reflects the most
+          current local information.
+        </p>
+
+        <div className="bg-primary-50/80 backdrop-blur-sm border border-primary-200/80 rounded-2xl p-6 my-8">
+          <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            The path to speaking with a person is straightforward.
+          </h3>
+          <p className="text-slate-700 leading-relaxed mb-3">
+            Visitors can use the chat feature available on this site to start a conversation. Initial questions can
+            often be addressed through the chat, and when a more detailed discussion is needed, the conversation can
+            be routed to a licensed agent directly. There is no obligation and no fee for speaking with an agent.
+          </p>
+          <p className="text-slate-700 leading-relaxed">
+            For general inquiries about the site, its content, or how it operates, visitors can also reach the team
+            through the chat. Response times are typically within one business day.
+          </p>
+        </div>
+
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
+          This site does not collect sensitive personal information through contact forms.
+        </h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Privacy is taken seriously. The contact process is designed to avoid collecting sensitive health or financial
+          data through web forms. When specific details are needed to assist with enrollment or plan selection, that
+          information is exchanged directly with a licensed agent through secure channels. More details about data
+          practices are available in the{' '}
+          <a href="/privacy" className="text-primary-600 hover:text-primary-700 underline">
+            privacy policy
+          </a>
+          .
+        </p>
+
+        <p className="text-slate-700 leading-relaxed mb-4">
+          For information about the states where licensed agents are available, visit the{' '}
+          <a href="/licensing" className="text-primary-600 hover:text-primary-700 underline">
+            licensing page
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  )
+}

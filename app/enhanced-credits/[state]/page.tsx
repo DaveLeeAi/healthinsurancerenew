@@ -1,8 +1,5 @@
 import type { Metadata } from 'next'
-import {
-  getAllPolicyStates,
-  getPolicyByState,
-} from '@/lib/data-loader'
+import { getPolicyByState } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 
@@ -13,13 +10,9 @@ interface Props {
   params: { state: string }
 }
 
-// ---------------------------------------------------------------------------
-// Static params — one page per state with policy scenario data
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  return getAllPolicyStates().map((s) => ({ state: s.toLowerCase() }))
-}
+// Dynamic rendering — policy_scenarios.json (65 MB) is too large to
+// process during build. Pages render on-demand via SSR.
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata

@@ -5,6 +5,7 @@ import { buildLifeEventHowToSchema, buildBreadcrumbSchema } from '@/lib/schema-m
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import { generateLifeEventContent } from '@/lib/content-templates'
 import SEPDecisionTree from '@/components/SEPDecisionTree'
 
 // ─── Params ───────────────────────────────────────────────────────────────────
@@ -99,6 +100,9 @@ export default function LifeEventPage({ params }: Props) {
   ])
 
   const howToSchema = buildLifeEventHowToSchema({ event })
+
+  // Editorial content
+  const editorial = generateLifeEventContent({ event })
 
   // Entity links
   const entityLinks = getRelatedEntities({
@@ -317,31 +321,29 @@ export default function LifeEventPage({ params }: Props) {
                   <h3 className="text-xs font-semibold text-blue-800 uppercase tracking-wide mb-1">
                     {rule.replace(/_/g, ' ')}
                   </h3>
-                  <p className="text-sm text-blue-700 leading-relaxed">{detail}</p>
+                  {typeof detail === 'string' ? (
+                    <p className="text-sm text-blue-700 leading-relaxed">{detail}</p>
+                  ) : (
+                    <ul className="space-y-1 text-sm text-blue-700">
+                      {Object.entries(detail as Record<string, string>)
+                        .filter(([k]) => k !== 'note')
+                        .map(([state, val]) => (
+                          <li key={state}>
+                            <span className="font-medium">{state}:</span> {val}
+                          </li>
+                        ))}
+                      {(detail as Record<string, string>).note && (
+                        <li className="text-xs text-blue-500 mt-1 italic">
+                          {(detail as Record<string, string>).note}
+                        </li>
+                      )}
+                    </ul>
+                  )}
                 </div>
               ))}
             </div>
           </section>
         )}
-
-        {/* ── CTA ──────────────────────────────────────────────────── */}
-        <section className="mb-10">
-          <div className="bg-gradient-to-br from-federal-50 to-federal-100 border border-federal-200 rounded-xl p-6 text-center">
-            <h2 className="text-lg font-semibold text-federal-900 mb-2">
-              Need Help With Your Special Enrollment?
-            </h2>
-            <p className="text-sm text-federal-700 max-w-xl mx-auto mb-4">
-              As a licensed health insurance agent with CMS Elite Circle of Champions recognition,
-              I can guide you through the enrollment process and help you find the best plan for your situation.
-            </p>
-            <a
-              href="https://healthinsurancerenew.com/contact"
-              className="inline-block px-6 py-2.5 bg-federal-700 text-white text-sm font-semibold rounded-lg hover:bg-federal-800 transition-colors"
-            >
-              Get Free Enrollment Help
-            </a>
-          </div>
-        </section>
 
         {/* ── FAQ Questions ────────────────────────────────────────── */}
         {event.content_page_data?.faq_questions && event.content_page_data.faq_questions.length > 0 && (
@@ -374,28 +376,15 @@ export default function LifeEventPage({ params }: Props) {
           </section>
         )}
 
+        {/* ── Editorial content ── */}
+        <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
+
         {/* ── Entity Links ─────────────────────────────────────────── */}
         <EntityLinkCard
           links={entityLinks}
           title="Related Resources"
           variant="bottom"
         />
-
-        {/* ── About This Data ──────────────────────────────────────── */}
-        <section className="mt-10 pt-6 border-t border-neutral-200">
-          <h2 className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-2">
-            About This Data
-          </h2>
-          <p className="text-xs text-neutral-400 leading-relaxed">
-            SEP guidelines sourced from CMS Special Enrollment Period rules and federal ACA regulations.
-            Plan year {dataset.metadata.plan_year ?? 2026} data. Individual situations vary — this guide
-            covers general rules and common scenarios. Always verify with your state marketplace or a
-            licensed insurance agent for your specific circumstances.
-          </p>
-          <p className="text-xs text-neutral-400 mt-2">
-            Content reviewed by Dave Lee, licensed health insurance agent (CMS Elite Circle of Champions).
-          </p>
-        </section>
 
         {/* ── Medical Disclaimer ───────────────────────────────────── */}
         <footer className="mt-6 pt-4 border-t border-neutral-100">

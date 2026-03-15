@@ -10,6 +10,7 @@ import {
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { DentalRecord } from '@/lib/types'
+import { generateDentalContent } from '@/lib/content-templates'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -32,17 +33,8 @@ interface Props {
   params: { state: string; plan_variant: string }
 }
 
-// ---------------------------------------------------------------------------
-// Static params — 1,389 plan variants across 30 states
-// ---------------------------------------------------------------------------
-
-export async function generateStaticParams() {
-  const dataset = loadDentalCoverage()
-  return dataset.data.map((p) => ({
-    state: p.state_code.toLowerCase(),
-    plan_variant: p.plan_variant_id,
-  }))
-}
+// Dynamic rendering — 1,389 plan variants render on-demand via SSR
+export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -157,6 +149,9 @@ export default function DentalPlanPage({ params }: Props) {
   const annualMax = plan.annual_maximum.individual_in_network
   const deductible = plan.deductible.individual_in_network
   const canonicalUrl = `${SITE_URL}/dental/${params.state}/${params.plan_variant}`
+
+  // --- Editorial content ---
+  const editorial = generateDentalContent({ dental: plan, planYear: PLAN_YEAR })
 
   // --- Sibling plans in same state for comparison ---
   const statePlans = getDentalByState(stateUpper)
@@ -543,37 +538,8 @@ export default function DentalPlanPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── Author attribution + data sources ── */}
-        <section className="bg-neutral-50 rounded-xl p-6 border border-neutral-200">
-          <h2 className="text-sm font-semibold text-navy-700 mb-2">About This Data</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Dental plan data compiled by the HealthInsuranceRenew editorial team from the{' '}
-            <a
-              href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-              className="text-primary-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CMS SADP Plan Attributes PUF
-            </a>{' '}
-            and{' '}
-            <a
-              href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-              className="text-primary-600 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CMS Benefits and Cost Sharing PUF
-            </a>{' '}
-            for plan year {PLAN_YEAR}. Coverage percentages represent the plan&apos;s share of costs
-            after deductible. Last reviewed:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-          </p>
-          <p className="text-sm text-neutral-500 mt-2">
-            Content reviewed by Dave Lee, licensed health insurance agent. CMS Elite Circle of
-            Champions recognition. Licensed in 20+ states.
-          </p>
-        </section>
+        {/* ── Editorial content ── */}
+        <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />

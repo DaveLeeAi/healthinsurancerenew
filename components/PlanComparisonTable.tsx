@@ -4,6 +4,10 @@ import { useState, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import type { PlanRecord } from '@/lib/types'
 
+function slugify(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -232,7 +236,7 @@ export default function PlanComparisonTable({ plans }: Props) {
                 {/* Plan name as row header for accessibility */}
                 <th scope="row" className="px-3 py-3 font-medium text-left">
                   <a
-                    href={`/plan-details/${plan.plan_id}`}
+                    href={`/plan-details/${plan.plan_id}/${slugify(plan.plan_name ?? '')}`}
                     className="text-primary-600 hover:underline hover:text-primary-800"
                   >
                     {plan.plan_name}
