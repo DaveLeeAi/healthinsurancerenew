@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import SourcesBox from '../../../components/SourcesBox'
-import metalTiers from '../../../data/astro/metal-tiers.json'
+import metalTiers from '../../../data/config/metal-tiers.json'
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },

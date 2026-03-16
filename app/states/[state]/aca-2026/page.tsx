@@ -4,9 +4,9 @@ import Breadcrumbs from '../../../../components/Breadcrumbs'
 import AnswerBox from '../../../../components/AnswerBox'
 import FAQSection from '../../../../components/FAQSection'
 import SourcesBox from '../../../../components/SourcesBox'
-import allStatesData from '../../../../data/astro/all-states.json'
-import fplData from '../../../../data/astro/fpl-current.json'
-import csrData from '../../../../data/astro/csr-tiers.json'
+import allStatesData from '../../../../data/config/all-states.json'
+import fplData from '../../../../data/config/fpl-current.json'
+import csrData from '../../../../data/config/csr-tiers.json'
 
 interface Props {
   params: { state: string }

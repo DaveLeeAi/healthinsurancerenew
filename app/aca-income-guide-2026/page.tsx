@@ -3,9 +3,9 @@ import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
 import SourcesBox from '../../components/SourcesBox'
-import fplData from '../../data/astro/fpl-current.json'
-import csrData from '../../data/astro/csr-tiers.json'
-import contributionData from '../../data/astro/contribution-scale.json'
+import fplData from '../../data/config/fpl-current.json'
+import csrData from '../../data/config/csr-tiers.json'
+import contributionData from '../../data/config/contribution-scale.json'
 
 export const metadata: Metadata = {
   title: 'ACA Savings by Income Level: 2026 Guide | HealthInsuranceRenew',

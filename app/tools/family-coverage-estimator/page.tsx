@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import SourcesBox from '../../../components/SourcesBox'
-import fplData from '../../../data/astro/fpl-current.json'
-import contributionData from '../../../data/astro/contribution-scale.json'
+import fplData from '../../../data/config/fpl-current.json'
+import contributionData from '../../../data/config/contribution-scale.json'
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },

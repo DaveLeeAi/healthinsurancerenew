@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import SourcesBox from '../../../components/SourcesBox'
-import affordabilityData from '../../../data/astro/affordability-threshold.json'
+import affordabilityData from '../../../data/config/affordability-threshold.json'
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },

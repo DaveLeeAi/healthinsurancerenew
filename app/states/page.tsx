@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import configData from '../../data/astro/config.json'
-import allStatesData from '../../data/astro/all-states.json'
+import configData from '../../data/config/config.json'
+import allStatesData from '../../data/config/all-states.json'
 
 export const metadata: Metadata = {
   title: 'Health Insurance by State | HealthInsuranceRenew',

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getAllSubsidyStateCountyCombos } from '@/lib/data-loader'
 import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
-import allStatesData from '@/data/astro/all-states.json'
+import allStatesData from '@/data/config/all-states.json'
 
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'

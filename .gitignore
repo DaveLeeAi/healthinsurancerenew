@@ -156,6 +156,9 @@ data/processed/formulary_intelligence.json
 data/processed/formulary_intelligence.meta.json
 data/processed/formulary_errors.json
 
+# Astro generated files (leftover from migration — should not re-appear)
+.astro/
+
 # Byte-offset index cache (regenerate with: npm run build:indexes)
 .cache/
 

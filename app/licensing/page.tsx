@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import config from '../../data/astro/config.json'
+import config from '../../data/config/config.json'
 
 export const metadata: Metadata = {
   title: 'Agent Licensing | HealthInsuranceRenew',

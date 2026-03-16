@@ -3,7 +3,7 @@ import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
 import SourcesBox from '../../components/SourcesBox'
-import fplData from '../../data/astro/fpl-current.json'
+import fplData from '../../data/config/fpl-current.json'
 
 export const metadata: Metadata = {
   title: 'Lost Your Job? Health Insurance Options for 2026 | HealthInsuranceRenew',

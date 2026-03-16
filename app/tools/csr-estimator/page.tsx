@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import SourcesBox from '../../../components/SourcesBox'
-import fplData from '../../../data/astro/fpl-current.json'
-import csrData from '../../../data/astro/csr-tiers.json'
+import fplData from '../../../data/config/fpl-current.json'
+import csrData from '../../../data/config/csr-tiers.json'
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },

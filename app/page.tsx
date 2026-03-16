@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import config from '../data/astro/config.json'
+import config from '../data/config/config.json'
 
 export const metadata: Metadata = {
   title: 'HealthInsuranceRenew | Understand Your ACA Health Insurance Options',

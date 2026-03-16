@@ -101,16 +101,16 @@ Processed JSON outputs go in `data/processed/` (committed).
 
 ```bash
 # Install
-npm install
+pnpm install
 
 # Dev server
-npm run dev
+pnpm dev
 
 # Build (loads large datasets — needs 8 GB RAM)
-npm run build
+pnpm build
 
 # Type check
-npx tsc --noEmit
+pnpm exec tsc --noEmit
 ```
 
 ### Environment Variables
@@ -166,10 +166,10 @@ lib/
 data/
   raw/                  # ⚠️ GITIGNORED — CMS PUF files
   processed/            # ✅ COMMITTED — structured datasets
+  config/               # Site config JSONs (FPL tables, metal tiers, CSR tiers, etc.)
   schema/               # JSON validation schemas
 scripts/
   fetch/                # CMS data download scripts
   etl/                  # Transform & normalize scripts
   generate/             # Content generation scripts
-src/                    # Legacy Astro site (reference only)
 ```
