@@ -54,13 +54,13 @@ const CATEGORY_META: Record<string, { label: string; description: string; icon: 
 }
 
 export const metadata: Metadata = {
-  title: 'ACA Health Insurance FAQ — 54 Real Questions Answered | HealthInsuranceRenew',
+  title: 'Health Insurance FAQ — 54 Real Questions Answered | HealthInsuranceRenew',
   description:
-    'Answers to the most common ACA health insurance questions across 9 categories: turning 26, Medicare at 65, SEPs, income changes, dental, billing, and more. Based on ACA regulations and CMS guidance.',
+    'Answers to the most common health insurance marketplace questions across 9 categories: turning 26, Medicare at 65, SEPs, income changes, dental, billing, and more. Based on ACA regulations and CMS guidance.',
   alternates: { canonical: `${SITE_URL}/faq` },
   openGraph: {
     type: 'website',
-    title: 'ACA Health Insurance FAQ — 54 Real Questions Answered',
+    title: 'Health Insurance FAQ — 54 Real Questions Answered',
     description:
       'Expert answers to real health insurance questions. Coverage transitions, subsidies, billing disputes, and more.',
     url: `${SITE_URL}/faq`,
@@ -117,13 +117,13 @@ export default function FAQIndexPage() {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            ACA Health Insurance FAQ
+            Health Insurance FAQ
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            <strong>{dataset.data.length}</strong> real questions across{' '}
-            <strong>{byCategory.size}</strong> categories — answered with regulatory
-            citations and practical guidance. Based on current ACA regulations and CMS
-            enrollment policy.
+            <strong>{dataset.data.length}</strong> real questions about marketplace health
+            insurance — also called Obamacare or the ACA — across{' '}
+            <strong>{byCategory.size}</strong> categories. Answered with regulatory
+            citations and practical guidance based on current CMS enrollment policy.
           </p>
         </section>
 

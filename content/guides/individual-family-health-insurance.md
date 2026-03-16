@@ -1,6 +1,6 @@
 ---
-title: "Individual & Family Health Insurance: A Guide to ACA Marketplace Options"
-description: "Learn how individual and family health insurance works through the ACA marketplace, including plan types, metal tiers, and how to choose coverage that fits your household's needs."
+title: "Individual & Family Health Insurance: A Guide to Marketplace Options"
+description: "Learn how individual and family health insurance works through the marketplace, including plan types, metal tiers, and how to choose coverage that fits your household's needs."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 keyTakeaways:
@@ -19,7 +19,7 @@ faqs:
 
 ## What Is Individual & Family Health Insurance?
 
-Individual and family health insurance is coverage purchased by a person or household rather than obtained through an employer or government program. These plans are available year-round through qualifying life events or during the annual open enrollment period via the ACA marketplace, also known as the Health Insurance Exchange.
+Individual and family health insurance — sometimes called Obamacare or marketplace coverage — is coverage purchased by a person or household rather than obtained through an employer or government program. These plans are available year-round through qualifying life events or during the annual open enrollment period via the ACA marketplace, also known as the Health Insurance Exchange.
 
 ## How the ACA Marketplace Works
 

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `${event.sep_details.window_days}-day SEP window`
     : 'Special enrollment rules apply'
 
-  const title = `${event.title} — Do You Qualify for Special Enrollment? | SEP Guide 2025`
+  const title = `${event.title} — Do You Qualify for Special Enrollment? | SEP Guide 2026`
   const description = `${event.trigger_description} ${windowLabel}. Step-by-step guide: documentation needed, key deadlines, decision tree, and common mistakes to avoid.`
 
   return {
@@ -133,7 +133,7 @@ export default function LifeEventPage({ params }: Props) {
         </span>
 
         <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 mt-3 mb-3 leading-tight">
-          {event.title} — Special Enrollment Period Guide 2025
+          {event.title} — Special Enrollment Period Guide 2026
         </h1>
 
         {/* ── SEP Quick Stats ──────────────────────────────────────── */}

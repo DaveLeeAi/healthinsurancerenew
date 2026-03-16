@@ -44,7 +44,7 @@ Features:
 - Exclusions section (confirmed + pending PDF review)
 - FAQ section (5 Q&As with plan-specific data) + FAQPage JSON-LD schema
 - Data Methodology block + Source Citations (CMS Plan Attributes PUF, BenCS PUF, Healthcare.gov)
-- Data version bar: CMS Marketplace PUF 2025
+- Data version bar: CMS Marketplace PUF 2026
 - Schema: Article, BreadcrumbList, FAQPage, MedicalEntity
 
 ### Formulary

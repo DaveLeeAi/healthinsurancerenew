@@ -2,23 +2,23 @@ import type { Metadata } from 'next'
 import config from '../data/config/config.json'
 
 export const metadata: Metadata = {
-  title: 'HealthInsuranceRenew | Understand Your ACA Health Insurance Options',
+  title: 'HealthInsuranceRenew | Understand Your Health Insurance Options',
   description:
-    'Educational ACA health insurance resource. Learn about marketplace plans, subsidies, enrollment periods, and compare coverage options. Licensed agents in 18 states.',
+    'Educational health insurance resource. Learn about marketplace plans, subsidies, enrollment periods, and compare coverage options. Licensed agents in 18 states.',
 }
 
 const guides = [
-  { title: 'Health Insurance for Individuals & Families', description: 'A plain-English look at ACA marketplace plans, what they cover, and who qualifies.', url: '/guides/individual-family-health-insurance' },
+  { title: 'Health Insurance for Individuals & Families', description: 'A plain-English look at marketplace plans, what they cover, and who qualifies.', url: '/guides/individual-family-health-insurance' },
   { title: 'Open Enrollment 2026', description: 'Important dates, how to sign up, and what to expect this year.', url: '/guides/open-enrollment-2026' },
-  { title: 'How ACA Savings Work in 2026', description: 'Understand premium tax credits and cost-sharing reductions that lower your costs.', url: '/guides/how-aca-subsidies-work-2026' },
+  { title: 'How Health Insurance Savings Work in 2026', description: 'Understand premium tax credits and cost-sharing reductions that lower your costs.', url: '/guides/how-aca-subsidies-work-2026' },
   { title: 'Missed Open Enrollment?', description: 'Life changes that let you sign up outside the regular enrollment window.', url: '/guides/special-enrollment-period' },
   { title: 'What Makes Health Insurance Cost More (or Less)', description: 'How your age, location, income, and plan choice affect what you pay.', url: '/guides/what-affects-health-insurance-costs' },
   { title: 'Lost Your Job? Compare COBRA vs. Marketplace', description: 'Side-by-side cost breakdown to help you pick the better option after leaving a job.', url: '/guides/cobra-vs-marketplace-after-job-loss' },
   { title: 'Turning 26? Your Insurance Options', description: "Aging off a parent's plan? Understand your marketplace, employer, and Medicaid options.", url: '/turning-26-health-insurance-options' },
-  { title: 'Early Retirement Health Insurance', description: 'Bridge the gap between retirement and Medicare with ACA marketplace coverage.', url: '/early-retirement-health-insurance-2026' },
-  { title: 'ACA Savings by Income Level', description: 'Understand subsidies and assistance at every income level, from Medicaid to coverage limits.', url: '/aca-income-guide-2026' },
-  { title: 'Lost Your Job? Health Insurance Options', description: 'Compare ACA marketplace plans, COBRA, and Medicaid after a job loss. Includes 2026 costs and enrollment deadlines.', url: '/lost-job-health-insurance-2026' },
-  { title: 'Self-Employed Health Insurance 2026', description: 'How self-employed individuals can maximize ACA subsidies, deduct premiums, and choose the right plan on variable income.', url: '/self-employed-health-insurance-2026' },
+  { title: 'Early Retirement Health Insurance', description: 'Bridge the gap between retirement and Medicare with marketplace coverage.', url: '/early-retirement-health-insurance-2026' },
+  { title: 'Health Insurance Savings by Income Level', description: 'Understand subsidies and assistance at every income level, from Medicaid to coverage limits.', url: '/aca-income-guide-2026' },
+  { title: 'Lost Your Job? Health Insurance Options', description: 'Compare marketplace plans, COBRA, and Medicaid after a job loss. Includes 2026 costs and enrollment deadlines.', url: '/lost-job-health-insurance-2026' },
+  { title: 'Self-Employed Health Insurance 2026', description: 'How self-employed individuals can maximize marketplace savings, deduct premiums, and choose the right plan on variable income.', url: '/self-employed-health-insurance-2026' },
 ]
 
 const tools = [
@@ -48,10 +48,10 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-8">
           <div className="max-w-4xl mb-12">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6 tracking-tight whitespace-nowrap">
-              2026 ACA Health Insurance Made Simple
+              2026 Health Insurance Made Simple
             </h1>
             <h2 className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
-              Free tools and clear guides to help you understand your savings, eligibility, and next steps.
+              Free tools and clear guides for marketplace health insurance (sometimes called Obamacare) — understand your savings, eligibility, and next steps.
             </h2>
             <div className="flex flex-wrap gap-4 mt-10">
               <a href="/tools/income-savings-calculator" className="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/20">
@@ -88,7 +88,7 @@ export default function HomePage() {
         <div className="flex items-end justify-between mb-8">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Learn How It Works</h2>
-            <p className="text-slate-600">Clear, plain-English guides about ACA health insurance -- no jargon, no sales pressure.</p>
+            <p className="text-slate-600">Clear, plain-English guides about health insurance -- no jargon, no sales pressure.</p>
           </div>
           <a href="/guides" className="hidden sm:inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors whitespace-nowrap">
             View all guides
@@ -137,13 +137,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ACA Reference Pages */}
+      {/* Health Insurance Reference Pages */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">2026 ACA Reference Pages</h2>
-        <p className="text-slate-600 mb-6">In-depth explanations of the rules and numbers behind ACA coverage.</p>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">2026 Health Insurance Reference Pages</h2>
+        <p className="text-slate-600 mb-6">In-depth explanations of the rules and numbers behind marketplace coverage.</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {[
-            { href: '/eligibility-check', title: 'Do I Qualify for ACA Savings?', desc: 'Step-by-step walkthrough of the main eligibility factors.' },
+            { href: '/eligibility-check', title: 'Do I Qualify for Health Insurance Savings?', desc: 'Step-by-step walkthrough of the main eligibility factors.' },
             { href: '/fpl-2026', title: '2026 FPL Guidelines', desc: 'Income tables by household size at every key FPL percentage.' },
             { href: '/csr-explained-2026', title: 'Cost-Sharing Reductions Explained', desc: 'How CSR tiers lower your deductibles, copays, and out-of-pocket costs.' },
           ].map((item) => (
@@ -161,7 +161,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-2xl font-bold text-slate-900 mb-4 leading-heading">Honest, Up-to-Date Health Insurance Help</h2>
             <p className="text-slate-600 mb-6 font-serif leading-relaxed">
-              Everything on this site is free. We explain how ACA marketplace coverage works in plain English so you can make the best choice for your situation. Licensed agents are available in 18 states if you need personal help.
+              Everything on this site is free. We explain how marketplace coverage works in plain English so you can make the best choice for your situation. Licensed agents are available in 18 states if you need personal help.
             </p>
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center p-4 rounded-xl bg-primary-50/50 border border-primary-100">
