@@ -2,7 +2,7 @@
   "currentYear": 2026,
   "siteName": "HealthInsuranceRenew.com",
   "siteUrl": "https://healthinsurancerenew.com",
-  "siteDescription": "Educational ACA health insurance resource helping individuals and families understand their coverage options, subsidies, and enrollment periods.",
+  "siteDescription": "Health insurance marketplace resource helping individuals and families understand their coverage options, subsidies, and enrollment periods.",
   "updated": "2025-10-01",
   "licensedStates": [
     { "name": "Alabama", "abbr": "AL", "slug": "alabama" },

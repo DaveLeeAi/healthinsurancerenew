@@ -9,7 +9,7 @@ import fplData from '../../data/config/fpl-current.json'
 export const metadata: Metadata = {
   title: 'What Is Cost-Sharing Reduction (CSR) in 2026? | HealthInsuranceRenew',
   description:
-    'Plain-English explanation of ACA cost-sharing reductions for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
+    'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
 }
 
 const breadcrumbs = [
@@ -28,7 +28,7 @@ const faqs = [
   {
     question: 'What is a cost-sharing reduction (CSR)?',
     answer:
-      'A cost-sharing reduction is a discount that lowers the amount you pay out of pocket when you use health care. It reduces your deductible, copays, and out-of-pocket maximum. CSRs are only available on Silver plans bought through the ACA marketplace.',
+      'A cost-sharing reduction is a discount that lowers the amount you pay out of pocket when you use health care. It reduces your deductible, copays, and out-of-pocket maximum. CSRs are only available on Silver plans bought through the health insurance marketplace.',
   },
   {
     question: 'Why do CSRs only apply to Silver plans?',
@@ -48,7 +48,7 @@ const faqs = [
   {
     question: 'Can I get a CSR if I buy a Bronze or Gold plan?',
     answer:
-      'No. Cost-sharing reductions are only available on Silver-tier plans purchased through the ACA marketplace. If you choose a Bronze, Gold, or Platinum plan, you will not receive CSR benefits, even if your income qualifies. You will still receive any premium tax credit you qualify for on any metal tier.',
+      'No. Cost-sharing reductions are only available on Silver-tier plans purchased through the health insurance marketplace. If you choose a Bronze, Gold, or Platinum plan, you will not receive CSR benefits, even if your income qualifies. You will still receive any premium tax credit you qualify for on any metal tier.',
   },
   {
     question: 'What is the difference between a premium tax credit and a CSR?',
@@ -230,7 +230,7 @@ export default function CSRExplainedPage() {
           </a>{' '}
           |{' '}
           <a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">
-            ACA Savings by Income Level
+            Health Insurance Savings by Income Level
           </a>
         </p>
       </section>

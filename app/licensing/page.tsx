@@ -34,7 +34,7 @@ export default function LicensingPage() {
           Licensed agents are currently available in {config.licensedStates.length} states.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-6">
-          The following states are served by licensed agents who can assist with ACA marketplace enrollment and
+          The following states are served by licensed agents who can assist with marketplace enrollment and
           coverage questions. Select a state to view local health insurance information.
         </p>
 

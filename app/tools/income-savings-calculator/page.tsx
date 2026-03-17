@@ -98,10 +98,10 @@ export default function IncomeSavingsCalculatorPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        Estimate Your ACA Savings
+        Estimate Your Health Insurance Savings
       </h1>
 
-      <AnswerBox answer="Enter your household size and annual income to calculate an estimate of your potential ACA marketplace savings." />
+      <AnswerBox answer="Enter your household size and annual income to calculate an estimate of your potential marketplace savings." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">
@@ -239,7 +239,7 @@ export default function IncomeSavingsCalculatorPage() {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
           <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Check Your Full Eligibility</a></li>

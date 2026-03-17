@@ -77,9 +77,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const questions = getFrictionQAByCategory(params.category)
   const canonicalUrl = `${SITE_URL}/faq/${params.category}`
 
-  const title = `${label} — ACA Health Insurance FAQ | HealthInsuranceRenew`
+  const title = `${label} — Health Insurance FAQ | HealthInsuranceRenew`
   const description = meta?.description
-    ?? `${questions.length} frequently asked questions about ${label.toLowerCase()} in ACA health insurance.`
+    ?? `${questions.length} frequently asked questions about ${label.toLowerCase()} in marketplace health insurance.`
 
   return {
     title,

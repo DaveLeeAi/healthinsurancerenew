@@ -23,7 +23,7 @@ export default function HowWeGetPaidPage() {
           This site may receive commissions from insurance carriers when consumers enroll through licensed agents.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          When individuals enroll in ACA marketplace health insurance plans through a licensed agent associated with
+          When individuals enroll in marketplace health insurance plans through a licensed agent associated with
           this site, the insurance carrier may pay a commission to that agent. This is standard practice in the health
           insurance industry and is how most agents and brokers are compensated. The commission is paid by the carrier,
           not the consumer.

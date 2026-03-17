@@ -1,5 +1,5 @@
 ---
-title: "ACA Subsidy Cliff Explained: What Happens to Premium Tax Credits in 2026"
+title: "The Subsidy Cliff Explained: What Happens to Premium Tax Credits in 2026"
 description: "Understand the ACA subsidy cliff, how enhanced premium tax credits work in 2026, and what income thresholds mean for marketplace health insurance affordability."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"

@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const canonicalUrl = `${SITE_URL}/subsidies/${params.state}/${params.county}`
 
-  const title = `${countyDisplay}, ${stateUpper} ACA Subsidy Calculator ${PLAN_YEAR} | Estimate Your Tax Credit`
+  const title = `${countyDisplay}, ${stateUpper} Health Insurance Subsidy Calculator ${PLAN_YEAR} | Estimate Your Tax Credit`
 
   const description =
-    `Calculate your ${PLAN_YEAR} ACA premium tax credit (APTC) for ${countyDisplay},` +
+    `Calculate your ${PLAN_YEAR} premium tax credit (APTC) for ${countyDisplay},` +
     ` ${stateUpper}. Enter your income to see your estimated subsidy at each FPL level.` +
     `${benchmarkStr} Source: CMS QHP Rate PUF.`
 
@@ -139,7 +139,7 @@ export default function SubsidiesPage({ params }: Props) {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            {countyDisplay}, {stateUpper} ACA Subsidy Calculator {PLAN_YEAR}
+            {countyDisplay}, {stateUpper} Health Insurance Subsidy Calculator {PLAN_YEAR}
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed">
             {subsidy ? (
@@ -152,7 +152,7 @@ export default function SubsidiesPage({ params }: Props) {
               </>
             ) : (
               <>
-                ACA subsidy data is not available for {countyDisplay}, {stateUpper} in the{' '}
+                Subsidy data is not available for {countyDisplay}, {stateUpper} in the{' '}
                 {PLAN_YEAR} dataset.
               </>
             )}
@@ -187,13 +187,13 @@ export default function SubsidiesPage({ params }: Props) {
               id="how-subsidies-heading"
               className="text-2xl font-semibold text-navy-800"
             >
-              How ACA Subsidies Work in {countyDisplay}, {stateUpper}
+              How Health Insurance Subsidies Work in {countyDisplay}, {stateUpper}
             </h2>
 
             <div className="prose prose-neutral max-w-none space-y-4 text-neutral-700 leading-relaxed">
               <p>
                 The Advance Premium Tax Credit (APTC) is a federal subsidy that lowers your
-                monthly ACA health insurance premium. It is calculated based on the{' '}
+                monthly marketplace health insurance premium. It is calculated based on the{' '}
                 <strong>benchmark silver plan</strong> — the second-lowest-cost silver plan
                 available in {countyDisplay}. For {PLAN_YEAR}, that benchmark premium is{' '}
                 <strong>${subsidy.benchmark_silver_premium.toFixed(0)}/month</strong> at the
@@ -218,7 +218,7 @@ export default function SubsidiesPage({ params }: Props) {
                 income changes during the year, you must report it to the marketplace to avoid
                 repaying excess credits at tax time.{' '}
                 <a href={plansHref} className="underline text-primary-600">
-                  Compare all {PLAN_YEAR} ACA plans in {countyDisplay} →
+                  Compare all {PLAN_YEAR} marketplace plans in {countyDisplay} →
                 </a>
               </p>
             </div>

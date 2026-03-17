@@ -1,6 +1,6 @@
 ---
 title: "Family Health Insurance Cost Estimator"
-description: "Estimate monthly health insurance costs for your family based on household size, income, and plan tier. Understand how ACA subsidies may reduce your premiums."
+description: "Estimate monthly health insurance costs for your family based on household size, income, and plan tier. Understand how marketplace subsidies may reduce your premiums."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"
 toolType: "family-coverage-estimator"

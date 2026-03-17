@@ -38,7 +38,7 @@ export function buildOrgSchema(): OrganizationSchema {
     name: 'HealthInsuranceRenew',
     url: 'https://healthinsurancerenew.com',
     description:
-      'ACA health insurance intelligence platform. Premium data, subsidy calculators, and plan comparisons for US consumers.',
+      'Health insurance marketplace data and tools for US consumers.',
     founder: { '@type': 'Person', name: 'Dave Lee' },
   }
 }
@@ -185,8 +185,8 @@ export function buildPlansProductSchema(params: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `ACA Health Insurance Plans — ${countyName}, ${stateCode}`,
-    description: `Compare ACA Marketplace health insurance plans available in ${countyName}, ${stateCode} for plan year ${planYear}. Source: CMS QHP Landscape PUF.`,
+    name: `Health Insurance Plans — ${countyName}, ${stateCode}`,
+    description: `Compare marketplace health insurance plans available in ${countyName}, ${stateCode} for plan year ${planYear}. Source: CMS QHP Landscape PUF.`,
     publisher: PUBLISHER,
     offers: plans.map((plan) => ({
       '@type': 'Offer',
@@ -262,7 +262,7 @@ export function buildSubsidySchemas(params: {
     '@type': 'GovernmentService',
     name: 'ACA Marketplace — Advance Premium Tax Credit (APTC)',
     description:
-      'Federal subsidy program reducing ACA health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL). Administered by CMS via HealthCare.gov.',
+      'Federal subsidy program reducing marketplace health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL). Administered by CMS via HealthCare.gov.',
     serviceType: 'Health Insurance Subsidy',
     provider: {
       '@type': 'GovernmentOrganization',
@@ -396,7 +396,7 @@ export function buildRateVolatilityDatasetSchema(params: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: `ACA Rate Volatility — ${countyName}, ${record.state_code} (${record.plan_year})`,
+    name: `Health Insurance Rate Volatility — ${countyName}, ${record.state_code} (${record.plan_year})`,
     description: `Premium rate analytics for ${countyName} county, ${record.state_code}. ${record.plan_count} plans across ${record.carrier_count} carriers. Source: CMS Rate Review PUF.`,
     url: `https://healthinsurancerenew.com/rates/${record.state_code.toLowerCase()}/${record.county_fips}`,
     creator: { '@type': 'Organization', name: 'HealthInsuranceRenew' },
@@ -478,7 +478,7 @@ export function buildFormularyDrugSchema(params: {
   if (drug.plan_id) {
     schema['relatedDrug'] = {
       '@type': 'HealthInsurancePlan',
-      name: issuerName ?? drug.issuer_name ?? 'ACA Marketplace Plan',
+      name: issuerName ?? drug.issuer_name ?? 'Marketplace Plan',
       identifier: drug.plan_id,
       ...(planYear
         ? { validFrom: `${planYear}-01-01`, validThrough: `${planYear}-12-31` }
@@ -655,7 +655,7 @@ export function buildLifeEventHowToSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: `What to Do After ${event.title}`,
-    description: `${event.trigger_description} You have a ${windowDays}-day Special Enrollment Period (SEP) to enroll in or change your ACA health coverage.`,
+    description: `${event.trigger_description} You have a ${windowDays}-day Special Enrollment Period (SEP) to enroll in or change your marketplace health coverage.`,
     totalTime: `PT${windowMinutes}M`,
     step: steps.map((step, index) => ({
       '@type': 'HowToStep',
@@ -697,7 +697,7 @@ export function buildPolicyScenarioSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: `IRA Enhanced Credit Expiration Impact — ${countyName}, ${record.state_code}`,
-    description: `Modeled impact of enhanced ACA subsidy expiration on households in ${countyName}, ${record.state_code}. Based on ${planYear} benchmark premiums and IRS FPL tables.`,
+    description: `Modeled impact of enhanced subsidy expiration on households in ${countyName}, ${record.state_code}. Based on ${planYear} benchmark premiums and IRS FPL tables.`,
     url: `https://healthinsurancerenew.com/enhanced-credits/${record.state_code.toLowerCase()}/${record.county_fips}`,
     creator: { '@type': 'Organization', name: 'HealthInsuranceRenew' },
     publisher: PUBLISHER,

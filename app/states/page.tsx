@@ -7,7 +7,7 @@ import allStatesData from '../../data/config/all-states.json'
 export const metadata: Metadata = {
   title: 'Health Insurance by State | HealthInsuranceRenew',
   description:
-    'ACA health insurance information for every U.S. state. Find eligibility details, Medicaid expansion status, exchange info, and 2026 enrollment guides.',
+    'Health insurance marketplace information for every U.S. state. Find eligibility details, Medicaid expansion status, exchange info, and 2026 enrollment guides.',
 }
 
 const breadcrumbs = [
@@ -25,7 +25,7 @@ export default function StatesIndexPage() {
         Health Insurance by State
       </h1>
       <p className="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
-        Select your state to learn about ACA marketplace options, Medicaid expansion status, and
+        Select your state to learn about marketplace options, Medicaid expansion status, and
         2026 enrollment information. Licensed agents are available in 18 states.
       </p>
 
@@ -57,10 +57,10 @@ export default function StatesIndexPage() {
 
       <section>
         <h2 className="text-xl font-bold text-slate-900 mb-4">
-          All 50 States + D.C. — 2026 ACA Guides
+          All 50 States + D.C. — 2026 Health Insurance Guides
         </h2>
         <p className="text-sm text-slate-600 mb-4">
-          Every state has an ACA guide covering Medicaid expansion, exchange details, eligibility,
+          Every state has a health insurance guide covering Medicaid expansion, exchange details, eligibility,
           and costs.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">

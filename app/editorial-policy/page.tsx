@@ -23,15 +23,15 @@ export default function EditorialPolicyPage() {
           All content on this site goes through a structured review process before publication.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          Guides, tools, and state-specific pages are developed by professionals with direct experience in ACA health
-          insurance markets. Before any content is published, it is reviewed for factual accuracy, clarity, and
+          Guides, tools, and state-specific pages are developed by professionals with direct experience in health insurance
+          markets. Before any content is published, it is reviewed for factual accuracy, clarity, and
           compliance with current regulations. This process ensures that the information presented reflects the most
           current rules, including annual updates to federal poverty level guidelines, subsidy calculations, and
           enrollment procedures.
         </p>
 
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
-          Accuracy is maintained through regular updates tied to the ACA plan year cycle.
+          Accuracy is maintained through regular updates tied to the annual plan year cycle.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
           Health insurance rules change from year to year. Premium tax credit thresholds, cost-sharing reduction

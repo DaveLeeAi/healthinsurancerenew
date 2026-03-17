@@ -69,13 +69,13 @@ export default async function StateDetailPage({ params }: Props) {
         <ul className="space-y-2 text-sm">
           <li>
             <a href={`/states/${slug}/aca-2026`} className="text-primary-600 hover:text-primary-700 underline">
-              {stateName} ACA 2026 Detailed Guide
+              {stateName} Marketplace Coverage Guide 2026
             </a>
           </li>
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings in 2026?</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings in 2026?</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 Federal Poverty Level Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
           <li><a href="/lost-job-health-insurance-2026" className="text-primary-600 hover:text-primary-700 underline">Lost Your Job? Your Options Explained</a></li>
         </ul>

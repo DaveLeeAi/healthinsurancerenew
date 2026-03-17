@@ -7,7 +7,7 @@ import SourcesBox from '../../components/SourcesBox'
 export const metadata: Metadata = {
   title: 'Early Retirement Health Insurance in 2026 | HealthInsuranceRenew',
   description:
-    'Retiring before 65? Learn your health insurance options for 2026 including ACA marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
+    'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
 }
 
 const breadcrumbs = [
@@ -18,12 +18,12 @@ const breadcrumbs = [
 
 const faqs = [
   {
-    question: 'Can I get ACA marketplace insurance if I retire before 65?',
+    question: 'Can I get marketplace health insurance if I retire before 65?',
     answer:
-      'Yes. The ACA marketplace is available to anyone who is not eligible for Medicare, regardless of employment status. Retiring early does not disqualify you. In fact, because your income often drops in early retirement, you may qualify for significant premium tax credits.',
+      'Yes. The health insurance marketplace is available to anyone who is not eligible for Medicare, regardless of employment status. Retiring early does not disqualify you. In fact, because your income often drops in early retirement, you may qualify for significant premium tax credits.',
   },
   {
-    question: 'How does retirement income affect ACA subsidies?',
+    question: 'How does retirement income affect marketplace subsidies?',
     answer:
       'The marketplace uses Modified Adjusted Gross Income (MAGI), which includes retirement account withdrawals (from traditional IRAs and 401(k)s), Social Security benefits, pension income, investment income, and rental income. Roth IRA withdrawals generally do not count. You can manage your MAGI by controlling how much you withdraw each year.',
   },
@@ -38,14 +38,14 @@ const faqs = [
       'When you become eligible for Medicare at 65, you transition off the marketplace plan. You must enroll in Medicare during your Initial Enrollment Period (three months before your 65th birthday through three months after). Premium tax credits end once you are Medicare-eligible.',
   },
   {
-    question: 'Can I control my income to maximize ACA subsidies in early retirement?',
+    question: 'Can I control my income to maximize marketplace savings in early retirement?',
     answer:
       'Yes, this is a common strategy. By managing how much you withdraw from traditional retirement accounts versus Roth accounts and taxable savings, you can keep your MAGI within a range that maximizes premium tax credits and potentially qualifies for cost-sharing reductions on Silver plans.',
   },
   {
     question: 'Is health insurance the biggest expense in early retirement?',
     answer:
-      'For many early retirees, health insurance is one of the largest expenses between retirement and Medicare eligibility at 65. However, ACA marketplace subsidies can reduce this cost dramatically. Planning your income withdrawals strategically is one of the most effective ways to control this expense.',
+      'For many early retirees, health insurance is one of the largest expenses between retirement and Medicare eligibility at 65. However, marketplace subsidies can reduce this cost dramatically. Planning your income withdrawals strategically is one of the most effective ways to control this expense.',
   },
 ]
 
@@ -64,14 +64,14 @@ export default function EarlyRetirementPage() {
         Early Retirement Health Insurance: Your 2026 Options
       </h1>
 
-      <AnswerBox answer="If you retire before turning 65 and losing employer coverage, the ACA marketplace is your primary option for health insurance until Medicare kicks in. Your retirement income level determines how much help you get with premiums. Many early retirees qualify for substantial savings by managing how much income they take each year." />
+      <AnswerBox answer="If you retire before turning 65 and losing employer coverage, the health insurance marketplace is your primary option until Medicare kicks in. Your retirement income level determines how much help you get with premiums. Many early retirees qualify for substantial savings by managing how much income they take each year." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">The Gap Between Retirement and Medicare</h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           Medicare eligibility begins at age 65. If you retire at 55, 58, or 62, that leaves years where you need to
           find your own health insurance. Before the ACA, this gap was one of the biggest financial risks of early
-          retirement. Now, the ACA marketplace provides a path to affordable coverage — especially if you plan your
+          retirement. Now, the marketplace provides a path to affordable coverage — especially if you plan your
           income carefully.
         </p>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
@@ -84,7 +84,7 @@ export default function EarlyRetirementPage() {
       </section>
 
       <section className="mb-10">
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">How ACA Subsidies Work for Early Retirees</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">How Marketplace Subsidies Work for Early Retirees</h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           Premium tax credits are based on your{' '}
           <a href="/tools/what-income-counts" className="text-primary-600 hover:text-primary-700 underline">
@@ -192,8 +192,8 @@ export default function EarlyRetirementPage() {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
           <li><a href="/tools/what-income-counts" className="text-primary-600 hover:text-primary-700 underline">What Income Counts?</a></li>

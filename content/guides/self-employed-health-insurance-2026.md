@@ -1,5 +1,5 @@
 ---
-title: "Health Insurance for Self-Employed Workers in 2026: ACA Options, Tax Deductions, and Costs"
+title: "Health Insurance for Self-Employed Workers in 2026: Marketplace Options, Tax Deductions, and Costs"
 description: "A guide to health insurance options for freelancers, gig workers, and self-employed individuals in 2026, including marketplace plans, tax deductions, and strategies to reduce costs."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"

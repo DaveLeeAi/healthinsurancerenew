@@ -8,7 +8,7 @@ import fplData from '../../data/config/fpl-current.json'
 export const metadata: Metadata = {
   title: 'Lost Your Job? Health Insurance Options for 2026 | HealthInsuranceRenew',
   description:
-    'Lost your job and health insurance? Compare COBRA, ACA marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
+    'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
 }
 
 const g = fplData.guidelines
@@ -89,7 +89,7 @@ export default function LostJobPage() {
               </thead>
               <tbody>
                 <tr className="border-b border-slate-100">
-                  <td className="px-4 py-3 font-medium text-slate-800">ACA Marketplace</td>
+                  <td className="px-4 py-3 font-medium text-slate-800">Health Insurance Marketplace</td>
                   <td className="px-4 py-3 text-slate-700">$0–$300 (with subsidies)</td>
                   <td className="px-4 py-3 text-slate-700">60 days from loss of coverage</td>
                 </tr>
@@ -171,7 +171,7 @@ export default function LostJobPage() {
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
           <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Check Your Eligibility</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
           <li><a href="/guides/special-enrollment-period" className="text-primary-600 hover:text-primary-700 underline">Special Enrollment Periods</a></li>
           <li><a href="/states" className="text-primary-600 hover:text-primary-700 underline">Find Your State</a></li>

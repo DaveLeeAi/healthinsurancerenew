@@ -2,9 +2,9 @@
   "categories": [
     {
       "id": "new-to-aca",
-      "label": "New to ACA",
+      "label": "New to Marketplace",
       "icon": "book",
-      "response": "Here are some resources to help you get started with ACA health insurance:",
+      "response": "Here are some resources to help you get started with marketplace health insurance:",
       "links": [
         { "title": "Individual & Family Health Insurance Guide", "url": "/guides/individual-family-health-insurance" },
         { "title": "How ACA Subsidies Work in 2026", "url": "/guides/how-aca-subsidies-work-2026" }
@@ -14,7 +14,7 @@
       "id": "work-insurance",
       "label": "Work Insurance",
       "icon": "briefcase",
-      "response": "You can check whether your employer's plan meets ACA affordability standards:",
+      "response": "You can check whether your employer's plan meets marketplace affordability standards:",
       "links": [
         { "title": "Is My Job's Health Plan Affordable?", "url": "/tools/job-plan-affordability" }
       ]
@@ -51,7 +51,7 @@
       "id": "plan-levels",
       "label": "Plan Levels",
       "icon": "layers",
-      "response": "Compare the different levels of ACA health insurance plans:",
+      "response": "Compare the different levels of marketplace health insurance plans:",
       "links": [
         { "title": "Compare Bronze, Silver & Gold Plans", "url": "/tools/plan-comparison" }
       ]

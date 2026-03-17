@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title =
     `${PLAN_YEAR} Health Insurance Plans in ${countyDisplay}, ${stateUpper}` +
-    ` | Compare ${planCount} ACA Plans`
+    ` | Compare ${planCount} Marketplace Plans`
 
   const premiumRange =
     minPremium != null && maxPremium != null
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : ''
 
   const description =
-    `Compare ${planCount} ACA Marketplace health insurance plans in ${countyDisplay},` +
+    `Compare ${planCount} marketplace health insurance plans in ${countyDisplay},` +
     ` ${stateUpper} from ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}.` +
     `${premiumRange} Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`
 
@@ -123,7 +123,7 @@ export default function PlansPage({ params }: Props) {
   const canonicalUrl = `${SITE_URL}/plans/${params.state}/${params.county}`
 
   const articleSchema = buildArticleSchema({
-    headline: `${PLAN_YEAR} ACA Health Insurance Plans — ${countyDisplay}, ${stateUpper}`,
+    headline: `${PLAN_YEAR} Health Insurance Plans — ${countyDisplay}, ${stateUpper}`,
     description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateUpper} for plan year ${PLAN_YEAR}. Source: CMS QHP Landscape PUF.`,
     dateModified: new Date().toISOString().slice(0, 7),
     dataSourceName: 'CMS QHP Landscape PUF',
@@ -182,7 +182,7 @@ export default function PlansPage({ params }: Props) {
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             {planCount > 0 ? (
               <>
-                <strong>{planCount}</strong> ACA Marketplace plan
+                <strong>{planCount}</strong> marketplace plan
                 {planCount !== 1 ? 's' : ''} available in {countyDisplay},{' '}
                 {stateUpper} from <strong>{carrierCount}</strong> carrier
                 {carrierCount !== 1 ? 's' : ''}.
@@ -196,7 +196,7 @@ export default function PlansPage({ params }: Props) {
                 Data source: CMS QHP Landscape PUF · Plan Year {PLAN_YEAR}.
               </>
             ) : (
-              <>No ACA plans found for this county in the {PLAN_YEAR} dataset.</>
+              <>No marketplace plans found for this county in the {PLAN_YEAR} dataset.</>
             )}
           </p>
         </section>

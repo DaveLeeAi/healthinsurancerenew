@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Alabama: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Alabama. Educational guide from licensed agents."
+title: "Health Insurance in Alabama: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Alabama. Educational guide from licensed agents."
 stateName: "Alabama"
 stateAbbr: "AL"
 datePublished: "2025-10-15"

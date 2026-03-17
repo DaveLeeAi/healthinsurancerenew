@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "description": "Expected premium contribution percentages by FPL range for ACA marketplace plans",
+  "description": "Expected premium contribution percentages by FPL range for marketplace plans",
   "bands": [
     { "minFPL": 0, "maxFPL": 150, "minPercent": 0.0, "maxPercent": 0.0 },
     { "minFPL": 150, "maxFPL": 200, "minPercent": 0.0, "maxPercent": 2.0 },

@@ -1,6 +1,6 @@
 ---
-title: "How ACA Subsidies Work in 2026: Premium Tax Credits and Cost-Sharing Reductions"
-description: "A breakdown of how ACA subsidies reduce health insurance costs in 2026, including how premium tax credits are calculated, what cost-sharing reductions cover, and how household income determines assistance levels."
+title: "How Health Insurance Subsidies Work in 2026: Premium Tax Credits and Cost-Sharing Reductions"
+description: "A breakdown of how marketplace subsidies reduce health insurance costs in 2026, including how premium tax credits are calculated, what cost-sharing reductions cover, and how household income determines assistance levels."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 keyTakeaways:

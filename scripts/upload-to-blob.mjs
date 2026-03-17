@@ -23,12 +23,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = path.join(__dirname, '..', 'data', 'processed')
 
 // Files too large for the Vercel build (>100 MB) — must go to Blob
+// After slimming + dedup (2026-03-17):
+//   sbc_decoded.json:         ~6 MB  → bundled in build
+//   plan_intelligence.json:  ~35 MB  → bundled in build
+//   formulary_intelligence:  ~44 MB  → bundled in build (deduped from 6 GB)
+//   policy_scenarios.json:   ~65 MB  → bundled in build
+//   ALL files now fit in build — Blob only needed for formulary_sample backup
 const LARGE_FILES = [
-  'formulary_intelligence.json',  // 7.2 GB
-  'formulary_sample.json',        // 2.1 GB
-  'sbc_decoded.json',             // 429 MB
-  'plan_intelligence.json',       // 107 MB
-  'policy_scenarios.json',        // 65 MB (borderline — include for safety)
+  'formulary_sample.json',        // ~2 GB (pre-dedup backup/sample)
 ]
 
 // Manifest written after upload — consumed by data-loader at runtime

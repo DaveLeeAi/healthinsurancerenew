@@ -211,7 +211,7 @@ export default function CsrEstimatorPage() {
                   </div>
                 </div>
                 <p className="text-xs text-green-700 mt-3">
-                  To receive these savings, you must enroll in a Silver plan through the ACA
+                  To receive these savings, you must enroll in a Silver plan through the
                   marketplace. CSRs are not available on Bronze, Gold, or Platinum plans.
                 </p>
               </div>
@@ -243,7 +243,7 @@ export default function CsrEstimatorPage() {
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">Estimate Your Premium Savings</a></li>
         </ul>
       </div>

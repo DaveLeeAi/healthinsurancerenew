@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateInfo = allStatesData.states.find((s) => s.slug === params.state) as StateInfo | undefined
   if (!stateInfo) return {}
   return {
-    title: `${stateInfo.name} ACA Health Insurance Guide 2026 | HealthInsuranceRenew`,
-    description: `ACA health insurance guide for ${stateInfo.name} in 2026. ${stateInfo.medicaidExpanded ? 'Medicaid expanded state.' : 'Non-expansion state.'} Learn about eligibility, costs, CSR savings, and enrollment through ${stateInfo.exchange}.`,
+    title: `${stateInfo.name} Health Insurance Marketplace Guide 2026 | HealthInsuranceRenew`,
+    description: `Health insurance marketplace guide for ${stateInfo.name} in 2026. ${stateInfo.medicaidExpanded ? 'Medicaid expanded state.' : 'Non-expansion state.'} Learn about eligibility, costs, CSR savings, and enrollment through ${stateInfo.exchange}.`,
   }
 }
 
@@ -51,7 +51,7 @@ export default function StateAca2026Page({ params }: Props) {
     { name: 'Home', url: '/' },
     { name: 'States', url: '/states' },
     { name: stateInfo.name, url: `/states/${stateInfo.slug}` },
-    { name: 'ACA 2026', url: `/states/${stateInfo.slug}/aca-2026` },
+    { name: 'Marketplace 2026', url: `/states/${stateInfo.slug}/aca-2026` },
   ]
 
   const faqs = [
@@ -59,7 +59,7 @@ export default function StateAca2026Page({ params }: Props) {
       question: `Does ${stateInfo.name} use Healthcare.gov or its own exchange?`,
       answer: usesOwn
         ? `${stateInfo.name} operates its own state-based exchange called ${exchangeName}. Residents enroll through this platform rather than Healthcare.gov. The plans, subsidies, and enrollment rules follow federal ACA guidelines, but the enrollment website and deadlines may differ slightly from the federal marketplace.`
-        : `${stateInfo.name} uses the federal marketplace at Healthcare.gov for ACA enrollment. Residents apply, compare plans, and enroll through Healthcare.gov during the annual open enrollment period or during a special enrollment period after a qualifying life event.`,
+        : `${stateInfo.name} uses the federal marketplace at Healthcare.gov for marketplace enrollment. Residents apply, compare plans, and enroll through Healthcare.gov during the annual open enrollment period or during a special enrollment period after a qualifying life event.`,
     },
     {
       question: `Has ${stateInfo.name} expanded Medicaid?`,
@@ -68,7 +68,7 @@ export default function StateAca2026Page({ params }: Props) {
         : `No. As of early 2026, ${stateInfo.name} has not expanded Medicaid under the ACA. This means there may be a coverage gap for adults who earn too much for traditional Medicaid but too little for marketplace premium tax credits. Traditional Medicaid in non-expansion states typically has very low income thresholds.`,
     },
     {
-      question: `What ACA savings can I get in ${stateInfo.name} in 2026?`,
+      question: `What health insurance savings can I get in ${stateInfo.name} in 2026?`,
       answer: `The same federal premium tax credits and cost-sharing reductions are available in ${stateInfo.name} as in other states. Your savings depend on your household income as a percentage of the Federal Poverty Level, your household size, and the cost of the benchmark Silver plan in your area. People with income between 100% and 400% FPL typically qualify for premium help.`,
     },
     {
@@ -91,7 +91,7 @@ export default function StateAca2026Page({ params }: Props) {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        {stateInfo.name} ACA Health Insurance Guide for 2026
+        {stateInfo.name} Health Insurance Marketplace Guide for 2026
       </h1>
       <div className="flex flex-wrap items-center gap-3 mb-4">
         <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-sm font-medium">
@@ -111,7 +111,7 @@ export default function StateAca2026Page({ params }: Props) {
       <p className="text-xs text-slate-400 mb-4">Updated 2026-02-21</p>
 
       <AnswerBox
-        answer={`This page covers ACA health insurance in ${stateInfo.name} for 2026, including Medicaid expansion status, how to enroll, what savings are available, and how cost-sharing reductions work. ${stateInfo.name} ${isExpanded ? 'has expanded Medicaid, meaning adults below 138% FPL may qualify for Medicaid.' : 'has not expanded Medicaid, which affects coverage options for lower-income residents.'}`}
+        answer={`This page covers marketplace health insurance in ${stateInfo.name} for 2026, including Medicaid expansion status, how to enroll, what savings are available, and how cost-sharing reductions work. ${stateInfo.name} ${isExpanded ? 'has expanded Medicaid, meaning adults below 138% FPL may qualify for Medicaid.' : 'has not expanded Medicaid, which affects coverage options for lower-income residents.'}`}
       />
 
       <section className="mb-10">
@@ -161,7 +161,7 @@ export default function StateAca2026Page({ params }: Props) {
             ) : (
               <p className="text-slate-700 leading-relaxed font-serif">
                 {stateInfo.name} uses the federal marketplace at{' '}
-                <strong>Healthcare.gov</strong> for ACA enrollment. The standard federal open
+                <strong>Healthcare.gov</strong> for marketplace enrollment. The standard federal open
                 enrollment period runs from November 1 through January 15. Residents can compare
                 plans, check eligibility for premium tax credits, and enroll in coverage through
                 the Healthcare.gov website or with help from local navigators and licensed agents.
@@ -200,7 +200,7 @@ export default function StateAca2026Page({ params }: Props) {
           Income and Eligibility in {stateInfo.name}
         </h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
-          Your eligibility for ACA savings in {stateInfo.name} depends on your household income,
+          Your eligibility for marketplace savings in {stateInfo.name} depends on your household income,
           measured as a percentage of the Federal Poverty Level (FPL). The same federal rules apply
           in every state, but{' '}
           {isExpanded
@@ -373,10 +373,10 @@ export default function StateAca2026Page({ params }: Props) {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings in 2026?</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings in 2026?</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 Federal Poverty Level Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/guides/job-loss-health-insurance-2026" className="text-primary-600 hover:text-primary-700 underline">Lost Your Job? Your Health Insurance Options</a></li>
           <li><a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
         </ul>

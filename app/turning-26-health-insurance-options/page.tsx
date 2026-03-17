@@ -7,7 +7,7 @@ import SourcesBox from '../../components/SourcesBox'
 export const metadata: Metadata = {
   title: "Turning 26? Health Insurance Options for 2026 | HealthInsuranceRenew",
   description:
-    "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including ACA marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
+    "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
 }
 
 const breadcrumbs = [
@@ -23,14 +23,14 @@ const faqs = [
       "You stay on your parent's plan until the end of the month you turn 26, or until the end of the plan year in which you turn 26, depending on the insurer and state rules. Most employer plans drop you at the end of the birth month. Check with the insurer for the exact date.",
   },
   {
-    question: "Is turning 26 a qualifying life event for the ACA marketplace?",
+    question: "Is turning 26 a qualifying life event for the health insurance marketplace?",
     answer:
       "Yes. Aging off a parent's plan is a qualifying life event that opens a 60-day special enrollment period. You can use this window to enroll in a marketplace plan even if it is not open enrollment season. The 60 days start from the date your parent's coverage ends.",
   },
   {
     question: "What if I can't afford health insurance after turning 26?",
     answer:
-      'The ACA marketplace offers premium tax credits based on your income. Many young adults qualify for help that brings the monthly premium down to $0 to $100 for a Silver plan. If your income is below 138% of the Federal Poverty Level in an expansion state, you may qualify for Medicaid.',
+      'The marketplace offers premium tax credits based on your income. Many young adults qualify for help that brings the monthly premium down to $0 to $100 for a Silver plan. If your income is below 138% of the Federal Poverty Level in an expansion state, you may qualify for Medicaid.',
   },
   {
     question: 'Should I get a Bronze or Silver plan at 26?',
@@ -63,7 +63,7 @@ export default function Turning26Page() {
         Turning 26? Your Health Insurance Options Explained
       </h1>
 
-      <AnswerBox answer="When you turn 26, you lose eligibility to stay on a parent's health plan. This is a qualifying life event that gives you 60 days to enroll in your own coverage through the ACA marketplace, an employer plan, or Medicaid. Most people find affordable options through the marketplace with premium tax credits." />
+      <AnswerBox answer="When you turn 26, you lose eligibility to stay on a parent's health plan. This is a qualifying life event that gives you 60 days to enroll in your own coverage through the marketplace, an employer plan, or Medicaid. Most people find affordable options through the marketplace with premium tax credits." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">What Happens When You Turn 26</h2>
@@ -74,7 +74,7 @@ export default function Turning26Page() {
         </p>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           Losing this coverage triggers a <strong>Special Enrollment Period</strong> — a 60-day window where you can
-          enroll in a new plan even if it is not open enrollment season. This applies to the ACA marketplace and, in
+          enroll in a new plan even if it is not open enrollment season. This applies to the marketplace and, in
           most cases, to employer plans as well.
         </p>
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
@@ -89,7 +89,7 @@ export default function Turning26Page() {
         <h2 className="text-2xl font-bold text-slate-900 mb-4">Your Four Main Options</h2>
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
-            <h3 className="font-semibold text-slate-800 mb-2">1. ACA Marketplace Plan</h3>
+            <h3 className="font-semibold text-slate-800 mb-2">1. Marketplace Plan</h3>
             <p className="text-slate-700 leading-relaxed font-serif mb-2">
               The marketplace is the most common path for young adults aging off a parent&apos;s plan. You can
               compare plans, check eligibility for premium tax credits, and enroll through Healthcare.gov or your
@@ -181,9 +181,9 @@ export default function Turning26Page() {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</a></li>
           <li><a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
         </ul>
       </div>

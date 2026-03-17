@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const yoyPhrase = yoyDirection ? ` Premiums are ${yoyDirection} year-over-year.` : ''
   const description =
-    `${PLAN_YEAR} ACA health insurance premium rate trends for ${countyDisplay}, ${stateUpper}.` +
+    `${PLAN_YEAR} health insurance premium rate trends for ${countyDisplay}, ${stateUpper}.` +
     ` ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''} competing.${yoyPhrase}` +
     ` Source: CMS Rate PUF.`
 
@@ -172,7 +172,7 @@ export default function RatesPage({ params }: Props) {
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             <strong>{rates.carrier_count}</strong> carrier
             {rates.carrier_count !== 1 ? 's' : ''} offer{' '}
-            <strong>{rates.plan_count}</strong> ACA Marketplace plan
+            <strong>{rates.plan_count}</strong> marketplace plan
             {rates.plan_count !== 1 ? 's' : ''} in {countyDisplay}, {stateUpper}
             {rates.yoy_change_pct != null && (
               <>

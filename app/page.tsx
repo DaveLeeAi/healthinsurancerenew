@@ -1,10 +1,20 @@
 import type { Metadata } from 'next'
 import config from '../data/config/config.json'
+import SchemaScript from '../components/SchemaScript'
 
 export const metadata: Metadata = {
-  title: 'HealthInsuranceRenew | Understand Your Health Insurance Options',
+  title: 'HealthInsuranceRenew | 2026 Health Insurance Marketplace — Plans, Savings & Tools',
   description:
-    'Educational health insurance resource. Learn about marketplace plans, subsidies, enrollment periods, and compare coverage options. Licensed agents in 18 states.',
+    'Free marketplace health insurance tools and guides powered by CMS Public Use Files. Compare 2026 plans, calculate your premium tax credit, and understand your coverage options. Licensed agents in 18 states.',
+  openGraph: {
+    title: 'HealthInsuranceRenew — 2026 Health Insurance Marketplace Data & Tools',
+    description:
+      'CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in 18 states.',
+    type: 'website',
+    url: 'https://healthinsurancerenew.com',
+    siteName: 'HealthInsuranceRenew',
+    locale: 'en_US',
+  },
 }
 
 const guides = [
@@ -36,10 +46,85 @@ const heroTools = [
   { title: 'Find Your State', description: 'Get state-specific enrollment information and coverage details.', url: '/states', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
 ]
 
+const whoItsFor = [
+  { label: 'Individuals & Families', url: '/guides/individual-family-health-insurance' },
+  { label: 'Self-Employed Workers', url: '/self-employed-health-insurance-2026' },
+  { label: 'Turning 26', url: '/turning-26-health-insurance-options' },
+  { label: 'Early Retirees', url: '/early-retirement-health-insurance-2026' },
+  { label: 'Job Changers', url: '/lost-job-health-insurance-2026' },
+  { label: 'Employer Coverage Questions', url: '/tools/job-plan-affordability' },
+]
+
+const dataPillars = [
+  { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. CMS QHP Landscape PUF.' },
+  { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. CMS Rate PUF.' },
+  { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. CMS Rate PUF.' },
+  { title: 'Drug Formulary', url: '/formulary', description: '551,000+ drug coverage records. Tier placement and cost-sharing by plan.' },
+  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. CMS SADP PUF.' },
+  { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.' },
+  { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.' },
+  { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.' },
+  { title: 'FAQ', url: '/faq', description: '54 expert answers across 9 categories. Regulatory citations included.' },
+  { title: 'Plan Details / SBC', url: '/plan-details', description: 'Full SBC data for individual plans. Coverage, cost-sharing, and formulary.' },
+]
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  'name': 'HealthInsuranceRenew',
+  'url': 'https://healthinsurancerenew.com',
+  'description': 'Free marketplace health insurance tools and guides powered by CMS Public Use Files for all 50 states.',
+  'potentialAction': {
+    '@type': 'SearchAction',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://healthinsurancerenew.com/formulary?q={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  'name': 'HealthInsuranceRenew',
+  'url': 'https://healthinsurancerenew.com',
+  'description': 'Health insurance marketplace resource powered by CMS Public Use Files. Provides subsidy calculators, plan comparisons, drug formulary lookup, and plain-English guides for marketplace health insurance enrollment.',
+  'founder': {
+    '@type': 'Person',
+    'name': 'Dave Lee',
+    'jobTitle': 'Licensed Health Insurance Agent',
+    'description': 'CMS Marketplace Elite Circle of Champions recognition. Licensed in 18 states. NPN: 7578729.',
+  },
+  'areaServed': 'US',
+  'knowsAbout': [
+    'Health Insurance Marketplace',
+    'Premium Tax Credits',
+    'Affordable Care Act',
+    'Cost-Sharing Reductions',
+    'Special Enrollment Periods',
+    'Medicare',
+    'Medicaid',
+  ],
+  'hasCredential': {
+    '@type': 'EducationalOccupationalCredential',
+    'credentialCategory': 'CMS Marketplace Elite Circle of Champions',
+    'recognizedBy': {
+      '@type': 'GovernmentOrganization',
+      'name': 'Centers for Medicare & Medicaid Services',
+    },
+  },
+  'sameAs': 'https://healthinsurancerenew.com/about',
+}
+
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
+      {/* Schema */}
+      <SchemaScript schema={websiteSchema} id="schema-website" />
+      <SchemaScript schema={organizationSchema} id="schema-organization" />
+
+      {/* Section 1: Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-slate-100">
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(71 85 105) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-500/[0.03] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
@@ -47,22 +132,47 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-8">
           <div className="max-w-4xl mb-12">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6 tracking-tight whitespace-nowrap">
-              2026 Health Insurance Made Simple
+            {/* Trust badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-medium mb-6">
+              <span>&#11088;</span> Licensed health insurance agent &middot; Recognized by CMS &middot; Serving 18 states
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6 tracking-tight">
+              Health insurance that actually makes sense.
             </h1>
-            <h2 className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
-              Free tools and clear guides for marketplace health insurance (sometimes called Obamacare) — understand your savings, eligibility, and next steps.
-            </h2>
+            <p className="text-sm font-medium text-primary-600 mb-3">2026 Marketplace Coverage</p>
+            <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
+              Free tools and plain-English guides to help you figure out your 2026 coverage options — what you qualify for, what it costs, and what to do next. No sales pitch.
+            </p>
+
+            {/* Who it's for */}
+            <div className="mt-6">
+              <p className="text-sm font-medium text-slate-500 mb-2">I&rsquo;m looking for help with:</p>
+              <div className="flex flex-wrap gap-2">
+                {whoItsFor.map((item) => (
+                  <a
+                    key={item.url}
+                    href={item.url}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-white border border-slate-200 text-slate-700 hover:border-primary-300 hover:text-primary-700 transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* CTAs */}
             <div className="flex flex-wrap gap-4 mt-10">
               <a href="/tools/income-savings-calculator" className="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/20">
-                Check My Options
+                See what I qualify for
               </a>
               <a href="/tools" className="relative z-20 inline-flex items-center px-6 py-3 rounded-xl bg-white text-slate-700 font-semibold border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
-                Explore Tools
+                Browse free tools
               </a>
             </div>
           </div>
 
+          {/* Hero tool cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pb-8">
             {heroTools.map((tool) => (
               <a
@@ -83,12 +193,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Guides */}
+      {/* Section 2: Data Authority Bar */}
+      <section className="bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h2 className="text-xl font-bold text-white mb-2 leading-heading">What&rsquo;s Behind This Site — CMS Public Use File Coverage</h2>
+          <p className="text-slate-400 text-sm mb-8 max-w-3xl">
+            All data is sourced directly from CMS (Centers for Medicare &amp; Medicaid Services) Public Use Files — the same government datasets that power Healthcare.gov.
+          </p>
+          <div className="grid grid-cols-3 lg:grid-cols-6 gap-6 mb-6">
+            {[
+              { value: '551,000+', label: 'Drugs in Formulary Database' },
+              { value: '1,852', label: 'County Subsidy Records' },
+              { value: '942', label: 'Dental Plans Tracked' },
+              { value: '54', label: 'Expert Q&As' },
+              { value: '50', label: 'States Covered' },
+              { value: '18', label: 'Licensed Agent States' },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-xs sm:text-sm text-slate-400 mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500">
+            Source: CMS QHP Landscape PUF &middot; CMS Rate PUF &middot; CMS MR-PUF &middot; CMS SADP PUF &middot; IRS FPL Tables &middot; Updated 2026
+          </p>
+        </div>
+      </section>
+
+      {/* Section 3: Guides */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Learn How It Works</h2>
-            <p className="text-slate-600">Clear, plain-English guides about health insurance -- no jargon, no sales pressure.</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Plain-English Guides — Written for Real People</h2>
+            <p className="text-slate-600">Every guide is written by a licensed health insurance agent with direct enrollment experience. No filler content, no generic summaries.</p>
           </div>
           <a href="/guides" className="hidden sm:inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors whitespace-nowrap">
             View all guides
@@ -121,11 +259,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tools */}
+      {/* Section 4: Tools */}
       <section className="bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Free Tools</h2>
-          <p className="text-slate-600 mb-8">Answer a few questions and get a quick estimate. No sign-up needed.</p>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Free Tools — No Sign-Up Required</h2>
+          <p className="text-slate-600 mb-8">Answer a few questions and get a personalized estimate in under 60 seconds. All calculations use current CMS data and IRS FPL tables.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tools.map((tool) => (
               <a key={tool.url} href={tool.url} className="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
@@ -137,62 +275,95 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Health Insurance Reference Pages */}
+      {/* Section 5: Data Pillars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">2026 Health Insurance Reference Pages</h2>
-        <p className="text-slate-600 mb-6">In-depth explanations of the rules and numbers behind marketplace coverage.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {[
-            { href: '/eligibility-check', title: 'Do I Qualify for Health Insurance Savings?', desc: 'Step-by-step walkthrough of the main eligibility factors.' },
-            { href: '/fpl-2026', title: '2026 FPL Guidelines', desc: 'Income tables by household size at every key FPL percentage.' },
-            { href: '/csr-explained-2026', title: 'Cost-Sharing Reductions Explained', desc: 'How CSR tiers lower your deductibles, copays, and out-of-pocket costs.' },
-          ].map((item) => (
-            <a key={item.href} href={item.href} className="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
-              <h3 className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">{item.title}</h3>
-              <p className="text-sm text-slate-600 font-serif">{item.desc}</p>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">10 Data Pillars — Full Coverage of Marketplace Health Insurance</h2>
+        <p className="text-slate-600 mb-8">Explore the complete dataset. Each pillar is powered by a separate CMS Public Use File and updated annually.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {dataPillars.map((pillar) => (
+            <a
+              key={pillar.url}
+              href={pillar.url}
+              className="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300"
+            >
+              <h3 className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">{pillar.title}</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">{pillar.description}</p>
+              <span className="inline-flex items-center text-xs text-primary-600 font-medium mt-3 group-hover:gap-1 transition-all">
+                Explore
+                <svg className="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
             </a>
           ))}
         </div>
       </section>
 
-      {/* About section */}
+      {/* Section 6: Trust / E-E-A-T */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4 leading-heading">Honest, Up-to-Date Health Insurance Help</h2>
-            <p className="text-slate-600 mb-6 font-serif leading-relaxed">
-              Everything on this site is free. We explain how marketplace coverage works in plain English so you can make the best choice for your situation. Licensed agents are available in 18 states if you need personal help.
-            </p>
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="text-center p-4 rounded-xl bg-primary-50/50 border border-primary-100">
-                <p className="text-2xl font-bold text-primary-700">18</p>
-                <p className="text-xs text-slate-600 mt-1">Licensed States</p>
-              </div>
-              <div className="text-center p-4 rounded-xl bg-secondary-50/50 border border-secondary-100">
-                <p className="text-2xl font-bold text-secondary-700">6</p>
-                <p className="text-xs text-slate-600 mt-1">Free Tools</p>
-              </div>
-              <div className="text-center p-4 rounded-xl bg-accent-50/50 border border-accent-100">
-                <p className="text-2xl font-bold text-accent-700">10</p>
-                <p className="text-xs text-slate-600 mt-1">In-Depth Guides</p>
-              </div>
-            </div>
-            <a href="/about" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
-              Learn about us
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <h2 className="text-2xl font-bold text-slate-900 mb-8 leading-heading">Why Trust This Site</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {/* Card 1 — Licensed Expert */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
+            </div>
+            <h3 className="font-semibold text-slate-900 mb-2">Written by a Licensed Agent</h3>
+            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+              All content is developed and reviewed by a licensed health insurance agent — not a content farm. CMS Elite Circle of Champions recognition. NPN: 7578729. Licensed in 18 states.
+            </p>
+            <a href="/about" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+              About us
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </a>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <img src="/images/hero/hero-1.webp" alt="Family reviewing health insurance options together" className="rounded-2xl shadow-lg w-full h-48 object-cover" loading="lazy" />
-            <img src="/images/hero/hero-2.webp" alt="Person using a laptop to compare health plans" className="rounded-2xl shadow-lg w-full h-48 object-cover mt-6" loading="lazy" />
-            <img src="/images/hero/hero-3.webp" alt="Healthcare professional assisting a patient" className="rounded-2xl shadow-lg w-full h-48 object-cover col-span-2" loading="lazy" />
+
+          {/* Card 2 — Primary Source Data */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-slate-900 mb-2">Powered by CMS Public Use Files</h3>
+            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+              Every data point — plans, rates, subsidies, formulary — comes directly from CMS government datasets, the same source used by Healthcare.gov. No third-party data aggregators.
+            </p>
+            <a href="/data-methodology" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+              Our data methodology
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </a>
           </div>
+
+          {/* Card 3 — No Conflicts */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="w-11 h-11 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-slate-900 mb-2">No Ads. No Lead Sales. No Pressure.</h3>
+            <p className="text-sm text-slate-600 leading-relaxed mb-3">
+              This site is free to use. We do not sell your data, display advertising, or push you toward specific plans. How we earn is fully disclosed.
+            </p>
+            <a href="/how-we-get-paid" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+              How we get paid
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Image grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <img src="/images/hero/hero-1.webp" alt="Family reviewing health insurance options together" className="rounded-2xl shadow-lg w-full h-48 object-cover" loading="lazy" />
+          <img src="/images/hero/hero-2.webp" alt="Person using a laptop to compare health plans" className="rounded-2xl shadow-lg w-full h-48 object-cover mt-6" loading="lazy" />
+          <img src="/images/hero/hero-3.webp" alt="Healthcare professional assisting a patient" className="rounded-2xl shadow-lg w-full h-48 object-cover col-span-2" loading="lazy" />
         </div>
       </section>
 
-      {/* Elite Circle of Champions */}
+      {/* Section 7: CMS Elite Circle of Champions */}
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -239,7 +410,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Licensed States */}
+      {/* Section 8: Licensed States */}
       <section className="bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Licensed agents are available in 18 states.</h2>

@@ -22,9 +22,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()
   const canonicalUrl = `${SITE_URL}/enhanced-credits/${params.state}`
 
-  const title = `Enhanced ACA Credits by County — ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Impact`
+  const title = `Enhanced Premium Tax Credits by County — ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Impact`
   const description =
-    `See how enhanced premium tax credits affect ACA health insurance premiums in every ` +
+    `See how enhanced premium tax credits affect marketplace premiums in every ` +
     `county in ${stateUpper}. Compare the subsidy cliff impact at ages 27–64 across all income levels. ` +
     `Source: CMS benchmark premiums + IRS FPL tables.`
 
@@ -62,7 +62,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Credit Expiration Impact — ${stateUpper} Counties`,
-    description: `County-level analysis of IRA enhanced credit expiration on ACA premiums in ${stateUpper}. ${records.length} counties modeled.`,
+    description: `County-level analysis of IRA enhanced credit expiration on marketplace premiums in ${stateUpper}. ${records.length} counties modeled.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -119,7 +119,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             If IRA enhanced premium tax credits expire after {PLAN_YEAR},{' '}
-            <strong>{records.length}</strong> counties in {stateUpper} will see higher ACA
+            <strong>{records.length}</strong> counties in {stateUpper} will see higher marketplace
             premiums. Below is the projected impact for a 40-year-old at 250% FPL — the
             most commonly cited middle-market scenario.
           </p>

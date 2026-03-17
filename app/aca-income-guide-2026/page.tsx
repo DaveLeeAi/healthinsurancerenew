@@ -8,14 +8,14 @@ import csrData from '../../data/config/csr-tiers.json'
 import contributionData from '../../data/config/contribution-scale.json'
 
 export const metadata: Metadata = {
-  title: 'ACA Savings by Income Level: 2026 Guide | HealthInsuranceRenew',
+  title: 'Health Insurance Savings by Income Level: 2026 Guide | HealthInsuranceRenew',
   description:
-    'Understand what ACA savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
+    'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
 }
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
-  { name: 'ACA Savings by Income', url: '/aca-income-guide-2026' },
+  { name: 'Health Insurance Savings by Income', url: '/aca-income-guide-2026' },
 ]
 
 const g = fplData.guidelines
@@ -26,12 +26,12 @@ function fmt(n: number) {
 
 const faqs = [
   {
-    question: 'What ACA savings do I get if I earn below 138% of the poverty level?',
+    question: 'What savings do I get if I earn below 138% of the poverty level?',
     answer:
       'If you live in a Medicaid expansion state and earn below 138% FPL, you likely qualify for Medicaid coverage with minimal or no monthly cost. In non-expansion states, you may fall into a coverage gap if your income is below 100% FPL.',
   },
   {
-    question: 'What ACA help is available between 138% and 200% of the poverty level?',
+    question: 'What help is available between 138% and 200% of the poverty level?',
     answer:
       'This income range qualifies for significant help. Your benchmark Silver plan premium is very low (0% to 2% of income), and you qualify for the 87% CSR tier on Silver plans. That means a typical deductible around $650 and an out-of-pocket maximum around $2,900.',
   },
@@ -64,13 +64,13 @@ export default function ACAIncomeGuidePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        ACA Savings by Income Level: 2026 Guide
+        Health Insurance Savings by Income Level: 2026 Guide
       </h1>
 
-      <AnswerBox answer="Your ACA savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to enhanced subsidies at the top." />
+      <AnswerBox answer="Your health insurance savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to enhanced subsidies at the top." />
 
       <section className="mb-10">
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">How Income Determines Your ACA Benefits</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">How Income Determines Your Health Insurance Benefits</h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           The ACA uses income as a percentage of the{' '}
           <a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">
@@ -216,7 +216,7 @@ export default function ACAIncomeGuidePage() {
         <ul className="space-y-2 text-sm">
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</a></li>
           <li><a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">Estimate Your Savings</a></li>
           <li><a href="/tools/plan-comparison" className="text-primary-600 hover:text-primary-700 underline">Compare Plan Levels</a></li>
         </ul>

@@ -4,9 +4,9 @@ import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 
 export const metadata: Metadata = {
-  title: 'ACA Life Events & Special Enrollment Periods — 2025 SEP Guide',
+  title: 'Life Events & Special Enrollment Periods — 2026 SEP Guide',
   description:
-    'Navigate ACA coverage changes after major life events: turning 26, job loss, marriage, having a baby, divorce, early retirement, Medicare at 65, moving states, and immigration status changes. SEP windows, deadlines, and required documentation.',
+    'Navigate health insurance coverage changes after major life events: turning 26, job loss, marriage, having a baby, divorce, early retirement, Medicare at 65, moving states, and immigration status changes. SEP windows, deadlines, and required documentation.',
   alternates: {
     canonical: 'https://healthinsurancerenew.com/life-events',
   },
@@ -37,7 +37,7 @@ const CATEGORY_META: Record<string, { label: string; description: string; icon: 
   },
   eligibility_change: {
     label: 'Eligibility Changes',
-    description: 'Immigration status changes can unlock ACA Marketplace coverage and Medicaid eligibility.',
+    description: 'Immigration status changes can unlock marketplace coverage and Medicaid eligibility.',
     icon: '📋',
   },
 }
@@ -83,7 +83,7 @@ export default function LifeEventsIndexPage() {
         </h1>
         <p className="text-neutral-500 mb-3 leading-relaxed">
           A qualifying life event (QLE) gives you a Special Enrollment Period (SEP) to enroll in
-          or change your ACA health coverage outside of Open Enrollment. Each event has specific
+          or change your health insurance coverage outside of Open Enrollment. Each event has specific
           rules, deadlines, and documentation requirements.
         </p>
         <p className="text-sm text-neutral-400 mb-8">

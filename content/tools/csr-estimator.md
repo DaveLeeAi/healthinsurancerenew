@@ -1,6 +1,6 @@
 ---
 title: "Cost-Sharing Reduction (CSR) Eligibility Estimator"
-description: "Estimate whether your income may qualify for ACA cost-sharing reductions that lower deductibles, copays, and out-of-pocket maximums on Silver marketplace plans."
+description: "Estimate whether your income may qualify for cost-sharing reductions that lower deductibles, copays, and out-of-pocket maximums on Silver marketplace plans."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"
 toolType: "csr-estimator"

@@ -119,7 +119,7 @@ export default function DentalStatePage({ params }: Props) {
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             <strong>{plans.length}</strong> dental plan variant{plans.length !== 1 ? 's' : ''} from{' '}
             <strong>{issuers.size}</strong> issuer{issuers.size !== 1 ? 's' : ''} are available in{' '}
-            {stateName} through the ACA Marketplace for {PLAN_YEAR}. These are stand-alone dental
+            {stateName} through the marketplace for {PLAN_YEAR}. These are stand-alone dental
             plans (SADPs), purchased separately from medical coverage.
           </p>
         </section>

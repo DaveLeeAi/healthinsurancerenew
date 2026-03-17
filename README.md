@@ -17,7 +17,7 @@ A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA hea
 | 3 | SBC Decoded (Benefits & Cost Sharing) | `sbc_decoded.json` (429 MB) | 20,354 plan variants |
 | 4 | Rate Volatility Tracker | `rate_volatility.json` (654 KB) | County-level YoY analytics |
 | 5 | Friction & Guidance Q&A | `friction_qa.json` (56.8 KB) | 54 Q&A entries |
-| 6 | Formulary Intelligence | `formulary_intelligence.json` (7.73 GB) | Drug-plan-tier mappings |
+| 6 | Formulary Intelligence | `formulary_intelligence.json` (44.3 MB) | 176,253 drug records (deduped) |
 | 7 | Dental Coverage Reality | `dental_coverage.json` (4.4 MB) | 1,389 plan variants |
 | 8 | Billing Intelligence | `billing_intel.json` (52.8 KB) | 20 billing scenarios |
 | 9 | Life Events & Transitions | `life_events.json` (49.8 KB) | 8 decision trees |
@@ -70,6 +70,24 @@ Features:
 
 ---
 
+## Formulary Intelligence — SBM Coverage
+
+State-Based Marketplace states are absent from the federal CMS Machine-Readable PUF. We maintain a separate source registry and ingestion pipeline for SBM formulary data.
+
+| Source | States | Status |
+|--------|--------|--------|
+| Centene/Ambetter API | IL, KY, NJ, NV, PA, WA | Ingested (6 states, 13K drug records) |
+| Cambia Health (Regence) | WA, OR, ID | Confirmed live — drugs1.json + drugs2.json (224 MB) |
+| Moda Health | OR | Confirmed live — drugs-OR.json (14 MB) |
+| Providence Health Plan | OR | Confirmed live — 2 drug files (29 MB) |
+| Blocked (no MR endpoint) | CA, CO, CT, DC, MA, MD, MN, NM, NY, RI, VT | 11 states |
+
+**Registry:** `data/config/sbm-source-registry.json` — 19 states, 60 issuers tracked
+**Script:** `scripts/fetch/fetch_formulary_sbm.py` — registry-driven fetch + normalize + merge
+**Report:** `docs/sbm-ingestion-report.md` — detailed URL verification results
+
+---
+
 ## Data Pipeline
 
 ### ETL Scripts (`scripts/etl/`)
@@ -85,6 +103,13 @@ python scripts/etl/build_friction_qa.py
 python scripts/etl/build_billing_intel.py
 python scripts/etl/build_life_events.py
 python scripts/etl/build_policy_scenarios.py
+```
+
+### SBM Formulary Fetch
+
+```bash
+python scripts/fetch/fetch_formulary_sbm.py --verify-urls          # Test URLs only
+python scripts/fetch/fetch_formulary_sbm.py --state WA OR --merge  # Fetch + merge into main
 ```
 
 Raw CMS files go in `data/raw/puf/` (gitignored — too large).
@@ -163,13 +188,15 @@ lib/
   content-templates.ts  # Editorial content generators
   entity-linker.ts      # Cross-page link logic
   types.ts              # All TypeScript interfaces
+content/                # Markdown (guides, FAQ, state pages, tool descriptions)
 data/
   raw/                  # ⚠️ GITIGNORED — CMS PUF files
-  processed/            # ✅ COMMITTED — structured datasets
-  config/               # Site config JSONs (FPL tables, metal tiers, CSR tiers, etc.)
+  processed/            # ✅ COMMITTED — structured datasets + SBM formulary per-state files
+  config/               # Site config JSONs (FPL tables, SBM registry, chat routing, etc.)
   schema/               # JSON validation schemas
+docs/                   # SBM ingestion reports, field maps
 scripts/
-  fetch/                # CMS data download scripts
-  etl/                  # Transform & normalize scripts
+  fetch/                # Data download scripts (PUF fetcher, SBM formulary fetcher)
+  etl/                  # Transform & normalize scripts (10 pillar builders)
   generate/             # Content generation scripts
 ```

@@ -1,6 +1,6 @@
 ---
-title: "COBRA vs. ACA Marketplace After Losing Your Job: Which Is Better in 2026?"
-description: "Compare COBRA continuation coverage with ACA marketplace plans after job loss. Understand costs, timelines, and how to choose the most affordable option for your situation."
+title: "COBRA vs. Marketplace After Losing Your Job: Which Is Better in 2026?"
+description: "Compare COBRA continuation coverage with marketplace plans after job loss. Understand costs, timelines, and how to choose the most affordable option for your situation."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"
 keyTakeaways:

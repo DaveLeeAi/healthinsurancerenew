@@ -1,6 +1,6 @@
 ---
 title: "How to Choose the Right Health Insurance Plan for Your Family in 2026"
-description: "A practical framework for selecting ACA marketplace health insurance based on your family's healthcare usage, budget, provider needs, and prescription requirements."
+description: "A practical framework for selecting marketplace health insurance based on your family's healthcare usage, budget, provider needs, and prescription requirements."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"
 keyTakeaways:

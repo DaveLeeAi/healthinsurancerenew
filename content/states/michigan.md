@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Michigan: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Michigan. Educational guide from licensed agents."
+title: "Health Insurance in Michigan: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Michigan. Educational guide from licensed agents."
 stateName: "Michigan"
 stateAbbr: "MI"
 datePublished: "2025-10-15"

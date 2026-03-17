@@ -35,9 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const countyDisplay = `County ${params.county}`
   const canonicalUrl = `${SITE_URL}/enhanced-credits/${params.state}/${params.county}`
 
-  const title = `ACA Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Analysis`
+  const title = `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Analysis`
   const description =
-    `What happens to your ACA health insurance premium in ${countyDisplay}, ${stateUpper} ` +
+    `What happens to your health insurance premium in ${countyDisplay}, ${stateUpper} ` +
     `if enhanced subsidies from the Inflation Reduction Act expire? See the dollar impact at every ` +
     `income level for ages 27–64. Source: CMS benchmark premiums + IRS FPL tables.`
 
@@ -88,7 +88,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} — ${PLAN_YEAR} Analysis`,
-    description: `Impact of IRA enhanced credit expiration on ACA premiums in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: CMS Rate PUF + IRS FPL tables.`,
+    description: `Impact of IRA enhanced credit expiration on marketplace premiums in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: CMS Rate PUF + IRS FPL tables.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS Federal Poverty Level Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -180,7 +180,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             The Inflation Reduction Act (IRA) enhanced premium tax credits are currently set to
-            expire after {PLAN_YEAR}. If Congress does not extend these credits, many ACA enrollees
+            expire after {PLAN_YEAR}. If Congress does not extend these credits, many marketplace enrollees
             in {countyDisplay}, {stateUpper} will face significantly higher health insurance
             premiums. This page models the exact dollar impact at every income level.
           </p>
@@ -605,14 +605,14 @@ function buildFaqs(
 
   return [
     {
-      question: `What are enhanced ACA premium tax credits?`,
+      question: `What are enhanced premium tax credits?`,
       answer: `Enhanced premium tax credits were introduced by the American Rescue Plan Act in 2021 and extended by the Inflation Reduction Act through 2025. They lower the percentage of income that households must contribute toward benchmark silver plan premiums and eliminate the 400% FPL income cap on subsidy eligibility.`,
     },
     {
       question: `What happens if enhanced credits expire in ${countyDisplay}, ${stateUpper}?`,
       answer: fpl250
         ? `If enhanced credits expire, a 40-year-old at 250% FPL in ${countyDisplay} would see their monthly premium increase from $${fpl250.with_enhanced_credits.net_monthly_premium.toFixed(0)}/month to $${fpl250.without_enhanced_credits_pre_arp.net_monthly_premium.toFixed(0)}/month — an increase of $${fpl250.expiration_impact.monthly_premium_increase.toFixed(0)}/month ($${fpl250.expiration_impact.annual_premium_increase.toFixed(0)}/year).`
-        : `If enhanced credits expire, ACA enrollees in ${countyDisplay} will see higher premiums across all income levels. The exact impact depends on age and income.`,
+        : `If enhanced credits expire, marketplace enrollees in ${countyDisplay} will see higher premiums across all income levels. The exact impact depends on age and income.`,
     },
     {
       question: `What is the ACA subsidy cliff?`,
@@ -625,8 +625,8 @@ function buildFaqs(
         : `Benchmark silver plan premiums vary by county. Check the CMS QHP Rate PUF for current data.`,
     },
     {
-      question: `When do enhanced ACA credits expire?`,
-      answer: `Enhanced ACA premium tax credits are currently authorized through plan year ${PLAN_YEAR} under the Inflation Reduction Act (P.L. 117-169, Section 12001). Congress must pass new legislation to extend them beyond ${PLAN_YEAR}.`,
+      question: `When do enhanced premium tax credits expire?`,
+      answer: `Enhanced premium tax credits are currently authorized through plan year ${PLAN_YEAR} under the Inflation Reduction Act (P.L. 117-169, Section 12001). Congress must pass new legislation to extend them beyond ${PLAN_YEAR}.`,
     },
   ]
 }

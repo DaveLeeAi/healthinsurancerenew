@@ -351,7 +351,7 @@ export default function SubsidyCalculator({
               <p className="text-sm text-red-700 leading-relaxed">
                 At <strong>{result.fplPct.toFixed(0)}% FPL</strong>, your income is{' '}
                 {result.isAboveCliff ? 'above' : 'approaching'} the 400% FPL threshold where
-                traditional ACA subsidies end. Under IRA enhanced credits (through 2025),
+                standard marketplace subsidies end. Under IRA enhanced credits (through 2025),
                 contributions are capped at 8.5% of income at all income levels. If these
                 expire, subsidies above 400% FPL are eliminated entirely.
               </p>

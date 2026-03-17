@@ -23,6 +23,8 @@ from typing import Any
 
 import pandas as pd
 
+from county_fips import COVER_ENTIRE_STATE_COUNTIES
+
 logger = logging.getLogger(__name__)
 
 RAW_DIR = Path("data/raw/puf")
@@ -110,18 +112,23 @@ def load_benchmark_premiums() -> pd.DataFrame:
     ]["StandardComponentId"].unique()
     logger.info(f"  Silver medical plans: {len(silver_plans):,}")
 
-    logger.info("Loading Rate PUF for age-40 non-tobacco premiums...")
-    rates = pd.read_csv(
+    logger.info("Loading Rate PUF for age-40 non-tobacco premiums (chunked)...")
+    silver_set = set(silver_plans)
+    rate_chunks = []
+    for chunk in pd.read_csv(
         RAW_DIR / "rate-puf.csv",
         usecols=["PlanId", "RatingAreaId", "Age", "Tobacco", "IndividualRate"],
         low_memory=False,
-    )
-    # Filter to age 40, non-tobacco, Silver plans
-    rates = rates[
-        (rates["Age"] == REFERENCE_AGE)
-        & (rates["Tobacco"].isin(["No Preference", "No Tobacco"]))
-        & (rates["PlanId"].isin(silver_plans))
-    ]
+        chunksize=500_000,
+    ):
+        filtered = chunk[
+            (chunk["Age"] == REFERENCE_AGE)
+            & (chunk["Tobacco"].isin(["No Preference", "No Tobacco", "Tobacco User/Non-Tobacco User"]))
+            & (chunk["PlanId"].isin(silver_set))
+        ]
+        if len(filtered) > 0:
+            rate_chunks.append(filtered)
+    rates = pd.concat(rate_chunks, ignore_index=True) if rate_chunks else pd.DataFrame()
     logger.info(f"  Silver age-40 rate rows: {len(rates):,}")
 
     # Find SLCSP (second lowest cost Silver plan) per rating area
@@ -158,7 +165,12 @@ def load_county_rating_area_map() -> pd.DataFrame:
     expanded = []
     for _, row in entire_state.iterrows():
         state = row["StateCode"]
-        for county in state_counties.get(state, []):
+        # Use PUF county rows if available, else fall back to hardcoded FIPS
+        counties = state_counties.get(state, set())
+        if not counties and state in COVER_ENTIRE_STATE_COUNTIES:
+            counties = set(COVER_ENTIRE_STATE_COUNTIES[state])
+            logger.info(f"  Using fallback FIPS for {state}: {len(counties)} counties")
+        for county in counties:
             expanded.append({
                 "StateCode": state,
                 "IssuerId": row["IssuerId"],
@@ -182,13 +194,17 @@ def load_county_rating_area_map() -> pd.DataFrame:
     )
     plans = plans[(plans["MarketCoverage"] == "Individual") & (plans["DentalOnlyPlan"] == "No")]
 
-    # Get rating area per plan from rates
-    rates = pd.read_csv(
+    # Get rating area per plan from rates (chunked to avoid OOM)
+    logger.info("  Loading Rate PUF for rating area mapping (chunked)...")
+    rate_chunks = []
+    for chunk in pd.read_csv(
         RAW_DIR / "rate-puf.csv",
         usecols=["PlanId", "RatingAreaId"],
         low_memory=False,
-    )
-    rates = rates.drop_duplicates()
+        chunksize=500_000,
+    ):
+        rate_chunks.append(chunk.drop_duplicates())
+    rates = pd.concat(rate_chunks, ignore_index=True).drop_duplicates() if rate_chunks else pd.DataFrame()
 
     # Join: plans -> rates to get ServiceAreaId -> RatingAreaId
     plan_ratings = plans.merge(

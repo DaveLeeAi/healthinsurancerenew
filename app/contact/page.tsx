@@ -5,7 +5,7 @@ import config from '../../data/config/config.json'
 export const metadata: Metadata = {
   title: 'Contact Us | HealthInsuranceRenew',
   description:
-    'Get in touch with licensed health insurance agents at HealthInsuranceRenew. Learn how to reach our team for questions about ACA marketplace coverage.',
+    'Get in touch with licensed health insurance agents at HealthInsuranceRenew. Learn how to reach our team for questions about marketplace health insurance coverage.',
 }
 
 const breadcrumbs = [

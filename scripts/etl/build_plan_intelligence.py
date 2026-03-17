@@ -20,6 +20,8 @@ from typing import Any
 
 import pandas as pd
 
+from county_fips import COVER_ENTIRE_STATE_COUNTIES
+
 logger = logging.getLogger(__name__)
 
 RAW_DIR = Path("data/raw/puf")
@@ -107,9 +109,10 @@ def load_service_areas() -> pd.DataFrame:
     for _, row in entire_state.iterrows():
         state = row["StateCode"]
         counties = state_counties.get(state, [])
+        if not counties and state in COVER_ENTIRE_STATE_COUNTIES:
+            counties = COVER_ENTIRE_STATE_COUNTIES[state]
+            logger.info(f"  Using fallback FIPS for {state}: {len(counties)} counties")
         if not counties:
-            # State has no county data in PUF — skip (these are states like NY, CA
-            # that run their own exchanges and aren't in the FFM PUF)
             logger.warning(f"  No county data for CoverEntireState issuer {row['IssuerId']} in {state}")
             continue
         for county_fips in counties:
@@ -149,7 +152,7 @@ def load_rates() -> pd.DataFrame:
     ):
         total_raw += len(chunk)
         filtered = chunk[
-            (chunk["Tobacco"].isin(["No Preference", "No Tobacco"]))
+            (chunk["Tobacco"].isin(["No Preference", "No Tobacco", "Tobacco User/Non-Tobacco User"]))
             & (chunk["Age"].isin(AGE_BANDS))
         ]
         if not filtered.empty:
@@ -160,7 +163,7 @@ def load_rates() -> pd.DataFrame:
 
     # Filter to non-tobacco rates and our target age bands
     df = df[
-        (df["Tobacco"].isin(["No Preference", "No Tobacco"]))
+        (df["Tobacco"].isin(["No Preference", "No Tobacco", "Tobacco User/Non-Tobacco User"]))
         & (df["Age"].isin(AGE_BANDS))
     ]
     logger.info(f"  Filtered (non-tobacco, key ages): {len(df):,} rows")
@@ -212,37 +215,69 @@ def build_plan_intelligence() -> list[dict[str, Any]]:
     )
     logger.info(f"  After rate join: {len(merged):,} rows")
 
-    # Step 3: Build output records
+    # Deduplicate: keep one record per plan-county (first rating area)
+    # The many-to-many join can produce duplicates when Tobacco filter matches
+    # multiple rate rows. Dedup before iterating to keep memory manageable.
+    logger.info("Deduplicating plan-county combos...")
+    merged = merged.drop_duplicates(subset=["StandardComponentId", "County"], keep="first")
+    logger.info(f"  After dedup: {len(merged):,} rows")
+
+    # Step 3: Build output records — select only needed columns to avoid OOM
     logger.info("Building output records...")
+    keep_cols = [
+        "StandardComponentId", "PlanMarketingName", "IssuerId",
+        "IssuerMarketPlaceMarketingName", "StateCode", "County",
+        "MetalLevel", "PlanType",
+        "TEHBDedInnTier1Individual", "TEHBDedInnTier1FamilyPerGroup",
+        "TEHBInnTier1IndividualMOOP", "TEHBInnTier1FamilyPerGroupMOOP",
+    ] + AGE_BAND_KEYS
+    keep_cols = [c for c in keep_cols if c in merged.columns]
+    slim = merged[keep_cols].copy()
+    del merged  # free memory
+
+    # Build plan_name lookup (plan_id → name) to avoid repeating names across county rows
+    plan_names: dict[str, str] = {}
     records: list[dict[str, Any]] = []
-    for _, row in merged.iterrows():
-        record = {
-            "plan_id": row["StandardComponentId"],
-            "plan_name": row["PlanMarketingName"],
+    for _, row in slim.iterrows():
+        plan_id = row["StandardComponentId"]
+        plan_name = row["PlanMarketingName"]
+        if plan_id not in plan_names and pd.notna(plan_name):
+            plan_names[plan_id] = str(plan_name)
+
+        ded_ind = parse_dollar_amount(row.get("TEHBDedInnTier1Individual"))
+        ded_fam = parse_dollar_amount(row.get("TEHBDedInnTier1FamilyPerGroup"))
+        oop_ind = parse_dollar_amount(row.get("TEHBInnTier1IndividualMOOP"))
+        oop_fam = parse_dollar_amount(row.get("TEHBInnTier1FamilyPerGroupMOOP"))
+
+        record: dict[str, Any] = {
+            "plan_id": plan_id,
             "issuer_id": str(int(row["IssuerId"])),
             "issuer_name": row["IssuerMarketPlaceMarketingName"],
             "state_code": row["StateCode"],
             "county_fips": row["County"],
             "metal_level": row["MetalLevel"],
             "plan_type": row["PlanType"],
-            "rating_area": row["RatingAreaId"],
             "premiums": {},
-            "deductible_individual": parse_dollar_amount(row.get("TEHBDedInnTier1Individual")),
-            "deductible_family": parse_dollar_amount(row.get("TEHBDedInnTier1FamilyPerGroup")),
-            "oop_max_individual": parse_dollar_amount(row.get("TEHBInnTier1IndividualMOOP")),
-            "oop_max_family": parse_dollar_amount(row.get("TEHBInnTier1FamilyPerGroupMOOP")),
-            "sbc_url": row.get("URLForSummaryofBenefitsCoverage") if pd.notna(row.get("URLForSummaryofBenefitsCoverage")) else None,
-            "formulary_url": row.get("FormularyURL") if pd.notna(row.get("FormularyURL")) else None,
         }
-        # Add premiums for each age band
+        # Only include deductible/moop if non-null; convert to int
+        if ded_ind is not None:
+            record["deductible_individual"] = int(ded_ind)
+        if ded_fam is not None:
+            record["deductible_family"] = int(ded_fam)
+        if oop_ind is not None:
+            record["oop_max_individual"] = int(oop_ind)
+        if oop_fam is not None:
+            record["oop_max_family"] = int(oop_fam)
+
+        # Premiums rounded to whole dollars
         for age_key in AGE_BAND_KEYS:
             val = row.get(age_key)
-            record["premiums"][age_key] = round(float(val), 2) if pd.notna(val) else None
+            record["premiums"][age_key] = round(float(val)) if pd.notna(val) else None
 
         records.append(record)
 
-    logger.info(f"Built {len(records):,} plan-county-area records")
-    return records
+    logger.info(f"Built {len(records):,} plan-county-area records, {len(plan_names):,} unique plan names")
+    return records, plan_names
 
 
 def validate(records: list[dict[str, Any]]) -> None:
@@ -285,8 +320,8 @@ def validate(records: list[dict[str, Any]]) -> None:
         logger.warning(f"High error count ({errors}) but proceeding — review output")
 
 
-def save(records: list[dict[str, Any]]) -> Path:
-    """Save with metadata wrapper."""
+def save(records: list[dict[str, Any]], plan_names: dict[str, str]) -> Path:
+    """Save with metadata wrapper including plan_names lookup."""
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     output = {
         "metadata": {
@@ -297,14 +332,15 @@ def save(records: list[dict[str, Any]]) -> Path:
             "unique_counties": len(set(r["county_fips"] for r in records if r["county_fips"])),
             "states": sorted(set(r["state_code"] for r in records)),
             "generated_at": pd.Timestamp.now().isoformat(),
-            "schema_version": "1.1",
-            "notes": "deductible_individual/family use TEHBDedInnTier1 (Total EHB, 90% coverage) not MEHBDedInnTier1 (Medical-only, 10% coverage)",
+            "schema_version": "1.2",
+            "notes": "plan_name normalized to metadata.plan_names lookup; premiums rounded to whole dollars",
+            "plan_names": plan_names,
         },
         "data": records,
     }
     outpath = PROCESSED_DIR / "plan_intelligence.json"
     with open(outpath, "w") as f:
-        json.dump(output, f, indent=2, default=str)
+        json.dump(output, f, separators=(",", ":"), default=str)
     logger.info(f"Saved {len(records):,} records to {outpath}")
     return outpath
 
@@ -314,9 +350,9 @@ def main() -> None:
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s",
     )
-    records = build_plan_intelligence()
+    records, plan_names = build_plan_intelligence()
     validate(records)
-    outpath = save(records)
+    outpath = save(records, plan_names)
 
     # Print sample
     print(f"\nSaved {len(records):,} records to {outpath}")

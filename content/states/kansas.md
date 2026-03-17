@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Kansas: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Kansas. Educational guide from licensed agents."
+title: "Health Insurance in Kansas: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Kansas. Educational guide from licensed agents."
 stateName: "Kansas"
 stateAbbr: "KS"
 datePublished: "2025-10-15"

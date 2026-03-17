@@ -8,7 +8,7 @@ import fplData from '../../data/config/fpl-current.json'
 export const metadata: Metadata = {
   title: '2026 Federal Poverty Level (FPL) Guidelines | HealthInsuranceRenew',
   description:
-    '2026 Federal Poverty Level guidelines and ACA income thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
+    '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
 }
 
 const breadcrumbs = [
@@ -165,7 +165,7 @@ export default function FPL2026Page() {
             <h3 className="font-semibold text-slate-800 mb-2">100–150% FPL — $0 Premium Silver Plan</h3>
             <p className="text-slate-700 text-sm font-serif">
               Under enhanced subsidies, people with income between 100% and 150% FPL pay $0 per month for a benchmark
-              Silver plan. This is one of the most significant ACA benefits.
+              Silver plan. This is one of the most significant marketplace benefits.
             </p>
           </div>
           <div className="bg-white border border-slate-200 rounded-2xl p-5">

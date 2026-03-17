@@ -50,7 +50,7 @@ export default function WhatIncomeCountsPage() {
     if (addBacks > 0) {
       contextText =
         `Your estimated MAGI of ${fmt(magi)} includes ${fmt(addBacks)} in add-back items beyond your AGI. ` +
-        'These add-backs are types of income that are not included in AGI on a standard tax return but are counted for ACA subsidy eligibility purposes. '
+        'These add-backs are types of income that are not included in AGI on a standard tax return but are counted for subsidy eligibility purposes. '
     } else {
       contextText =
         `Your estimated MAGI of ${fmt(magi)} is the same as your AGI because no add-back items were entered. ` +
@@ -77,7 +77,7 @@ export default function WhatIncomeCountsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        What Income Counts for ACA Subsidies?
+        What Income Counts for Health Insurance Subsidies?
       </h1>
 
       <AnswerBox answer="The marketplace uses a specific income number called MAGI to decide your savings. Enter your income details below to see what yours might be." />
@@ -231,7 +231,7 @@ export default function WhatIncomeCountsPage() {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4">
-              <p className="text-sm text-slate-700 font-medium mb-2">What This Means for ACA Purposes</p>
+              <p className="text-sm text-slate-700 font-medium mb-2">What This Means for Subsidy Eligibility</p>
               <p className="text-sm text-slate-600 leading-relaxed">{result.contextText}</p>
             </div>
 

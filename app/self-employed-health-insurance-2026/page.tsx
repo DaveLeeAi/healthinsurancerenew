@@ -7,7 +7,7 @@ import SourcesBox from '../../components/SourcesBox'
 export const metadata: Metadata = {
   title: 'Self-Employed Health Insurance in 2026 | HealthInsuranceRenew',
   description:
-    'Health insurance for freelancers and self-employed workers in 2026. Learn about ACA marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
+    'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
 }
 
 const breadcrumbs = [
@@ -18,19 +18,19 @@ const breadcrumbs = [
 
 const faqs = [
   {
-    question: 'Can self-employed people get ACA marketplace subsidies?',
+    question: 'Can self-employed people get marketplace subsidies?',
     answer:
-      'Yes. Self-employed individuals are eligible for ACA premium tax credits based on projected Modified Adjusted Gross Income. Net self-employment income (after business deductions) is the primary figure used. Many freelancers and gig workers qualify for substantial savings, especially in years with lower net income.',
+      'Yes. Self-employed individuals are eligible for marketplace premium tax credits based on projected Modified Adjusted Gross Income. Net self-employment income (after business deductions) is the primary figure used. Many freelancers and gig workers qualify for substantial savings, especially in years with lower net income.',
   },
   {
-    question: 'How do I estimate income for ACA subsidies if my earnings vary?',
+    question: 'How do I estimate income for marketplace subsidies if my earnings vary?',
     answer:
       'Base your estimate on your prior year tax return, adjusted for known changes in contracts or business conditions. The marketplace allows you to update your income projection at any time during the year, which adjusts your monthly premium credit going forward. Updating regularly helps avoid surprise repayments at tax time.',
   },
   {
     question: 'Can I deduct health insurance premiums as a self-employed person?',
     answer:
-      'Yes. Self-employed individuals can deduct 100% of health insurance premiums (after subtracting the advance premium tax credit) as an above-the-line deduction on their federal tax return. This reduces your adjusted gross income, which can in turn increase your ACA subsidy eligibility.',
+      'Yes. Self-employed individuals can deduct 100% of health insurance premiums (after subtracting the advance premium tax credit) as an above-the-line deduction on their federal tax return. This reduces your adjusted gross income, which can in turn increase your marketplace subsidy eligibility.',
   },
   {
     question: 'Should self-employed workers choose Bronze or Silver plans?',
@@ -40,7 +40,7 @@ const faqs = [
   {
     question: 'Can I use an HSA if I am self-employed?',
     answer:
-      'Yes. If you enroll in a high-deductible health plan (HDHP), typically a Bronze plan, you can contribute to a Health Savings Account. HSA contributions are tax-deductible, growth is tax-free, and withdrawals for medical expenses are tax-free. HSA contributions also reduce your MAGI, potentially increasing your ACA subsidy.',
+      'Yes. If you enroll in a high-deductible health plan (HDHP), typically a Bronze plan, you can contribute to a Health Savings Account. HSA contributions are tax-deductible, growth is tax-free, and withdrawals for medical expenses are tax-free. HSA contributions also reduce your MAGI, potentially increasing your marketplace subsidy.',
   },
   {
     question: 'When can self-employed people enroll in marketplace coverage?',
@@ -64,12 +64,12 @@ export default function SelfEmployedPage() {
         Self-Employed Health Insurance in 2026: Your Options
       </h1>
 
-      <AnswerBox answer="The ACA marketplace is the primary source of individual health insurance for self-employed workers. Premium tax credits based on your net income can reduce costs significantly. You can also deduct premiums as a business expense, and pair a high-deductible plan with an HSA for additional tax savings." />
+      <AnswerBox answer="The health insurance marketplace is the primary source of individual health insurance for self-employed workers. Premium tax credits based on your net income can reduce costs significantly. You can also deduct premiums as a business expense, and pair a high-deductible plan with an HSA for additional tax savings." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">Marketplace Coverage for Freelancers and Gig Workers</h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
-          Whether you are a freelancer, independent contractor, gig worker, or small business owner, the ACA
+          Whether you are a freelancer, independent contractor, gig worker, or small business owner, the
           marketplace is designed for people who do not get insurance through an employer. You apply through
           Healthcare.gov or your state exchange, and your subsidy is based on your projected annual household income.
         </p>
@@ -105,7 +105,7 @@ export default function SelfEmployedPage() {
         </p>
         <ul className="list-disc pl-5 text-slate-700 leading-relaxed font-serif space-y-2 mb-4">
           <li>Applies to the net premium after subtracting the advance premium tax credit</li>
-          <li>Reduces your adjusted gross income, which can increase your ACA subsidy</li>
+          <li>Reduces your adjusted gross income, which can increase your marketplace subsidy</li>
           <li>Is available regardless of whether you itemize deductions</li>
           <li>Creates a circular calculation (deduction increases subsidy, which reduces the deductible premium) — tax software handles this automatically</li>
         </ul>
@@ -119,7 +119,7 @@ export default function SelfEmployedPage() {
           withdrawals for medical expenses are tax-free.
         </p>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
-          HSA contributions also reduce your MAGI, which can increase your ACA premium tax credit. This makes the HSA
+          HSA contributions also reduce your MAGI, which can increase your marketplace premium tax credit. This makes the HSA
           strategy particularly powerful for self-employed workers.
         </p>
         <p className="text-slate-700 leading-relaxed font-serif">
@@ -187,8 +187,8 @@ export default function SelfEmployedPage() {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
           <li><a href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions Explained</a></li>
           <li><a href="/tools/what-income-counts" className="text-primary-600 hover:text-primary-700 underline">What Income Counts?</a></li>

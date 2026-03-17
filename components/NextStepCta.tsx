@@ -21,7 +21,7 @@ const VARIANTS: Record<Exclude<CtaVariant, 'custom'>, { title: string; descripti
   },
   'plan-comparison': {
     title: 'Compare Plans in Your Area',
-    description: 'See every ACA Marketplace plan available in your county — compare premiums, deductibles, and out-of-pocket maximums side by side.',
+    description: 'See every marketplace plan available in your county — compare premiums, deductibles, and out-of-pocket maximums side by side.',
     label: 'Compare Plans',
     href: '/plans',
   },

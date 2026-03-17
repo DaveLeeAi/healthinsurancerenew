@@ -1,6 +1,6 @@
 ---
 title: "Special Enrollment Period: Qualifying Life Events and How to Enroll Outside Open Enrollment"
-description: "Understand how special enrollment periods work, which qualifying life events trigger eligibility, and the steps required to enroll in ACA marketplace coverage outside the standard open enrollment window."
+description: "Understand how special enrollment periods work, which qualifying life events trigger eligibility, and the steps required to enroll in marketplace coverage outside the standard open enrollment window."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 keyTakeaways:

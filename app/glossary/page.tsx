@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 export const metadata: Metadata = {
-  title: 'Health Insurance Glossary | Plain-English ACA Terms | HealthInsuranceRenew',
+  title: 'Health Insurance Glossary | Plain-English Terms | HealthInsuranceRenew',
   description:
     'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
 }
@@ -41,7 +41,7 @@ const terms = [
   {
     term: 'Subsidy Cliff',
     definition:
-      'The income level where ACA premium help used to completely disappear. Under the original ACA rules, all premium tax credits stopped at 400% of the Federal Poverty Level. Enhanced subsidies have softened this cliff, but they may expire depending on future legislation.',
+      'The income level where marketplace premium help used to completely disappear. Under the original ACA rules, all premium tax credits stopped at 400% of the Federal Poverty Level. Enhanced subsidies have softened this cliff, but they may expire depending on future legislation.',
   },
   {
     term: 'Affordability Test',
@@ -51,7 +51,7 @@ const terms = [
   {
     term: 'Minimum Essential Coverage (MEC)',
     definition:
-      'Health coverage that meets the ACA requirement. This includes employer plans, marketplace plans, Medicare, Medicaid, CHIP, and most other major medical coverage. Short-term plans and health sharing ministries generally do not count as MEC.',
+      'Health coverage that meets the minimum essential coverage requirement. This includes employer plans, marketplace plans, Medicare, Medicaid, CHIP, and most other major medical coverage. Short-term plans and health sharing ministries generally do not count as MEC.',
   },
   {
     term: 'Special Enrollment Period (SEP)',

@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Georgia: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Georgia. Educational guide from licensed agents."
+title: "Health Insurance in Georgia: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Georgia. Educational guide from licensed agents."
 stateName: "Georgia"
 stateAbbr: "GA"
 datePublished: "2025-10-15"

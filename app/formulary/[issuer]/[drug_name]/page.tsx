@@ -15,9 +15,25 @@ import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import { generateFormularyContent } from '@/lib/content-templates'
+import allStatesData from '@/data/config/all-states.json'
 
 const PLAN_YEAR = 2025
 const SITE_URL = 'https://healthinsurancerenew.com'
+
+const VALID_STATE_CODES = new Set(
+  (allStatesData.states as { abbr: string }[]).map((s) => s.abbr.toLowerCase())
+)
+
+function isStateCode(param: string): boolean {
+  return param.length === 2 && VALID_STATE_CODES.has(param.toLowerCase())
+}
+
+function getStateNameFromAbbr(abbr: string): string {
+  const found = (allStatesData.states as { name: string; abbr: string }[]).find(
+    (s) => s.abbr === abbr.toUpperCase()
+  )
+  return found?.name ?? abbr.toUpperCase()
+}
 
 const SEED_DRUGS = [
   'metformin', 'lisinopril', 'atorvastatin', 'amlodipine', 'omeprazole',
@@ -40,14 +56,29 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const drugDisplay = decodeURIComponent(params.drug_name).replace(/-/g, ' ')
-  const issuerName = params.issuer !== 'all'
-    ? (getIssuerName(params.issuer) ?? params.issuer)
-    : 'ACA Insurers'
+  const isState = isStateCode(params.issuer)
+  const stateName = isState ? getStateNameFromAbbr(params.issuer) : undefined
 
-  const title = `Does ${issuerName} Cover ${titleCase(drugDisplay)}? ${PLAN_YEAR} Formulary Details`
-  const description =
-    `Check if ${issuerName} covers ${drugDisplay} on their ${PLAN_YEAR} ACA formulary. ` +
-    `See tier placement, prior authorization requirements, step therapy, and quantity limits. Source: CMS MR-PUF.`
+  const stateConf = isState
+    ? (allStatesData.states as { abbr: string; name: string; exchange: string; ownExchange: boolean }[])
+        .find(s => s.abbr.toUpperCase() === params.issuer.toUpperCase())
+    : undefined
+
+  const issuerName = isState
+    ? `Plans in ${stateName}`
+    : params.issuer !== 'all'
+      ? (getIssuerName(params.issuer) ?? params.issuer)
+      : 'All Insurers'
+
+  const title = isState
+    ? `${titleCase(drugDisplay)} Coverage in ${stateName} — ${PLAN_YEAR} Marketplace Plans`
+    : `Does ${issuerName} Cover ${titleCase(drugDisplay)}? ${PLAN_YEAR} Formulary Details`
+  const description = isState
+    ? stateConf?.ownExchange
+      ? `Check if ${drugDisplay} is covered by ${stateName} marketplace plans. ${stateName} uses ${stateConf.exchange} for enrollment.`
+      : `Formulary coverage for ${drugDisplay} among marketplace plans in ${stateName}. CMS ${PLAN_YEAR} data.`
+    : `Check if ${issuerName} covers ${drugDisplay} on their ${PLAN_YEAR} formulary. ` +
+      `See tier placement, prior authorization requirements, step therapy, and quantity limits. Source: CMS MR-PUF.`
   const canonical = `${SITE_URL}/formulary/${params.issuer}/${params.drug_name}`
 
   return {
@@ -73,25 +104,168 @@ export default async function FormularyDrugPage({ params }: Props) {
   const drugSlug = decodeURIComponent(params.drug_name)
   const drugDisplay = drugSlug.replace(/-/g, ' ')
   const issuer = params.issuer
-  const isSpecificIssuer = issuer !== 'all'
+  const isState = isStateCode(issuer)
+  const stateCode = isState ? issuer.toUpperCase() : undefined
+  const isSpecificIssuer = !isState && issuer !== 'all'
 
-  // --- Load drug results for this issuer ---
+  // Full state config for exchange info
+  const stateConfig = isState
+    ? (allStatesData.states as {
+        abbr: string; name: string; exchange: string;
+        exchangeUrl: string; ownExchange: boolean
+      }[]).find(s => s.abbr.toUpperCase() === issuer.toUpperCase())
+    : undefined
+  const stateName = stateConfig?.name ?? (isState ? issuer.toUpperCase() : undefined)
+  const isSBMState = stateConfig?.ownExchange ?? false
+
+  // --- Load drug results ---
   const results = await searchFormulary({
     drug_name: drugDisplay,
+    state_code: stateCode,
     issuer_id: isSpecificIssuer ? issuer : undefined,
   })
 
-  // 404 if no results for a specific issuer+drug combo
+  // 404 if no results for a specific issuer+drug combo (not for state filter — show empty state instead)
   if (results.length === 0 && isSpecificIssuer) {
     notFound()
   }
 
   // --- Load all issuers carrying this drug (for cross-linking) ---
-  const allResults = await searchFormulary({ drug_name: drugDisplay })
+  // When filtering by state, only show issuers operating in that state
+  const allResults = await searchFormulary({
+    drug_name: drugDisplay,
+    state_code: stateCode,
+  })
 
-  const issuerName = isSpecificIssuer
-    ? (results[0]?.issuer_name ?? getIssuerName(issuer) ?? `Issuer ${issuer}`)
-    : 'All ACA Insurers'
+  // ── SBM state or state with no formulary data — show explanation page ──
+  if (isState && results.length === 0) {
+    const exchangeName = stateConfig?.exchange ?? `${stateName} Marketplace`
+    const exchangeUrl = stateConfig?.exchangeUrl ?? 'https://www.healthcare.gov'
+
+    const breadcrumbItems = [
+      { name: 'Home', url: SITE_URL },
+      { name: 'Formulary', url: `${SITE_URL}/formulary` },
+      { name: stateName!, url: `${SITE_URL}/formulary/${issuer}/all` },
+      { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+    ]
+    const bSchema = buildBreadcrumbSchema(breadcrumbItems)
+
+    return (
+      <>
+        <SchemaScript schema={bSchema} id="breadcrumb-schema" />
+        <main className="max-w-3xl mx-auto px-4 py-10">
+
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="text-sm text-neutral-500">
+            <ol className="flex flex-wrap items-center gap-1">
+              <li><a href="/" className="hover:underline text-primary-600">Home</a></li>
+              <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
+              <li><a href="/formulary" className="hover:underline text-primary-600">Formulary</a></li>
+              <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
+              <li><a href={`/formulary/${issuer}/all`} className="hover:underline text-primary-600">{stateName}</a></li>
+              <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
+              <li aria-current="page" className="text-neutral-700 font-medium">{titleCase(drugDisplay)}</li>
+            </ol>
+          </nav>
+
+          <h1 className="text-3xl font-bold text-slate-900 mt-6 mb-4">
+            {titleCase(drugDisplay)} Formulary Coverage in {stateName}
+          </h1>
+
+          {/* Explanation card */}
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-6">
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="font-semibold text-amber-800 mb-1">
+                  {isSBMState
+                    ? `${stateName} uses its own state exchange`
+                    : `Formulary data not available for ${stateName}`
+                  }
+                </p>
+                <p className="text-amber-700 text-sm leading-relaxed">
+                  {isSBMState
+                    ? `${stateName} marketplace plans enroll through ${exchangeName}, which maintains its own formulary database separate from the federal CMS dataset. To check if ${titleCase(drugDisplay)} is covered by a ${stateName} plan, use the ${exchangeName} plan finder directly.`
+                    : `Formulary records for ${stateName} marketplace plans are not available in the current CMS dataset. This does not mean ${titleCase(drugDisplay)} is uncovered — check directly with your plan or the federal marketplace.`
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Primary — stay on site */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            <a
+              href={`/formulary/all/${drugSlug}`}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
+            >
+              Search all states for {titleCase(drugDisplay)}
+            </a>
+            <a
+              href={`/plans/${issuer}`}
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-primary-200 bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100 transition-colors"
+            >
+              View {stateName} health plans
+            </a>
+          </div>
+
+          {/* External demoted to small text */}
+          <p className="text-sm text-slate-500 mb-8">
+            To check formulary details directly,{' '}
+            <a
+              href={isSBMState ? `${exchangeUrl}/plan-compare` : exchangeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 hover:text-primary-700 underline"
+            >
+              visit {exchangeName}
+            </a>.
+          </p>
+
+          {/* National coverage context */}
+          {allResults.length > 0 && (
+            <div className="border border-slate-200 rounded-2xl p-5">
+              <h2 className="font-semibold text-slate-800 mb-3">
+                {titleCase(drugDisplay)} is covered nationally
+              </h2>
+              <p className="text-sm text-slate-600 mb-4">
+                Across all states in our dataset, {titleCase(drugDisplay)} appears on{' '}
+                {allResults.length} formulary {allResults.length === 1 ? 'record' : 'records'} from{' '}
+                {new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size} insurers.
+                {allResults[0]?.drug_tier && (
+                  <> It is typically listed as a {allResults[0].drug_tier.toLowerCase()} drug.</>
+                )}
+              </p>
+              <a href={`/formulary/all/${drugSlug}`} className="text-sm text-primary-600 font-semibold hover:text-primary-700">
+                View national coverage details &rarr;
+              </a>
+            </div>
+          )}
+
+          {/* Disclaimer */}
+          <footer className="border-t border-neutral-200 mt-8 pt-6 text-xs text-neutral-400 space-y-2">
+            <p>
+              Formulary data sourced from the CMS Machine-Readable PUF, plan year {PLAN_YEAR}.
+              Always verify current coverage with your insurance carrier or at healthcare.gov.
+            </p>
+            <p>
+              This page is for informational purposes only and does not constitute medical or
+              insurance advice. <strong>Consult a licensed health insurance agent</strong> to
+              confirm formulary coverage for your specific plan.
+            </p>
+          </footer>
+        </main>
+      </>
+    )
+  }
+
+  const issuerName = isState
+    ? `Plans in ${stateName}`
+    : isSpecificIssuer
+      ? (results[0]?.issuer_name ?? getIssuerName(issuer) ?? `Issuer ${issuer}`)
+      : 'All Insurers'
 
   // --- Derived coverage details ---
   const tiers = [...new Set(results.map((r) => r.drug_tier).filter(Boolean))] as string[]
@@ -123,7 +297,7 @@ export default async function FormularyDrugPage({ params }: Props) {
   const healthPlanSchema = {
     '@context': 'https://schema.org',
     '@type': 'HealthInsurancePlan',
-    name: `${issuerName} ACA Marketplace Plan`,
+    name: `${issuerName} Marketplace Plan`,
     identifier: issuer,
     healthPlanDrugOption: tiers.map((t) => ({
       '@type': 'HealthPlanFormulary',
@@ -131,12 +305,20 @@ export default async function FormularyDrugPage({ params }: Props) {
     })),
   }
 
-  const breadcrumbSchema = buildBreadcrumbSchema([
-    { name: 'Home', url: SITE_URL },
-    { name: 'Formulary', url: `${SITE_URL}/formulary` },
-    { name: issuerName, url: `${SITE_URL}/formulary/${issuer}/all` },
-    { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
-  ])
+  const breadcrumbItems = isState
+    ? [
+        { name: 'Home', url: SITE_URL },
+        { name: 'Formulary', url: `${SITE_URL}/formulary` },
+        { name: stateName!, url: `${SITE_URL}/formulary/${issuer}/all` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+      ]
+    : [
+        { name: 'Home', url: SITE_URL },
+        { name: 'Formulary', url: `${SITE_URL}/formulary` },
+        { name: issuerName, url: `${SITE_URL}/formulary/${issuer}/all` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+      ]
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems)
 
   // ── Feature 4: FAQ data ───────────────────────────────────────────────────
   const tierCostContext = getTierCostContext(tiers)
@@ -144,7 +326,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `Does ${issuerName} cover ${titleCase(drugDisplay)}?`,
       answer: results.length > 0
-        ? `Yes, ${issuerName} covers ${titleCase(drugDisplay)} on their ${PLAN_YEAR} ACA formulary across ${results.length} plan${results.length === 1 ? '' : 's'}. It is listed as ${tiers.join(', ') || 'specified in plan documents'}. Formulary coverage can vary by plan and county — always verify with your specific plan documents or the insurer directly.`
+        ? `Yes, ${issuerName} covers ${titleCase(drugDisplay)} on their ${PLAN_YEAR} formulary across ${results.length} plan${results.length === 1 ? '' : 's'}. It is listed as ${tiers.join(', ') || 'specified in plan documents'}. Formulary coverage can vary by plan and county — always verify with your specific plan documents or the insurer directly.`
         : `${titleCase(drugDisplay)} was not found on the ${issuerName} formulary in the ${PLAN_YEAR} CMS dataset. You may be able to request a formulary exception through your insurer if your doctor demonstrates medical necessity.`,
     },
     {
@@ -220,7 +402,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 href={`/formulary/${issuer}/all`}
                 className="hover:underline text-primary-600"
               >
-                {issuerName}
+                {isState ? stateName : issuerName}
               </a>
             </li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
@@ -291,16 +473,30 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            Does {issuerName} Cover {titleCase(drugDisplay)}? {PLAN_YEAR} Formulary Details
+            {isState
+              ? `Formulary Coverage for ${titleCase(drugDisplay)} in ${stateName}`
+              : `Does ${issuerName} Cover ${titleCase(drugDisplay)}? ${PLAN_YEAR} Formulary Details`
+            }
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             {results.length > 0 ? (
               <>
                 <strong>{titleCase(drugDisplay)}</strong> is listed on{' '}
-                <strong>{issuerName}</strong>&apos;s {PLAN_YEAR} ACA formulary
+                <strong>{issuerName}</strong>&apos;s {PLAN_YEAR} formulary
                 across {results.length} plan{results.length === 1 ? '' : 's'}.
                 {rxnormId && <> RxNorm ID: {rxnormId}.</>}{' '}
                 Source: CMS Machine-Readable PUF.
+              </>
+            ) : isState ? (
+              <>
+                No formulary records found for{' '}
+                <strong>{titleCase(drugDisplay)}</strong> among {stateName} marketplace
+                plans in the CMS dataset. This may mean the drug is covered but not
+                listed separately, or plans in {stateName} don&apos;t include it in their
+                formulary.{' '}
+                <a href={`/formulary/all/${drugSlug}`} className="text-primary-600 hover:underline font-medium">
+                  Search all states for {titleCase(drugDisplay)} &rarr;
+                </a>
               </>
             ) : (
               <>

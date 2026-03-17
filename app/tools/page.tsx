@@ -3,9 +3,9 @@ import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
 
 export const metadata: Metadata = {
-  title: 'Free 2026 ACA Tools | HealthInsuranceRenew',
+  title: 'Free 2026 Health Insurance Tools | HealthInsuranceRenew',
   description:
-    'Free tools to estimate your ACA savings, check eligibility, compare employer plans to marketplace options, and understand COBRA vs. marketplace costs. No sign-up required.',
+    'Free tools to estimate your health insurance savings, check eligibility, compare employer plans to marketplace options, and understand COBRA vs. marketplace costs. No sign-up required.',
 }
 
 const breadcrumbs = [
@@ -22,7 +22,7 @@ const primaryTools = [
     cta: 'Estimate Now',
     icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
     related: '/guides/how-aca-subsidies-work-2026',
-    relatedLabel: 'Guide: How ACA Savings Work',
+    relatedLabel: 'Guide: How Health Insurance Savings Work',
   },
   {
     title: 'Check If You Qualify',
@@ -88,7 +88,7 @@ export default function ToolsIndexPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        Free 2026 ACA Tools
+        Free 2026 Health Insurance Tools
       </h1>
       <p className="text-lg text-slate-600 mb-10 max-w-2xl font-serif">
         Get personalized estimates with our free tools. These calculations use official federal
@@ -152,7 +152,7 @@ export default function ToolsIndexPage() {
         <h2 className="text-xl font-bold text-slate-900 mb-4">How These Tools Help You</h2>
         <div className="text-slate-700 leading-relaxed font-serif space-y-4">
           <p>
-            Every tool uses official ACA data — Federal Poverty Level guidelines, IRS contribution
+            Every tool uses official CMS data — Federal Poverty Level guidelines, IRS contribution
             percentages, and CMS cost-sharing standards. We perform straightforward calculations to
             give you an accurate preliminary estimate.
           </p>

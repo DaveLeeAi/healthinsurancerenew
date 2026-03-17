@@ -5,9 +5,9 @@ import FAQSection from '../../components/FAQSection'
 import SourcesBox from '../../components/SourcesBox'
 
 export const metadata: Metadata = {
-  title: 'Do I Qualify for ACA Savings in 2026? | HealthInsuranceRenew',
+  title: 'Do I Qualify for Health Insurance Savings in 2026? | HealthInsuranceRenew',
   description:
-    'Find out if you qualify for ACA marketplace savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
+    'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
 }
 
 const breadcrumbs = [
@@ -17,7 +17,7 @@ const breadcrumbs = [
 
 const faqs = [
   {
-    question: 'Can I get ACA savings if my employer offers health insurance?',
+    question: 'Can I get marketplace savings if my employer offers health insurance?',
     answer:
       "It depends. If your employer plan costs more than about 9.96% of your household income for employee-only coverage, it may be considered unaffordable under ACA rules. In that case, you could qualify for marketplace savings instead. Use our \"Does My Employer Plan Count?\" tool to check.",
   },
@@ -37,12 +37,12 @@ const faqs = [
       'You may still be able to sign up through a Special Enrollment Period if you experienced a qualifying life event — like losing job-based coverage, getting married, having a baby, or moving to a new state. Medicaid applications are accepted year-round.',
   },
   {
-    question: 'Can I get marketplace coverage if I am self-employed?',
+    question: 'Can I get marketplace subsidies if self-employed?',
     answer:
-      'Yes. Self-employed individuals can buy coverage through the ACA marketplace and may qualify for premium tax credits based on their projected income. Your income from self-employment counts toward your MAGI for eligibility purposes.',
+      'Yes. Self-employed individuals can buy coverage through the marketplace and may qualify for premium tax credits based on their projected income. Your income from self-employment counts toward your MAGI for eligibility purposes.',
   },
   {
-    question: 'Is there an income limit for ACA premium tax credits?',
+    question: 'Is there an income limit for marketplace premium tax credits?',
     answer:
       'Under the enhanced subsidy rules (if still in effect for 2026), there is no hard income cutoff. Instead, your expected premium contribution is capped at 8.5% of your income. Under the original ACA rules, premium help phases out entirely at 400% of the Federal Poverty Level. Check the current rules for the year you are enrolling.',
   },
@@ -60,13 +60,13 @@ export default function EligibilityCheckPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        Do I Qualify for ACA Savings in 2026?
+        Do I Qualify for Health Insurance Savings in 2026?
       </h1>
 
       <AnswerBox answer="Whether you qualify depends on a few things: your income, your household size, whether you have employer coverage, and where you live. This page walks through each factor in plain English." />
 
       <p className="text-slate-600 leading-relaxed font-serif mb-8">
-        ACA eligibility is not a single yes-or-no question. It depends on several pieces of your situation working
+        Marketplace eligibility is not a single yes-or-no question. It depends on several pieces of your situation working
         together. Review the sections below to understand where you stand.
       </p>
 
@@ -307,7 +307,7 @@ export default function EligibilityCheckPage() {
       <section className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
         <h2 className="text-xl font-bold text-slate-900 mb-3">Quick Summary</h2>
         <div className="text-slate-700 leading-relaxed font-serif space-y-3">
-          <p>You are most likely to qualify for ACA marketplace savings if:</p>
+          <p>You are most likely to qualify for marketplace savings if:</p>
           <ul className="list-disc pl-5 space-y-2">
             <li>You do not have affordable employer coverage</li>
             <li>

@@ -119,7 +119,7 @@ export function countyPlansLink(
   const display = countyName ? `${countyName}, ${stateCode}` : `${stateCode} county ${countyFips}`
   return {
     href: `/plans/${stateCode.toLowerCase()}/${countyFips}`,
-    label: `Compare ${CURRENT_YEAR} ACA health plans in ${display}`,
+    label: `Compare ${CURRENT_YEAR} marketplace health plans in ${display}`,
     type: 'plan',
     relevanceScore: 90,
   }
@@ -180,7 +180,7 @@ export function drugLink(drugName: string, issuer?: string): EntityLink {
   const slug = drugName.toLowerCase().replace(/\s+/g, '-')
   return {
     href: `/formulary/${issuer ?? 'all'}/${slug}`,
-    label: `Check ${drugName} formulary coverage across ACA plans`,
+    label: `Check ${drugName} formulary coverage across marketplace plans`,
     type: 'formulary',
     relevanceScore: 75,
   }
@@ -416,7 +416,7 @@ function buildCountyLinks(
   if (current !== 'plans') {
     links.push({
       href: `/plans/${st}/${county}`,
-      label: `Compare ${CURRENT_YEAR} ACA health plans available in ${cn}`,
+      label: `Compare ${CURRENT_YEAR} marketplace health plans available in ${cn}`,
       type: 'plan',
       relevanceScore: 95,
     })
@@ -453,13 +453,13 @@ function buildCountyLinks(
   })
   links.push({
     href: '/life-events/turning-26',
-    label: 'Turning 26 and losing parent plan coverage — ACA enrollment guide',
+    label: 'Turning 26 and losing parent plan coverage — marketplace enrollment guide',
     type: 'life-event',
     relevanceScore: 65,
   })
   links.push({
     href: '/faq/sep_triggers/sep_001',
-    label: 'When does ACA open enrollment start and end each year?',
+    label: 'When does open enrollment start and end each year?',
     type: 'faq',
     relevanceScore: 60,
   })
@@ -481,7 +481,7 @@ function buildPlanDetailLinks(
   if (county) {
     links.push({
       href: `/plans/${st.toLowerCase()}/${county}`,
-      label: `Compare all ${CURRENT_YEAR} ACA plans in ${cn}`,
+      label: `Compare all ${CURRENT_YEAR} marketplace plans in ${cn}`,
       type: 'plan',
       relevanceScore: 92,
     })
@@ -526,13 +526,13 @@ function buildPlanDetailLinks(
 
   links.push({
     href: '/faq/billing_scenarios/bil_001',
-    label: 'What medical expenses count toward my ACA deductible?',
+    label: 'What medical expenses count toward my marketplace deductible?',
     type: 'faq',
     relevanceScore: 68,
   })
   links.push({
     href: '/faq/sep_triggers/sep_002',
-    label: 'Can I switch ACA plans mid-year without a qualifying life event?',
+    label: 'Can I switch marketplace plans mid-year without a qualifying life event?',
     type: 'faq',
     relevanceScore: 62,
   })
@@ -559,7 +559,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
   if (county) {
     links.push({
       href: `/plans/${st.toLowerCase()}/${county}`,
-      label: `Compare all ${CURRENT_YEAR} ACA plans in ${cn}`,
+      label: `Compare all ${CURRENT_YEAR} marketplace plans in ${cn}`,
       type: 'plan',
       relevanceScore: 88,
     })
@@ -580,7 +580,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
   })
   links.push({
     href: '/faq/billing_scenarios/bil_002',
-    label: 'How does coinsurance work after meeting your ACA deductible?',
+    label: 'How does coinsurance work after meeting your marketplace deductible?',
     type: 'faq',
     relevanceScore: 72,
   })
@@ -611,7 +611,7 @@ function buildFormularyLinks(
   relatedPlans.slice(0, 3).forEach(({ id, name }, i) => {
     links.push({
       href: `/plan-details/${id}/${slugify(name)}`,
-      label: `View plan details and full SBC for an ACA plan covering ${drugName}`,
+      label: `View plan details and full SBC for a marketplace plan covering ${drugName}`,
       type: 'plan',
       relevanceScore: 90 - i * 4,
     })
@@ -620,7 +620,7 @@ function buildFormularyLinks(
   const issuerSlug = issuer.toLowerCase().replace(/\s+/g, '-')
   links.push({
     href: `/formulary/${issuerSlug}/all`,
-    label: `Browse all drugs covered by ${issuer} ACA plans`,
+    label: `Browse all drugs covered by ${issuer} marketplace plans`,
     type: 'formulary',
     relevanceScore: 85,
   })
@@ -629,7 +629,7 @@ function buildFormularyLinks(
     const cn = countyDisplay(state, county, countyName)
     links.push({
       href: `/plans/${state.toLowerCase()}/${county}`,
-      label: `Compare ACA plans in ${cn} that cover ${drugName}`,
+      label: `Compare marketplace plans in ${cn} that cover ${drugName}`,
       type: 'plan',
       relevanceScore: 80,
     })
@@ -649,13 +649,13 @@ function buildFormularyLinks(
   })
   links.push({
     href: '/faq/prior_authorization/pa_003',
-    label: 'Generic vs brand-name drugs — which tier costs less on ACA plans?',
+    label: 'Generic vs brand-name drugs — which tier costs less on marketplace plans?',
     type: 'faq',
     relevanceScore: 68,
   })
   links.push({
     href: '/billing/prescription',
-    label: 'How ACA prescription drug billing works — copays, tiers, and quantity limits',
+    label: 'How marketplace prescription drug billing works — copays, tiers, and quantity limits',
     type: 'billing',
     relevanceScore: 65,
   })
@@ -679,7 +679,7 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
     })
     links.push({
       href: `/plans/${state.toLowerCase()}/${county}`,
-      label: `Compare ${CURRENT_YEAR} ACA plans available in ${cn}`,
+      label: `Compare ${CURRENT_YEAR} marketplace plans available in ${cn}`,
       type: 'plan',
       relevanceScore: 85,
     })
@@ -712,28 +712,28 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
     ],
     sep_triggers: [
       { href: '/life-events/job-loss', label: 'Job loss SEP — what triggers it and when your window opens', type: 'life-event', relevanceScore: 88 },
-      { href: '/life-events/marriage', label: 'Marriage SEP — 60 days to enroll or change your ACA plan', type: 'life-event', relevanceScore: 82 },
-      { href: '/life-events/move', label: 'Moving to a new area — does your current ACA plan transfer?', type: 'life-event', relevanceScore: 78 },
+      { href: '/life-events/marriage', label: 'Marriage SEP — 60 days to enroll or change your marketplace plan', type: 'life-event', relevanceScore: 82 },
+      { href: '/life-events/move', label: 'Moving to a new area — does your current marketplace plan transfer?', type: 'life-event', relevanceScore: 78 },
     ],
     turning_26: [
       { href: '/life-events/job-loss', label: 'Lost employer coverage — your 60-day SEP window explained', type: 'life-event', relevanceScore: 82 },
       { href: '/life-events/turning-26', label: 'Turning 26 and aging off a parent plan — how to enroll', type: 'life-event', relevanceScore: 78 },
-      { href: '/life-events/marriage', label: 'Getting married — adding a spouse to ACA coverage', type: 'life-event', relevanceScore: 74 },
+      { href: '/life-events/marriage', label: 'Getting married — adding a spouse to marketplace coverage', type: 'life-event', relevanceScore: 74 },
     ],
     income_changes: [
       { href: '/life-events/income-change', label: 'Income change mid-year — updating your APTC the right way', type: 'life-event', relevanceScore: 84 },
       { href: '/billing/premium_tax_credit', label: 'How premium tax credits are reconciled at tax filing time', type: 'billing', relevanceScore: 80 },
-      { href: '/enhanced-credits', label: 'Enhanced ACA credits — what happens if they expire', type: 'policy-scenario', relevanceScore: 76 },
+      { href: '/enhanced-credits', label: 'Enhanced premium tax credits — what happens if they expire', type: 'policy-scenario', relevanceScore: 76 },
     ],
     prior_authorization: [
-      { href: '/billing/prescription', label: 'ACA prescription drug billing — how tiers and copays work', type: 'billing', relevanceScore: 82 },
+      { href: '/billing/prescription', label: 'Marketplace prescription drug billing — how tiers and copays work', type: 'billing', relevanceScore: 82 },
       { href: '/billing/prior_auth', label: 'Prior authorization denial — your right to internal and external appeal', type: 'billing', relevanceScore: 88 },
-      { href: '/faq/prior_authorization/pa_002', label: 'How to file an external appeal for a denied ACA claim', type: 'faq', relevanceScore: 82 },
+      { href: '/faq/prior_authorization/pa_002', label: 'How to file an external appeal for a denied marketplace claim', type: 'faq', relevanceScore: 82 },
       { href: '/billing/surprise_billing', label: 'Surprise billing dispute process — step by step', type: 'billing', relevanceScore: 76 },
     ],
     dental_surprises: [
-      { href: '/dental', label: 'Compare stand-alone dental plans (SADPs) on the ACA marketplace', type: 'dental', relevanceScore: 85 },
-      { href: '/billing/preventive', label: 'Preventive dental care — what ACA plans must cover at no cost', type: 'billing', relevanceScore: 78 },
+      { href: '/dental', label: 'Compare stand-alone dental plans (SADPs) on the marketplace', type: 'dental', relevanceScore: 85 },
+      { href: '/billing/preventive', label: 'Preventive dental care — what plans are required to cover at no cost', type: 'billing', relevanceScore: 78 },
     ],
   }
 
@@ -754,7 +754,7 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
     if (tagSet.has('dental') || tagSet.has('orthodontia')) {
       links.push({
         href: '/dental',
-        label: 'Compare stand-alone dental plans available on the ACA marketplace',
+        label: 'Compare stand-alone dental plans available on the marketplace',
         type: 'dental',
         relevanceScore: 68,
       })
@@ -774,7 +774,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
     const cn = countyDisplay(state, county, countyName)
     links.push({
       href: `/plans/${state.toLowerCase()}/${county}`,
-      label: `Compare ${CURRENT_YEAR} ACA plans with the best cost-sharing in ${cn}`,
+      label: `Compare ${CURRENT_YEAR} marketplace plans with the best cost-sharing in ${cn}`,
       type: 'plan',
       relevanceScore: 90,
     })
@@ -805,7 +805,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
   if (billingCategory === 'prescription') {
     links.push({
       href: '/formulary/all/lisinopril',
-      label: 'Search which ACA plans cover your prescriptions and at what tier',
+      label: 'Search which marketplace plans cover your prescriptions and at what tier',
       type: 'formulary',
       relevanceScore: 82,
     })
@@ -835,7 +835,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
 
   links.push({
     href: '/life-events/job-loss',
-    label: 'Lost employer coverage mid-year — COBRA vs ACA marketplace cost comparison',
+    label: 'Lost employer coverage mid-year — COBRA vs. marketplace cost comparison',
     type: 'life-event',
     relevanceScore: 68,
   })
@@ -879,7 +879,7 @@ function buildLifeEventLinks(
     })
     links.push({
       href: `/plans/${state.toLowerCase()}/${county}`,
-      label: `Compare ${CURRENT_YEAR} ACA plans in ${cn} available during your SEP window`,
+      label: `Compare ${CURRENT_YEAR} marketplace plans in ${cn} available during your SEP window`,
       type: 'plan',
       relevanceScore: 90,
     })
@@ -898,7 +898,7 @@ function buildLifeEventLinks(
   if (tagSet.has('cobra')) {
     links.push({
       href: '/faq/turning_26/t26_003',
-      label: 'COBRA vs ACA marketplace — which is cheaper after job loss?',
+      label: 'COBRA vs. marketplace — which is cheaper after job loss?',
       type: 'faq',
       relevanceScore: 88,
     })
@@ -922,7 +922,7 @@ function buildLifeEventLinks(
   if (tagSet.has('young_adult')) {
     links.push({
       href: '/faq/turning_26/t26_003',
-      label: 'Best ACA plan types for young adults — bronze vs silver vs catastrophic',
+      label: 'Best marketplace plan types for young adults — bronze vs silver vs catastrophic',
       type: 'faq',
       relevanceScore: 80,
     })
@@ -930,7 +930,7 @@ function buildLifeEventLinks(
   if (tagSet.has('medicare') || tagSet.has('turning_65')) {
     links.push({
       href: '/faq/medicare_65/med65_001',
-      label: 'Transitioning from ACA marketplace coverage to Medicare at age 65',
+      label: 'Transitioning from marketplace coverage to Medicare at age 65',
       type: 'faq',
       relevanceScore: 84,
     })
@@ -938,13 +938,13 @@ function buildLifeEventLinks(
 
   const relatedEventsMap: Partial<Record<string, Array<{ slug: string; label: string }>>> = {
     job_loss:      [{ slug: 'income-change', label: 'Income changed after job loss — update your APTC' }],
-    job_change:    [{ slug: 'income-change', label: 'New job income changed your subsidy eligibility' }, { slug: 'marriage', label: 'Getting married — adding a spouse to ACA coverage' }],
-    marriage:      [{ slug: 'birth', label: 'Having a baby — ACA special enrollment for newborns' }],
+    job_change:    [{ slug: 'income-change', label: 'New job income changed your subsidy eligibility' }, { slug: 'marriage', label: 'Getting married — adding a spouse to marketplace coverage' }],
+    marriage:      [{ slug: 'birth', label: 'Having a baby — marketplace special enrollment for newborns' }],
     birth:         [{ slug: 'income-change', label: 'New dependent changed your household income — update APTC' }],
     divorce:       [{ slug: 'job-loss', label: 'Lost coverage through divorce — 60-day SEP explained' }],
-    turning_26:    [{ slug: 'job-loss', label: 'No employer coverage after 26 — how to enroll in ACA' }],
+    turning_26:    [{ slug: 'job-loss', label: 'No employer coverage after 26 — how to enroll in the marketplace' }],
     move:          [{ slug: 'job-loss', label: 'Moving for a new job — SEP timing when coverage overlaps' }],
-    income_change: [{ slug: 'job-loss', label: 'Job loss triggered your income change — COBRA vs ACA' }],
+    income_change: [{ slug: 'job-loss', label: 'Job loss triggered your income change — COBRA vs. marketplace' }],
   }
 
   const relatedEvents = relatedEventsMap[category] ?? []
@@ -979,7 +979,7 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
     const cn = countyDisplay(state, county, countyName)
     links.push({
       href: `/plans/${state.toLowerCase()}/${county}`,
-      label: `Compare ${CURRENT_YEAR} ACA medical plans available alongside dental coverage in ${cn}`,
+      label: `Compare ${CURRENT_YEAR} marketplace medical plans available alongside dental coverage in ${cn}`,
       type: 'plan',
       relevanceScore: 90,
     })
@@ -999,7 +999,7 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
   })
   links.push({
     href: '/faq/dental_surprises/dnt_003',
-    label: 'Does ACA marketplace coverage include dental benefits?',
+    label: 'Does marketplace coverage include dental benefits?',
     type: 'faq',
     relevanceScore: 85,
   })
@@ -1011,13 +1011,13 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
   })
   links.push({
     href: '/faq/dental_surprises/dnt_005',
-    label: 'Does ACA dental coverage include orthodontia for adults?',
+    label: 'Does marketplace dental coverage include orthodontia for adults?',
     type: 'faq',
     relevanceScore: 74,
   })
   links.push({
     href: '/billing/preventive',
-    label: 'Preventive dental care — what ACA plans are required to cover at no cost',
+    label: 'Preventive dental care — what plans are required to cover at no cost',
     type: 'billing',
     relevanceScore: 72,
   })
@@ -1032,7 +1032,7 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
 
   links.push({
     href: '/life-events/job-loss',
-    label: 'Lost dental coverage at work? Your ACA marketplace options',
+    label: 'Lost dental coverage at work? Your marketplace options',
     type: 'life-event',
     relevanceScore: 68,
   })

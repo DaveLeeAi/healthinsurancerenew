@@ -1,6 +1,6 @@
 ---
-title: "Medicaid vs. ACA Marketplace Insurance in 2026: Which Coverage Is Right for You?"
-description: "Compare Medicaid and ACA marketplace health insurance side by side. Understand eligibility, costs, benefits, and how to determine which option fits your income and healthcare needs."
+title: "Medicaid vs. Marketplace Health Insurance in 2026: Which Coverage Is Right for You?"
+description: "Compare Medicaid and marketplace health insurance side by side. Understand eligibility, costs, benefits, and how to determine which option fits your income and healthcare needs."
 datePublished: "2025-10-15"
 dateModified: "2026-02-21"
 keyTakeaways:

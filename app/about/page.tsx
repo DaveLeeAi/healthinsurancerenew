@@ -25,7 +25,7 @@ export default function AboutPage() {
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
           HealthInsuranceRenew was created to address a common challenge: finding clear, straightforward information
-          about health insurance options under the Affordable Care Act. The ACA marketplace can be difficult to
+          about health insurance marketplace options can be difficult to
           navigate, with complex terminology, shifting enrollment windows, and financial assistance rules that change
           from year to year. This site exists to make that information more accessible.
         </p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
           Every guide, tool, and state resource on this site is designed to help individuals and families understand
-          how ACA marketplace coverage works. The content focuses on explaining concepts rather than steering
+          how marketplace health coverage works. The content focuses on explaining concepts rather than steering
           decisions. Topics include how premium tax credits are calculated, what metal tier plans cover, when
           enrollment periods open, and how state-specific rules may apply. The goal is informed decision-making, not
           sales pressure.
@@ -45,7 +45,7 @@ export default function AboutPage() {
           Our approach prioritizes clarity, accuracy, and transparency in everything we publish.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          Content is developed and reviewed by professionals with direct experience in ACA health insurance markets.
+          Content is developed and reviewed by professionals with direct experience in health insurance markets.
           Guides are updated regularly to reflect current-year rules, federal poverty level guidelines, and marketplace
           changes. When readers are ready to speak with a licensed agent, that option is available — but the
           educational content stands on its own regardless.
@@ -74,7 +74,7 @@ export default function AboutPage() {
             <p className="text-sm text-primary-600 mb-2">Licensed Health Insurance Agent</p>
             <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
               Dave Lee is a licensed health insurance agent (NPN: 7578729) serving clients in multiple U.S. states. He
-              operates HealthInsuranceRenew to provide clear, educational information about ACA marketplace coverage
+              operates HealthInsuranceRenew to provide clear, educational information about marketplace health coverage
               options.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-sm">

@@ -26,8 +26,8 @@ const licensedStates = [
 const categories = [
   {
     id: 'new-to-aca',
-    label: 'New to ACA',
-    response: 'Here are some resources to help you get started with ACA health insurance:',
+    label: 'New to Marketplace',
+    response: 'Here are some resources to help you get started with marketplace health insurance:',
     links: [
       { title: 'Individual & Family Health Insurance Guide', url: '/guides/individual-family-health-insurance' },
       { title: 'How ACA Subsidies Work in 2026', url: '/guides/how-aca-subsidies-work-2026' },
@@ -36,7 +36,7 @@ const categories = [
   {
     id: 'work-insurance',
     label: 'Work Insurance',
-    response: "You can check whether your employer's plan meets ACA affordability standards:",
+    response: "You can check whether your employer's plan meets marketplace affordability standards:",
     links: [{ title: "Is My Job's Health Plan Affordable?", url: '/tools/job-plan-affordability' }],
   },
   {
@@ -67,7 +67,7 @@ const categories = [
   {
     id: 'plan-levels',
     label: 'Plan Levels',
-    response: 'Compare the different levels of ACA health insurance plans:',
+    response: 'Compare the different levels of marketplace health insurance plans:',
     links: [{ title: 'Compare Bronze, Silver & Gold Plans', url: '/tools/plan-comparison' }],
   },
 ]

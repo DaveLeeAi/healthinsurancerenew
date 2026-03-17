@@ -21,10 +21,10 @@ export default function NotFound() {
           <h2 className="font-semibold text-slate-800 mb-3">Quick Links</h2>
           <ul className="space-y-2 text-sm">
             <li><Link href="/" className="text-primary-600 hover:text-primary-700 underline">Home</Link></li>
-            <li><Link href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</Link></li>
+            <li><Link href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</Link></li>
             <li><Link href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</Link></li>
             <li><Link href="/csr-explained-2026" className="text-primary-600 hover:text-primary-700 underline">Cost-Sharing Reductions</Link></li>
-            <li><Link href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income</Link></li>
+            <li><Link href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income</Link></li>
           </ul>
         </div>
         <div className="bg-white border border-slate-200 rounded-2xl p-5">

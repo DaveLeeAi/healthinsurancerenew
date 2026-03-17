@@ -21,14 +21,14 @@ const STATE_NAMES: Record<string, string> = {
 }
 
 export const metadata: Metadata = {
-  title: `ACA Stand-Alone Dental Plans ${PLAN_YEAR} — Compare Coverage by State`,
+  title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
   description:
-    `Compare ${PLAN_YEAR} ACA stand-alone dental plan (SADP) options across 30 states. ` +
+    `Compare ${PLAN_YEAR} stand-alone dental plan (SADP) options across 30 states. ` +
     `Annual maximums, coverage percentages, waiting periods, and issuer details from CMS SADP PUF data.`,
   alternates: { canonical: `${SITE_URL}/dental` },
   openGraph: {
     type: 'article',
-    title: `ACA Stand-Alone Dental Plans ${PLAN_YEAR} — Compare Coverage by State`,
+    title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
     description: `1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from CMS SADP PUF data.`,
     url: `${SITE_URL}/dental`,
     siteName: 'HealthInsuranceRenew',
@@ -58,7 +58,7 @@ export default function DentalIndexPage() {
   ])
 
   const articleSchema = buildArticleSchema({
-    headline: `ACA Stand-Alone Dental Plans for ${PLAN_YEAR}`,
+    headline: `Stand-Alone Dental Plans for ${PLAN_YEAR}`,
     description: `${dataset.data.length.toLocaleString()} dental plan variants across ${states.length} states. Source: CMS SADP PUF.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS SADP PUF',
@@ -83,12 +83,12 @@ export default function DentalIndexPage() {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            ACA Stand-Alone Dental Plans — {PLAN_YEAR}
+            Stand-Alone Dental Plans — {PLAN_YEAR}
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             <strong>{dataset.data.length.toLocaleString()}</strong> dental plan variants from{' '}
             <strong>{totalIssuers}</strong> issuers across <strong>{states.length}</strong> states
-            are available through the ACA Marketplace for {PLAN_YEAR}. Select a state to compare
+            are available through the health insurance marketplace for {PLAN_YEAR}. Select a state to compare
             coverage tiers, annual maximums, waiting periods, and issuer options.
           </p>
         </section>
@@ -98,7 +98,7 @@ export default function DentalIndexPage() {
           <h2 className="text-lg font-semibold text-teal-900 mb-2">What Is a Stand-Alone Dental Plan?</h2>
           <p className="text-neutral-700 leading-relaxed text-sm">
             A stand-alone dental plan (SADP) is a separate dental insurance policy purchased through
-            the ACA Marketplace alongside your medical plan. Adult dental is <strong>not</strong> an
+            the marketplace alongside your medical plan. Adult dental is <strong>not</strong> an
             essential health benefit under the ACA, so SADPs are the primary way to get dental
             coverage through the exchange. Pediatric dental (for children under 19) is an essential
             benefit and may be embedded in medical plans or purchased as an SADP. SADP premiums are{' '}

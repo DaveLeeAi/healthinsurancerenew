@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in California: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in California. Educational guide from licensed agents."
+title: "Health Insurance in California: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in California. Educational guide from licensed agents."
 stateName: "California"
 stateAbbr: "CA"
 datePublished: "2025-10-15"

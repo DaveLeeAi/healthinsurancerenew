@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Maryland: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Maryland. Educational guide from licensed agents."
+title: "Health Insurance in Maryland: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Maryland. Educational guide from licensed agents."
 stateName: "Maryland"
 stateAbbr: "MD"
 datePublished: "2025-10-15"

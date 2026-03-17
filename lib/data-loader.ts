@@ -5,8 +5,8 @@
  *
  * Loading strategy:
  *   Small datasets (<70 MB):  JSON.parse into module-level Map cache (loaded once per process)
- *   sbc_decoded.json (409 MB): byte-offset index → seek-and-parse individual records
- *   formulary_intelligence.json (7.2 GB): drug-name block index → seek-and-parse matching lines
+ *   sbc_decoded.json (~6 MB slim): byte-offset index → seek-and-parse individual records
+ *   formulary_intelligence.json (~44 MB deduped): drug-name block index → seek-and-parse matching lines
  *
  * Deployment strategy:
  *   Local dev:  All files read from data/processed/ on disk
@@ -151,10 +151,18 @@ function loadFormularyIndex(): FormularyBlockIndex {
 }
 
 // ---------------------------------------------------------------------------
-// Pillar 1 — Plan Intelligence (102 MB, cached)
+// Pillar 1 — Plan Intelligence (~42 MB, cached)
 // ---------------------------------------------------------------------------
 export function loadPlanIntelligence(): PlanIntelligenceDataset {
-  return loadCached<PlanIntelligenceDataset>('plan_intelligence.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
+  const dataset = loadCached<PlanIntelligenceDataset>('plan_intelligence.json', { metadata: { generated_at: '', source: '', record_count: 0 }, data: [] })
+  // Resolve plan_name from metadata lookup (normalized out of records to save ~5 MB)
+  const nameMap = dataset.metadata.plan_names
+  if (nameMap && dataset.data.length > 0 && !dataset.data[0].plan_name) {
+    for (const p of dataset.data) {
+      p.plan_name = nameMap[p.plan_id] ?? p.plan_id
+    }
+  }
+  return dataset
 }
 
 export function getPlansByCounty(stateCode: string, countyFips: string): PlanRecord[] {
@@ -183,7 +191,7 @@ export function getSubsidyByCounty(stateCode: string, countyFips: string): Subsi
 }
 
 // ---------------------------------------------------------------------------
-// Pillar 3 — SBC Decoded (409 MB on disk — byte-offset indexed, never fully loaded)
+// Pillar 3 — SBC Decoded (~6 MB slim — byte-offset indexed for individual lookups)
 // ---------------------------------------------------------------------------
 
 /**
@@ -246,6 +254,25 @@ export function getFrictionQABySlug(slug: string): FrictionQA | undefined {
 }
 
 // ---------------------------------------------------------------------------
+// Formulary helpers — issuer → state mapping (built from plan_intelligence)
+// ---------------------------------------------------------------------------
+
+let issuerStateMapCache: Map<string, Set<string>> | null = null
+
+function getIssuerStateMap(): Map<string, Set<string>> {
+  if (issuerStateMapCache) return issuerStateMapCache
+  const plans = loadPlanIntelligence()
+  const map = new Map<string, Set<string>>()
+  for (const plan of plans.data) {
+    if (!plan.issuer_id || !plan.state_code) continue
+    if (!map.has(plan.issuer_id)) map.set(plan.issuer_id, new Set())
+    map.get(plan.issuer_id)!.add(plan.state_code.toUpperCase())
+  }
+  issuerStateMapCache = map
+  return map
+}
+
+// ---------------------------------------------------------------------------
 // Pillar 6 — Formulary Intelligence (7.2 GB on disk — block-range indexed)
 //
 // Index maps normalized drug_name → {offset, length} byte block.
@@ -275,10 +302,13 @@ export async function searchFormulary(params: FormularySearchParams): Promise<Fo
 
   if (matchingKeys.length === 0) return []
 
+  // Build issuer→state map if filtering by state
+  const issuerStateMap = params.state_code ? getIssuerStateMap() : undefined
+
   // On Vercel: use HTTP Range requests against Blob-hosted formulary
   const blobUrl = getBlobUrl('formulary_intelligence.json')
   if (blobUrl) {
-    return searchFormularyFromBlob(params, matchingKeys, index, blobUrl)
+    return searchFormularyFromBlob(params, matchingKeys, index, blobUrl, issuerStateMap)
   }
 
   // Local: random-access file read
@@ -295,7 +325,7 @@ export async function searchFormulary(params: FormularySearchParams): Promise<Fo
       const buf = Buffer.alloc(entry.length)
       await fd.read(buf, 0, entry.length, entry.offset)
       const block = buf.toString('utf8')
-      parseFormularyBlock(block, params, results)
+      parseFormularyBlock(block, params, results, issuerStateMap)
     }
   } finally {
     await fd.close()
@@ -312,7 +342,8 @@ async function searchFormularyFromBlob(
   params: FormularySearchParams,
   matchingKeys: string[],
   index: FormularyBlockIndex,
-  blobUrl: string
+  blobUrl: string,
+  issuerStateMap?: Map<string, Set<string>>
 ): Promise<FormularyDrug[]> {
   const results: FormularyDrug[] = []
 
@@ -328,7 +359,7 @@ async function searchFormularyFromBlob(
       })
       if (!res.ok && res.status !== 206) continue
       const block = await res.text()
-      parseFormularyBlock(block, params, results)
+      parseFormularyBlock(block, params, results, issuerStateMap)
     } catch {
       // Skip failed range requests
     }
@@ -341,36 +372,45 @@ async function searchFormularyFromBlob(
 function parseFormularyBlock(
   block: string,
   params: FormularySearchParams,
-  results: FormularyDrug[]
+  results: FormularyDrug[],
+  issuerStateMap?: Map<string, Set<string>>
 ): void {
   for (const line of block.split('\n')) {
     if (!line.startsWith('{')) continue
     if (results.length >= 200) break
     try {
       const record = JSON.parse(line.trim().replace(/,$/, '')) as FormularyDrug
-      if (!params.state_code || record.state_code === params.state_code) {
-        if (!params.issuer_id || (record.issuer_ids ?? [record.issuer_id]).includes(params.issuer_id)) {
-          if (!params.plan_id || record.plan_id === params.plan_id) {
-            results.push(record)
-          }
-        }
+
+      // State filter: check if any of the record's issuer_ids operate in the requested state
+      if (params.state_code && issuerStateMap) {
+        const stateUpper = params.state_code.toUpperCase()
+        const issuerIds = record.issuer_ids ?? (record.issuer_id ? [record.issuer_id] : [])
+        const isInState = issuerIds.some((id) => issuerStateMap.get(id)?.has(stateUpper))
+        if (!isInState) continue
       }
+
+      // Issuer filter
+      if (params.issuer_id) {
+        const issuerIds = record.issuer_ids ?? (record.issuer_id ? [record.issuer_id] : [])
+        if (!issuerIds.includes(params.issuer_id)) continue
+      }
+
+      if (params.plan_id && record.plan_id !== params.plan_id) continue
+
+      results.push(record)
     } catch {
       // skip malformed lines
     }
   }
 }
 
-async function searchFormularySample(params: FormularySearchParams): Promise<FormularyDrug[]> {
-  const samplePath = path.join(DATA_DIR, 'formulary_sample.json')
-  if (!fs.existsSync(samplePath)) return []
-  const sample = loadCached<{ data?: FormularyDrug[] }>('formulary_sample.json')
-  const arr = sample.data ?? []
-  const searchLower = params.drug_name.toLowerCase()
-  return arr
-    .filter((d) => d.drug_name?.toLowerCase().includes(searchLower))
-    .filter((d) => !params.state_code || d.state_code === params.state_code)
-    .slice(0, 100)
+async function searchFormularySample(_params: FormularySearchParams): Promise<FormularyDrug[]> {
+  console.warn(
+    '[formulary] formulary_intelligence.json not available — ' +
+    'returning empty results. Run fetch_formulary_full.py to ' +
+    'populate local data, or deploy to Vercel for Blob access.'
+  )
+  return []
 }
 
 // ---------------------------------------------------------------------------
@@ -568,7 +608,7 @@ export function getPolicyByState(stateCode: string): PolicyScenarioRecord[] {
 /**
  * Returns all unique state/county combos present in plan_intelligence.json.
  * Suitable for generateStaticParams on the /plans/[state]/[county] route.
- * Uses the module-level cache, so the 107 MB file is loaded only once per build.
+ * Uses the module-level cache, so the ~42 MB file is loaded only once per build.
  */
 export function getAllPlanStateCountyCombos(): { state: string; county: string }[] {
   const seen = new Set<string>()

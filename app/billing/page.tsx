@@ -89,7 +89,7 @@ export default function BillingIndexPage() {
   ])
 
   const articleSchema = buildArticleSchema({
-    headline: 'Insurance Billing Guides — Common ACA Billing Scenarios',
+    headline: 'Insurance Billing Guides — Common Billing Scenarios',
     description: `${dataset.data.length} common billing scenarios with CPT codes, consumer tips, and action steps.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'AMA CPT, CMS ACA Regulations',

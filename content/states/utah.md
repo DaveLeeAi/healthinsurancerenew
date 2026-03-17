@@ -1,6 +1,6 @@
 ---
-title: "Health Insurance in Utah: ACA Marketplace Guide"
-description: "Learn about ACA health insurance options, subsidies, and enrollment in Utah. Educational guide from licensed agents."
+title: "Health Insurance in Utah: Marketplace Coverage Guide"
+description: "Learn about health insurance marketplace options, subsidies, and enrollment in Utah. Educational guide from licensed agents."
 stateName: "Utah"
 stateAbbr: "UT"
 datePublished: "2025-10-15"

@@ -5,7 +5,7 @@ import FAQSection from '../../components/FAQSection'
 import SourcesBox from '../../components/SourcesBox'
 
 export const metadata: Metadata = {
-  title: "Employer Coverage Unaffordable? Your ACA Options in 2026 | HealthInsuranceRenew",
+  title: "Employer Coverage Unaffordable? Your Marketplace Options in 2026 | HealthInsuranceRenew",
   description:
     'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
 }
@@ -61,7 +61,7 @@ export default function EmployerCoverageUnaffordablePage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
-        Employer Coverage Unaffordable? Your ACA Options in 2026
+        Employer Coverage Unaffordable? Your Marketplace Options in 2026
       </h1>
 
       <AnswerBox answer="If your employer's health plan costs more than about 9.96% of your household income for employee-only coverage, it may be considered unaffordable under ACA rules. In that case, you can decline the employer plan and get marketplace coverage with premium tax credits instead." />
@@ -181,9 +181,9 @@ export default function EmployerCoverageUnaffordablePage() {
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for ACA Savings?</a></li>
+          <li><a href="/eligibility-check" className="text-primary-600 hover:text-primary-700 underline">Do I Qualify for Health Insurance Savings?</a></li>
           <li><a href="/tools/job-plan-affordability" className="text-primary-600 hover:text-primary-700 underline">Does My Employer Plan Count?</a></li>
-          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">ACA Savings by Income Level</a></li>
+          <li><a href="/aca-income-guide-2026" className="text-primary-600 hover:text-primary-700 underline">Health Insurance Savings by Income Level</a></li>
           <li><a href="/fpl-2026" className="text-primary-600 hover:text-primary-700 underline">2026 FPL Guidelines</a></li>
         </ul>
       </div>

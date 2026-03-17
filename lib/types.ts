@@ -22,7 +22,6 @@ export interface PlanRecord {
   issuer_name: string
   metal_level: 'catastrophic' | 'bronze' | 'expanded_bronze' | 'silver' | 'gold' | 'platinum' | string
   plan_type: 'HMO' | 'PPO' | 'EPO' | 'POS' | 'Indemnity' | string
-  rating_area?: string
   premiums?: {
     age_21?: number
     age_27?: number
@@ -34,14 +33,16 @@ export interface PlanRecord {
   }
   deductible_individual?: number
   deductible_family?: number
+  oop_max_individual?: number
+  oop_max_family?: number
   moop_individual?: number
   moop_family?: number
-  network_url?: string
-  formulary_url?: string
 }
 
 export interface PlanIntelligenceDataset {
-  metadata: DatasetMetadata
+  metadata: DatasetMetadata & {
+    plan_names?: Record<string, string>
+  }
   data: PlanRecord[]
 }
 

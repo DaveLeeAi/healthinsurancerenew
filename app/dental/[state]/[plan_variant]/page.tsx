@@ -100,8 +100,8 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
       answer: plan.ortho_adult_covered
         ? `Yes, ${plan.plan_name} includes orthodontia coverage for adults${cp.ortho_adult != null ? ` at ${cp.ortho_adult}%` : ''}${cp.ortho_child != null ? `. Children's orthodontia is covered at ${cp.ortho_child}%` : ''}. Orthodontia often has a separate lifetime maximum — check the SBC for details.`
         : cp.ortho_child != null
-          ? `${plan.plan_name} covers orthodontia for children at ${cp.ortho_child}% but does not cover adult orthodontia. This is typical for ACA stand-alone dental plans — pediatric dental is an essential health benefit, but adult ortho is not required.`
-          : `${plan.plan_name} does not include adult orthodontia coverage. Most ACA stand-alone dental plans only cover pediatric orthodontia as part of the essential health benefits requirement.`,
+          ? `${plan.plan_name} covers orthodontia for children at ${cp.ortho_child}% but does not cover adult orthodontia. This is typical for stand-alone dental plans (SADPs) — pediatric dental is an essential health benefit, but adult ortho is not required.`
+          : `${plan.plan_name} does not include adult orthodontia coverage. Most stand-alone dental plans (SADPs) only cover pediatric orthodontia as part of the essential health benefits requirement.`,
     },
     {
       question: `Are there waiting periods for ${plan.plan_name}?`,
@@ -113,7 +113,7 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
     },
     {
       question: `What type of dental plan is ${plan.plan_name}?`,
-      answer: `${plan.plan_name} is a ${plan.metal_level} tier ${plan.plan_type} stand-alone dental plan (SADP) offered by ${plan.issuer_name} in ${stateName}. As an SADP, it is purchased separately from your medical health insurance plan through the ACA Marketplace. The "${plan.metal_level}" designation indicates the plan's actuarial value tier — ${plan.metal_level === 'High' ? 'High plans generally have lower out-of-pocket costs but higher premiums' : 'Low plans generally have lower premiums but higher out-of-pocket costs'}.`,
+      answer: `${plan.plan_name} is a ${plan.metal_level} tier ${plan.plan_type} stand-alone dental plan (SADP) offered by ${plan.issuer_name} in ${stateName}. As an SADP, it is purchased separately from your medical health insurance plan through the marketplace. The "${plan.metal_level}" designation indicates the plan's actuarial value tier — ${plan.metal_level === 'High' ? 'High plans generally have lower out-of-pocket costs but higher premiums' : 'Low plans generally have lower premiums but higher out-of-pocket costs'}.`,
     },
     {
       question: `Does ${plan.plan_name} cover dental implants?`,
@@ -123,7 +123,7 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
     },
     {
       question: `How does ${plan.plan_name} compare to other dental plans in ${stateName}?`,
-      answer: `${plan.plan_name} is one of multiple stand-alone dental plans available in ${stateName} through the ACA Marketplace. To compare, look at the annual maximum benefit${annualMax != null ? ` ($${annualMax.toLocaleString()} for this plan)` : ''}, coverage percentages for the services you use most, waiting periods, and the provider network (${plan.plan_type}). Use our state dental comparison page to see all available options side by side.`,
+      answer: `${plan.plan_name} is one of multiple stand-alone dental plans available in ${stateName} through the marketplace. To compare, look at the annual maximum benefit${annualMax != null ? ` ($${annualMax.toLocaleString()} for this plan)` : ''}, coverage percentages for the services you use most, waiting periods, and the provider network (${plan.plan_type}). Use our state dental comparison page to see all available options side by side.`,
     },
   ]
 }
@@ -235,7 +235,7 @@ export default function DentalPlanPage({ params }: Props) {
             </div>
             <p className="text-neutral-700 leading-relaxed">
               This is a <strong>stand-alone dental plan (SADP)</strong> — it is purchased separately
-              from your medical health insurance through the ACA Marketplace. Unlike embedded dental
+              from your medical health insurance through the marketplace. Unlike embedded dental
               (included in some medical plans), an SADP provides dedicated dental coverage with its
               own deductible, annual maximum, and provider network. SADPs are the primary way adults
               get dental coverage through the Marketplace, since adult dental is not an essential
@@ -416,7 +416,7 @@ export default function DentalPlanPage({ params }: Props) {
           </h2>
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 space-y-4">
             <p className="text-neutral-700 leading-relaxed">
-              Adult dental coverage through the ACA Marketplace has significant limitations that
+              Adult dental coverage through the marketplace has significant limitations that
               every enrollee should understand. Unlike pediatric dental (which is an essential health
               benefit), <strong>adult dental is not required under the ACA</strong>. Stand-alone dental
               plans are the primary option, and they come with real constraints.

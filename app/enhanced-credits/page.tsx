@@ -10,16 +10,16 @@ const SITE_URL = 'https://healthinsurancerenew.com'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: `Enhanced ACA Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
+  title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
   description:
-    `What happens to your ACA health insurance premium when IRA enhanced subsidies expire? ` +
+    `What happens to your health insurance premium when enhanced subsidies expire? ` +
     `County-level impact analysis at ages 27–64 across 26 states. Source: CMS + IRS FPL tables.`,
   alternates: { canonical: `${SITE_URL}/enhanced-credits` },
   openGraph: {
     type: 'article',
-    title: `Enhanced ACA Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
+    title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description:
-      'County-level analysis of enhanced ACA credit expiration impact on health insurance premiums.',
+      'County-level analysis of enhanced credit expiration impact on marketplace health insurance premiums.',
     url: `${SITE_URL}/enhanced-credits`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -40,8 +40,8 @@ export default function EnhancedCreditsIndexPage() {
   ])
 
   const articleSchema = buildArticleSchema({
-    headline: `Enhanced ACA Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
-    description: `What happens to ACA premiums when enhanced credits expire? ${policy.records.length} counties modeled across ${stateCount} states.`,
+    headline: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
+    description: `What happens to marketplace premiums when enhanced credits expire? ${policy.records.length} counties modeled across ${stateCount} states.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -120,10 +120,10 @@ export default function EnhancedCreditsIndexPage() {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            Enhanced ACA Premium Tax Credits — {PLAN_YEAR} Expiration Analysis
+            Enhanced Premium Tax Credits — {PLAN_YEAR} Expiration Analysis
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            The Inflation Reduction Act enhanced ACA premium subsidies through {PLAN_YEAR}. If
+            The Inflation Reduction Act enhanced marketplace premium subsidies through {PLAN_YEAR}. If
             Congress does not extend them, millions of enrollees will face higher premiums. This tool
             shows the county-level dollar impact across {recordsWithHeadline.length.toLocaleString()}{' '}
             counties in {states.length} states.

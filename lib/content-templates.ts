@@ -81,7 +81,7 @@ export function buildAuthorBlock(): AuthorBlock {
     jobTitle: 'Licensed Health Insurance Agent',
     award: 'CMS Elite Circle of Champions',
     knowsAbout: [
-      'ACA Marketplace health insurance',
+      'marketplace health insurance',
       'Advance Premium Tax Credits (APTC)',
       'Special Enrollment Periods',
       'Plan comparison and selection',
@@ -294,7 +294,7 @@ export function generatePlanComparisonContent(params: PlanComparisonParams): Pag
     `subsidy is applied. Source: CMS QHP Landscape PUF, ${planYear} plan year.`
 
   const bodyHtml = `<section class="content-plan-comparison">
-  <h2>Understanding Your ${planYear} ACA Plan Options in ${countyName}, ${stateCode}</h2>
+  <h2>Understanding Your ${planYear} Health Insurance Plan Options in ${countyName}, ${stateCode}</h2>
   <p>
     The Affordable Care Act Marketplace in ${countyName} offers ${nPlans} qualifying health
     plan${nPlans !== 1 ? 's' : ''} across ${nCarriers} insurance carrier${nCarriers !== 1 ? 's' : ''}
@@ -340,7 +340,7 @@ export function generatePlanComparisonContent(params: PlanComparisonParams): Pag
 
   <h2>Open Enrollment and Enrollment Windows</h2>
   <p>
-    ACA Open Enrollment for ${planYear} coverage runs each fall. Outside of Open Enrollment,
+    Open Enrollment for ${planYear} coverage runs each fall. Outside of Open Enrollment,
     you can only enroll or switch plans if a qualifying life event triggers a Special Enrollment
     Period (SEP). Qualifying events include losing other coverage, marriage, birth of a child,
     or moving to a new coverage area. Coverage selected during Open Enrollment takes effect
@@ -632,7 +632,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
       ? `With ${carrier_count} carriers in ${countyName}, competition is moderate. Consumers have meaningful plan choices, though fewer than in higher-competition markets.`
       : carrier_count === 2
       ? `With only ${carrier_count} carriers in ${countyName}, competition is limited, which can reduce pricing pressure and increase premium volatility.`
-      : `With a single carrier in ${countyName}, this county is a monopoly ACA market. Consumers have no premium competition and limited plan choice.`
+      : `With a single carrier in ${countyName}, this county is a monopoly marketplace. Consumers have no premium competition and limited plan choice.`
 
   const yoyNote =
     yoy_change_pct != null
@@ -640,7 +640,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
       : `Year-over-year rate change data is not available for ${countyName} in this dataset.`
 
   const introParagraph =
-    `For the ${plan_year} plan year, ${plan_count} ACA plan${plan_count !== 1 ? 's' : ''} from ` +
+    `For the ${plan_year} plan year, ${plan_count} marketplace plan${plan_count !== 1 ? 's' : ''} from ` +
     `${carrier_count} carrier${carrier_count !== 1 ? 's' : ''} are available in ${countyName}, ` +
     `${stateCode}. The average unsubsidized monthly premium for a 40-year-old is ` +
     `$${Math.round(avg_premium_age_40).toLocaleString()}. ${yoyNote}`
@@ -693,7 +693,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
 
   <h2>Planning for Premium Changes at Renewal</h2>
   <p>
-    ACA plans renew annually. Your current plan's premium, network, and formulary may change
+    Marketplace plans renew annually. Your current plan's premium, network, and formulary may change
     each year. During Open Enrollment, always re-evaluate all available plans — not just your
     current one. If your plan's rate increases more than the benchmark plan, your out-of-pocket
     net premium will rise even if your subsidy amount stays the same, because the credit is
@@ -843,7 +843,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
   const genericCount = tierCounts['GENERIC'] ?? 0
 
   const introParagraph =
-    `${drugName} appears on the formulary of ${planCount} ACA plan${planCount !== 1 ? 's' : ''}` +
+    `${drugName} appears on the formulary of ${planCount} marketplace plan${planCount !== 1 ? 's' : ''}` +
     `${issuerContext}${locationContext} for the ${planYear} plan year. The most common ` +
     `formulary tier classification is <strong>${topTier}</strong>. ` +
     (priorAuthCount > 0
@@ -852,9 +852,9 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
     `Source: CMS Machine-Readable PUF, ${planYear}.`
 
   const bodyHtml = `<section class="content-formulary">
-  <h2>Understanding ACA Formulary Tier Structure</h2>
+  <h2>Understanding Formulary Tier Structure</h2>
   <p>
-    ACA Marketplace plans organize covered medications into tiers. While exact tier names vary
+    Marketplace plans organize covered medications into tiers. While exact tier names vary
     by carrier, the standard structure from lowest to highest cost-sharing is:
   </p>
   <ol class="formulary-tiers">
@@ -973,7 +973,7 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
   <h2>Stand-Alone Dental Plans (SADPs) vs Embedded Dental Coverage</h2>
   <p>
     The ACA requires all Marketplace plans to include pediatric dental as an Essential Health
-    Benefit, but adult dental is not required. Most ACA medical plans include limited or no
+    Benefit, but adult dental is not required. Most marketplace medical plans include limited or no
     adult dental benefits. Stand-alone dental plans (SADPs) — offered separately on the
     Marketplace — provide adult dental coverage and are the primary way to add dental benefits
     through the ACA exchange.
@@ -1017,7 +1017,7 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
   <p>
     This plan's annual maximum benefit is <strong>${annualMax}</strong> — the most the insurer
     will pay for covered dental services in a plan year. Once you exceed this amount, you pay
-    100% of costs for the remainder of the year. Unlike ACA medical plans, dental plans do not
+    100% of costs for the remainder of the year. Unlike marketplace medical plans, dental plans do not
     have an out-of-pocket maximum that caps your total spending. For consumers expecting
     extensive dental work, calculate projected costs before enrolling to determine whether the
     annual maximum will be sufficient.
@@ -1097,7 +1097,7 @@ export function generateBillingContent(params: BillingTemplateParams): PageConte
   <p>${scenario.description}</p>
   <p><strong>Consumer risk level:</strong> ${scenario.consumer_risk_level}</p>
 
-  <h2>Your ACA Rights in This Situation</h2>
+  <h2>Your Coverage Rights in This Situation</h2>
   <p>${categoryExplanation}</p>
 
   <h2>Consumer Tip</h2>
@@ -1158,7 +1158,7 @@ export function generateLifeEventContent(params: LifeEventTemplateParams): PageC
 
   const introParagraph =
     `${event.trigger_description} This life event triggers a Special Enrollment Period (SEP) — ` +
-    `a ${sep_details.window_days}-day window during which you can enroll in or change your ACA ` +
+    `a ${sep_details.window_days}-day window during which you can enroll in or change your marketplace ` +
     `Marketplace health coverage${locationContext} outside of the standard Open Enrollment period. ` +
     `SEP type: <strong>${sep_details.sep_type}</strong>.`
 
@@ -1187,7 +1187,7 @@ export function generateLifeEventContent(params: LifeEventTemplateParams): PageC
   const bodyHtml = `<section class="content-life-event">
   <h2>What Is a Special Enrollment Period (SEP)?</h2>
   <p>
-    Outside of the annual Open Enrollment window, you can only enroll in or change your ACA
+    Outside of the annual Open Enrollment window, you can only enroll in or change your marketplace
     Marketplace coverage if a qualifying life event triggers an SEP. ${event.title} is one such
     qualifying event, granting a <strong>${sep_details.window_days}-day SEP window</strong> to
     enroll in or change coverage.
@@ -1227,11 +1227,11 @@ export function generateLifeEventContent(params: LifeEventTemplateParams): PageC
     income estimate can result in APTC repayment when you file your federal tax return.
   </p>
 
-  <h2>COBRA vs ACA Marketplace Coverage</h2>
+  <h2>COBRA vs. Marketplace Coverage</h2>
   <p>
     If you lost employer-sponsored coverage, you may be eligible for COBRA continuation. Before
-    electing COBRA, compare its cost to ACA Marketplace plans — particularly if you qualify for
-    an APTC. ACA plans with subsidies are often significantly less expensive than COBRA, which
+    electing COBRA, compare its cost to marketplace plans — particularly if you qualify for
+    an APTC. Marketplace plans with subsidies are often significantly less expensive than COBRA, which
     requires you to pay the full premium including the employer contribution. A licensed agent
     can run a cost comparison for your specific situation at no charge.
   </p>
@@ -1269,7 +1269,7 @@ export function generatePolicyScenarioContent(params: PolicyScenarioTemplatePara
   const introParagraph =
     `For a ${headline.age}-year-old at ${headline.fpl_percent}% FPL ` +
     `(annual income approximately $${headline.annual_income.toLocaleString()}) in ` +
-    `${countyName}, ${stateCode}, current enhanced ACA subsidies reduce the monthly net premium ` +
+    `${countyName}, ${stateCode}, current enhanced subsidies reduce the monthly net premium ` +
     `to approximately $${headline.current_net_monthly_with_enhanced.toFixed(2)}/month. If the IRA ` +
     `enhanced credits expire after ${ENHANCED_CREDIT_EXPIRATION_YEAR}, the estimated monthly ` +
     `increase is <strong>$${headline.monthly_increase_at_expiration.toFixed(2)}/month</strong> ` +
@@ -1290,7 +1290,7 @@ export function generatePolicyScenarioContent(params: PolicyScenarioTemplatePara
     .join('\n        ')
 
   const bodyHtml = `<section class="content-policy-scenario">
-  <h2>Enhanced ACA Credits — What They Are and Why They May Expire</h2>
+  <h2>Enhanced Premium Tax Credits — What They Are and Why They May Expire</h2>
   <p>
     The American Rescue Plan Act of 2021 expanded Advance Premium Tax Credits by temporarily
     eliminating the "subsidy cliff" at 400% FPL and increasing subsidy amounts across all income

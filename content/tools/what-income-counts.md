@@ -1,6 +1,6 @@
 ---
 title: "What Income Counts for Health Insurance?"
-description: "Understand how Modified Adjusted Gross Income (MAGI) is calculated for ACA health insurance purposes. Educational guide to income counting."
+description: "Understand how Modified Adjusted Gross Income (MAGI) is calculated for health insurance subsidy purposes. Educational guide to income counting."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 toolType: "what-income-counts"

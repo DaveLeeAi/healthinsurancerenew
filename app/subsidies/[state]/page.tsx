@@ -3,10 +3,20 @@ import { notFound } from 'next/navigation'
 import { getAllSubsidyStateCountyCombos } from '@/lib/data-loader'
 import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import StateFPLCalculator from '@/components/StateFPLCalculator'
 import allStatesData from '@/data/config/all-states.json'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
+
+interface StateEntry {
+  name: string
+  abbr: string
+  slug: string
+  exchange: string
+  ownExchange: boolean
+  exchangeUrl?: string
+}
 
 interface Props {
   params: { state: string }
@@ -14,11 +24,14 @@ interface Props {
 
 export const dynamic = 'force-dynamic'
 
-function getStateName(abbr: string): string {
-  const found = (allStatesData.states as { name: string; abbr: string }[]).find(
+function getStateEntry(abbr: string): StateEntry | undefined {
+  return (allStatesData.states as StateEntry[]).find(
     (s) => s.abbr === abbr.toUpperCase()
   )
-  return found?.name ?? abbr.toUpperCase()
+}
+
+function getStateName(abbr: string): string {
+  return getStateEntry(abbr)?.name ?? abbr.toUpperCase()
 }
 
 // ---------------------------------------------------------------------------
@@ -27,16 +40,23 @@ function getStateName(abbr: string): string {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()
-  const stateName = getStateName(stateUpper)
+  const stateEntry = getStateEntry(stateUpper)
+  if (!stateEntry) return { title: 'Not Found' }
+
+  const stateName = stateEntry.name
   const counties = getAllSubsidyStateCountyCombos().filter((c) => c.state === params.state)
-
-  if (counties.length === 0) return { title: 'Not Found' }
-
-  const title = `${stateName} ACA Subsidy Calculator ${PLAN_YEAR} | Estimate Tax Credits by County`
-  const description =
-    `Calculate your ${PLAN_YEAR} ACA premium tax credit (APTC) across ${counties.length} counties in ${stateName}. ` +
-    `Enter your income to estimate your subsidy at each FPL level. Source: CMS QHP Rate PUF.`
+  const isSbm = stateEntry.ownExchange && counties.length === 0
   const canonical = `${SITE_URL}/subsidies/${params.state}`
+
+  const title = isSbm
+    ? `Health Insurance Subsidy Estimator — ${stateName}`
+    : `${stateName} Health Insurance Subsidy Calculator ${PLAN_YEAR} | Estimate Tax Credits by County`
+
+  const description = isSbm
+    ? `Estimate your ${PLAN_YEAR} premium tax credit in ${stateName}. ` +
+      `Subsidies work the same whether you enroll through ${stateEntry.exchange} or Healthcare.gov.`
+    : `Calculate your ${PLAN_YEAR} premium tax credit (APTC) across ${counties.length} counties in ${stateName}. ` +
+      `Enter your income to estimate your subsidy at each FPL level. Source: CMS QHP Rate PUF.`
 
   return {
     title,
@@ -59,10 +79,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function SubsidiesStatePage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
-  const stateName = getStateName(stateUpper)
-  const counties = getAllSubsidyStateCountyCombos().filter((c) => c.state === params.state)
+  const stateEntry = getStateEntry(stateUpper)
 
-  if (counties.length === 0) notFound()
+  if (!stateEntry) notFound()
+
+  const stateName = stateEntry.name
+  const counties = getAllSubsidyStateCountyCombos().filter((c) => c.state === params.state)
+  const isSbm = stateEntry.ownExchange && counties.length === 0
+
+  // If no county data AND not an SBM state, 404
+  if (counties.length === 0 && !stateEntry.ownExchange) notFound()
 
   const canonical = `${SITE_URL}/subsidies/${params.state}`
 
@@ -89,70 +115,148 @@ export default function SubsidiesStatePage({ params }: Props) {
           </ol>
         </nav>
 
-        {/* Heading */}
-        <section>
-          <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            {stateName} ACA Subsidy Calculator — {PLAN_YEAR}
-          </h1>
-          <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            Estimate your {PLAN_YEAR} ACA premium tax credit (APTC) across{' '}
-            <strong>{counties.length} counties</strong> in {stateName}. Select your county
-            to calculate subsidies based on your household income and FPL percentage.
-          </p>
-        </section>
+        {isSbm ? (
+          /* ── SBM State: subsidy estimator page ── */
+          <>
+            <section>
+              <h1 className="text-3xl font-bold text-navy-900 mb-3">
+                Estimate Your Health Insurance Savings in {stateName}
+              </h1>
+              <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+                <p className="text-neutral-700 leading-relaxed">
+                  Premium tax credits are a federal benefit — they work the same way in{' '}
+                  {stateName} regardless of whether you enroll through{' '}
+                  <strong>{stateEntry.exchange}</strong> or Healthcare.gov. The calculator below
+                  uses national average benchmark premiums as an estimate.
+                </p>
+              </div>
+            </section>
 
-        {/* County grid */}
-        <section aria-labelledby="counties-heading">
-          <h2 id="counties-heading" className="text-xl font-semibold text-navy-800 mb-4">
-            Select a County
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {counties.map(({ county }) => (
-              <a
-                key={county}
-                href={`/subsidies/${params.state}/${county}`}
-                className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
-              >
-                <span className="text-sm font-medium text-primary-700">County {county}</span>
-                <span className="block text-xs text-neutral-500 mt-0.5">FIPS {county}</span>
-              </a>
-            ))}
-          </div>
-        </section>
+            <section>
+              <StateFPLCalculator
+                stateName={stateName}
+                stateAbbr={stateUpper}
+                exchangeName={stateEntry.exchange}
+                exchangeUrl={stateEntry.exchangeUrl ?? 'https://www.healthcare.gov'}
+              />
+            </section>
 
-        {/* Related state data */}
-        <section className="border-t border-neutral-200 pt-6">
-          <h2 className="text-lg font-semibold text-navy-800 mb-3">
-            More Data for {stateName}
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={`/plans/${params.state}`}
-              className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-            >
-              Plans in {stateName}
-            </a>
-            <a
-              href={`/rates/${params.state}`}
-              className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-            >
-              Rate Trends in {stateName}
-            </a>
-            <a
-              href={`/enhanced-credits/${params.state}`}
-              className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-            >
-              Enhanced Credits in {stateName}
-            </a>
-          </div>
-        </section>
+            <section className="border-t border-neutral-200 pt-6 space-y-3">
+              {/* Primary — stay on site */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+                <a
+                  href={`/plans/${params.state}`}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
+                >
+                  View {stateName} health plans
+                </a>
+                <a
+                  href={`/formulary/${params.state}/metformin`}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-primary-200 bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100 transition-colors"
+                >
+                  Search drug coverage in {stateName}
+                </a>
+              </div>
+
+              {/* State guide link */}
+              <div className="mt-3">
+                <a
+                  href={`/states/${params.state}/aca-2026`}
+                  className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700"
+                >
+                  {stateName} health insurance guide &rarr;
+                </a>
+              </div>
+
+              {/* External demoted */}
+              {stateEntry.exchangeUrl && (
+                <p className="text-sm text-slate-500 mt-4">
+                  For exact premium quotes in {stateName},{' '}
+                  <a
+                    href={stateEntry.exchangeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-600 hover:text-primary-700 underline"
+                  >
+                    visit {stateEntry.exchange} directly
+                  </a>.
+                </p>
+              )}
+            </section>
+          </>
+        ) : (
+          /* ── FFM State: county data page ── */
+          <>
+            <section>
+              <h1 className="text-3xl font-bold text-navy-900 mb-3">
+                {stateName} Health Insurance Subsidy Calculator — {PLAN_YEAR}
+              </h1>
+              <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
+                Estimate your {PLAN_YEAR} premium tax credit (APTC) across{' '}
+                <strong>{counties.length} counties</strong> in {stateName}. Select your county
+                to calculate subsidies based on your household income and FPL percentage.
+              </p>
+            </section>
+
+            {/* County grid */}
+            <section aria-labelledby="counties-heading">
+              <h2 id="counties-heading" className="text-xl font-semibold text-navy-800 mb-4">
+                Select a County
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {counties.map(({ county }) => (
+                  <a
+                    key={county}
+                    href={`/subsidies/${params.state}/${county}`}
+                    className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                  >
+                    <span className="text-sm font-medium text-primary-700">County {county}</span>
+                    <span className="block text-xs text-neutral-500 mt-0.5">FIPS {county}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+
+            {/* Related state data */}
+            <section className="border-t border-neutral-200 pt-6">
+              <h2 className="text-lg font-semibold text-navy-800 mb-3">
+                More Data for {stateName}
+              </h2>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={`/plans/${params.state}`}
+                  className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                >
+                  Plans in {stateName}
+                </a>
+                <a
+                  href={`/rates/${params.state}`}
+                  className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                >
+                  Rate Trends in {stateName}
+                </a>
+                <a
+                  href={`/enhanced-credits/${params.state}`}
+                  className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                >
+                  Enhanced Credits in {stateName}
+                </a>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400">
           <p>
-            Subsidy estimates are based on CMS benchmark silver premium data and IRS applicable
-            percentage tables for plan year {PLAN_YEAR}. Actual tax credit amounts depend on
-            your final MAGI. Consult a licensed agent to confirm your eligibility.
+            {isSbm
+              ? `Subsidy estimates use national average benchmark premiums and IRA enhanced applicable percentage rates. ` +
+                `Actual tax credit amounts depend on the benchmark plan in your county and your final MAGI. ` +
+                `Consult a licensed agent to confirm your eligibility.`
+              : `Subsidy estimates are based on CMS benchmark silver premium data and IRS applicable ` +
+                `percentage tables for plan year ${PLAN_YEAR}. Actual tax credit amounts depend on ` +
+                `your final MAGI. Consult a licensed agent to confirm your eligibility.`
+            }
           </p>
         </footer>
 

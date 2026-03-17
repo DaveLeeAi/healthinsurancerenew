@@ -5,6 +5,6 @@ datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 ---
 
-## Understanding ACA Financial Assistance
+## Understanding Health Insurance Financial Assistance
 
-Financial assistance through the ACA marketplace can significantly lower the cost of health coverage. These frequently asked questions address how subsidies work and who qualifies.
+Financial assistance through the marketplace can significantly lower the cost of health coverage. These frequently asked questions address how subsidies work and who qualifies.

@@ -21,6 +21,8 @@ from typing import Any
 
 import pandas as pd
 
+from county_fips import COVER_ENTIRE_STATE_COUNTIES
+
 logger = logging.getLogger(__name__)
 
 RAW_DIR = Path("data/raw/puf")
@@ -54,7 +56,7 @@ def load_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         usecols=["PlanId", "RatingAreaId", "Age", "Tobacco", "IndividualRate"],
         low_memory=False,
     )
-    rates = rates[rates["Tobacco"].isin(["No Preference", "No Tobacco"])]
+    rates = rates[rates["Tobacco"].isin(["No Preference", "No Tobacco", "Tobacco User/Non-Tobacco User"])]
     logger.info(f"  Rate rows (non-tobacco): {len(rates):,}")
 
     logger.info("Loading Service Area PUF...")
@@ -80,7 +82,12 @@ def build_county_map(sa: pd.DataFrame) -> pd.DataFrame:
     expanded = []
     for _, row in entire_state.iterrows():
         state = row["StateCode"]
-        for county in state_counties.get(state, []):
+        # Use PUF county rows if available, else fall back to hardcoded FIPS
+        counties = state_counties.get(state, set())
+        if not counties and state in COVER_ENTIRE_STATE_COUNTIES:
+            counties = set(COVER_ENTIRE_STATE_COUNTIES[state])
+            logger.info(f"  Using fallback FIPS for {state}: {len(counties)} counties")
+        for county in counties:
             expanded.append({
                 "StateCode": state,
                 "IssuerId": row["IssuerId"],

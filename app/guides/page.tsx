@@ -7,7 +7,7 @@ import type { GuideFrontmatter } from '../../lib/markdown'
 export const metadata: Metadata = {
   title: 'Health Insurance Guides | HealthInsuranceRenew',
   description:
-    'Educational guides about ACA health insurance, marketplace enrollment, subsidies, special enrollment periods, and factors that affect coverage costs.',
+    'Educational guides about health insurance marketplace enrollment, subsidies, special enrollment periods, and factors that affect coverage costs.',
 }
 
 const breadcrumbs = [
@@ -34,7 +34,7 @@ export default function GuidesIndexPage() {
         Health Insurance Guides
       </h1>
       <p className="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
-        Clear, unbiased information about how ACA marketplace health insurance works, from
+        Clear, unbiased information about how marketplace health insurance works, from
         enrollment to subsidies.
       </p>
 

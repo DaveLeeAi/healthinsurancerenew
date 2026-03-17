@@ -545,7 +545,7 @@ const COST_EXAMPLES: Array<{
   costLevel: 'low' | 'moderate' | 'high'
   note?: string
 }> = [
-  { service: 'Preventive Care Visit', typicalCharge: 0, costLevel: 'low', note: 'Free under ACA' },
+  { service: 'Preventive Care Visit', typicalCharge: 0, costLevel: 'low', note: 'Free — required by law' },
   { service: 'Primary Care Visit', typicalCharge: 150, costLevel: 'low' },
   { service: 'Specialist Visit', typicalCharge: 300, costLevel: 'moderate' },
   { service: 'Urgent Care Visit', typicalCharge: 250, costLevel: 'moderate' },

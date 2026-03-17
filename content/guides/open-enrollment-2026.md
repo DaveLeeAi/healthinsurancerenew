@@ -1,6 +1,6 @@
 ---
 title: "Open Enrollment 2026: Dates, Process, and What to Expect"
-description: "A guide to the 2026 open enrollment period for ACA marketplace health insurance, including key dates, how to enroll, and what changes to anticipate for the upcoming plan year."
+description: "A guide to the 2026 open enrollment period for marketplace health insurance, including key dates, how to enroll, and what changes to anticipate for the upcoming plan year."
 datePublished: "2025-10-15"
 dateModified: "2026-02-15"
 keyTakeaways:
