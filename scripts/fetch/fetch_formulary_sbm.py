@@ -58,6 +58,7 @@ MAIN_FORMULARY = PROCESSED_DIR / "formulary_intelligence.json"
 
 CONCURRENCY = 3
 DELAY_BETWEEN_ISSUERS = 1.5  # Be polite — SBM issuers are smaller orgs
+LARGE_FILE_TIMEOUT = 600  # 10 min for 112MB+ Cambia files
 
 
 # ---------------------------------------------------------------------------
@@ -93,6 +94,78 @@ def normalize_tier(raw_tier: str | None) -> str:
         return "UNKNOWN"
     t = str(raw_tier).strip().upper()
     return TIER_MAP.get(t, t)
+
+
+async def download_and_parse_drugs_large(
+    session: aiohttp.ClientSession, drugs_url: str,
+) -> list[dict[str, Any]] | None:
+    """Download large drug files (112MB+ Cambia) by streaming to disk first.
+
+    This avoids holding 112MB raw bytes + parsed objects in memory simultaneously.
+    """
+    import tempfile
+    import gc
+
+    logger.info(f"    Downloading (large file → disk, {LARGE_FILE_TIMEOUT}s timeout): {drugs_url[:100]}...")
+
+    # Stream to a temp file to avoid MemoryError on large responses
+    tmp_path = None
+    for attempt in range(3):
+        try:
+            async with session.get(
+                drugs_url,
+                timeout=aiohttp.ClientTimeout(total=LARGE_FILE_TIMEOUT),
+                headers=HEADERS,
+            ) as resp:
+                resp.raise_for_status()
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".json", dir=str(PROCESSED_DIR)) as tmp:
+                    tmp_path = Path(tmp.name)
+                    total = 0
+                    async for chunk in resp.content.iter_chunked(1024 * 256):  # 256KB chunks
+                        tmp.write(chunk)
+                        total += len(chunk)
+                    logger.info(f"    Downloaded {total / (1024*1024):.1f} MB to {tmp_path.name}")
+                break
+        except (aiohttp.ClientError, asyncio.TimeoutError) as e:
+            wait = 2 ** attempt
+            logger.warning(f"    Attempt {attempt + 1}/3 failed: {e}")
+            if tmp_path and tmp_path.exists():
+                tmp_path.unlink()
+                tmp_path = None
+            if attempt < 2:
+                await asyncio.sleep(wait)
+
+    if not tmp_path or not tmp_path.exists():
+        return None
+
+    # Parse from disk (json.load uses less peak memory than json.loads on bytes)
+    try:
+        gc.collect()  # Free memory before parsing large JSON
+        with open(tmp_path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, ValueError) as e:
+        logger.warning(f"    Invalid JSON from {drugs_url[:80]}: {e}")
+        return None
+    finally:
+        if tmp_path.exists():
+            tmp_path.unlink()
+
+    if isinstance(data, list):
+        drugs = data
+    elif isinstance(data, dict):
+        for key in ("drugs", "data", "formulary_drugs", "results"):
+            if key in data and isinstance(data[key], list):
+                drugs = data[key]
+                break
+        else:
+            logger.warning(f"    Unexpected JSON structure (keys: {list(data.keys())[:10]})")
+            return None
+    else:
+        logger.warning(f"    Unexpected JSON type: {type(data)}")
+        return None
+
+    logger.info(f"    Parsed {len(drugs):,} drug objects")
+    return drugs
 
 
 def normalize_sbm_records(records: list[dict[str, Any]], state_code: str) -> list[dict[str, Any]]:
@@ -254,6 +327,44 @@ def print_verification_table(results: dict[str, list[dict[str, Any]]]) -> None:
 # ---------------------------------------------------------------------------
 # Fetch formulary data for a state
 # ---------------------------------------------------------------------------
+def _group_issuers_by_source(issuers: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Group issuers that share the same index_url to avoid duplicate downloads.
+
+    Returns a new issuer list where shared-URL issuers are merged into single
+    entries with combined issuer_ids. Prevents OOM on 112MB+ Cambia files.
+    """
+    # Separate dead from active
+    dead: list[dict[str, Any]] = []
+    active_by_url: dict[str, dict[str, Any]] = {}
+
+    for issuer in issuers:
+        status = issuer.get("status", "needs_verification")
+        if status == "url_dead" and not issuer.get("direct_drugs_url"):
+            dead.append(issuer)
+            continue
+
+        # Key: effective source URL (direct_drugs_url takes priority)
+        source_url = issuer.get("direct_drugs_url") or issuer.get("index_url", "")
+        if not source_url:
+            dead.append(issuer)
+            continue
+
+        if source_url in active_by_url:
+            # Merge issuer_id into existing group
+            existing = active_by_url[source_url]
+            existing["_issuer_ids"].append(issuer["issuer_id"])
+            existing["_issuer_names"].append(issuer["issuer_name"])
+        else:
+            active_by_url[source_url] = {
+                **issuer,
+                "_issuer_ids": [issuer["issuer_id"]],
+                "_issuer_names": [issuer["issuer_name"]],
+            }
+
+    grouped = dead + list(active_by_url.values())
+    return grouped
+
+
 async def fetch_sbm_state(
     state_code: str,
     issuers: list[dict[str, Any]],
@@ -262,38 +373,53 @@ async def fetch_sbm_state(
     """Fetch and normalize formulary data for all issuers in a state.
 
     Returns: (all_records, issuer_results)
-    """
-    all_records: list[dict[str, Any]] = []
-    issuer_results: list[dict[str, Any]] = []
 
-    for i, issuer in enumerate(issuers):
-        issuer_id = issuer["issuer_id"]
-        issuer_name = issuer["issuer_name"]
+    Groups issuers sharing the same source URL to avoid duplicate downloads
+    of large files (e.g. Cambia drugs1.json + drugs2.json = 112MB each).
+    """
+    issuer_results: list[dict[str, Any]] = []
+    total_records = 0
+
+    # Write records to NDJSON temp file to avoid OOM on large states (Cambia 880K+ records)
+    ndjson_path = PROCESSED_DIR / f"_tmp_sbm_{state_code}.ndjson"
+    ndjson_file = open(ndjson_path, "w", encoding="utf-8")
+
+    # Group issuers sharing the same URL to avoid duplicate 112MB downloads
+    grouped_issuers = _group_issuers_by_source(issuers)
+    logger.info(f"  {len(issuers)} issuers grouped into {len(grouped_issuers)} source(s)")
+
+    for i, issuer in enumerate(grouped_issuers):
+        # Merged issuers have _issuer_ids list; solo issuers don't
+        issuer_ids = issuer.get("_issuer_ids", [issuer["issuer_id"]])
+        issuer_names = issuer.get("_issuer_names", [issuer["issuer_name"]])
+        issuer_id_str = "+".join(issuer_ids)
+        issuer_name = " + ".join(issuer_names)
         index_url = issuer.get("index_url", "")
         direct_drugs_url = issuer.get("direct_drugs_url")
         status = issuer.get("status", "needs_verification")
 
         # Skip known-dead URLs
         if status == "url_dead" and not direct_drugs_url:
-            logger.info(f"\n  [{i+1}/{len(issuers)}] {state_code} - {issuer_name} ({issuer_id}) -- SKIPPED (url_dead)")
-            issuer_results.append({
-                "issuer_id": issuer_id,
-                "issuer_name": issuer_name,
-                "state_code": state_code,
-                "index_url": index_url,
-                "status": "skipped_url_dead",
-                "formulary_urls_found": 0,
-                "drugs_urls_attempted": 0,
-                "drugs_urls_successful": 0,
-                "drug_records": 0,
-                "error": "URL marked as dead in registry",
-            })
+            logger.info(f"\n  [{i+1}/{len(grouped_issuers)}] {state_code} - {issuer_name} ({issuer_id_str}) -- SKIPPED (url_dead)")
+            for iid, iname in zip(issuer_ids, issuer_names):
+                issuer_results.append({
+                    "issuer_id": iid,
+                    "issuer_name": iname,
+                    "state_code": state_code,
+                    "index_url": index_url,
+                    "status": "skipped_url_dead",
+                    "formulary_urls_found": 0,
+                    "drugs_urls_attempted": 0,
+                    "drugs_urls_successful": 0,
+                    "drug_records": 0,
+                    "error": "URL marked as dead in registry",
+                })
             continue
 
-        logger.info(f"\n  [{i+1}/{len(issuers)}] {state_code} - {issuer_name} ({issuer_id})")
+        logger.info(f"\n  [{i+1}/{len(grouped_issuers)}] {state_code} - {issuer_name} ({issuer_id_str})")
 
         result: dict[str, Any] = {
-            "issuer_id": issuer_id,
+            "issuer_id": issuer_id_str,
             "issuer_name": issuer_name,
             "state_code": state_code,
             "index_url": direct_drugs_url or index_url,
@@ -307,15 +433,20 @@ async def fetch_sbm_state(
 
         issuer_records: list[dict[str, Any]] = []
 
+        # Detect large-file issuers (Cambia 112MB+ drugs files)
+        is_large_file = "cambiahealth" in (index_url or "") or "cambiahealth" in (direct_drugs_url or "")
+        _download = download_and_parse_drugs_large if is_large_file else download_and_parse_drugs
+
         # Fast path: direct_drugs_url bypasses index.json discovery
         if direct_drugs_url:
             logger.info(f"    Direct drugs URL: {direct_drugs_url[:80]}...")
             result["formulary_urls_found"] = 1
             result["drugs_urls_attempted"] = 1
 
-            drugs = await download_and_parse_drugs(session, direct_drugs_url)
+            drugs = await _download(session, direct_drugs_url)
             if drugs:
-                records = normalize_drug_records(drugs, [issuer_id])
+                records = normalize_drug_records(drugs, issuer_ids)
+                del drugs  # Free raw drug objects before SBM normalization
                 records = normalize_sbm_records(records, state_code)
                 issuer_records.extend(records)
                 result["drugs_urls_successful"] = 1
@@ -362,20 +493,27 @@ async def fetch_sbm_state(
                 seen_urls.add(drugs_url)
                 result["drugs_urls_attempted"] += 1
 
-                drugs = await download_and_parse_drugs(session, drugs_url)
+                drugs = await _download(session, drugs_url)
                 if drugs:
-                    records = normalize_drug_records(drugs, [issuer_id])
-                    # Apply SBM-specific post-processing
+                    records = normalize_drug_records(drugs, issuer_ids)
+                    del drugs  # Free raw drug objects before SBM normalization
+                    import gc; gc.collect()
                     records = normalize_sbm_records(records, state_code)
                     issuer_records.extend(records)
+                    del records  # Free intermediate list
                     result["drugs_urls_successful"] += 1
-                    logger.info(f"    Normalized {len(records):,} records from {drugs_url[:60]}...")
+                    logger.info(f"    Normalized {len(issuer_records):,} records so far from {drugs_url[:60]}...")
 
         if issuer_records:
             result["status"] = "success"
             result["drug_records"] = len(issuer_records)
-            all_records.extend(issuer_records)
-            logger.info(f"    Total: {len(issuer_records):,} records for {issuer_name}")
+            # Write to NDJSON temp file instead of accumulating in memory
+            for rec in issuer_records:
+                ndjson_file.write(json.dumps(rec, separators=(",", ":")) + "\n")
+            total_records += len(issuer_records)
+            logger.info(f"    Total: {len(issuer_records):,} records for {issuer_name} (flushed to disk)")
+            del issuer_records
+            import gc; gc.collect()
         else:
             result["status"] = "drugs_download_failed"
             result["error"] = f"Downloaded 0/{result['drugs_urls_attempted']} drugs files"
@@ -385,6 +523,19 @@ async def fetch_sbm_state(
 
         # Rate limit between issuers
         await asyncio.sleep(DELAY_BETWEEN_ISSUERS)
+
+    ndjson_file.close()
+
+    # Read back all records from disk
+    logger.info(f"  Reading back {total_records:,} records from temp file...")
+    all_records: list[dict[str, Any]] = []
+    with open(ndjson_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                all_records.append(json.loads(line))
+    ndjson_path.unlink()
+    logger.info(f"  Loaded {len(all_records):,} records from disk")
 
     return all_records, issuer_results
 
@@ -656,7 +807,7 @@ async def run_fetch(states_data: dict[str, list[dict[str, Any]]]) -> dict[str, P
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
     connector = aiohttp.TCPConnector(limit=CONCURRENCY, limit_per_host=2)
-    timeout = aiohttp.ClientTimeout(total=300)
+    timeout = aiohttp.ClientTimeout(total=LARGE_FILE_TIMEOUT + 60)
     output_files: dict[str, Path] = {}
 
     async with aiohttp.ClientSession(connector=connector, timeout=timeout, headers=HEADERS) as session:

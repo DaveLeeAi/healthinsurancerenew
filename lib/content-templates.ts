@@ -20,7 +20,7 @@ import type {
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const BASE_URL = 'https://healthinsurancerenew.com'
 
 // IRA enhanced credits expire at end of plan year 2025 unless extended

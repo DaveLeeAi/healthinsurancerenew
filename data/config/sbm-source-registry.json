@@ -376,11 +376,11 @@
       "exchange_url": "https://www.yourhealthidaho.org",
       "issuers": [
         {
-          "issuer_id": "00000",
+          "issuer_id": "71281",
           "issuer_name": "Cambia Health / Regence (ID)",
           "index_url": "https://cms-machine-readable.cambiahealth.com/index.json",
           "status": "active",
-          "notes": "CONFIRMED LIVE 2026-03-17. Cambia index.json contains ID plan IDs in drugs1.json + drugs2.json (112 MB each). Cambia parent of Regence BCBS Idaho. Same index serves WA/OR/ID/UT. Issuer HIOS ID needs extraction from drug file plan_id prefixes."
+          "notes": "CONFIRMED LIVE 2026-03-17. Cambia index.json contains ID plan IDs in drugs1.json + drugs2.json (112 MB each). Cambia parent of Regence BCBS Idaho. Same index serves WA/OR/ID/UT. HIOS ID 71281 confirmed from drug file plan_id prefixes."
         },
         {
           "issuer_id": "00000",

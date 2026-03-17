@@ -17,7 +17,7 @@ A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA hea
 | 3 | SBC Decoded (Benefits & Cost Sharing) | `sbc_decoded.json` (429 MB) | 20,354 plan variants |
 | 4 | Rate Volatility Tracker | `rate_volatility.json` (654 KB) | County-level YoY analytics |
 | 5 | Friction & Guidance Q&A | `friction_qa.json` (56.8 KB) | 54 Q&A entries |
-| 6 | Formulary Intelligence | `formulary_intelligence.json` (44.8 MB) | 177,651 drug records (deduped) |
+| 6 | Formulary Intelligence | `formulary_intelligence.json` | 181,734 drug records (deduped) |
 | 7 | Dental Coverage Reality | `dental_coverage.json` (4.4 MB) | 1,389 plan variants |
 | 8 | Billing Intelligence | `billing_intel.json` (52.8 KB) | 20 billing scenarios |
 | 9 | Life Events & Transitions | `life_events.json` (49.8 KB) | 8 decision trees |
@@ -55,6 +55,14 @@ Features:
 - Estimated Out-of-Pocket Cost visual (color-coded by tier: Generic $5–$20 green → Specialty $100–$500+ red)
 - Coverage Status grid (4 cards)
 - Coverage Details table (grouped by formulation)
+- **Programmatic internal linking** (8–15 links per page, category-aware):
+  - Related Medications — 4–6 drugs from same therapeutic category (e.g., Metformin → Ozempic, Jardiance, Trulicity)
+  - Comparison Links — 2–3 "Drug A vs Drug B" SEO comparison pages
+  - State Marketplace Resources — plans, formulary browse, subsidy calculator (state pages only)
+  - Educational Links — contextual guides based on tier/restrictions (prior auth, step therapy, quantity limits)
+  - Cross-pillar entity links — plan details, subsidy calculator, billing, FAQ via `EntityLinkCard`
+  - Related Coverage Guides — category-matched topical authority guides at page bottom
+- Drug autocomplete search with 2,000-drug index (debounced, keyboard-navigable)
 - FAQ section (5 Q&As interpolated with actual tier/PA/step therapy data) + FAQPage JSON-LD schema
 - Data Methodology block + Source Citations (CMS MR-PUF, Formulary Reference File, Healthcare.gov)
 - Schema: Drug, HealthInsurancePlan, BreadcrumbList, FAQPage
@@ -79,9 +87,9 @@ State-Based Marketplace states are absent from the federal CMS Machine-Readable 
 | Centene/Ambetter API | GA, IL, KY, NJ, NV, PA, WA | Ingested (7 states) |
 | CareFirst BCBS | VA | Ingested — Drugs_1–5.json (VA plan IDs) |
 | Elevance/Anthem (FormularyNavigator) | ME | Ingested — drugs/35 (ME plan IDs) |
-| Cambia Health (Regence) | WA, OR, ID | Confirmed live — drugs1.json + drugs2.json (224 MB) |
-| Moda Health | OR | Confirmed live — drugs-OR.json (14 MB) |
-| Providence Health Plan | OR | Confirmed live — 2 drug files (29 MB) |
+| Cambia Health (Regence) | WA, OR, ID, UT | Ingested — drugs1.json + drugs2.json |
+| Moda Health | OR | Ingested — drugs-OR.json |
+| Providence Health Plan | OR | Ingested — 2 drug files |
 | Blocked (no MR endpoint) | CA, CO, CT, DC, MA, MD, MN, NM, NY, RI, VT | 11 states |
 
 **Registry:** `data/config/sbm-source-registry.json` — 22 states, 67 issuers tracked
@@ -189,6 +197,8 @@ lib/
   schema-markup.ts      # All Schema.org builders
   content-templates.ts  # Editorial content generators
   entity-linker.ts      # Cross-page link logic
+  drug-linking.ts       # Drug category taxonomy + internal linking helpers (20 categories, ~200 drugs)
+  formulary-helpers.ts  # CMS tier → consumer-facing label mapping
   types.ts              # All TypeScript interfaces
 content/                # Markdown (guides, FAQ, state pages, tool descriptions)
 data/

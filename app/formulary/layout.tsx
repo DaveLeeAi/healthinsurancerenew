@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Drug Formulary Lookup | HealthInsuranceRenew',
+  title: 'Check If Your Medication Is Covered — Marketplace Drug Formulary Lookup | HealthInsuranceRenew',
   description:
-    'Search 551,000+ drugs across all marketplace plans. Look up formulary coverage, tier placement, and cost-sharing for any prescription by plan and issuer.',
+    'Search 551,000+ medications across Marketplace (Obamacare) plans. See coverage status, cost tier, prior authorization, and restrictions by plan and insurer. Source: CMS MR-PUF 2026.',
 }
 
 export default function FormularyLayout({ children }: { children: React.ReactNode }) {
