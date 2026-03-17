@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-17",
+  "last_updated": "2026-03-18",
   "research_notes": "2026-03-17 sweep: Tested 80+ URL patterns across all SBM states. Cross-referenced CMS Machine-Readable URL PUF (346 issuer entries). Key discovery: Cambia Health Systems (parent of Regence) publishes drug data for WA, OR, ID, UT through a single index.json. Moda Health and Providence Health Plan confirmed live for OR via MR-PUF URLs. Elevance Health (Anthem) index.json is live but contains only FFM state formulary data (no CT/CA). All Kaiser Permanente URLs return 403/410. Molina 403. Most single-state SBM carriers have no discoverable MR formulary endpoints.",
   "states": {
     "CA": {
@@ -360,7 +360,7 @@
           "issuer_name": "CareFirst BCBS (DC)",
           "index_url": "https://member.carefirst.com/carefirst-resources/machine-readable/Index.json",
           "status": "confirmed_va_only",
-          "notes": "Index.json returns 200 OK (valid JSON, 21 URLs). 5 drug files (Drugs_1-5.json) all accessible with standard CMS schema. BUT all plan IDs are VA-only (10207VA*, 40308VA*). No DC or MD plan IDs in any file. CareFirst publishes MR data only for FFM-regulated VA plans. Tested 2026-03-17."
+          "notes": "Index.json returns 200 OK (valid JSON, 21 URLs). 5 drug files (Drugs_1-5.json) all accessible with standard CMS schema. BUT all plan IDs are VA-only (10207VA*, 40308VA*). No DC or MD plan IDs in any file. CareFirst publishes MR data only for VA plans. See VA state entry for active coverage. Tested 2026-03-17."
         },
         {
           "issuer_id": "00543",
@@ -543,6 +543,93 @@
           "index_url": "https://www.tuftshealthplan.com/cms-data-index.json",
           "status": "url_dead",
           "notes": "404. Now part of Point32Health. Tested 2026-03-17."
+        }
+      ]
+    },
+    "GA": {
+      "exchange_name": "Georgia Access",
+      "exchange_url": "https://www.georgiaaccess.gov",
+      "notes": "Georgia Access launched PY2025 as SBM. Centene/Ambetter is the only issuer with confirmed machine-readable formulary data. drugs-AMB-GA.json contains plan IDs for issuers 45495 and 70893.",
+      "issuers": [
+        {
+          "issuer_id": "45495",
+          "issuer_name": "Ambetter from Peach State Health Management (GA)",
+          "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-GA.json",
+          "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-03-18. 52.8 MB drug file. Plan IDs 45495GA* and 70893GA* found. Same Centene API pattern as NJ/PA/WA/IL/KY/NV. GA present in Centene index.json state list."
+        },
+        {
+          "issuer_id": "70893",
+          "issuer_name": "Ambetter from Peach State Health Management (GA #2)",
+          "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-GA.json",
+          "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-03-18. Same drug file as issuer 45495. Second HIOS ID for Ambetter GA found in plan_id prefixes."
+        }
+      ]
+    },
+    "ME": {
+      "exchange_name": "CoverME.gov",
+      "exchange_url": "https://www.coverme.gov",
+      "notes": "Maine SBM. No Centene presence (404). Community Health Options and Harvard Pilgrim (Point32Health) have no discoverable MR formulary endpoints. Elevance index references ME in provider data but drug files need verification for ME plan IDs.",
+      "issuers": [
+        {
+          "issuer_id": "00000",
+          "issuer_name": "Community Health Options (ME)",
+          "index_url": "https://www.communityhealthoptions.org/cms-data-index.json",
+          "status": "url_dead",
+          "notes": "Returns 200 but content is HTML, not JSON. No discoverable MR endpoint. Tested 2026-03-18."
+        },
+        {
+          "issuer_id": "77432",
+          "issuer_name": "Harvard Pilgrim Health Care of New England (ME)",
+          "index_url": "https://www.harvardpilgrim.org/cms-data-index.json",
+          "status": "url_dead",
+          "notes": "404. Now part of Point32Health (merger with Tufts). point32health.org also 404. Same finding as MA entry. Tested 2026-03-18."
+        },
+        {
+          "issuer_id": "48396",
+          "issuer_name": "Anthem Blue Cross (ME) — via Elevance Health",
+          "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
+          "direct_drugs_url": "https://fm.formularynavigator.com/jsonFiles/publish/143/35/drugs.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-03-18. Elevance index -> FormularyNavigator drugs/35. ME plan IDs 48396ME* confirmed. 3,791+ drugs in first 100KB. Standard CMS QHP schema."
+        }
+      ]
+    },
+    "VA": {
+      "exchange_name": "Virginia Insurance Marketplace",
+      "exchange_url": "https://marketplace.virginia.gov",
+      "notes": "Virginia SBM-FP (uses healthcare.gov platform). CareFirst BCBS confirmed LIVE with VA plan IDs. 5 drug files accessible. Optima Health and Kaiser not discoverable. No Centene presence (404).",
+      "issuers": [
+        {
+          "issuer_id": "10207",
+          "issuer_name": "CareFirst BCBS (VA)",
+          "index_url": "https://member.carefirst.com/carefirst-resources/machine-readable/Index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-03-18. Index.json -> Drugs_1.json through Drugs_5.json. All plan IDs are VA (10207VA*, 40308VA*). Standard CMS QHP schema. Same index as DC/MD entries but only VA data in drug files."
+        },
+        {
+          "issuer_id": "40308",
+          "issuer_name": "CareFirst BlueChoice (VA)",
+          "index_url": "https://member.carefirst.com/carefirst-resources/machine-readable/Index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-03-18. Same CareFirst index as issuer 10207. VA plan IDs 40308VA* found in Drugs_1.json. CareFirst BlueChoice is CareFirst subsidiary."
+        },
+        {
+          "issuer_id": "00000",
+          "issuer_name": "Optima Health / Sentara (VA)",
+          "index_url": "https://www.optimahealth.com/cms-data-index.json",
+          "status": "url_dead",
+          "notes": "optimahealth.com redirects to sentarahealthplans.com, which returns 404 on /cms-data-index.json. No discoverable MR endpoint. Tested 2026-03-18."
+        },
+        {
+          "issuer_id": "00543",
+          "issuer_name": "Kaiser Permanente (VA)",
+          "index_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/data/va/cms-data-index.json",
+          "status": "url_dead",
+          "notes": "403 Forbidden. All KP content/dam paths blocked. Tested 2026-03-18."
         }
       ]
     }

@@ -323,14 +323,14 @@ export default function EligibilityCheckPage() {
             <a href="/tools/income-savings-calculator" className="text-primary-600 hover:text-primary-700 underline">
               estimate your savings
             </a>{' '}
-            or apply directly through{' '}
+            or apply through{' '}
             <a
-              href="https://www.healthcare.gov/"
+              href="https://applyhealthinsuranceonline.com"
               className="text-primary-600 hover:text-primary-700 underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Healthcare.gov
+              ApplyHealthInsuranceOnline.com
             </a>
             .
           </p>

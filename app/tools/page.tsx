@@ -163,17 +163,16 @@ export default function ToolsIndexPage() {
           </p>
           <p>
             These estimates are not exact quotes. Your actual costs depend on your specific age, ZIP
-            code, tobacco use, and the plans available in your area. For official numbers, apply
-            through{' '}
+            code, tobacco use, and the plans available in your area. For official numbers and enrollment, visit{' '}
             <a
-              href="https://www.healthcare.gov/"
+              href="https://applyhealthinsuranceonline.com"
               className="text-primary-600 hover:text-primary-700 underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Healthcare.gov
+              ApplyHealthInsuranceOnline.com
             </a>{' '}
-            or your state marketplace.
+            or speak with a licensed agent.
           </p>
           <p className="text-sm text-slate-500 pt-2">
             Want to understand how we calculate these numbers? See our{' '}

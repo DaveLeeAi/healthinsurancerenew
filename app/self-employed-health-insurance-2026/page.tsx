@@ -175,8 +175,8 @@ export default function SelfEmployedPage() {
           <li><strong>Decide on a plan tier.</strong> Compare Silver (with CSR if eligible) vs. Bronze + HSA.</li>
           <li>
             <strong>Enroll during open enrollment</strong> through{' '}
-            <a href="https://www.healthcare.gov/" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
-              Healthcare.gov
+            <a href="https://applyhealthinsuranceonline.com" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
+              ApplyHealthInsuranceOnline.com
             </a>{' '}
             or your state exchange.
           </li>

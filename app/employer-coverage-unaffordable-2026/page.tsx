@@ -165,8 +165,8 @@ export default function EmployerCoverageUnaffordablePage() {
           </li>
           <li>
             <strong>If unaffordable:</strong> Apply through{' '}
-            <a href="https://www.healthcare.gov/" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
-              Healthcare.gov
+            <a href="https://applyhealthinsuranceonline.com" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
+              ApplyHealthInsuranceOnline.com
             </a>{' '}
             or your state exchange. Report that you have an offer of employer coverage and the premium amount. The
             system will verify affordability.

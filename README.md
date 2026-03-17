@@ -17,7 +17,7 @@ A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA hea
 | 3 | SBC Decoded (Benefits & Cost Sharing) | `sbc_decoded.json` (429 MB) | 20,354 plan variants |
 | 4 | Rate Volatility Tracker | `rate_volatility.json` (654 KB) | County-level YoY analytics |
 | 5 | Friction & Guidance Q&A | `friction_qa.json` (56.8 KB) | 54 Q&A entries |
-| 6 | Formulary Intelligence | `formulary_intelligence.json` (44.3 MB) | 176,253 drug records (deduped) |
+| 6 | Formulary Intelligence | `formulary_intelligence.json` (44.8 MB) | 177,651 drug records (deduped) |
 | 7 | Dental Coverage Reality | `dental_coverage.json` (4.4 MB) | 1,389 plan variants |
 | 8 | Billing Intelligence | `billing_intel.json` (52.8 KB) | 20 billing scenarios |
 | 9 | Life Events & Transitions | `life_events.json` (49.8 KB) | 8 decision trees |
@@ -76,13 +76,15 @@ State-Based Marketplace states are absent from the federal CMS Machine-Readable 
 
 | Source | States | Status |
 |--------|--------|--------|
-| Centene/Ambetter API | IL, KY, NJ, NV, PA, WA | Ingested (6 states, 13K drug records) |
+| Centene/Ambetter API | GA, IL, KY, NJ, NV, PA, WA | Ingested (7 states) |
+| CareFirst BCBS | VA | Ingested — Drugs_1–5.json (VA plan IDs) |
+| Elevance/Anthem (FormularyNavigator) | ME | Ingested — drugs/35 (ME plan IDs) |
 | Cambia Health (Regence) | WA, OR, ID | Confirmed live — drugs1.json + drugs2.json (224 MB) |
 | Moda Health | OR | Confirmed live — drugs-OR.json (14 MB) |
 | Providence Health Plan | OR | Confirmed live — 2 drug files (29 MB) |
 | Blocked (no MR endpoint) | CA, CO, CT, DC, MA, MD, MN, NM, NY, RI, VT | 11 states |
 
-**Registry:** `data/config/sbm-source-registry.json` — 19 states, 60 issuers tracked
+**Registry:** `data/config/sbm-source-registry.json` — 22 states, 67 issuers tracked
 **Script:** `scripts/fetch/fetch_formulary_sbm.py` — registry-driven fetch + normalize + merge
 **Report:** `docs/sbm-ingestion-report.md` — detailed URL verification results
 

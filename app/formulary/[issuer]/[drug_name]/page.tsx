@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import {
   searchFormulary,
@@ -55,6 +55,10 @@ export const dynamic = 'force-dynamic'
 // ---------------------------------------------------------------------------
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (decodeURIComponent(params.drug_name).toLowerCase() === 'all') {
+    return { title: 'Drug Formulary Lookup' }
+  }
+
   const drugDisplay = decodeURIComponent(params.drug_name).replace(/-/g, ' ')
   const isState = isStateCode(params.issuer)
   const stateName = isState ? getStateNameFromAbbr(params.issuer) : undefined
@@ -103,6 +107,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function FormularyDrugPage({ params }: Props) {
   const drugSlug = decodeURIComponent(params.drug_name)
   const drugDisplay = drugSlug.replace(/-/g, ' ')
+
+  // Guard: /formulary/[state]/all is not a drug search
+  // Redirect to the formulary search page
+  if (drugSlug.toLowerCase() === 'all') {
+    redirect('/formulary')
+  }
+
   const issuer = params.issuer
   const isState = isStateCode(issuer)
   const stateCode = isState ? issuer.toUpperCase() : undefined
@@ -210,19 +221,6 @@ export default async function FormularyDrugPage({ params }: Props) {
               View {stateName} health plans
             </a>
           </div>
-
-          {/* External demoted to small text */}
-          <p className="text-sm text-slate-500 mb-8">
-            To check formulary details directly,{' '}
-            <a
-              href={isSBMState ? `${exchangeUrl}/plan-compare` : exchangeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-700 underline"
-            >
-              visit {exchangeName}
-            </a>.
-          </p>
 
           {/* National coverage context */}
           {allResults.length > 0 && (

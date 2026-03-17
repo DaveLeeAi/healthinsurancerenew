@@ -261,13 +261,37 @@ let issuerStateMapCache: Map<string, Set<string>> | null = null
 
 function getIssuerStateMap(): Map<string, Set<string>> {
   if (issuerStateMapCache) return issuerStateMapCache
-  const plans = loadPlanIntelligence()
   const map = new Map<string, Set<string>>()
+
+  // 1. FFM states from plan_intelligence.json
+  const plans = loadPlanIntelligence()
   for (const plan of plans.data) {
     if (!plan.issuer_id || !plan.state_code) continue
     if (!map.has(plan.issuer_id)) map.set(plan.issuer_id, new Set())
     map.get(plan.issuer_id)!.add(plan.state_code.toUpperCase())
   }
+
+  // 2. SBM states from per-state formulary files (formulary_sbm_NJ.json, etc.)
+  const sbmStates = ['NJ', 'PA', 'WA', 'IL', 'KY', 'NV', 'OR', 'ID', 'GA', 'VA', 'ME']
+  for (const state of sbmStates) {
+    const sbmPath = path.join(DATA_DIR, `formulary_sbm_${state}.json`)
+    if (!fs.existsSync(sbmPath)) continue
+    try {
+      const sbmData = JSON.parse(
+        fs.readFileSync(sbmPath, 'utf-8')
+      ) as { data?: Array<{ issuer_ids?: string[] }> }
+      const records = sbmData.data ?? []
+      for (const record of records) {
+        for (const issuerId of (record.issuer_ids ?? [])) {
+          if (!map.has(issuerId)) map.set(issuerId, new Set())
+          map.get(issuerId)!.add(state)
+        }
+      }
+    } catch {
+      // skip missing or malformed files
+    }
+  }
+
   issuerStateMapCache = map
   return map
 }

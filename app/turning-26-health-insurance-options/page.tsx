@@ -155,8 +155,8 @@ export default function Turning26Page() {
           </li>
           <li>
             <strong>Apply within 60 days.</strong> Enroll through{' '}
-            <a href="https://www.healthcare.gov/" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
-              Healthcare.gov
+            <a href="https://applyhealthinsuranceonline.com" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
+              ApplyHealthInsuranceOnline.com
             </a>
             , your state exchange, or your employer&apos;s benefits portal.
           </li>
