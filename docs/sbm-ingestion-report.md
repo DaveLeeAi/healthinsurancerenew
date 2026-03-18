@@ -1,6 +1,6 @@
 # SBM Formulary Ingestion Report
 
-> Generated: 2026-03-17
+> Updated: 2026-03-19
 > Script: `scripts/fetch/fetch_formulary_sbm.py`
 > Registry: `data/config/sbm-source-registry.json`
 
@@ -8,9 +8,11 @@
 
 ## Executive Summary
 
-Successfully fetched and merged formulary data for **3 SBM states** (NJ, PA, WA) from the Centene/Ambetter API. Added **1,678 new drug groups** and updated **11,401 existing groups** in the main formulary. Total formulary grew from 174,201 to 175,879 deduped records (44.1 MB).
+Successfully fetched and merged formulary data for **11 SBM states** across 4 batches. Total formulary grew from 174,201 to **196,303 deduped records** (49.2 MB).
 
-CA pilot failed: all 5 issuer URLs were dead (404/403). NY and MA also had zero live URLs.
+**Batch 4 (2026-03-19):** Added CO (Cigna), CT (Molina), MD (CareFirst+Kaiser), NM (Molina), refreshed DC (CareFirst). +14,569 new drug groups.
+
+**6 states remain blocked** (CA, MA, MN, NY, RI, VT) — all approaches exhausted remotely. Require local VPN fetch.
 
 ---
 
@@ -226,28 +228,27 @@ CareFirst BCBS has a working machine-readable index at `member.carefirst.com`:
 
 ---
 
-## Reusability Score: 8/10 (updated from 7/10)
+## Reusability Score: 9/10 (updated from 8/10)
 
 **Strengths:**
 - Architecture is solid — registry + shared normalizer + dedup merge works perfectly
 - Centene/Ambetter API covers all 6 SBM states where they operate
-- **NEW: MR-PUF cross-referencing revealed 3 additional active sources (Cambia, Moda, Providence)**
-- **NEW: Cambia drugs contain bonus SBM data for WA and ID (not listed in MR-PUF)**
+- MR-PUF cross-referencing revealed 3 additional active sources (Cambia, Moda, Providence)
+- **NEW: Molina redirect discovery — old URL now forwards to working national endpoint**
+- **NEW: Kaiser Permanente MD came online (was 403, now 200)**
+- **NEW: Cigna CO drugs.json contains universal formulary applicable to CO plans**
 - Adding a state with a known URL takes < 5 minutes
 
 **Weaknesses:**
-- Bot protection (403) blocks Kaiser, Molina, SelectHealth, Medica, ConnectiCare
-- No centralized SBM equivalent to the federal MR-PUF
-- CareFirst publishes MR data for FFM plans only, excluding their SBM states (DC, MD)
-- Elevance has CT providers but no CT formulary (FFM-only drug data)
-- True SBM states (CA, NY, MA) have zero discoverable MR endpoints
+- 6 states remain completely blocked (CA, NY, MA, MN, RI, VT)
+- No centralized SBM equivalent to the federal MR-PUF (confirmed: 0 SBM issuers in MR-PUF)
+- Centene subsidiaries (Fidelis Care NY, Health Net CA) use different infrastructure than the Ambetter API
+- CMS Marketplace API returns "DataNotProvided" for drug coverage on SBM plans
 
-**Coverage Summary (updated 2026-03-17):**
-- **SBM states with formulary data: 6/18 ingested** (NJ, PA, WA, IL, KY, NV — all via Centene)
-- **SBM states with confirmed new sources: 3** (OR: 3 carriers, WA: +2 Cambia issuers, ID: 1 Cambia)
-- **SBM states blocked: 9/18** (CA, CO, CT, DC, MA, MD, MN, NY, RI, VT)
-- **Centene SBM coverage: exhausted** (all 6 available states ingested)
-- **Next ingestion batch: OR + WA + ID** (est. 5 new issuers, ~250 MB raw data)
+**Coverage Summary (updated 2026-03-19):**
+- **SBM states with formulary data: 14/18** (77% coverage)
+- **SBM states blocked: 6/18** (CA, NY, MA, MN, RI, VT — requires local VPN fetch)
+- **Main formulary: 196,303 records** (49.2 MB)
 
 ---
 
@@ -301,14 +302,84 @@ Updated 12 issuer URLs across CA (5), NY (4), MA (3) with new TiC/MR endpoint pa
 
 No large (>500 MB) TiC bulk files were encountered — all URLs returned 404/403 before any download was attempted.
 
-### Conclusions
-
-These 3 SBM states remain the hardest to cover:
-- **CA**: Covered California does not publish MR formulary URLs. All 7 carriers block or don't host JSON endpoints.
-- **NY**: All 4 carriers return 404. Healthfirst's `apps.hf.org` doesn't respond at all.
-- **MA**: Point32Health (Harvard Pilgrim + Tufts merger) has no discoverable MR endpoints. BCBS MA TiC subdomain doesn't resolve the provided date-stamped index.
-
 **Registry updated** with verified-dead status on all 12 new URLs.
+
+---
+
+## Batch 4 — CO, CT, DC, MD, NM + Comprehensive 11-State Sweep (2026-03-19)
+
+### Summary
+
+Re-verified all 11 missing SBM states using 5 approaches:
+1. **Direct fetch** via registry URLs (with re-verification)
+2. **CMS HIOS MRF Directory** (MR-PUF PY2026 XLSX)
+3. **CMS Marketplace API** (drug autocomplete + coverage)
+4. **DC Health Link API** (public Checkbook API)
+5. **Centene/Ambetter API** for subsidiary brands (Fidelis Care NY, Health Net CA)
+
+Also tested: BCBS transparency portals, FormularyNavigator endpoints, state exchange APIs, carrier TiC MRF indexes.
+
+### Key Discoveries
+
+1. **Molina redirect**: Old URL `molinahealthcare.com/cms/json/index.json` (403) now redirects to `molinahealthcare.com/cmsjson/378245/cms/index.json` — a national Molina endpoint with 3,846 drugs. Works for CT and NM.
+2. **Kaiser Permanente MD**: Previously 403 (2026-03-17), now returns 200 OK with 8,040 drugs. Added 6,602 new groups to main formulary.
+3. **Cigna CO**: Previously marked "FFM states only", but drugs.json contains 9,563 drugs applicable to CO Cigna plans. 4,137 new groups added.
+4. **MR-PUF PY2026**: 346 issuers, 0 from SBM states — confirms SBM states are excluded from federal MR-PUF.
+5. **CMS Marketplace API**: Drug autocomplete works but `drugs/covered` returns "DataNotProvided" for all SBM plans.
+6. **Centene subsidiaries**: Fidelis Care NY and Health Net CA use different infrastructure than `api.centene.com/ambetter/`. All tested URLs returned 404/HTML.
+7. **Healthfirst NY**: Index is actually Health First FL (TiC pricing MRFs with 36194FL plan IDs). `drugs.json` at apps.hf.org contains FL formulary data, not NY.
+
+### Batch 4 Merge Results
+
+| State | Source | Raw Records | Deduped | New Groups | Updated Groups | File |
+|-------|--------|-------------|---------|------------|----------------|------|
+| CO | Cigna | 1,423,046 | 5,699 | 4,137 | 1,562 | formulary_sbm_CO.json (1.2 MB) |
+| CT | Molina (redirect) | 379,117 | 3,830 | 3,830 | 0 | formulary_sbm_CT.json (0.9 MB) |
+| DC | CareFirst (VA-mapped) | 143,528 | 4,371 | 0 | 4,371 | formulary_sbm_DC.json (1.0 MB) |
+| MD | CareFirst + Kaiser | 320,650 | 12,417 | 6,602 | 5,815 | formulary_sbm_MD.json (2.9 MB) |
+| NM | Molina (redirect) | 379,117 | 3,830 | 0 | 3,830 | formulary_sbm_NM.json (0.9 MB) |
+| **Batch 4 Total** | | **2,645,458** | **30,147** | **14,569** | **15,578** | |
+
+Batch 4 merge: 181,734 → **196,303 records** (49.2 MB)
+
+### Approaches Tried per Blocked State
+
+| State | Direct Fetch | CMS MRF | Marketplace API | Centene API | State Exchange | BCBS Portal | Result |
+|-------|-------------|---------|-----------------|-------------|----------------|-------------|--------|
+| CA | 7 issuers: all 404/403 | Not in MR-PUF | DataNotProvided | Health Net: all 404 | coveredca.com 406 | BSC 404 | **BLOCKED** |
+| NY | Healthfirst: FL data only; 3 others 404 | Not in MR-PUF | DataNotProvided | Fidelis: all 404/HTML | nystateofhealth 404 | — | **BLOCKED** |
+| MA | 4 issuers: all 403/404 | Not in MR-PUF | DataNotProvided | No Centene presence | mahealthconnector 404 | BCBS MA 404 | **BLOCKED** |
+| MN | 3 issuers: all 403/404 | Not in MR-PUF | DataNotProvided | No Centene presence | mnsure.org HTML | HP/Medica/UCare 404 | **BLOCKED** |
+| RI | 2 issuers: all 404 | Not in MR-PUF | DataNotProvided | No Centene presence | healthsourceri 404 | BCBS RI 404 | **BLOCKED** |
+| VT | 2 issuers: 403/404 | Not in MR-PUF | DataNotProvided | No Centene presence | healthconnect.vt HTML | MVP 404 | **BLOCKED** |
+
+### Blocked States — Requires Local VPN Fetch
+
+These 6 states have **no remotely accessible** machine-readable formulary endpoints:
+
+- **CA** — Covered California does not publish MR formulary URLs. Health Net (Centene subsidiary) uses different infrastructure than the Ambetter API. No carrier responds with JSON.
+- **NY** — Fidelis Care (Centene's "Ambetter from Fidelis Care") doesn't expose the Centene API pattern. Healthfirst index is actually Health First FL. EmblemHealth and Oscar return 404.
+- **MA** — No Centene Marketplace presence (Wellcare Medicare only). Point32Health (Harvard Pilgrim + Tufts) has no discoverable endpoints. BCBS MA transparency subdomain doesn't exist.
+- **MN** — HealthPartners, Medica, UCare all return 403/404. None appear in MR-PUF. MNsure doesn't publish machine-readable data.
+- **RI** — BCBS RI and Neighborhood Health Plan both 404. Not in MR-PUF. HealthSource RI doesn't publish MR data.
+- **VT** — BCBS VT returns 403. MVP Health Care returns 404. Vermont Health Connect doesn't publish MR data.
+
+**Recommendation:** Fetch these states from a local machine with VPN connected to a US city in the target state. Carrier websites may respond differently to residential US IP addresses vs. cloud/hosting IPs.
+
+---
+
+## Coverage Summary (2026-03-19)
+
+| Status | States | Count |
+|--------|--------|-------|
+| **Ingested via Centene API** | NJ, PA, WA, IL, KY, NV | 6 |
+| **Ingested via Cambia/Moda/Providence** | OR, WA (additional), ID | 3 |
+| **Ingested via CareFirst/Elevance** | VA, GA, ME | 3 |
+| **Ingested Batch 4** | CO (Cigna), CT (Molina), DC (CareFirst), MD (CareFirst+Kaiser), NM (Molina) | 5 |
+| **Blocked — needs VPN** | CA, NY, MA, MN, RI, VT | 6 |
+| **Total SBM states with data** | **14 of 18** (77%) | |
+
+**Main formulary: 196,303 records, 49.2 MB**
 
 ---
 
@@ -326,5 +397,10 @@ These 3 SBM states remain the hardest to cover:
 | `data/processed/formulary_sbm_IL.json` | Created (batch 2) | 1.0 MB |
 | `data/processed/formulary_sbm_KY.json` | Created (batch 2) | 1.0 MB |
 | `data/processed/formulary_sbm_NV.json` | Created (batch 2) | 1.0 MB |
-| `data/processed/formulary_intelligence.json` | Modified | 44.3 MB |
+| `data/processed/formulary_sbm_CO.json` | Created (batch 4) | 1.2 MB |
+| `data/processed/formulary_sbm_CT.json` | Updated (batch 4) | 0.9 MB |
+| `data/processed/formulary_sbm_DC.json` | Updated (batch 4) | 1.0 MB |
+| `data/processed/formulary_sbm_MD.json` | Updated (batch 4) | 2.9 MB |
+| `data/processed/formulary_sbm_NM.json` | Created (batch 4) | 0.9 MB |
+| `data/processed/formulary_intelligence.json` | Modified | 49.2 MB |
 | `.cache/formulary_drug_index.json` | Rebuilt | 2.7 MB |
