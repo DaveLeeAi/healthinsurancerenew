@@ -24,10 +24,22 @@
         },
         {
           "issuer_id": "67138",
-          "issuer_name": "Health Net (CA)",
-          "index_url": "https://www.healthnet.com/content/dam/centene/healthnet/pdfs/machine-readable/index.json",
+          "issuer_name": "Ambetter from Health Net (CA)",
+          "index_url": "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 67138. URL updated 2026-03-19 — returns 404 Not Found. Health Net MR path does not exist."
+          "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). 20+ URL patterns tested 2026-03-19: ifp.healthnetcalifornia.com returns 200 but HTML (not JSON) for all paths. healthnet.com/content/dam/* returns 404. api.centene.com/healthnet/* returns 404. mrf.healthsparq.com/healthnet* returns 404. Health Net uses different infrastructure than the Ambetter API pattern that works for NJ/PA/WA.",
+          "urls_tested": [
+            "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
+            "https://ifp.healthnetcalifornia.com/api/formulary/index.json",
+            "https://ifp.healthnetcalifornia.com/api/formulary",
+            "https://www.healthnet.com/content/dam/centene/healthnet/machine-readable/formulary/index.json",
+            "https://www.healthnet.com/content/dam/centene/healthnet/machine-readable/index.json",
+            "https://api.centene.com/healthnet/reference/drugs-HN-CA.json",
+            "https://api.centene.com/ambetter/reference/drugs-AMB-CA.json",
+            "https://mrf.healthsparq.com/healthnetcalifornia.centene.com/machine-readable/index.json",
+            "https://www.healthnet.com/content/dam/healthnet/machine-readable/index.json",
+            "https://www.healthnet.com/transparency-in-coverage/index.json"
+          ]
         },
         {
           "issuer_id": "70285",
@@ -65,10 +77,20 @@
       "issuers": [
         {
           "issuer_id": "16842",
-          "issuer_name": "Fidelis Care",
-          "index_url": "https://www.fideliscare.org/Portals/0/Member/MachineReadableFiles/index.json",
+          "issuer_name": "Ambetter from Fidelis Care (NY)",
+          "index_url": "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 16842. URL updated 2026-03-19 — returns 404 Not Found. Fidelis Portals MR path does not exist."
+          "notes": "HIOS ID 16842. Centene Marketplace product in NY via Fidelis Care subsidiary. 3 URL patterns tested 2026-03-19: Portals/0/MachineReadableFiles/index.json (404), ambetter.fideliscare.org (DNS fail), ifp.fideliscare.org (DNS fail). Also tested api.centene.com/ambetter/reference/drugs-AMB-NY.json (404) and drugs-FC-NY.json (404). Fidelis Care uses different infrastructure than the Ambetter API pattern that works for NJ/PA/WA.",
+          "urls_tested": [
+            "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
+            "https://ambetter.fideliscare.org/machine-readable-files/index.json",
+            "https://ifp.fideliscare.org/machine-readable-files/index.json",
+            "https://api.centene.com/ambetter/reference/drugs-AMB-NY.json",
+            "https://api.centene.com/fideliscare/reference/drugs-FC-NY.json",
+            "https://www.fideliscare.org/machine-readable-files/index.json",
+            "https://www.fideliscare.org/cms-data-index.json",
+            "https://mrf.healthsparq.com/fideliscare.centene.com/machine-readable/ny/2026-01-01/index.json"
+          ]
         },
         {
           "issuer_id": "48396",
@@ -515,6 +537,8 @@
     "MA": {
       "exchange_name": "Massachusetts Health Connector",
       "exchange_url": "https://www.mahealthconnector.org",
+      "centene_status": "no_centene_marketplace",
+      "centene_notes": "Centene only has Wellcare Medicare PDP in MA — not a Marketplace/QHP product. MA cannot be fetched via Centene API. Requires local VPN fetch for BCBS MA / Harvard Pilgrim / Tufts.",
       "issuers": [
         {
           "issuer_id": "00028",
