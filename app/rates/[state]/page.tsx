@@ -138,7 +138,7 @@ export default function RatesStatePage({ params }: Props) {
               {/* Primary — stay on site */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
                 <a
-                  href={`/plans/${params.state}`}
+                  href={`/${stateEntry.slug}/health-insurance-plans`}
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
                 >
                   View {stateName} health plans
@@ -154,7 +154,7 @@ export default function RatesStatePage({ params }: Props) {
               {/* State guide link */}
               <div className="mt-3">
                 <a
-                  href={`/states/${params.state}/aca-2026`}
+                  href={`/${stateEntry.slug}/health-insurance-plans`}
                   className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700"
                 >
                   {stateName} health insurance guide &rarr;
@@ -216,7 +216,7 @@ export default function RatesStatePage({ params }: Props) {
               </h2>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`/plans/${params.state}`}
+                  href={`/${stateEntry.slug}/health-insurance-plans`}
                   className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
                 >
                   Plans in {stateName}

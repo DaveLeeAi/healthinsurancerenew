@@ -112,13 +112,16 @@ Pre-built at deploy via `generateStaticParams()` for all 20 categories (diabetes
 - `/plans` → `/states`
 
 ### Other Routes
-- `/{state-slug}/health-insurance-plans` — State plans index
+- `/{state-slug}/health-insurance-plans` — State marketplace plans index (canonical state route)
 - `/subsidies/[state]/[county]` — APTC subsidy calculator
 - `/rates/[state]/[county]` — Rate volatility by county
 - `/dental/[state]` — Dental plan comparison
 - `/enhanced-credits/**` — Policy scenario modeling
 - `/life-events` — SEP and transition guides
 - `/faq` — Friction & guidance Q&A
+
+**Legacy redirects (301):**
+- `/states/{state}/aca-2026` → `/{state}/health-insurance-plans` (via both `permanentRedirect()` in page + `next.config.js`)
 
 ### Plan Source Adapters (`lib/plan-sources/`)
 
@@ -226,7 +229,8 @@ pnpm exec tsc --noEmit
 - `experimental.cpus: 1` — prevents worker OOM when loading large datasets
 - `NODE_OPTIONS=--max-old-space-size=8192` — set in package.json build script
 - Large-dataset routes use `export const dynamic = 'force-dynamic'` (SSR):
-  - `/plans/[state]/[county]`, `/formulary/**`, `/rates/**`, `/subsidies/**`, `/dental/**`, `/enhanced-credits/**`
+  - `/{state-slug}/{county-slug}` (canonical county plans), `/formulary/**`, `/rates/**`, `/subsidies/**`, `/dental/**`, `/enhanced-credits/**`
+  - Legacy `/plans/[state]/[county]` route still present; canonical is `/{state-slug}/{county-slug}`
 - Small-dataset routes are SSG: `/life-events`, `/faq`, `/billing`, `/guides`, `/states/**`
 
 ---
@@ -248,7 +252,9 @@ All schema built via `lib/schema-markup.ts`.
 
 ```
 app/                    # Next.js App Router pages
-  [state-name]/         # County drug coverage pages (/{state}/{county}/{drug}-coverage)
+  [state-name]/         # County drug coverage + state plans index
+                        #   /{state}/{county}/{drug}-coverage
+                        #   /{state}/health-insurance-plans  (canonical state route)
   plan-details/         # SBC detail pages (force-dynamic, ~20K plans)
   formulary/            # Drug formulary pages (force-dynamic)
   drugs/                # Drug hub index + 20 category hubs + comparison pages

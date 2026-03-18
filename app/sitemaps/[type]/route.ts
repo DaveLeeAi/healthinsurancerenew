@@ -3,11 +3,11 @@
  *
  * Generates XML sitemaps for each page type:
  *   /sitemaps/static          — homepage + section index pages
- *   /sitemaps/plans           — /plans/[state]/[county]
+ *   /sitemaps/plans           — /{state-slug}/{county-slug}  (canonical county plans)
  *   /sitemaps/subsidies       — /subsidies/[state]/[county]
  *   /sitemaps/rates           — /rates/[state]/[county]
  *   /sitemaps/enhanced-credits— /enhanced-credits/[state]/[county]
- *   /sitemaps/sbc             — /plan-details/[plan_variant_id]/[slug]
+ *   /sitemaps/sbc             — /{state-slug}/{county-slug}/{plan-slug}  (canonical plan/SBC)
  *   /sitemaps/formulary       — /formulary/[issuer]/[drug] (static seed only)
  *   /sitemaps/dental          — /dental/[state]/[plan_variant]
  *   /sitemaps/faq             — /faq/[category]/[slug]
@@ -26,10 +26,8 @@ import {
   loadBillingIntel,
   loadDentalCoverage,
 } from '@/lib/data-loader'
-
-function slugify(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
-}
+import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
+import { generatePlanSlug } from '@/lib/plan-slug'
 
 const BASE = 'https://healthinsurancerenew.com'
 
@@ -116,7 +114,7 @@ function buildEntries(type: string): SitemapEntry[] | null {
 function buildStaticEntries(): SitemapEntry[] {
   const indexPages = [
     '/',
-    '/plans',
+    '/states',
     '/subsidies',
     '/rates',
     '/formulary',
@@ -133,11 +131,11 @@ function buildStaticEntries(): SitemapEntry[] {
   }))
 }
 
-// ── Plans — /plans/[state]/[county] ─────────────────────────────────────────
+// ── Plans — /{state-slug}/{county-slug}  (canonical county plans pages) ───────
 
 function buildPlanEntries(): SitemapEntry[] {
   return getAllPlanStateCountyCombos().map(({ state, county }) => ({
-    loc: `${BASE}/plans/${state}/${county}`,
+    loc: `${BASE}/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
     changefreq: 'yearly',
     priority: 0.8,
   }))
@@ -173,14 +171,16 @@ function buildEnhancedCreditEntries(): SitemapEntry[] {
   }))
 }
 
-// ── SBC / Plan Details — /plan-details/[plan_variant_id]/[slug] ──────────────
+// ── SBC / Plan Details — /{state-slug}/{county-slug}/{plan-slug}  (canonical) ──
 
 function buildSbcEntries(): SitemapEntry[] {
-  return getAllSbcPlans().map(({ plan_variant_id, plan_name }) => ({
-    loc: `${BASE}/plan-details/${plan_variant_id}/${slugify(plan_name)}`,
-    changefreq: 'yearly',
-    priority: 0.5,
-  }))
+  return getAllSbcPlans()
+    .filter(({ state_code, county_fips }) => state_code && county_fips)
+    .map(({ plan_name, state_code, county_fips }) => ({
+      loc: `${BASE}/${stateCodeToSlug(state_code.toUpperCase())}/${getCountySlug(county_fips)}/${generatePlanSlug(plan_name)}`,
+      changefreq: 'yearly',
+      priority: 0.5,
+    }))
 }
 
 // ── Formulary — /formulary/[issuer]/[drug] (static seed only) ───────────────

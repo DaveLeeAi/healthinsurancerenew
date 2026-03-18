@@ -33,6 +33,7 @@ import {
 } from '@/lib/drug-linking'
 import DrugPageCta from '@/components/DrugPageCta'
 import allStatesData from '@/data/config/all-states.json'
+import { stateCodeToSlug } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -1130,7 +1131,7 @@ function SBMExplanationPage({
             Search all states for {titleCase(drugDisplay)}
           </a>
           <a
-            href={`/plans/${issuer}`}
+            href={`/${stateCodeToSlug(issuer.toUpperCase())}/health-insurance-plans`}
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-primary-200 bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100 transition-colors"
           >
             View {stateName} health plans

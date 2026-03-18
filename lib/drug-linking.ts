@@ -490,7 +490,7 @@ export function getStatePlanLinks(
   return [
     {
       label: `Marketplace plans in ${stateName}`,
-      href: `/plans/${st}`,
+      href: `/${stateCodeToSlug(stateCode.toUpperCase())}/health-insurance-plans`,
     },
     {
       label: `Browse all drugs covered in ${stateName}`,

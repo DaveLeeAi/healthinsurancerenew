@@ -27,13 +27,13 @@ const nextConfig = {
   // ---------------------------------------------------------------------------
   async redirects() {
     return [
-      // /plans redirects to the states index (no single canonical equivalent)
+      // /plans → states index (legacy top-level)
       {
         source: '/plans',
         destination: '/states',
         permanent: true,
       },
-      // /drugs/:state redirects to the states drug-coverage index
+      // /drugs/:state → drug hub (legacy state-scoped drug index)
       {
         source: '/drugs/:state',
         destination: '/drugs',
@@ -44,6 +44,12 @@ const nextConfig = {
       {
         source: '/plan-details',
         destination: '/states',
+        permanent: true,
+      },
+      // /states/:state/aca-2026 → /:state/health-insurance-plans (canonical state route)
+      {
+        source: '/states/:state/aca-2026',
+        destination: '/:state/health-insurance-plans',
         permanent: true,
       },
     ]

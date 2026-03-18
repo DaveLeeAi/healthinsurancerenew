@@ -78,7 +78,10 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
         const countySlug = getCountySlug(county)
         return `${BASE_URL}/${stateSlug}/${countySlug}`
       }
-      return `${BASE_URL}/plans/${st}/${county}`
+      if (st) {
+        return `${BASE_URL}/${stateCodeToSlug(st.toUpperCase())}/health-insurance-plans`
+      }
+      return `${BASE_URL}/states`
     }
     case 'subsidy':
       return `${BASE_URL}/subsidies/${st}/${county}`
@@ -97,8 +100,8 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
       if (planSlug && st) {
         return `${BASE_URL}/${stateCodeToSlug(st.toUpperCase())}/${planSlug}`
       }
-      // Last-resort fallback — route is a 301 redirect to the correct URL
-      return `${BASE_URL}/plan-details/${params.plan_id ?? ''}`
+      // Fallback: no plan name or location context available
+      return `${BASE_URL}/states`
     }
     case 'formulary': {
       const drugSlug = (params.drug_name ?? '').toLowerCase().replace(/\s+/g, '-')
@@ -129,9 +132,11 @@ export function planLink(
   } else if (stateCode) {
     href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
   } else {
-    // Fallback — 301 redirects to the clean URL
-    href = `/plan-details/${planId}/${slugify(planName)}`
+    // plan_id without location context — link to state index; callers should
+    // always provide at least stateCode when possible.
+    href = `/states`
   }
+  void planId // plan_id is retained in the signature for future resolution
   return {
     href,
     label: `View full plan details and SBC for ${planName}`,
@@ -258,8 +263,10 @@ export function sbcLink(
   } else if (stateCode) {
     href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
   } else {
-    href = `/plan-details/${planId}/${slugify(planName)}`
+    // Callers should always provide at least stateCode when possible.
+    href = `/states`
   }
+  void planId // plan_id retained for future resolution
   return {
     href,
     label: `View full SBC cost-sharing details for ${planName}`,
@@ -644,13 +651,18 @@ function buildFormularyLinks(
   const links: EntityLink[] = []
 
   relatedPlans.slice(0, 3).forEach(({ id, name }, i) => {
-    links.push({
-      // plan-details route is a 301 redirect to the clean URL (state/county context unknown here)
-      href: `/plan-details/${id}/${slugify(name)}`,
-      label: `View plan details and full SBC for a marketplace plan covering ${drugName}`,
-      type: 'plan',
-      relevanceScore: 90 - i * 4,
-    })
+    // Build canonical plan URL using page-level state/county when available.
+    // Skip the link entirely when no location context exists — do not emit
+    // /plan-details/ as a public URL.
+    void id // plan_id kept in type for future direct lookup
+    if (state && county) {
+      links.push({
+        href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}/${generatePlanSlug(name)}`,
+        label: `View plan details and full SBC for a marketplace plan covering ${drugName}`,
+        type: 'plan',
+        relevanceScore: 90 - i * 4,
+      })
+    }
   })
 
   const issuerSlug = issuer.toLowerCase().replace(/\s+/g, '-')

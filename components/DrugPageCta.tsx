@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import config from '@/data/config/config.json'
+import { stateCodeToSlug } from '@/lib/county-lookup'
 
 const LICENSED_ABBRS = new Set(
   (config.licensedStates as { abbr: string }[]).map((s) => s.abbr.toUpperCase())
@@ -23,9 +24,9 @@ function isLicensedState(abbr?: string): boolean {
 
 function getCtaHref(stateCode?: string): string {
   if (stateCode) {
-    return `/plans/${stateCode.toLowerCase()}`
+    return `/${stateCodeToSlug(stateCode.toUpperCase())}/health-insurance-plans`
   }
-  return '/plans'
+  return '/states'
 }
 
 export default function DrugPageCta({

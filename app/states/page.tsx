@@ -67,7 +67,7 @@ export default function StatesIndexPage() {
           {allStatesData.states.map((state) => (
             <Link
               key={state.slug}
-              href={`/states/${state.slug}/aca-2026`}
+              href={`/${state.slug}/health-insurance-plans`}
               className={`group flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${
                 licensedSlugs.has(state.slug)
                   ? 'bg-white border-primary-200 hover:border-primary-400 hover:shadow-md'

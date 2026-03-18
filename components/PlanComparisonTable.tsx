@@ -3,10 +3,8 @@
 import { useState, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import type { PlanRecord } from '@/lib/types'
-
-function slugify(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
-}
+import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
+import { generatePlanSlug } from '@/lib/plan-slug'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -236,7 +234,13 @@ export default function PlanComparisonTable({ plans }: Props) {
                 {/* Plan name as row header for accessibility */}
                 <th scope="row" className="px-3 py-3 font-medium text-left">
                   <a
-                    href={`/plan-details/${plan.plan_id}/${slugify(plan.plan_name ?? '')}`}
+                    href={
+                      plan.state_code && plan.county_fips
+                        ? `/${stateCodeToSlug(plan.state_code)}/${getCountySlug(plan.county_fips)}/${generatePlanSlug(plan.plan_name ?? '')}`
+                        : plan.state_code
+                        ? `/${stateCodeToSlug(plan.state_code)}/${generatePlanSlug(plan.plan_name ?? '')}`
+                        : '#'
+                    }
                     className="text-primary-600 hover:underline hover:text-primary-800"
                   >
                     {plan.plan_name}

@@ -4,6 +4,7 @@ import {
   getPolicyByCounty,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
+import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 import {
   buildSubsidySchemas,
   buildBreadcrumbSchema,
@@ -71,7 +72,7 @@ export default function SubsidiesPage({ params }: Props) {
   const policyScenario  = getPolicyByCounty(stateUpper, params.county)
 
   const enhancedCreditsHref = `/enhanced-credits/${params.state}/${params.county}`
-  const plansHref           = `/plans/${params.state}/${params.county}`
+  const plansHref           = `/${stateCodeToSlug(params.state.toUpperCase())}/${getCountySlug(params.county)}`
   const canonicalUrl        = `${SITE_URL}/subsidies/${params.state}/${params.county}`
 
   // Entity links

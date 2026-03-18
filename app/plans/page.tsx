@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { loadRateVolatility } from '@/lib/data-loader'
 import allStatesData from '@/data/config/all-states.json'
+import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Plan Comparison — All 50 States',
@@ -53,7 +54,7 @@ export default function PlansIndexPage() {
             return (
               <a
                 key={state}
-                href={`/plans/${state.toLowerCase()}/${firstCounty.fips}`}
+                href={`/${stateCodeToSlug(state)}/${getCountySlug(firstCounty.fips)}`}
                 className="p-4 border border-neutral-200 rounded-xl hover:border-primary-400 hover:shadow-sm transition-all"
               >
                 <div className="text-xl font-bold text-navy-800">{state}</div>
@@ -77,7 +78,7 @@ export default function PlansIndexPage() {
             {sbmStates.map((s) => (
               <a
                 key={s.abbr}
-                href={`/plans/${s.abbr.toLowerCase()}`}
+                href={`/${s.slug}/health-insurance-plans`}
                 className="p-4 border border-neutral-200 rounded-xl hover:border-primary-400 hover:shadow-sm transition-all"
               >
                 <div className="text-xl font-bold text-navy-800">{s.abbr}</div>

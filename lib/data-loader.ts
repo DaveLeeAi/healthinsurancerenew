@@ -522,19 +522,47 @@ export function getAllSbcPlanVariantIds(): string[] {
 }
 
 /**
- * Returns id + name pairs for every entry in the SBC index.
- * Used by generateStaticParams and the sitemap to build slugged URLs.
+ * Returns id + name + first-occurrence location for every entry in the SBC index.
+ * Used by generateStaticParams and the sitemap to build canonical slugged URLs:
+ *   /{state-slug}/{county-slug}/{plan-slug}
+ *
+ * state_code is the 2-letter code (e.g. "NC"); county_fips is the 5-digit FIPS.
+ * Both are derived from the first plan_intelligence record that references this variant.
  */
-export function getAllSbcPlans(): { plan_variant_id: string; plan_name: string }[] {
-  const nameMap = new Map<string, string>()
+export function getAllSbcPlans(): {
+  plan_variant_id: string
+  plan_name: string
+  state_code: string
+  county_fips: string
+}[] {
+  // Build a map: plan_variant_id → { name, state_code, county_fips } (first occurrence)
+  const infoMap = new Map<string, { plan_name: string; state_code: string; county_fips: string }>()
   for (const p of loadPlanIntelligence().data) {
-    if (p.plan_variant_id) nameMap.set(p.plan_variant_id, p.plan_name)
-    nameMap.set(p.plan_id, p.plan_name)
+    const id = p.plan_variant_id ?? p.plan_id
+    if (!infoMap.has(id)) {
+      infoMap.set(id, {
+        plan_name: p.plan_name,
+        state_code: p.state_code ?? '',
+        county_fips: p.county_fips ?? '',
+      })
+    }
+    if (!infoMap.has(p.plan_id)) {
+      infoMap.set(p.plan_id, {
+        plan_name: p.plan_name,
+        state_code: p.state_code ?? '',
+        county_fips: p.county_fips ?? '',
+      })
+    }
   }
-  return Object.keys(loadSbcIndex()).map((id) => ({
-    plan_variant_id: id,
-    plan_name: nameMap.get(id) ?? id,
-  }))
+  return Object.keys(loadSbcIndex()).map((id) => {
+    const info = infoMap.get(id)
+    return {
+      plan_variant_id: id,
+      plan_name: info?.plan_name ?? id,
+      state_code: info?.state_code ?? '',
+      county_fips: info?.county_fips ?? '',
+    }
+  })
 }
 
 // ---------------------------------------------------------------------------

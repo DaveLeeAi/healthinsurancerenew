@@ -68,7 +68,7 @@ export default async function StateDetailPage({ params }: Props) {
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>
         <ul className="space-y-2 text-sm">
           <li>
-            <a href={`/states/${slug}/aca-2026`} className="text-primary-600 hover:text-primary-700 underline">
+            <a href={`/${slug}/health-insurance-plans`} className="text-primary-600 hover:text-primary-700 underline">
               {stateName} Marketplace Coverage Guide 2026
             </a>
           </li>

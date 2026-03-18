@@ -65,7 +65,7 @@ const dataPillars = [
   { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.' },
   { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.' },
   { title: 'FAQ', url: '/faq', description: '54 expert answers across 9 categories. Regulatory citations included.' },
-  { title: 'Plan Details / SBC', url: '/plan-details', description: 'Full SBC data for individual plans. Coverage, cost-sharing, and formulary.' },
+  { title: 'Plan Details / SBC', url: '/states', description: 'Full SBC data for individual plans. Select a state and county to view plan details, coverage, cost-sharing, and formulary.' },
 ]
 
 const websiteSchema = {
