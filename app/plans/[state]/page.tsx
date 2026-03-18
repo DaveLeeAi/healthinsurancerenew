@@ -5,6 +5,7 @@ import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
 import allStatesData from '@/data/config/all-states.json'
+import { getCountyName } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -250,16 +251,18 @@ export default function PlansStatePage({ params }: Props) {
                 Select a County
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                {counties.map(({ county }) => (
-                  <a
-                    key={county}
-                    href={`/plans/${params.state}/${county}`}
-                    className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
-                  >
-                    <span className="text-sm font-medium text-primary-700">County {county}</span>
-                    <span className="block text-xs text-neutral-500 mt-0.5">FIPS {county}</span>
-                  </a>
-                ))}
+                {counties.map(({ county }) => {
+                  const countyDisplay = getCountyName(county)
+                  return (
+                    <a
+                      key={county}
+                      href={`/plans/${params.state}/${county}`}
+                      className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    >
+                      <span className="text-sm font-medium text-primary-700">{countyDisplay}</span>
+                    </a>
+                  )
+                })}
               </div>
             </section>
 

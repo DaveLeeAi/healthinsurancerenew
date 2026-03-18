@@ -31,6 +31,7 @@ import {
   getStatePlanLinks,
   getRelatedGuides,
 } from '@/lib/drug-linking'
+import DrugPageCta from '@/components/DrugPageCta'
 import allStatesData from '@/data/config/all-states.json'
 
 const PLAN_YEAR = 2026
@@ -378,13 +379,10 @@ export default async function FormularyDrugPage({ params }: Props) {
             ════════════════════════════════════════════════════════════════ */}
         <section aria-labelledby="hero-heading">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl font-bold text-navy-900">
-            {titleCase(drugDisplay)} Coverage (Marketplace / Obamacare)
+            {titleCase(drugDisplay)} Coverage{isState ? ` in ${stateName}` : ` \u2014 ${issuerName}`}
           </h1>
-          <p className="text-lg text-neutral-500 mt-1 mb-5">
-            {isState
-              ? `${stateName} Marketplace Plans`
-              : `${issuerName} \u2014 Marketplace Plans`
-            } &middot; {PLAN_YEAR}
+          <p className="text-base text-neutral-500 mt-1.5 mb-5">
+            Marketplace / Obamacare Plans &bull; {PLAN_YEAR}
           </p>
 
           {results.length > 0 ? (
@@ -450,6 +448,16 @@ export default async function FormularyDrugPage({ params }: Props) {
           )}
         </section>
 
+        {/* ═══ HERO CTA — plan check prompt ═══ */}
+        {results.length > 0 && (
+          <DrugPageCta
+            variant="hero"
+            drugName={titleCase(drugDisplay)}
+            stateCode={stateCode}
+            stateName={stateName}
+          />
+        )}
+
         {/* ═══ COST — Estimated cost per fill ═══ */}
         {results.length > 0 && humanTiers.length > 0 && (
           <section aria-labelledby="cost-heading">
@@ -485,6 +493,17 @@ export default async function FormularyDrugPage({ params }: Props) {
               {coverageInterpretation}
             </p>
           </section>
+        )}
+
+        {/* ═══ MID-PAGE CTA — primary conversion ═══ */}
+        {results.length > 0 && (
+          <DrugPageCta
+            variant="mid"
+            drugName={titleCase(drugDisplay)}
+            stateCode={stateCode}
+            stateName={stateName}
+            costRange={dominantHumanTier.costRange}
+          />
         )}
 
         {/* ════════════════════════════════════════════════════════════════
@@ -999,6 +1018,14 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        {/* ═══ BOTTOM CTA — final conversion prompt ═══ */}
+        <DrugPageCta
+          variant="bottom"
+          drugName={titleCase(drugDisplay)}
+          stateCode={stateCode}
+          stateName={stateName}
+        />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

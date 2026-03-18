@@ -29,22 +29,39 @@ const dataStates = allStates.filter(s => STATES_WITH_DATA.has(s.abbr))
 const noDataStates = allStates.filter(s => !STATES_WITH_DATA.has(s.abbr))
 
 // Drug categories for "Common medications people check"
+// Each category links to a real hub page at /drugs/categories/[id]
+// Pills link to /formulary/[state]/[drug-slug] for immediate drug lookup
+// Source: Definitive Healthcare 2025 claims data + ClinCalc DrugStats 2023
 const DRUG_CATEGORIES = [
   {
     label: 'Diabetes',
-    drugs: ['Metformin', 'Ozempic', 'Jardiance', 'Trulicity'],
+    hubId: 'diabetes',
+    drugs: ['Metformin', 'Ozempic', 'Jardiance', 'Trulicity', 'Farxiga', 'Glipizide'],
   },
   {
     label: 'Blood Pressure',
-    drugs: ['Lisinopril', 'Amlodipine', 'Losartan', 'Hydrochlorothiazide'],
-  },
-  {
-    label: 'Mental Health',
-    drugs: ['Sertraline', 'Escitalopram', 'Bupropion', 'Trazodone'],
+    hubId: 'blood-pressure',
+    drugs: ['Lisinopril', 'Amlodipine', 'Losartan', 'Metoprolol', 'Hydrochlorothiazide', 'Atenolol'],
   },
   {
     label: 'Cholesterol',
-    drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin', 'Ezetimibe'],
+    hubId: 'cholesterol',
+    drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin', 'Ezetimibe', 'Pravastatin', 'Fenofibrate'],
+  },
+  {
+    label: 'Mental Health',
+    hubId: 'mental-health',
+    drugs: ['Sertraline', 'Escitalopram', 'Bupropion', 'Trazodone', 'Fluoxetine', 'Buspirone'],
+  },
+  {
+    label: 'Thyroid',
+    hubId: 'thyroid',
+    drugs: ['Levothyroxine', 'Liothyronine', 'Methimazole', 'Propylthiouracil', 'Armour Thyroid', 'Cytomel'],
+  },
+  {
+    label: 'Weight Loss / GLP-1',
+    hubId: 'weight-loss',
+    drugs: ['Ozempic', 'Wegovy', 'Mounjaro', 'Saxenda', 'Qsymia', 'Contrave'],
   },
 ]
 
@@ -187,18 +204,27 @@ export default function FormularyIndexPage() {
         <h2 className="text-lg font-semibold text-navy-900 mb-4">
           Common medications people check
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid md:grid-cols-3 gap-6 items-stretch">
           {DRUG_CATEGORIES.map((cat) => (
-            <div key={cat.label} className="border border-neutral-200 rounded-xl p-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-2.5">
-                {cat.label}
-              </h3>
+            <div key={cat.label} className="p-5 rounded-xl border border-neutral-200 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold tracking-wide text-neutral-500">
+                  {cat.label}
+                </h3>
+                <a
+                  href={`/drugs/categories/${cat.hubId}`}
+                  className="text-xs text-primary-600 hover:underline font-medium"
+                >
+                  See all →
+                </a>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {cat.drugs.map((d) => (
                   <a
                     key={d}
-                    href={`/formulary/${stateParam}/${d.toLowerCase()}`}
-                    className="px-3 py-1.5 bg-primary-50 border border-primary-200 rounded-lg text-sm text-primary-700 font-medium hover:bg-primary-100 hover:border-primary-300 transition-colors"
+                    href={`/formulary/${stateParam}/${d.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="inline-flex items-center justify-center min-w-[6rem] px-3 py-1.5 bg-primary-50 border border-primary-200 rounded-lg text-sm text-primary-700 font-medium text-center leading-tight hover:bg-primary-100 hover:border-primary-300 transition-colors"
+                    title={`Check ${d} coverage`}
                   >
                     {d}
                   </a>
@@ -207,6 +233,12 @@ export default function FormularyIndexPage() {
             </div>
           ))}
         </div>
+        <p className="text-xs text-neutral-400 mt-4 text-center">
+          Browse all drug categories →{' '}
+          <a href="/drugs" className="text-primary-600 hover:underline font-medium">
+            Drug Coverage Hub
+          </a>
+        </p>
       </section>
 
       {/* ── STATE DATA NOTICE ────────────────────────────────── */}

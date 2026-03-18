@@ -16,9 +16,9 @@ interface AutocompleteIndex {
 // tools). These always rank first in autocomplete results.
 // ---------------------------------------------------------------------------
 const LAYER_1_DRUGS = new Set([
-  // diabetes
+  // diabetes + GLP-1 (highest marketplace search volume 2025-2026)
   'metformin', 'ozempic', 'jardiance', 'trulicity', 'mounjaro', 'wegovy',
-  'farxiga', 'januvia', 'victoza', 'rybelsus',
+  'farxiga', 'januvia', 'victoza', 'rybelsus', 'semaglutide', 'tirzepatide',
   // blood pressure / cardiac
   'lisinopril', 'amlodipine', 'losartan', 'hydrochlorothiazide', 'metoprolol',
   'atenolol', 'valsartan', 'carvedilol', 'diltiazem', 'nifedipine',
@@ -45,9 +45,10 @@ const LAYER_1_DRUGS = new Set([
   // antibiotics
   'amoxicillin', 'azithromycin', 'ciprofloxacin', 'doxycycline',
   'cephalexin', 'metronidazole', 'clindamycin',
-  // biologics / specialty
+  // biologics / specialty (high-cost search interest)
   'humira', 'enbrel', 'dupixent', 'stelara', 'cosentyx', 'otezla', 'skyrizi',
-  // blood thinners
+  'keytruda',
+  // blood thinners (Eliquis/Xarelto = Medicare negotiated price 2026 interest)
   'eliquis', 'xarelto', 'warfarin',
   // insulin
   'insulin', 'humalog', 'lantus', 'novolog',

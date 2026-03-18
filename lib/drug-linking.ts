@@ -5,6 +5,7 @@
 // ============================================================
 
 import type { TierGroup } from './formulary-helpers'
+import { stateCodeToSlug, getCountySlug } from './county-lookup'
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -32,6 +33,17 @@ export interface ComparisonLink {
   href: string
 }
 
+export interface CategoryHubLink {
+  categoryId: string
+  label: string
+  href: string
+}
+
+export interface CountyDrugLink {
+  label: string
+  href: string
+}
+
 export interface EducationalLink {
   label: string
   href: string
@@ -55,8 +67,8 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: 'Diabetes Medications',
     description: 'Drugs for managing blood sugar and type 2 diabetes',
     drugs: [
-      'metformin', 'ozempic', 'jardiance', 'trulicity', 'wegovy',
-      'mounjaro', 'farxiga', 'januvia', 'glipizide', 'insulin glargine',
+      'metformin', 'ozempic', 'jardiance', 'trulicity', 'farxiga',
+      'mounjaro', 'wegovy', 'januvia', 'glipizide', 'insulin glargine',
       'rybelsus', 'invokana',
     ],
   },
@@ -65,9 +77,9 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: 'Blood Pressure Medications',
     description: 'Drugs for managing hypertension',
     drugs: [
-      'lisinopril', 'amlodipine', 'losartan', 'hydrochlorothiazide',
-      'metoprolol', 'valsartan', 'enalapril', 'olmesartan', 'irbesartan',
-      'carvedilol', 'benazepril', 'telmisartan',
+      'lisinopril', 'amlodipine', 'losartan', 'metoprolol',
+      'hydrochlorothiazide', 'valsartan', 'enalapril', 'olmesartan',
+      'irbesartan', 'carvedilol', 'benazepril', 'telmisartan',
     ],
   },
   {
@@ -85,9 +97,9 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: 'Mental Health Medications',
     description: 'Antidepressants, anti-anxiety, and mood stabilizers',
     drugs: [
-      'sertraline', 'escitalopram', 'bupropion', 'trazodone',
+      'sertraline', 'escitalopram', 'bupropion', 'trazodone', 'buspirone',
       'fluoxetine', 'duloxetine', 'venlafaxine', 'citalopram',
-      'paroxetine', 'mirtazapine', 'buspirone', 'amitriptyline',
+      'paroxetine', 'mirtazapine', 'amitriptyline',
     ],
   },
   {
@@ -95,8 +107,8 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: 'Pain & Inflammation',
     description: 'NSAIDs, nerve pain, and anti-inflammatory medications',
     drugs: [
-      'gabapentin', 'meloxicam', 'naproxen', 'celecoxib', 'pregabalin',
-      'diclofenac', 'ibuprofen', 'tramadol', 'cyclobenzaprine',
+      'gabapentin', 'meloxicam', 'cyclobenzaprine', 'naproxen', 'celecoxib',
+      'pregabalin', 'diclofenac', 'ibuprofen', 'tramadol',
       'indomethacin',
     ],
   },
@@ -105,7 +117,7 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: 'Thyroid Medications',
     description: 'Drugs for hypothyroidism and thyroid disorders',
     drugs: [
-      'levothyroxine', 'synthroid', 'armour thyroid', 'liothyronine',
+      'levothyroxine', 'liothyronine', 'synthroid', 'armour thyroid',
       'methimazole', 'propylthiouracil',
     ],
   },
@@ -237,8 +249,9 @@ export const DRUG_TAXONOMY: DrugCategory[] = [
     label: "Women's Health",
     description: 'Contraceptives, hormone therapy, and reproductive health',
     drugs: [
-      'estradiol', 'norethindrone', 'spironolactone', 'progesterone',
-      'medroxyprogesterone', 'letrozole', 'clomiphene', 'premarin',
+      'norgestimate-ethinyl estradiol', 'estradiol', 'progesterone',
+      'norethindrone', 'spironolactone', 'medroxyprogesterone',
+      'letrozole', 'clomiphene', 'premarin',
     ],
   },
 ]
@@ -381,7 +394,7 @@ export function getComparisonLinks(
         drugA: first,
         drugB: second,
         label: `${first} vs ${second}: Coverage, Cost, and Differences`,
-        href: `/formulary/compare/${slug}`,
+        href: `/drugs/compare/${slug}`,
       })
 
       if (result.length >= limit) return result
@@ -487,7 +500,47 @@ export function getStatePlanLinks(
       label: `${stateName} subsidy calculator — see if you qualify for help with premiums`,
       href: `/subsidies/${st}`,
     },
+    {
+      label: `Drug coverage hub — browse by category`,
+      href: `/drugs`,
+    },
   ]
+}
+
+/**
+ * Returns the category hub page link for a drug.
+ * e.g. metformin → { categoryId: "diabetes", label: "Diabetes Medications", href: "/drugs/categories/diabetes" }
+ */
+export function getCategoryHubLink(drugName: string): CategoryHubLink | null {
+  const category = getDrugCategory(drugName)
+  if (!category) return null
+  return {
+    categoryId: category.id,
+    label: category.label,
+    href: `/drugs/categories/${category.id}`,
+  }
+}
+
+/**
+ * Returns a county-scoped drug coverage link using the canonical URL format.
+ * e.g. metformin + "NC" + "37183" → { label: "Metformin coverage in Wake County, NC", href: "/north-carolina/wake-county/metformin-coverage" }
+ * countyParam is the 5-digit FIPS code.
+ */
+export function getCountyDrugLink(
+  drugName: string,
+  stateCode: string,
+  countyFips: string,
+  countyDisplay?: string,
+): CountyDrugLink {
+  const display = titleCase(normalizeDrugName(drugName))
+  const drugSlug = slugify(normalizeDrugName(drugName))
+  const stateSlug = stateCodeToSlug(stateCode)
+  const countySlug = getCountySlug(countyFips)
+  const location = countyDisplay ?? countySlug
+  return {
+    label: `${display} coverage in ${location}`,
+    href: `/${stateSlug}/${countySlug}/${drugSlug}-coverage`,
+  }
 }
 
 /**

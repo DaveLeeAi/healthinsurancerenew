@@ -5,6 +5,7 @@ import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
 import allStatesData from '@/data/config/all-states.json'
+import { getCountyName } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -210,8 +211,7 @@ export default function SubsidiesStatePage({ params }: Props) {
                     href={`/subsidies/${params.state}/${county}`}
                     className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
                   >
-                    <span className="text-sm font-medium text-primary-700">County {county}</span>
-                    <span className="block text-xs text-neutral-500 mt-0.5">FIPS {county}</span>
+                    <span className="text-sm font-medium text-primary-700">{getCountyName(county)}</span>
                   </a>
                 ))}
               </div>

@@ -14,8 +14,9 @@ import SchemaScript from '@/components/SchemaScript'
 import PlanComparisonTable from '@/components/PlanComparisonTable'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import { generatePlanComparisonContent } from '@/lib/content-templates'
+import { getCountyName, getStateName, stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
 interface Props {
@@ -32,7 +33,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county)
+  const stateName = getStateName(stateUpper)
   const plans = getPlansByCounty(stateUpper, params.county)
 
   const planCount = plans.length
@@ -46,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = `${SITE_URL}/plans/${params.state}/${params.county}`
 
   const title =
-    `${PLAN_YEAR} Health Insurance Plans in ${countyDisplay}, ${stateUpper}` +
+    `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})` +
     ` | Compare ${planCount} Marketplace Plans`
 
   const premiumRange =
@@ -55,8 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : ''
 
   const description =
-    `Compare ${planCount} marketplace health insurance plans in ${countyDisplay},` +
-    ` ${stateUpper} from ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}.` +
+    `Compare ${planCount} ${stateName} Marketplace (Obamacare) health insurance plans` +
+    ` in ${countyDisplay} from ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}.` +
     `${premiumRange} Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`
 
   return {
@@ -80,7 +82,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function PlansPage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county)
+  const stateName = getStateName(stateUpper)
 
   // --- Data loading (all server-side, no external API calls) ---
   const plans = getPlansByCounty(stateUpper, params.county)
@@ -123,8 +126,8 @@ export default function PlansPage({ params }: Props) {
   const canonicalUrl = `${SITE_URL}/plans/${params.state}/${params.county}`
 
   const articleSchema = buildArticleSchema({
-    headline: `${PLAN_YEAR} Health Insurance Plans — ${countyDisplay}, ${stateUpper}`,
-    description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateUpper} for plan year ${PLAN_YEAR}. Source: CMS QHP Landscape PUF.`,
+    headline: `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})`,
+    description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}. Source: CMS QHP Landscape PUF.`,
     dateModified: new Date().toISOString().slice(0, 7),
     dataSourceName: 'CMS QHP Landscape PUF',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -141,7 +144,7 @@ export default function PlansPage({ params }: Props) {
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: SITE_URL },
     { name: 'Plans', url: `${SITE_URL}/plans` },
-    { name: stateUpper, url: `${SITE_URL}/plans/${params.state}` },
+    { name: stateName, url: `${SITE_URL}/plans/${params.state}` },
     { name: countyDisplay, url: canonicalUrl },
   ])
 
@@ -170,15 +173,20 @@ export default function PlansPage({ params }: Props) {
               </a>
             </li>
             <li aria-hidden="true" className="text-neutral-300">›</li>
-            <li aria-current="page" className="text-neutral-700 font-medium">{countyDisplay}</li>
+            <li aria-current="page" className="text-neutral-700 font-medium">
+              {countyDisplay}
+            </li>
           </ol>
         </nav>
 
         {/* ── H1 + intro ── */}
         <section>
-          <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            {countyDisplay}, {stateUpper} Health Insurance Plans for {PLAN_YEAR}
+          <h1 className="text-3xl font-bold text-navy-900 mb-2">
+            {countyDisplay} Health Insurance Plans ({PLAN_YEAR})
           </h1>
+          <p className="text-primary-600 font-medium text-base mb-3">
+            {stateName} Marketplace / Obamacare
+          </p>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             {planCount > 0 ? (
               <>
@@ -297,6 +305,13 @@ export default function PlansPage({ params }: Props) {
           <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
         )}
 
+        {/* ── Drug coverage quick-links ── */}
+        <DrugCoveragePills
+          countyDisplay={countyDisplay}
+          stateCode={stateUpper}
+          countyFips={params.county}
+        />
+
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
@@ -323,6 +338,63 @@ export default function PlansPage({ params }: Props) {
 // ---------------------------------------------------------------------------
 // Local sub-components
 // ---------------------------------------------------------------------------
+
+// ─── Priority drugs for county drug coverage cross-links ────────────────────
+const PRIORITY_DRUGS: { name: string; slug: string }[] = [
+  { name: 'Metformin', slug: 'metformin' },
+  { name: 'Ozempic', slug: 'ozempic' },
+  { name: 'Wegovy', slug: 'wegovy' },
+  { name: 'Mounjaro', slug: 'mounjaro' },
+  { name: 'Jardiance', slug: 'jardiance' },
+  { name: 'Trulicity', slug: 'trulicity' },
+  { name: 'Lisinopril', slug: 'lisinopril' },
+  { name: 'Amlodipine', slug: 'amlodipine' },
+  { name: 'Losartan', slug: 'losartan' },
+  { name: 'Atorvastatin', slug: 'atorvastatin' },
+  { name: 'Rosuvastatin', slug: 'rosuvastatin' },
+  { name: 'Sertraline', slug: 'sertraline' },
+]
+
+function DrugCoveragePills({
+  countyDisplay,
+  stateCode,
+  countyFips,
+}: {
+  countyDisplay: string
+  stateCode: string
+  countyFips: string
+}) {
+  const stateSlug = stateCodeToSlug(stateCode)
+  const countySlug = getCountySlug(countyFips)
+
+  return (
+    <section aria-labelledby="drug-coverage-heading">
+      <h2 id="drug-coverage-heading" className="text-xl font-semibold text-navy-800 mb-2">
+        Check Drug Coverage in {countyDisplay}
+      </h2>
+      <p className="text-sm text-neutral-500 mb-4">
+        See which plans in this county cover your prescription medications.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {PRIORITY_DRUGS.map((drug) => (
+          <a
+            key={drug.slug}
+            href={`/${stateSlug}/${countySlug}/${drug.slug}-coverage`}
+            className="inline-block px-3 py-1.5 text-sm font-medium rounded-full border border-primary-200 bg-primary-50 text-primary-700 hover:bg-primary-100 hover:border-primary-300 transition-colors"
+          >
+            {drug.name}
+          </a>
+        ))}
+        <a
+          href={`/formulary/${stateCode.toLowerCase()}/all`}
+          className="inline-block px-3 py-1.5 text-sm font-medium rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 hover:bg-neutral-100 transition-colors"
+        >
+          Browse all drugs →
+        </a>
+      </div>
+    </section>
+  )
+}
 
 function SubsidyStat({
   label,

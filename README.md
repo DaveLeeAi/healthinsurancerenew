@@ -67,8 +67,35 @@ Features:
 - Data Methodology block + Source Citations (CMS MR-PUF, Formulary Reference File, Healthcare.gov)
 - Schema: Drug, HealthInsurancePlan, BreadcrumbList, FAQPage
 
+### County Drug Coverage Pages
+`/[state-name]/[county-slug]/[drug-slug]-coverage` — Drug coverage scoped to a specific county
+
+URL format example: `/north-carolina/wake-county/metformin-coverage`
+
+Features:
+- State slug → state code → county FIPS → formulary lookup (fully dynamic, all ~3,000 counties × any drug)
+- Hero answer box with coverage interpretation (covered/limited/requires prior authorization/not covered)
+- "Plans That Cover This Drug" — per-carrier breakdown joining formulary issuer_ids to county plan records
+- Related drug pills (same therapeutic category) using canonical county URL format
+- FAQ (5 Q&As with real tier/PA/step therapy data), methodology block, soft CTA
+- 404 on invalid state slug, county slug, or missing `-coverage` suffix
+- Schema: Article, FAQPage, BreadcrumbList
+
+### Drug Category Hub Pages
+`/drugs/categories/[id]` — Hub for each of 20 therapeutic drug categories
+
+Pre-built at deploy via `generateStaticParams()` for all 20 categories (diabetes, blood-pressure, cholesterol, mental-health, weight-loss, etc.)
+
+### Drug Comparison Pages
+`/drugs/compare/[drug-a-vs-drug-b]` — Side-by-side coverage, cost, and PA comparison
+
+15 pre-built seed pairs (metformin-vs-ozempic, ozempic-vs-wegovy, mounjaro-vs-wegovy, etc.) via `generateStaticParams()`.
+
+### Drug Hub Index
+`/drugs` — Master index with priority category grid, full 20-category grid, 8 featured comparisons
+
 ### Other Routes
-- `/plans/[state]/[county]` — Plan comparison by county
+- `/plans/[state]/[county]` — Plan comparison by county (includes 12-drug coverage quick-link pills)
 - `/subsidies/[state]/[county]` — APTC subsidy calculator
 - `/rates/[state]/[county]` — Rate volatility by county
 - `/dental/[state]` — Dental plan comparison
@@ -113,6 +140,14 @@ python scripts/etl/build_friction_qa.py
 python scripts/etl/build_billing_intel.py
 python scripts/etl/build_life_events.py
 python scripts/etl/build_policy_scenarios.py
+```
+
+### County Name Lookup Data
+
+```bash
+python scripts/etl/generate_county_names_static.py   # Downloads county names from US Census Bureau
+                                                      # Outputs data/config/county-names.json (3,235 counties)
+                                                      # Used by lib/county-lookup.ts for FIPS → human name
 ```
 
 ### SBM Formulary Fetch
@@ -182,8 +217,10 @@ All schema built via `lib/schema-markup.ts`.
 
 ```
 app/                    # Next.js App Router pages
+  [state-name]/         # County drug coverage pages (/{state}/{county}/{drug}-coverage)
   plan-details/         # SBC detail pages (force-dynamic, ~20K plans)
   formulary/            # Drug formulary pages (force-dynamic)
+  drugs/                # Drug hub index + 20 category hubs + comparison pages
   plans/                # Plan comparison by county
   subsidies/            # APTC calculator pages
   ...
@@ -199,12 +236,13 @@ lib/
   entity-linker.ts      # Cross-page link logic
   drug-linking.ts       # Drug category taxonomy + internal linking helpers (20 categories, ~200 drugs)
   formulary-helpers.ts  # CMS tier → consumer-facing label mapping
+  county-lookup.ts      # FIPS ↔ county name/slug ↔ state code/slug conversions (3,235 counties)
   types.ts              # All TypeScript interfaces
 content/                # Markdown (guides, FAQ, state pages, tool descriptions)
 data/
   raw/                  # ⚠️ GITIGNORED — CMS PUF files
   processed/            # ✅ COMMITTED — structured datasets + SBM formulary per-state files
-  config/               # Site config JSONs (FPL tables, SBM registry, chat routing, etc.)
+  config/               # Site config JSONs (FPL tables, SBM registry, county-names.json, etc.)
   schema/               # JSON validation schemas
 docs/                   # SBM ingestion reports, field maps
 scripts/
