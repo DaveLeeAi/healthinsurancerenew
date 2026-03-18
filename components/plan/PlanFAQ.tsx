@@ -58,12 +58,12 @@ export function buildPlanFAQItems(
   if (metal === 'bronze' || metal === 'expanded_bronze') {
     faqs.push({
       question: `Is this ${metalDisplay} plan a good choice for ${planYear}?`,
-      answer: `${plan.plan_name} is best suited for enrollees who expect minimal healthcare use and want to keep monthly premiums as low as possible. With a ${fmt(deductible)} individual deductible, you pay out-of-pocket for most services until that threshold is met each plan year. Preventive care is always free under ACA rules. If you expect regular doctor visits, ongoing prescriptions, or specialist care, a Silver or Gold plan may cost less over the full year once out-of-pocket costs are added to premiums.`,
+      answer: `${plan.plan_name} is best suited for enrollees who expect minimal healthcare use and want to keep monthly premiums as low as possible. With a ${fmt(deductible)} individual deductible, you pay out-of-pocket for most services until that threshold is met each plan year. Preventive care is always free under federal rules. If you expect regular doctor visits, ongoing prescriptions, or specialist care, a Silver or Gold plan may cost less over the full year once out-of-pocket costs are added to premiums.`,
     })
   } else if (isSilver) {
     faqs.push({
       question: `Is this Silver plan a good choice for ${planYear}?`,
-      answer: `Silver plans are the most selected tier on the ACA Marketplace because they balance monthly premiums with cost-sharing — and are the only tier eligible for Cost Sharing Reductions (CSRs). If your household income falls between 100% and 250% of the Federal Poverty Level, enrolling in a Silver plan automatically activates CSR benefits that can substantially reduce the ${fmt(deductible)} deductible and ${fmt(moop)} out-of-pocket maximum at no additional premium. If you don't qualify for CSRs, compare this plan against Gold alternatives to find the lower total annual cost for your expected usage.`,
+      answer: `Silver plans are the most selected tier on the Marketplace because they balance monthly premiums with cost-sharing — and are the only tier eligible for Cost Sharing Reductions (CSRs). If your household income falls between 100% and 250% of the Federal Poverty Level, enrolling in a Silver plan automatically activates CSR benefits that can substantially reduce the ${fmt(deductible)} deductible and ${fmt(moop)} out-of-pocket maximum at no additional premium. If you don't qualify for CSRs, compare this plan against Gold alternatives to find the lower total annual cost for your expected usage.`,
     })
   } else if (metal === 'gold') {
     faqs.push({

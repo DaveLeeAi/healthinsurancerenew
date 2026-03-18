@@ -4,6 +4,7 @@ import {
   getPlansByCounty,
   getSubsidyByCounty,
   getRatesByCounty,
+  getAllPlanStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -33,8 +34,15 @@ interface Props {
   params: { 'state-name': string; 'county-slug': string }
 }
 
-// Dynamic rendering — plan_intelligence.json (107 MB) too large for build
-export const dynamic = 'force-dynamic'
+// Static generation — all state/county combos pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  return getAllPlanStateCountyCombos().map(({ state, county }) => ({
+    'state-name': stateCodeToSlug(state.toUpperCase()),
+    'county-slug': getCountySlug(county),
+  }))
+}
 
 // ---------------------------------------------------------------------------
 // Metadata

@@ -11,6 +11,7 @@ import type {
   LifeEventRecord,
   PolicyScenarioRecord,
 } from './types'
+import siteConfig from '../data/config/config.json'
 
 // ─── Shared publisher constant ──────────────────────────────────────────────
 
@@ -28,7 +29,6 @@ export interface OrganizationSchema {
   name: string
   url: string
   description: string
-  founder?: { '@type': string; name: string }
 }
 
 export function buildOrgSchema(): OrganizationSchema {
@@ -39,7 +39,6 @@ export function buildOrgSchema(): OrganizationSchema {
     url: 'https://healthinsurancerenew.com',
     description:
       'Health insurance marketplace data and tools for US consumers.',
-    founder: { '@type': 'Person', name: 'Dave Lee' },
   }
 }
 

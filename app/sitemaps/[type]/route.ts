@@ -2,17 +2,20 @@
  * Dynamic sub-sitemap handler.
  *
  * Generates XML sitemaps for each page type:
- *   /sitemaps/static          — homepage + section index pages
+ *   /sitemaps/static          — homepage, index pages, tools, articles, trust pages
  *   /sitemaps/plans           — /{state-slug}/{county-slug}  (canonical county plans)
  *   /sitemaps/subsidies       — /subsidies/[state]/[county]
  *   /sitemaps/rates           — /rates/[state]/[county]
  *   /sitemaps/enhanced-credits— /enhanced-credits/[state]/[county]
- *   /sitemaps/sbc             — /{state-slug}/{county-slug}/{plan-name}-plan  (canonical SBC, route: [county-page])
+ *   /sitemaps/sbc             — /{state-slug}/{county-slug}/{plan-name}-plan  (canonical SBC)
  *   /sitemaps/formulary       — /formulary/[issuer]/[drug] (static seed only)
  *   /sitemaps/dental          — /dental/[state]/[plan_variant]
  *   /sitemaps/faq             — /faq/[category]/[slug]
  *   /sitemaps/billing         — /billing/[category]
  *   /sitemaps/life-events     — /life-events/[event_type]
+ *   /sitemaps/guides          — /guides/[slug]
+ *   /sitemaps/states          — /states/[state]
+ *   /sitemaps/drugs           — /drugs/[state]/[county]/[drug] (seed sample)
  */
 
 import {
@@ -28,6 +31,7 @@ import {
 } from '@/lib/data-loader'
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 import { generatePlanSlug } from '@/lib/plan-slug'
+import { getCollectionSlugs } from '@/lib/markdown'
 
 const BASE = 'https://healthinsurancerenew.com'
 
@@ -104,6 +108,12 @@ function buildEntries(type: string): SitemapEntry[] | null {
       return buildBillingEntries()
     case 'life-events':
       return buildLifeEventEntries()
+    case 'guides':
+      return buildGuideEntries()
+    case 'states':
+      return buildStateEntries()
+    case 'drugs':
+      return buildDrugEntries()
     default:
       return null
   }
@@ -112,21 +122,61 @@ function buildEntries(type: string): SitemapEntry[] | null {
 // ── Static pages ────────────────────────────────────────────────────────────
 
 function buildStaticEntries(): SitemapEntry[] {
-  const indexPages = [
-    '/',
-    '/subsidies',
-    '/rates',
-    '/formulary',
-    '/dental',
-    '/faq',
-    '/billing',
-    '/life-events',
-    '/enhanced-credits',
+  const pages: Array<{ path: string; priority: number; changefreq: SitemapEntry['changefreq'] }> = [
+    // Core
+    { path: '/', priority: 1.0, changefreq: 'weekly' },
+    { path: '/about', priority: 0.8, changefreq: 'monthly' },
+    { path: '/contact', priority: 0.7, changefreq: 'monthly' },
+
+    // Data pillars — index pages
+    { path: '/plans', priority: 0.9, changefreq: 'monthly' },
+    { path: '/subsidies', priority: 0.9, changefreq: 'monthly' },
+    { path: '/rates', priority: 0.7, changefreq: 'monthly' },
+    { path: '/formulary', priority: 0.9, changefreq: 'monthly' },
+    { path: '/dental', priority: 0.7, changefreq: 'monthly' },
+    { path: '/drugs', priority: 0.8, changefreq: 'monthly' },
+    { path: '/enhanced-credits', priority: 0.8, changefreq: 'monthly' },
+    { path: '/faq', priority: 0.8, changefreq: 'monthly' },
+    { path: '/billing', priority: 0.7, changefreq: 'monthly' },
+    { path: '/life-events', priority: 0.7, changefreq: 'monthly' },
+    { path: '/states', priority: 0.8, changefreq: 'monthly' },
+    { path: '/guides', priority: 0.8, changefreq: 'monthly' },
+    { path: '/tools', priority: 0.8, changefreq: 'monthly' },
+    { path: '/glossary', priority: 0.6, changefreq: 'monthly' },
+
+    // Tools
+    { path: '/tools/income-savings-calculator', priority: 0.8, changefreq: 'monthly' },
+    { path: '/tools/job-plan-affordability', priority: 0.8, changefreq: 'monthly' },
+    { path: '/tools/what-income-counts', priority: 0.7, changefreq: 'monthly' },
+    { path: '/tools/plan-comparison', priority: 0.8, changefreq: 'monthly' },
+    { path: '/tools/csr-estimator', priority: 0.8, changefreq: 'monthly' },
+    { path: '/tools/family-coverage-estimator', priority: 0.7, changefreq: 'monthly' },
+    { path: '/eligibility-check', priority: 0.8, changefreq: 'monthly' },
+
+    // Standalone article pages
+    { path: '/aca-income-guide-2026', priority: 0.8, changefreq: 'yearly' },
+    { path: '/fpl-2026', priority: 0.7, changefreq: 'yearly' },
+    { path: '/csr-explained-2026', priority: 0.8, changefreq: 'yearly' },
+    { path: '/turning-26-health-insurance-options', priority: 0.7, changefreq: 'yearly' },
+    { path: '/self-employed-health-insurance-2026', priority: 0.7, changefreq: 'yearly' },
+    { path: '/early-retirement-health-insurance-2026', priority: 0.7, changefreq: 'yearly' },
+    { path: '/lost-job-health-insurance-2026', priority: 0.7, changefreq: 'yearly' },
+    { path: '/employer-coverage-unaffordable-2026', priority: 0.7, changefreq: 'yearly' },
+
+    // Trust / policy pages
+    { path: '/how-we-get-paid', priority: 0.6, changefreq: 'monthly' },
+    { path: '/editorial-policy', priority: 0.6, changefreq: 'monthly' },
+    { path: '/data-methodology', priority: 0.7, changefreq: 'monthly' },
+    { path: '/licensing', priority: 0.5, changefreq: 'yearly' },
+    { path: '/circle-of-champions', priority: 0.6, changefreq: 'yearly' },
+    { path: '/privacy', priority: 0.4, changefreq: 'yearly' },
+    { path: '/terms', priority: 0.4, changefreq: 'yearly' },
   ]
-  return indexPages.map((path) => ({
+
+  return pages.map(({ path, priority, changefreq }) => ({
     loc: `${BASE}${path}`,
-    changefreq: 'monthly',
-    priority: path === '/' ? 1.0 : 0.7,
+    changefreq,
+    priority,
   }))
 }
 
@@ -242,4 +292,41 @@ function buildLifeEventEntries(): SitemapEntry[] {
     changefreq: 'yearly',
     priority: 0.5,
   }))
+}
+
+// ── Guides — /guides/[slug] ─────────────────────────────────────────────────
+
+function buildGuideEntries(): SitemapEntry[] {
+  return getCollectionSlugs('guides').map((slug) => ({
+    loc: `${BASE}/guides/${slug}`,
+    changefreq: 'monthly' as const,
+    priority: 0.8,
+  }))
+}
+
+// ── States — /states/[state] ────────────────────────────────────────────────
+
+function buildStateEntries(): SitemapEntry[] {
+  return getCollectionSlugs('states').map((slug) => ({
+    loc: `${BASE}/states/${slug}`,
+    changefreq: 'monthly' as const,
+    priority: 0.7,
+  }))
+}
+
+// ── Drugs — /drugs/[state]/[county]/[drug] (seed sample) ────────────────────
+
+function buildDrugEntries(): SitemapEntry[] {
+  const topCombos = getAllStateCountyCombos().slice(0, 50)
+  const entries: SitemapEntry[] = []
+  for (const { state, county } of topCombos) {
+    for (const drug of SEED_DRUGS.slice(0, 10)) {
+      entries.push({
+        loc: `${BASE}/drugs/${state}/${county}/${drug}`,
+        changefreq: 'yearly',
+        priority: 0.6,
+      })
+    }
+  }
+  return entries
 }

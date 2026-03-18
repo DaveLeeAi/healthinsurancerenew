@@ -144,17 +144,8 @@ data/raw/*
 *.csv
 *.zip
 
-# Large processed datasets (>100MB, exceed GitHub limit)
-# Regenerate with: python scripts/etl/build_plan_intelligence.py
-data/processed/plan_intelligence.json
-# Regenerate with: python scripts/fetch/fetch_formulary.py
+# Formulary sample (2 GB pre-dedup backup — still too large for git)
 data/processed/formulary_sample.json
-# Regenerate with: python scripts/etl/build_sbc_from_puf.py
-data/processed/sbc_decoded.json
-# Regenerate with: python scripts/fetch/fetch_formulary_full.py
-data/processed/formulary_intelligence.json
-data/processed/formulary_intelligence.meta.json
-data/processed/formulary_errors.json
 
 # Astro generated files (leftover from migration — should not re-appear)
 .astro/

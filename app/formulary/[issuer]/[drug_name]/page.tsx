@@ -1,9 +1,11 @@
 import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import siteConfig from '@/data/config/config.json'
 import {
   searchFormulary,
   getIssuerName,
   getPlanById,
+  getTopIssuerIds,
 } from '@/lib/data-loader'
 import type { FormularyDrug } from '@/lib/types'
 import {
@@ -103,7 +105,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
     indications: 'Treats GERD, heartburn, peptic ulcers, and H. pylori infection.',
     genericAlts: [],
     therapeuticAlts: [
-      { name: 'Pantoprazole', tier: 'Tier 1 Generic', desc: 'PPI — same class, Tier 1 on most ACA plans, fewer drug interactions' },
+      { name: 'Pantoprazole', tier: 'Tier 1 Generic', desc: 'PPI — same class, Tier 1 on most Marketplace plans, fewer drug interactions' },
       { name: 'Esomeprazole (Nexium)', tier: 'Tier 3 Non-Preferred', desc: 'Brand PPI — same mechanism, significantly higher cost' },
     ],
     otcAlts: [{ name: 'Prilosec OTC (omeprazole 20mg)', tier: 'OTC — no Rx needed', desc: 'Same active ingredient for 14-day heartburn courses' }],
@@ -174,7 +176,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
   'montelukast': {
     drugClass: 'Leukotriene Receptor Antagonist',
     indications: 'Long-term asthma control and seasonal allergic rhinitis. Not a rescue medication.',
-    genericAlts: [{ name: 'Montelukast generic', tier: 'Tier 1 Generic', desc: 'Generic available since 2012 — Tier 1 on virtually all ACA plans' }],
+    genericAlts: [{ name: 'Montelukast generic', tier: 'Tier 1 Generic', desc: 'Generic available since 2012 — Tier 1 on virtually all Marketplace plans' }],
     therapeuticAlts: [
       { name: 'Fluticasone nasal spray', tier: 'Tier 1 Generic', desc: 'Preferred for allergic rhinitis per current guidelines' },
       { name: 'Inhaled corticosteroid', tier: 'Tier 1–2 Generic', desc: 'Preferred controller for asthma per NAEPP guidelines' },
@@ -302,9 +304,32 @@ interface Props {
   params: { issuer: string; drug_name: string }
 }
 
-// Dynamic rendering — getTopIssuerIds() loads plan_intelligence.json (107 MB),
-// too large to process during build. Pages render on-demand via SSR.
-export const dynamic = 'force-dynamic'
+// ISR — priority seed of top issuers × top drugs pre-built; remaining pages built on first request
+export const revalidate = 86400
+
+const PRIORITY_DRUGS = [
+  'metformin', 'lisinopril', 'atorvastatin', 'amlodipine', 'omeprazole',
+  'levothyroxine', 'albuterol', 'losartan', 'gabapentin', 'hydrochlorothiazide',
+  'sertraline', 'metoprolol', 'montelukast', 'escitalopram', 'rosuvastatin',
+  'bupropion', 'pantoprazole', 'duloxetine', 'furosemide', 'trazodone',
+  'atenolol', 'citalopram', 'cyclobenzaprine', 'doxycycline', 'fluoxetine',
+  'meloxicam', 'naproxen', 'prednisone', 'tramadol', 'venlafaxine',
+  'amoxicillin', 'azithromycin', 'ciprofloxacin', 'warfarin', 'clopidogrel',
+  'sildenafil', 'tadalafil', 'finasteride', 'tamsulosin', 'quetiapine',
+  'aripiprazole', 'risperidone', 'methylphenidate', 'amphetamine-salts',
+  'ondansetron', 'famotidine', 'esomeprazole',
+]
+
+export async function generateStaticParams() {
+  const topIssuers = getTopIssuerIds(50)
+  const params = []
+  for (const issuer of topIssuers) {
+    for (const drug of PRIORITY_DRUGS) {
+      params.push({ issuer, drug_name: drug })
+    }
+  }
+  return params // ~50 × 47 = ~2,350 pre-built pages
+}
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -352,7 +377,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       siteName: 'HealthInsuranceRenew',
       locale: 'en_US',
-      authors: ['Dave Lee'],
+      authors: ['HealthInsuranceRenew Editorial Team'],
     },
     twitter: {
       card: 'summary_large_image',
@@ -484,16 +509,14 @@ export default async function FormularyDrugPage({ params }: Props) {
     description: `Formulary tier placement, cost-sharing, restrictions, and patient guidance for ${titleCase(drugDisplay)} on ACA Marketplace health plans.`,
     url: `${SITE_URL}/formulary/${params.issuer}/${params.drug_name}`,
     author: {
-      '@type': 'Person',
-      name: 'Dave Lee',
-      jobTitle: 'Licensed Health Insurance Agent',
-      identifier: 'NPN 7578729',
-      url: `${SITE_URL}/about`,
+      '@type': 'Organization',
+      name: 'HealthInsuranceRenew Editorial Team',
+      url: 'https://healthinsurancerenew.com/editorial-policy',
     },
     reviewedBy: {
-      '@type': 'Person',
-      name: 'Dave Lee',
-      jobTitle: 'Licensed Health Insurance Agent',
+      '@type': 'Organization',
+      name: 'HealthInsuranceRenew Editorial Team',
+      url: 'https://healthinsurancerenew.com/editorial-policy',
     },
     dateModified: new Date().toISOString(),
     medicalAudience: {
@@ -576,7 +599,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     },
     {
       question: `Does copay assistance count toward my deductible?`,
-      answer: `It depends on your plan. Many ACA plans now use copay accumulator adjustment programs, which means manufacturer copay cards do NOT count toward your deductible or out-of-pocket maximum — the insurer keeps the rebate but does not credit it to your cost-sharing. However, several states have enacted accumulator reform laws requiring copay assistance to count toward cost-sharing, including Arizona, Georgia, Oklahoma, Virginia, and West Virginia. Check your plan's Summary of Benefits and Coverage for language about "copay accumulator" or "copay maximizer" programs, or call Member Services and ask directly. If your state has a reform law, insist that your plan comply when you use a manufacturer copay card — you may need to file a grievance if they do not.`,
+      answer: `It depends on your plan. Many Marketplace plans now use copay accumulator adjustment programs, which means manufacturer copay cards do NOT count toward your deductible or out-of-pocket maximum — the insurer keeps the rebate but does not credit it to your cost-sharing. However, several states have enacted accumulator reform laws requiring copay assistance to count toward cost-sharing, including Arizona, Georgia, Oklahoma, Virginia, and West Virginia. Check your plan's Summary of Benefits and Coverage for language about "copay accumulator" or "copay maximizer" programs, or call Member Services and ask directly. If your state has a reform law, insist that your plan comply when you use a manufacturer copay card — you may need to file a grievance if they do not.`,
     },
     {
       question: `What does 'not covered' vs 'prior authorization required' mean?`,
@@ -682,10 +705,15 @@ export default async function FormularyDrugPage({ params }: Props) {
             ════════════════════════════════════════════════════════════════ */}
         <section aria-labelledby="hero-heading">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl font-bold text-navy-900">
-            {titleCase(drugDisplay)}: ACA Coverage, Cost &amp; Prior Authorization Guide
+            {titleCase(drugDisplay)} Coverage{isState ? ` in ${stateName}` : isSpecificIssuer ? ` — ${issuerName}` : ''}: Cost &amp; Prior Authorization Guide
           </h1>
-          <p className="text-base text-neutral-500 mt-1.5 mb-4">
-            Marketplace / Obamacare Plans &bull; {PLAN_YEAR}{isState ? ` \u2022 ${stateName}` : isSpecificIssuer ? ` \u2022 ${issuerName}` : ''}
+          <p className="text-lg text-neutral-500 mt-1.5 mb-4">
+            {isState
+              ? <><span className="font-semibold text-navy-700">{stateName}</span>{' '}Marketplace Plans</>
+              : isSpecificIssuer
+                ? <><span className="font-semibold text-navy-700">{issuerName}</span>{' '}&mdash; Marketplace Plans</>
+                : <>Marketplace / Obamacare Plans</>
+            } &bull; {PLAN_YEAR}
           </p>
 
           {/* BLUF answer box — optimized for AI answer engine extraction and zero-click search panels */}
@@ -693,7 +721,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             <div className="border-l-4 border-primary-500 bg-primary-50/60 rounded-r-xl px-5 py-4 mb-5">
               <p className="text-sm text-neutral-700 leading-relaxed">
                 <strong>{titleCase(drugDisplay)}</strong> is covered on{' '}
-                {results.length > 50 ? 'most' : results.length > 10 ? 'many' : 'some'} ACA Marketplace plans
+                {results.length > 50 ? 'most' : results.length > 10 ? 'many' : 'some'} Marketplace health insurance plans
                 {isState ? ` in ${stateName}` : ''}.{' '}
                 {hasPriorAuth
                   ? 'It is subject to prior authorization on most plans — your doctor must obtain insurer approval before you can fill it.'
@@ -1230,7 +1258,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                   <li><strong>Tier 2 — Preferred Brand ($30–$60):</strong> Brand-name drugs that pay rebates to pharmacy benefit managers (PBMs) in exchange for favorable tier placement. The rebate system means a drug&apos;s tier reflects negotiated pricing agreements, not just clinical effectiveness.</li>
                   <li><strong>Tier 3 — Non-Preferred Brand ($60–$100+):</strong> Brand drugs that did not negotiate preferred placement, or where a generic is available. The higher cost-sharing is deliberate — it incentivizes you to use the generic alternative.</li>
                   <li><strong>Tier 4 — Specialty (20–33% coinsurance):</strong> High-cost biologics and complex medications requiring clinical management, cold-chain distribution, or injection administration. Cost-sharing is often coinsurance, not a flat copay.</li>
-                  <li><strong>Preventive ($0):</strong> Drugs on the ACA preventive services list covered with zero cost-sharing regardless of deductible status — required by federal law.</li>
+                  <li><strong>Preventive ($0):</strong> Drugs on the federal preventive services list covered with zero cost-sharing regardless of deductible status — required by federal law.</li>
                 </ol>
                 <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
                   <strong>Why the same drug can be Tier 2 on one plan and Tier 4 on another:</strong> PBM rebate contracts differ by insurer. A drug&apos;s tier reflects the specific negotiated deal between the drug manufacturer and your insurer&apos;s PBM — not the drug&apos;s clinical profile. If your drug is on a high tier, ask your doctor to request a therapeutic substitution or file a tier exception.
@@ -1361,15 +1389,12 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ════ E-E-A-T: Author attribution ════ */}
         <section className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
           <p className="text-sm text-neutral-600">
-            <strong>Written and reviewed by a Licensed Health Insurance Agent</strong>
-            (NPN: 7578729) &bull; CMS Elite Circle of Champions &bull; Licensed in 20+ states &bull;{' '}
+            <strong>Reviewed by licensed health insurance professionals</strong> &bull; {siteConfig.operator.recognition} &bull; Licensed in {siteConfig.licensedStates.length}+ states &bull;{' '}
             <a
-              href="https://nipr.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/editorial-policy"
               className="text-primary-600 hover:underline"
             >
-              Verify license at NIPR.com &rarr;
+              Editorial policy &rarr;
             </a>
           </p>
         </section>
@@ -1925,7 +1950,7 @@ function DrugManufacturerAssistance({ drugDisplay }: { drugDisplay: string }) {
         <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4">
           <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">State Pharmaceutical Assistance (SPAP)</p>
           <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            Many states offer drug assistance programs for seniors and low-income adults, often stacking with Medicare or ACA coverage.
+            Many states offer drug assistance programs for seniors and low-income adults, often stacking with Medicare or Marketplace coverage.
           </p>
           <ul className="text-xs text-neutral-600 space-y-1">
             <li><strong>Who qualifies:</strong> Varies by state — often seniors or adults below 200–400% FPL</li>

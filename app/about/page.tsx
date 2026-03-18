@@ -5,7 +5,7 @@ import config from '../../data/config/config.json'
 export const metadata: Metadata = {
   title: 'About Us | HealthInsuranceRenew',
   description:
-    'Learn about HealthInsuranceRenew, an educational health insurance resource operated by a licensed health insurance agent (NPN: 7578729) serving clients in 18 states.',
+    `Learn about HealthInsuranceRenew, an educational health insurance resource operated by a licensed health insurance agent (NPN: ${config.operator.npn}) serving clients in ${config.licensedStates.length} states.`,
 }
 
 const breadcrumbs = [
@@ -75,12 +75,12 @@ export default function AboutPage() {
             <h3 className="text-lg font-semibold text-slate-900">Licensed Health Insurance Agent</h3>
             <p className="text-sm text-primary-600 mb-2">Site Operator</p>
             <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
-              This site is operated by a licensed health insurance agent (NPN: 7578729) serving clients in multiple
+              This site is operated by a licensed health insurance agent (NPN: {config.operator.npn}) serving clients in multiple
               U.S. states. HealthInsuranceRenew was built to provide clear, educational information about marketplace
               health coverage options.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-sm">
-              <span className="text-slate-500">NPN: 7578729</span>
+              <span className="text-slate-500">NPN: {config.operator.npn}</span>
               <span className="text-slate-300">|</span>
               <span className="text-slate-500">
                 Licensed in {config.licensedStates.length} states:{' '}
@@ -107,8 +107,8 @@ export default function AboutPage() {
               CMS Marketplace Elite Circle of Champions Recognition
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
-              Recognized by the Centers for Medicare &amp; Medicaid Services (CMS) for outstanding service during the
-              2023 Marketplace Open Enrollment Period. During the 2022–2023 enrollment cycle, $2.9 million in annual
+              Recognized by the {config.operator.recognitionBody} (CMS) for outstanding service during the
+              {config.operator.recognitionYear} Marketplace Open Enrollment Period. During the {config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} enrollment cycle, {config.operator.enrollmentVolume} in annual
               premium was enrolled through Marketplace coverage.
             </p>
             <a

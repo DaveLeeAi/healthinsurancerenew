@@ -15,7 +15,9 @@ import { generatePlanSlug } from '@/lib/plan-slug'
 //   app/[state-name]/[county-slug]/[county-page]/page.tsx
 //   (dispatcher: routes -plan slugs to SBC page, -coverage slugs to drug page)
 
-export const dynamic = 'force-dynamic'
+// Static redirect — handled at the edge, no generateStaticParams needed
+export const dynamic = 'force-static'
+export const revalidate = false
 
 interface Props {
   params: { plan_id: string; slug: string }

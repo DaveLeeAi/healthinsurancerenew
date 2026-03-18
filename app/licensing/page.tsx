@@ -5,7 +5,7 @@ import config from '../../data/config/config.json'
 export const metadata: Metadata = {
   title: 'Agent Licensing | HealthInsuranceRenew',
   description:
-    'HealthInsuranceRenew agents are licensed in 18 states. View our licensing information and regulatory compliance details.',
+    `HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.`,
 }
 
 const breadcrumbs = [

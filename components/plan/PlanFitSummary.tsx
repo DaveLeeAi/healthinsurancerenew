@@ -141,7 +141,7 @@ function buildFitPoints(plan: PlanRecord, countyPlans: PlanRecord[]): FitPoint[]
     points.push({
       label: 'Premium tax credit (APTC) recipients',
       goodFor: false,
-      reason: `Catastrophic plans generally cannot be purchased using Advance Premium Tax Credits under standard ACA rules.`,
+      reason: `Catastrophic plans generally cannot be purchased using Advance Premium Tax Credits under standard Marketplace rules.`,
     })
   }
 

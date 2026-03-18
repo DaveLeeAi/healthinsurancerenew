@@ -5,11 +5,11 @@ import SchemaScript from '../components/SchemaScript'
 export const metadata: Metadata = {
   title: 'HealthInsuranceRenew | 2026 Health Insurance Marketplace — Plans, Savings & Tools',
   description:
-    'Free marketplace health insurance tools and guides powered by CMS Public Use Files. Compare 2026 plans, calculate your premium tax credit, and understand your coverage options. Licensed agents in 18 states.',
+    `Free marketplace health insurance tools and guides powered by CMS Public Use Files. Compare 2026 plans, calculate your premium tax credit, and understand your coverage options. Licensed agents in ${config.licensedStates.length} states.`,
   openGraph: {
     title: 'HealthInsuranceRenew — 2026 Health Insurance Marketplace Data & Tools',
     description:
-      'CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in 18 states.',
+      `CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.`,
     type: 'website',
     url: 'https://healthinsurancerenew.com',
     siteName: 'HealthInsuranceRenew',
@@ -88,23 +88,33 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   'name': 'HealthInsuranceRenew',
+  'alternateName': ['Health Insurance Renew', 'HealthInsuranceRenew.com'],
   'url': 'https://healthinsurancerenew.com',
-  'description': 'Health insurance marketplace resource powered by CMS Public Use Files. Provides subsidy calculators, plan comparisons, drug formulary lookup, and plain-English guides for marketplace health insurance enrollment.',
-  'founder': {
-    '@type': 'Person',
-    'name': 'Dave Lee',
-    'jobTitle': 'Licensed Health Insurance Agent',
-    'description': 'CMS Marketplace Elite Circle of Champions recognition. Licensed in 18 states. NPN: 7578729.',
+  'logo': 'https://healthinsurancerenew.com/favicon.svg',
+  'description': 'HealthInsuranceRenew.com is a free ACA Marketplace intelligence platform powered by CMS Public Use Files. It provides plan comparisons, subsidy calculators, drug formulary lookup, and plain-English guides for all 50 US states. Content is reviewed by licensed health insurance professionals holding CMS Elite Circle of Champions recognition.',
+  'areaServed': {
+    '@type': 'Country',
+    'name': 'United States'
   },
-  'areaServed': 'US',
   'knowsAbout': [
-    'Health Insurance Marketplace',
+    'ACA Marketplace Health Insurance',
     'Premium Tax Credits',
-    'Affordable Care Act',
     'Cost-Sharing Reductions',
+    'Health Insurance Formulary',
     'Special Enrollment Periods',
-    'Medicare',
-    'Medicaid',
+    'Open Enrollment',
+    'Medicaid Eligibility',
+    'COBRA vs Marketplace',
+    'CMS Public Use Files',
+    'Summary of Benefits and Coverage',
+    'Metal Tier Health Plans',
+    'Prior Authorization',
+    'Step Therapy',
+    'Health Insurance Subsidies',
+    'Federal Poverty Level',
+    'Health Insurance Deductible',
+    'Out-of-Pocket Maximum',
+    'Affordable Care Act'
   ],
   'hasCredential': {
     '@type': 'EducationalOccupationalCredential',
@@ -112,9 +122,31 @@ const organizationSchema = {
     'recognizedBy': {
       '@type': 'GovernmentOrganization',
       'name': 'Centers for Medicare & Medicaid Services',
-    },
+      'url': 'https://www.cms.gov'
+    }
   },
-  'sameAs': 'https://healthinsurancerenew.com/about',
+  'publishingPrinciples': 'https://healthinsurancerenew.com/editorial-policy',
+  'ethicsPolicy': 'https://healthinsurancerenew.com/how-we-get-paid',
+  'sameAs': [
+    'https://healthinsurancerenew.com/about',
+    'https://healthinsurancerenew.com/circle-of-champions'
+  ]
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'url': 'https://healthinsurancerenew.com',
+  'speakable': {
+    '@type': 'SpeakableSpecification',
+    'cssSelector': [
+      '#site-bluf',
+      '#data-pillars-heading',
+      '#trust-heading',
+      '#elite-recognition-heading',
+      '#why-trust-heading'
+    ]
+  }
 }
 
 export default function HomePage() {
@@ -123,6 +155,15 @@ export default function HomePage() {
       {/* Schema */}
       <SchemaScript schema={websiteSchema} id="schema-website" />
       <SchemaScript schema={organizationSchema} id="schema-organization" />
+      <SchemaScript schema={speakableSchema} id="schema-speakable" />
+
+      <p id="site-bluf" className="sr-only">
+        HealthInsuranceRenew.com is a free ACA health insurance intelligence platform
+        powered by CMS Public Use Files. It covers all 50 US states and provides
+        subsidy calculators, drug formulary lookup, plan comparisons, and
+        plain-English guides written and reviewed by licensed health insurance
+        professionals recognized with CMS Elite Circle of Champions status.
+      </p>
 
       {/* Section 1: Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-slate-50 to-slate-100">
@@ -134,7 +175,7 @@ export default function HomePage() {
           <div className="max-w-4xl mb-12">
             {/* Trust badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 text-primary-700 text-sm font-medium mb-6">
-              <span>&#11088;</span> Licensed health insurance agent &middot; Recognized by CMS &middot; Serving 18 states
+              <span>&#11088;</span> Licensed health insurance agent &middot; Recognized by CMS &middot; Serving {config.licensedStates.length} states
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6 tracking-tight">
@@ -207,7 +248,7 @@ export default function HomePage() {
               { value: '942', label: 'Dental Plans Tracked' },
               { value: '54', label: 'Expert Q&As' },
               { value: '50', label: 'States Covered' },
-              { value: '18', label: 'Licensed Agent States' },
+              { value: String(config.licensedStates.length), label: 'Licensed Agent States' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</p>
@@ -277,7 +318,7 @@ export default function HomePage() {
 
       {/* Section 5: Data Pillars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">10 Data Pillars — Full Coverage of Marketplace Health Insurance</h2>
+        <h2 id="data-pillars-heading" className="text-2xl font-bold text-slate-900 mb-2 leading-heading">10 Data Pillars — Full Coverage of Marketplace Health Insurance</h2>
         <p className="text-slate-600 mb-8">Explore the complete dataset. Each pillar is powered by a separate CMS Public Use File and updated annually.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {dataPillars.map((pillar) => (
@@ -301,7 +342,7 @@ export default function HomePage() {
 
       {/* Section 6: Trust / E-E-A-T */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-slate-900 mb-8 leading-heading">Why Trust This Site</h2>
+        <h2 id="why-trust-heading" className="text-2xl font-bold text-slate-900 mb-8 leading-heading">Why Trust This Site</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {/* Card 1 — Licensed Expert */}
           <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
@@ -312,7 +353,7 @@ export default function HomePage() {
             </div>
             <h3 className="font-semibold text-slate-900 mb-2">Written by a Licensed Agent</h3>
             <p className="text-sm text-slate-600 leading-relaxed mb-3">
-              All content is developed and reviewed by a licensed health insurance agent — not a content farm. CMS Elite Circle of Champions recognition. NPN: 7578729. Licensed in 18 states.
+              All content is developed and reviewed by a licensed health insurance agent — not a content farm. {config.operator.recognition} recognition. NPN: {config.operator.npn}. Licensed in {config.licensedStates.length} states.
             </p>
             <a href="/about" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
               About us
@@ -368,15 +409,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-2xl font-bold text-[#0B1F3B] mb-2 leading-heading">CMS Marketplace Elite Circle of Champions Recognition</h2>
-              <p className="text-slate-500 text-sm mb-4">Recognized for Excellence During the 2023 Health Insurance Marketplace Open Enrollment Period</p>
+              <h2 id="elite-recognition-heading" className="text-2xl font-bold text-[#0B1F3B] mb-2 leading-heading">{config.operator.recognition} Recognition</h2>
+              <p className="text-slate-500 text-sm mb-4">Recognized for Excellence During the {config.operator.recognitionYear} Health Insurance Marketplace Open Enrollment Period</p>
               <p className="text-slate-600 leading-relaxed font-serif mb-4">
-                Health Insurance Renew is operated by a licensed health insurance agent recognized by the Centers for Medicare &amp; Medicaid Services (CMS) for outstanding service during the 2023 Marketplace Open Enrollment Period.
+                Health Insurance Renew is operated by a licensed health insurance agent recognized by the {config.operator.recognitionBody} (CMS) for outstanding service during the {config.operator.recognitionYear} Marketplace Open Enrollment Period.
               </p>
               <p className="text-slate-600 leading-relaxed font-serif mb-4">
-                During the 2022-2023 enrollment cycle, $2.9 million in annual premium was enrolled through Marketplace coverage, helping individuals and families secure qualified health plans.
+                During the {config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} enrollment cycle, {config.operator.enrollmentVolume} in annual premium was enrolled through Marketplace coverage, helping individuals and families secure qualified health plans.
               </p>
-              <p className="text-sm text-slate-500 mb-4">NPN: 7578729</p>
+              <p className="text-sm text-slate-500 mb-4">NPN: {config.operator.npn}</p>
               <a href="/circle-of-champions" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
                 See recognition details
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
@@ -389,16 +430,16 @@ export default function HomePage() {
                 </div>
                 <div>
                   <p className="font-semibold text-[#0B1F3B]">Elite Circle of Champions</p>
-                  <p className="text-xs text-slate-500">2022-2023 Open Enrollment Period</p>
+                  <p className="text-xs text-slate-500">{config.operator.recognitionPeriod}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="text-center p-4 bg-white rounded-xl border border-slate-100">
-                  <p className="text-2xl font-bold text-[#0B1F3B]">$2.9M</p>
+                  <p className="text-2xl font-bold text-[#0B1F3B]">{config.operator.enrollmentVolume.replace(' million', 'M')}</p>
                   <p className="text-xs text-slate-500 mt-1">Annual Premium Enrolled</p>
                 </div>
                 <div className="text-center p-4 bg-white rounded-xl border border-slate-100">
-                  <p className="text-2xl font-bold text-[#0B1F3B]">18</p>
+                  <p className="text-2xl font-bold text-[#0B1F3B]">{config.licensedStates.length}</p>
                   <p className="text-xs text-slate-500 mt-1">Licensed States</p>
                 </div>
               </div>
@@ -413,7 +454,7 @@ export default function HomePage() {
       {/* Section 8: Licensed States */}
       <section className="bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Licensed agents are available in 18 states.</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Licensed agents are available in {config.licensedStates.length} states.</h2>
           <p className="text-slate-600 mb-8">Select your state to see local health insurance information and enrollment details.</p>
           <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
             {config.licensedStates.map((state) => (

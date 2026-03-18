@@ -23,7 +23,15 @@ interface Props {
   params: { state: string }
 }
 
-export const dynamic = 'force-dynamic'
+// Static generation — all state pages pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  const unique = [...new Set(
+    getAllSubsidyStateCountyCombos().map(c => c.state)
+  )]
+  return unique.map(state => ({ state }))
+}
 
 function getStateEntry(abbr: string): StateEntry | undefined {
   return (allStatesData.states as StateEntry[]).find(

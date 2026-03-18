@@ -62,7 +62,7 @@ function buildContent(plan: PlanRecord, countyPlans: PlanRecord[]): MetalContent
     const paragraphs = [
       `Bronze plans are actuarially valued at approximately 60% of expected covered costs — meaning you are responsible for roughly 40% of costs when care is needed. This higher cost-sharing in exchange for lower monthly premiums is the core Bronze trade-off.`,
       deductible != null
-        ? `This plan's ${fmt(deductible)} individual deductible${deductibleVsAvg}. Until that threshold is crossed each plan year, you pay 100% of the contracted rate for most covered services. Preventive care is always at $0 under ACA rules.`
+        ? `This plan's ${fmt(deductible)} individual deductible${deductibleVsAvg}. Until that threshold is crossed each plan year, you pay 100% of the contracted rate for most covered services. Preventive care is always at $0 under federal rules.`
         : `Review the plan documents for the individual deductible amount. Until the deductible is met, most non-preventive services are paid out of pocket.`,
       `Bronze plans make economic sense primarily for enrollees who expect minimal healthcare use and want to keep monthly costs low. However, a single hospitalization or serious illness will expose you to significant costs before the plan contributes — the deductible and coinsurance can add up quickly.`,
     ]
@@ -82,7 +82,7 @@ function buildContent(plan: PlanRecord, countyPlans: PlanRecord[]): MetalContent
     return {
       headline: 'Silver Plan: The Only Tier Eligible for Cost Sharing Reductions',
       paragraphs: [
-        `Silver plans cover approximately 70% of expected covered healthcare costs and are the most commonly selected tier on the ACA Marketplace — largely because they are the only tier eligible for Cost Sharing Reductions (CSRs).`,
+        `Silver plans cover approximately 70% of expected covered healthcare costs and are the most commonly selected tier on the Marketplace — largely because they are the only tier eligible for Cost Sharing Reductions (CSRs).`,
         `CSRs are automatically applied at enrollment for individuals with household income between 100% and 250% of the Federal Poverty Level (FPL). With CSRs, the same Silver plan has a substantially lower deductible, lower copays, and a lower out-of-pocket maximum — at no extra premium cost. The higher your subsidy eligibility, the more valuable Silver becomes relative to other tiers.`,
         deductible != null
           ? `Without CSR savings, this plan has a ${fmt(deductible)} individual deductible${deductibleVsAvg} and a ${moop != null ? fmt(moop) : 'standard'} out-of-pocket maximum. With a CSR at 200% FPL, both figures could be reduced significantly depending on the specific plan variant.`
@@ -111,7 +111,7 @@ function buildContent(plan: PlanRecord, countyPlans: PlanRecord[]): MetalContent
     return {
       headline: 'Platinum Plan: Maximum Coverage, Highest Monthly Premium',
       paragraphs: [
-        `Platinum plans cover approximately 90% of expected covered healthcare costs — the highest actuarial value tier on the ACA Marketplace. In exchange, they carry the highest monthly premiums.`,
+        `Platinum plans cover approximately 90% of expected covered healthcare costs — the highest actuarial value tier on the Marketplace. In exchange, they carry the highest monthly premiums.`,
         `The defining characteristic of Platinum plans is predictability: low deductibles, low copays, and low coinsurance mean that most costs are known in advance. This plan's ${moop != null ? fmt(moop) : 'annual'} out-of-pocket maximum caps your total exposure for in-network care.`,
         `Platinum plans are most cost-effective for enrollees who consistently use significant healthcare services — those managing chronic conditions, taking branded or specialty medications, or requiring frequent specialist or hospital care. For low-use enrollees, the premium premium rarely pays off.`,
         `As with Gold plans, Platinum plans are not eligible for Cost Sharing Reductions (CSRs). If you qualify for CSRs, a CSR-enhanced Silver plan may provide similar cost-sharing at a lower premium.`,
@@ -126,7 +126,7 @@ function buildContent(plan: PlanRecord, countyPlans: PlanRecord[]): MetalContent
         `Catastrophic plans are only available to two groups: individuals under 30, and those who qualify for a hardship exemption or affordability exemption (when the lowest-available Silver plan exceeds a specified percentage of income).`,
         deductible != null
           ? `These plans carry the highest deductibles on the Marketplace. This plan's ${fmt(deductible)} individual deductible means you pay the full contracted rate for virtually all covered services until that threshold is met.`
-          : `Catastrophic deductibles are typically at or near the ACA out-of-pocket maximum — review the plan documents for the exact amount.`,
+          : `Catastrophic deductibles are typically at or near the federal out-of-pocket maximum — review the plan documents for the exact amount.`,
         `The limited benefit structure: three primary care visits per year are covered before the deductible, and all ACA-mandated preventive services are covered at $0. Beyond those, the plan pays nothing until the deductible is exhausted.`,
         `Catastrophic plans generally cannot be purchased with Advance Premium Tax Credits (APTC). They are primarily a financial safety net — not a substitute for comprehensive coverage — and are best suited for otherwise healthy individuals whose primary concern is protection against a catastrophic medical event.`,
       ],

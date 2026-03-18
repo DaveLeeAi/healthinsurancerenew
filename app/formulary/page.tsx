@@ -271,7 +271,7 @@ export default function FormularyIndexPage() {
           </TrustBullet>
           <TrustBullet>
             Built and maintained by a licensed U.S. health insurance agent with CMS
-            Circle of Champions recognition
+            Elite Circle of Champions recognition
           </TrustBullet>
         </ul>
       </section>

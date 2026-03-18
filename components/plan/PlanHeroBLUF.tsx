@@ -75,7 +75,7 @@ function buildBLUF(
     )
   } else if (metal === 'silver') {
     sentences.push(
-      `This is a Silver plan from ${plan.issuer_name} — the most commonly selected tier on the ACA Marketplace.`,
+      `This is a Silver plan from ${plan.issuer_name} — the most commonly selected tier on the Marketplace.`,
     )
     if (premiumContext) sentences.push(premiumContext)
     sentences.push(
@@ -96,7 +96,7 @@ function buildBLUF(
     )
   } else if (metal === 'platinum') {
     sentences.push(
-      `This is a Platinum plan from ${plan.issuer_name} — the highest-coverage tier on the ACA Marketplace, designed for maximum cost predictability.`,
+      `This is a Platinum plan from ${plan.issuer_name} — the highest-coverage tier on the Marketplace, designed for maximum cost predictability.`,
     )
     if (premiumContext) sentences.push(premiumContext)
     if (moop != null)

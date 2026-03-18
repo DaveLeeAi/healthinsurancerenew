@@ -5,6 +5,8 @@ import {
   searchFormulary,
   getPlansByCounty,
   getSbcByPlanVariantId,
+  getAllSbcPlans,
+  getAllPlanStateCountyCombos,
 } from '@/lib/data-loader'
 import {
   getCountyName,
@@ -52,8 +54,50 @@ import PlanCrossLinks from '@/components/plan/PlanCrossLinks'
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
-// Dynamic rendering — loads large datasets on demand
-export const dynamic = 'force-dynamic'
+// ISR — priority seed of top plans + drugs pre-built; remaining pages built on first request
+export const revalidate = 86400
+
+const TOP_DRUGS = [
+  'metformin', 'lisinopril', 'atorvastatin', 'amlodipine', 'omeprazole',
+  'levothyroxine', 'albuterol', 'losartan', 'gabapentin', 'hydrochlorothiazide',
+  'sertraline', 'metoprolol', 'montelukast', 'escitalopram', 'rosuvastatin',
+  'bupropion', 'pantoprazole', 'duloxetine', 'furosemide', 'trazodone',
+]
+
+export async function generateStaticParams() {
+  const params: Array<{
+    'state-name': string
+    'county-slug': string
+    'county-page': string
+  }> = []
+
+  // Priority SBC pages: top 500 plans by state/county
+  const allPlans = getAllSbcPlans()
+    .filter(p => p.state_code && p.county_fips)
+    .slice(0, 500)
+
+  for (const plan of allPlans) {
+    params.push({
+      'state-name': stateCodeToSlug(plan.state_code.toUpperCase()),
+      'county-slug': getCountySlug(plan.county_fips),
+      'county-page': generatePlanSlug(plan.plan_name),
+    })
+  }
+
+  // Priority drug coverage pages: top 20 drugs × top 20 counties
+  const topCounties = getAllPlanStateCountyCombos().slice(0, 20)
+  for (const { state, county } of topCounties) {
+    for (const drug of TOP_DRUGS) {
+      params.push({
+        'state-name': stateCodeToSlug(state.toUpperCase()),
+        'county-slug': getCountySlug(county),
+        'county-page': `${drug}-coverage`,
+      })
+    }
+  }
+
+  return params
+}
 
 // ─── Shared params type ──────────────────────────────────────────────────────
 //

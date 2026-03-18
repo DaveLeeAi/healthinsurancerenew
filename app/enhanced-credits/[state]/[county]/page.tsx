@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import {
   getPolicyByCounty,
   getSubsidyByCounty,
+  getAllPolicyStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -14,6 +15,7 @@ import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplScenarioDetail, AgeScenario } from '@/lib/types'
 import { generatePolicyScenarioContent } from '@/lib/content-templates'
+import { getCountyName } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -22,9 +24,13 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// Dynamic rendering — policy_scenarios.json (65 MB) is too large to
-// process during build. Pages render on-demand via SSR.
-export const dynamic = 'force-dynamic'
+// Static generation — all state/county combos pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  return getAllPolicyStateCountyCombos()
+    .map(({ state, county }) => ({ state, county }))
+}
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -32,7 +38,7 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
   const canonicalUrl = `${SITE_URL}/enhanced-credits/${params.state}/${params.county}`
 
   const title = `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Analysis`
@@ -62,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function EnhancedCreditsPage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
 
   // --- Data loading ---
   const scenario = getPolicyByCounty(stateUpper, params.county)

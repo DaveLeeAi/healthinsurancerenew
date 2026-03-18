@@ -26,7 +26,7 @@ export default function StatesIndexPage() {
       </h1>
       <p className="text-lg text-slate-600 mb-8 max-w-2xl font-serif">
         Select your state to learn about marketplace options, Medicaid expansion status, and
-        2026 enrollment information. Licensed agents are available in 18 states.
+        2026 enrollment information. Licensed agents are available in {configData.licensedStates.length} states.
       </p>
 
       <section className="mb-10">

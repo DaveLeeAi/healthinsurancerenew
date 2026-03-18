@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import SchemaScript from '../../components/SchemaScript'
 
 export const metadata: Metadata = {
   title: 'Data & Methodology | HealthInsuranceRenew',
   description:
-    'Where our numbers come from. Learn about the data sources, formulas, and update process behind the tools and guides on HealthInsuranceRenew.',
+    'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
 }
 
 const breadcrumbs = [
@@ -12,9 +13,100 @@ const breadcrumbs = [
   { name: 'Data & Methodology', url: '/data-methodology' },
 ]
 
+const datasetSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'CMS QHP Landscape Public Use File 2026',
+    description: 'Plan-level data for all qualified health plans available on the ACA Marketplace, including premiums, metal levels, and plan types.',
+    url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    provider: {
+      '@type': 'GovernmentOrganization',
+      name: 'Centers for Medicare & Medicaid Services',
+    },
+    isBasedOn: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    license: 'https://www.usa.gov/government-works',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'CMS Rate Public Use File 2026',
+    description: 'Premium rates by plan, age, tobacco use, and rating area for all ACA Marketplace health plans.',
+    url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    provider: {
+      '@type': 'GovernmentOrganization',
+      name: 'Centers for Medicare & Medicaid Services',
+    },
+    isBasedOn: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    license: 'https://www.usa.gov/government-works',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'CMS Plan Attributes Public Use File 2026',
+    description: 'Detailed benefits, cost-sharing, copays, and SBC data for every ACA Marketplace plan.',
+    url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    provider: {
+      '@type': 'GovernmentOrganization',
+      name: 'Centers for Medicare & Medicaid Services',
+    },
+    isBasedOn: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    license: 'https://www.usa.gov/government-works',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'CMS Formulary Public Use File 2026',
+    description: 'Machine-readable drug formulary files with tier placement, prior authorization, step therapy, and quantity limit data for 551,000+ drug coverage records.',
+    url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    provider: {
+      '@type': 'GovernmentOrganization',
+      name: 'Centers for Medicare & Medicaid Services',
+    },
+    isBasedOn: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    license: 'https://www.usa.gov/government-works',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'CMS SADP Public Use File 2026',
+    description: 'Stand-alone dental plan data including coverage percentages, waiting periods, annual maximums, and orthodontia coverage across 942 plans.',
+    url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    provider: {
+      '@type': 'GovernmentOrganization',
+      name: 'Centers for Medicare & Medicaid Services',
+    },
+    isBasedOn: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    license: 'https://www.usa.gov/government-works',
+  },
+]
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: `https://healthinsurancerenew.com${item.url}`,
+  })),
+}
+
+const dataSchemaIds = [
+  'schema-dataset-landscape',
+  'schema-dataset-rate',
+  'schema-dataset-attributes',
+  'schema-dataset-formulary',
+  'schema-dataset-sadp',
+]
+
 export default function DataMethodologyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb-data" />
+      {datasetSchemas.map((schema, i) => (
+        <SchemaScript key={dataSchemaIds[i]} schema={schema} id={dataSchemaIds[i]} />
+      ))}
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Data &amp; Methodology</h1>
 
@@ -47,6 +139,65 @@ export default function DataMethodologyPage() {
             sourced from CMS and the Kaiser Family Foundation (KFF).
           </li>
         </ul>
+
+        {/* Data Provenance Table */}
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Data Provenance</h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          All datasets are sourced from the{' '}
+          <a
+            href="https://www.cms.gov/marketplace/resources/data/public-use-files"
+            className="text-primary-600 hover:text-primary-700 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CMS Marketplace Public Use Files
+          </a>{' '}
+          page. These are the same government datasets that power Healthcare.gov.
+        </p>
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Data Type</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">CMS Source File</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Records</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Updated</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              <tr>
+                <td className="px-4 py-3 text-slate-700">Health Plans</td>
+                <td className="px-4 py-3 text-slate-600">QHP Landscape PUF</td>
+                <td className="px-4 py-3 text-slate-600">All ACA plans, all states</td>
+                <td className="px-4 py-3 text-slate-600">Annually</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 text-slate-700">Premium Rates</td>
+                <td className="px-4 py-3 text-slate-600">Rate PUF</td>
+                <td className="px-4 py-3 text-slate-600">Age-rated premiums by county</td>
+                <td className="px-4 py-3 text-slate-600">Annually</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 text-slate-700">Plan Benefits</td>
+                <td className="px-4 py-3 text-slate-600">Plan Attributes PUF</td>
+                <td className="px-4 py-3 text-slate-600">Cost-sharing, copays, SBC data</td>
+                <td className="px-4 py-3 text-slate-600">Annually</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 text-slate-700">Drug Formulary</td>
+                <td className="px-4 py-3 text-slate-600">Formulary PUF</td>
+                <td className="px-4 py-3 text-slate-600">551,000+ drug coverage records</td>
+                <td className="px-4 py-3 text-slate-600">Annually</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 text-slate-700">Dental Plans</td>
+                <td className="px-4 py-3 text-slate-600">SADP PUF</td>
+                <td className="px-4 py-3 text-slate-600">942 stand-alone dental plans</td>
+                <td className="px-4 py-3 text-slate-600">Annually</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">How the calculators work</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
@@ -92,7 +243,7 @@ export default function DataMethodologyPage() {
         <p className="text-slate-700 leading-relaxed mb-4">
           All data files are reviewed and updated ahead of each open enrollment period. When the government publishes
           new FPL guidelines, contribution percentages, or affordability thresholds, we update the corresponding data
-          within our tools. Each page shows a "last updated" date so you know when the content was most recently
+          within our tools. Each page shows a &ldquo;last updated&rdquo; date so you know when the content was most recently
           reviewed.
         </p>
         <p className="text-slate-700 leading-relaxed mb-4">

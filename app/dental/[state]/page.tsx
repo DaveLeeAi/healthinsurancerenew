@@ -24,8 +24,15 @@ interface Props {
   params: { state: string }
 }
 
-// Dynamic rendering — renders on-demand via SSR
-export const dynamic = 'force-dynamic'
+// Static generation — all dental states pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  const states = [...new Set(
+    loadDentalCoverage().data.map(d => d.state_code.toLowerCase())
+  )]
+  return states.map(state => ({ state }))
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()

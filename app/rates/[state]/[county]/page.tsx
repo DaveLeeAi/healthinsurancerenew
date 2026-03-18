@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import {
   getRatesByCounty,
   getPlansByCounty,
+  getAllStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import {
@@ -13,6 +14,7 @@ import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { PlanRecord } from '@/lib/types'
 import { generateRateVolatilityContent } from '@/lib/content-templates'
+import { getCountyName } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -21,8 +23,13 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// Dynamic rendering — also loads plan_intelligence.json (107 MB), renders on-demand
-export const dynamic = 'force-dynamic'
+// Static generation — all state/county combos pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  return getAllStateCountyCombos()
+    .map(({ state, county }) => ({ state, county }))
+}
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -30,7 +37,7 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
   const rates = getRatesByCounty(stateUpper, params.county)
 
   const carrierCount = rates?.carrier_count ?? 0
@@ -74,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function RatesPage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
 
   // --- Data loading ---
   const rates = getRatesByCounty(stateUpper, params.county)

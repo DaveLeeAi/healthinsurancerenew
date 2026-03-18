@@ -5,7 +5,7 @@ import config from '../../data/config/config.json'
 export const metadata: Metadata = {
   title: 'CMS Marketplace Elite Circle of Champions Recognition | HealthInsuranceRenew',
   description:
-    'Health Insurance Renew received CMS Marketplace Elite Circle of Champions recognition for the 2022-2023 Open Enrollment Period, enrolling $2.9 million in annual Marketplace premium.',
+    `Health Insurance Renew received ${config.operator.recognition} recognition for the ${config.operator.recognitionPeriod}, enrolling ${config.operator.enrollmentVolume} in annual Marketplace premium.`,
 }
 
 const breadcrumbs = [
@@ -20,9 +20,9 @@ const faqItems = [
       'The Elite Circle of Champions is a recognition program administered by the Centers for Medicare & Medicaid Services (CMS), specifically the Center for Consumer Information and Insurance Oversight (CCIIO). It acknowledges agents and brokers who demonstrate exceptional enrollment performance and commitment to helping consumers access health coverage through the Health Insurance Marketplace.',
   },
   {
-    question: 'What does the 2022-2023 recognition represent?',
+    question: `What does the ${config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} recognition represent?`,
     answer:
-      'The 2022-2023 Elite Circle of Champions recognition reflects significant enrollment activity during the 2023 Open Enrollment Period. For Health Insurance Renew, this included $2.9 million in annual premium enrolled through Marketplace coverage, helping individuals and families in multiple states secure qualified health plans.',
+      `The ${config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} Elite Circle of Champions recognition reflects significant enrollment activity during the ${config.operator.recognitionYear} Open Enrollment Period. For Health Insurance Renew, this included ${config.operator.enrollmentVolume} in annual premium enrolled through Marketplace coverage, helping individuals and families in multiple states secure qualified health plans.`,
   },
   {
     question: 'Does this recognition mean the agent is endorsed by the government?',
@@ -48,8 +48,8 @@ export default function CircleOfChampionsPage() {
         <p className="text-slate-700 leading-relaxed font-serif">
           Health Insurance Renew is operated by a licensed health insurance agent recognized by the Centers for
           Medicare &amp; Medicaid Services (CMS) through the Marketplace Elite Circle of Champions program. This recognition
-          was awarded for the 2022-2023 Open Enrollment Period based on enrollment volume and consumer service, with
-          $2.9 million in annual premium enrolled through Marketplace coverage.
+          was awarded for the {config.operator.recognitionPeriod} based on enrollment volume and consumer service, with
+          {config.operator.enrollmentVolume} in annual premium enrolled through Marketplace coverage.
         </p>
       </div>
 
@@ -73,8 +73,7 @@ export default function CircleOfChampionsPage() {
           2022–2023 Open Enrollment Recognition
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          During the 2022-2023 enrollment cycle, the licensed agent operating Health Insurance Renew enrolled $2.9
-          million in annual premium through Marketplace coverage. This enrollment activity helped individuals and
+          During the {config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} enrollment cycle, the licensed agent operating Health Insurance Renew enrolled {config.operator.enrollmentVolume} in annual premium through Marketplace coverage. This enrollment activity helped individuals and
           families in multiple states secure qualified health plans with applicable premium tax credits and
           cost-sharing reductions.
         </p>
@@ -99,17 +98,17 @@ export default function CircleOfChampionsPage() {
 
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Licensing Information</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          Health Insurance Renew is operated by Dave Lee, a licensed health insurance agent.
+          Health Insurance Renew is operated by {config.operator.name}, a licensed health insurance agent.
         </p>
         <div className="bg-white border border-slate-200 rounded-xl p-4 mb-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div>
               <span className="text-slate-500">Agent:</span>
-              <span className="text-slate-800 font-medium ml-1">Dave Lee</span>
+              <span className="text-slate-800 font-medium ml-1">{config.operator.name}</span>
             </div>
             <div>
               <span className="text-slate-500">NPN:</span>
-              <span className="text-slate-800 font-medium ml-1">7578729</span>
+              <span className="text-slate-800 font-medium ml-1">{config.operator.npn}</span>
             </div>
             <div className="sm:col-span-2">
               <span className="text-slate-500">Licensed States:</span>

@@ -32,11 +32,11 @@ const DATASETS = [
   { file: 'billing_intel.json',      dataKey: 'data',    minRecords: 15,     optional: false },
   { file: 'life_events.json',        dataKey: 'data',    minRecords: 5,      optional: false },
 
-  // --- Optional (gitignored, >100 MB — served from Vercel Blob in prod) ---
-  { file: 'plan_intelligence.json',  dataKey: 'data',    minRecords: 1000,   optional: true },
-  { file: 'sbc_decoded.json',        dataKey: 'data',    minRecords: 10000,  optional: true },
-  { file: 'policy_scenarios.json',   dataKey: 'records', minRecords: 1000,   optional: true },
-  { file: 'formulary_intelligence.json', dataKey: null,   minRecords: 0,     optional: true },
+  // --- Previously gitignored, now committed (slimmed to <95 MB each) ---
+  { file: 'plan_intelligence.json',      dataKey: 'data',    minRecords: 1000,   optional: false },
+  { file: 'sbc_decoded.json',            dataKey: 'data',    minRecords: 10000,  optional: false },
+  { file: 'policy_scenarios.json',       dataKey: 'records', minRecords: 1000,   optional: false },
+  { file: 'formulary_intelligence.json', dataKey: null,      minRecords: 0,      optional: false },
 ]
 
 let passed = 0

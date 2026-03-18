@@ -290,7 +290,7 @@ export function generatePlanComparisonContent(params: PlanComparisonParams): Pag
   const introParagraph =
     `For the ${planYear} plan year, ${nPlans} health insurance plan${nPlans !== 1 ? 's' : ''} from ` +
     `${nCarriers} carrier${nCarriers !== 1 ? 's' : ''} are available in ${countyName}, ${stateCode} ` +
-    `through the ACA Marketplace. Premiums for a 40-year-old range from ${premiumRange} before any ` +
+    `through the Marketplace. Premiums for a 40-year-old range from ${premiumRange} before any ` +
     `subsidy is applied. Source: CMS QHP Landscape PUF, ${planYear} plan year.`
 
   const bodyHtml = `<section class="content-plan-comparison">
@@ -383,7 +383,7 @@ export function generateSubsidyContent(params: SubsidyTemplateParams): PageConte
     `county, regardless of which plan they ultimately select.`
 
   const bodyHtml = `<section class="content-subsidy">
-  <h2>How the ACA Subsidy Formula Works — IRC Section 36B</h2>
+  <h2>How the Marketplace Subsidy Formula Works — IRC Section 36B</h2>
   <p>
     The Advance Premium Tax Credit (APTC) is authorized under Internal Revenue Code Section 36B,
     enacted as part of the Affordable Care Act. The credit equals the difference between the
@@ -531,7 +531,7 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
   const bodyHtml = `<section class="content-sbc">
   <h2>What Is a Summary of Benefits and Coverage (SBC)?</h2>
   <p>
-    The Summary of Benefits and Coverage is a standardized document required by the ACA for all
+    The Summary of Benefits and Coverage is a standardized document required by federal law for all
     health insurance plans. Carriers must provide an SBC in a uniform format so consumers can
     compare plans on an apples-to-apples basis. The SBC shows covered benefits, cost-sharing
     details, deductibles, out-of-pocket limits, and coverage examples for common medical
@@ -657,7 +657,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
 
   <h2>The Age-Rating Factor and Premium Variation</h2>
   <p>
-    Under the ACA, insurers may charge older adults up to 3× the premium charged to a 21-year-old
+    Under federal law, insurers may charge older adults up to 3× the premium charged to a 21-year-old
     for the same plan. In ${countyName}, the average monthly premium for a 21-year-old is
     $${Math.round(avg_premium_age_21).toLocaleString()}, rising to
     $${Math.round(avg_premium_age_40).toLocaleString()} at age 40 and
@@ -733,7 +733,7 @@ export function generateFrictionQAContent(params: FrictionQATemplateParams): Pag
 
   const introParagraph =
     `This page answers: "${qa.question}" — one of the most common questions we receive from ` +
-    `ACA enrollees${locationContext}. The answer below is based on current CMS regulations and ` +
+    `Marketplace enrollees${locationContext}. The answer below is based on current CMS regulations and ` +
     `IRS guidance applicable to the ${PLAN_YEAR} plan year.`
 
   const citationsHtml =
@@ -862,7 +862,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
     <li><strong>Tier 2 — Preferred Brand:</strong> Brand-name drugs with carrier-negotiated preferred pricing. Higher cost-sharing than generics, but lower than non-preferred brands.</li>
     <li><strong>Tier 3 — Non-Preferred Brand:</strong> Brand-name drugs not on the carrier's preferred list. Higher cost-sharing than Tier 2.</li>
     <li><strong>Tier 4 — Specialty:</strong> High-cost or complex medications, including biologics. Typically the highest cost-sharing, often coinsurance-based (e.g., 25–33% of cost).</li>
-    <li><strong>ACA Preventive:</strong> Medications required to be covered at no cost-sharing under the ACA's preventive services mandate (USPSTF Grade A/B recommendations).</li>
+    <li><strong>Preventive ($0):</strong> Medications required to be covered at no cost-sharing under the federal preventive services mandate (USPSTF Grade A/B recommendations).</li>
   </ol>
   <p>
     For ${planYear}, ${drugName} is most commonly classified as <strong>${topTier}</strong>
@@ -972,11 +972,11 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
   const bodyHtml = `<section class="content-dental">
   <h2>Stand-Alone Dental Plans (SADPs) vs Embedded Dental Coverage</h2>
   <p>
-    The ACA requires all Marketplace plans to include pediatric dental as an Essential Health
+    Federal law requires all Marketplace plans to include pediatric dental as an Essential Health
     Benefit, but adult dental is not required. Most marketplace medical plans include limited or no
     adult dental benefits. Stand-alone dental plans (SADPs) — offered separately on the
     Marketplace — provide adult dental coverage and are the primary way to add dental benefits
-    through the ACA exchange.
+    through the Marketplace.
   </p>
   <p>
     SADPs come in Low and High tiers (analogous to Bronze and Gold for dental). Low-tier plans

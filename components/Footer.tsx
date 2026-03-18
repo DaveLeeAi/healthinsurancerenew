@@ -1,29 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import config from '../data/config/config.json'
 
 const currentYear = new Date().getFullYear()
-
-const licensedStates = [
-  { name: 'Alabama', abbr: 'AL', slug: 'alabama' },
-  { name: 'California', abbr: 'CA', slug: 'california' },
-  { name: 'Georgia', abbr: 'GA', slug: 'georgia' },
-  { name: 'Iowa', abbr: 'IA', slug: 'iowa' },
-  { name: 'Kansas', abbr: 'KS', slug: 'kansas' },
-  { name: 'Maryland', abbr: 'MD', slug: 'maryland' },
-  { name: 'Michigan', abbr: 'MI', slug: 'michigan' },
-  { name: 'Missouri', abbr: 'MO', slug: 'missouri' },
-  { name: 'Mississippi', abbr: 'MS', slug: 'mississippi' },
-  { name: 'New Mexico', abbr: 'NM', slug: 'new-mexico' },
-  { name: 'Ohio', abbr: 'OH', slug: 'ohio' },
-  { name: 'Oregon', abbr: 'OR', slug: 'oregon' },
-  { name: 'South Carolina', abbr: 'SC', slug: 'south-carolina' },
-  { name: 'Tennessee', abbr: 'TN', slug: 'tennessee' },
-  { name: 'Texas', abbr: 'TX', slug: 'texas' },
-  { name: 'Utah', abbr: 'UT', slug: 'utah' },
-  { name: 'Virginia', abbr: 'VA', slug: 'virginia' },
-  { name: 'Washington', abbr: 'WA', slug: 'washington' },
-]
+const { licensedStates, operator } = config
 
 const coverageDataLinks = [
   { label: 'Plans', url: '/plans' },
@@ -114,12 +95,15 @@ export default function Footer() {
             <h3 className="text-[#0B1F3B] font-semibold text-sm uppercase tracking-wider mb-4">Trust &amp; Compliance</h3>
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-semibold text-[#0B1F3B]">Licensed U.S. Health Insurance Agent</p>
-                <p className="text-sm text-slate-600 mt-1">NPN: 7578729</p>
+                <p className="text-sm font-semibold text-[#0B1F3B]">
+                  <a href="/editorial-policy" className="hover:text-primary-600 transition-colors">
+                    Reviewed by licensed health insurance professionals
+                  </a>
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-700">CMS Marketplace Certified</p>
-                <p className="text-xs text-slate-500 mt-1">Recognized for enrollment excellence during the 2023 Open Enrollment Period.</p>
+                <p className="text-xs text-slate-500 mt-1">Recognized for enrollment excellence during the {operator.recognitionYear} Open Enrollment Period.</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500 leading-relaxed">
@@ -127,7 +111,7 @@ export default function Footer() {
                 </p>
               </div>
               <ul className="space-y-2 pt-2 border-t border-slate-100">
-                <li><a href="/circle-of-champions" className="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Circle of Champions Recognition</a></li>
+                <li><a href="/circle-of-champions" className="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Elite Circle of Champions Recognition</a></li>
                 <li><a href="/data-methodology" className="text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Data &amp; Methodology</a></li>
               </ul>
             </div>
@@ -147,11 +131,14 @@ export default function Footer() {
           </AccordionSection>
           <AccordionSection title="Trust & Compliance">
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-[#0B1F3B]">Licensed U.S. Health Insurance Agent</p>
-              <p className="text-sm text-slate-600">NPN: 7578729</p>
-              <p className="text-xs text-slate-500">CMS Marketplace Certified. Recognized for enrollment excellence during the 2023 Open Enrollment Period.</p>
+              <p className="text-sm font-semibold text-[#0B1F3B]">
+                <a href="/editorial-policy" className="hover:text-primary-600 transition-colors">
+                  Reviewed by licensed health insurance professionals
+                </a>
+              </p>
+              <p className="text-xs text-slate-500">CMS Marketplace Certified. Recognized for enrollment excellence during the {operator.recognitionYear} Open Enrollment Period.</p>
               <p className="text-xs text-slate-500">Serving clients in {licensedStates.length} states.</p>
-              <a href="/circle-of-champions" className="block text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Circle of Champions Recognition</a>
+              <a href="/circle-of-champions" className="block text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Elite Circle of Champions Recognition</a>
               <a href="/data-methodology" className="block text-sm text-slate-600 hover:text-[#0B1F3B] transition-colors">Data &amp; Methodology</a>
             </div>
           </AccordionSection>
@@ -161,7 +148,7 @@ export default function Footer() {
         <div className="border-t border-slate-200 pt-8">
           <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 mb-6">
             <p className="text-xs text-slate-500 leading-relaxed">
-              <strong className="text-slate-600">Important:</strong> HealthInsuranceRenew.com is not a government website and is not affiliated with Healthcare.gov or any government agency. This website is operated by a licensed health insurance agent (NPN: 7578729) and provides educational information about health insurance options. We may receive compensation from insurance carriers when you enroll through a licensed agent. Information on this site is for educational purposes only and does not constitute legal, tax, or benefits advice.
+              <strong className="text-slate-600">Important:</strong> HealthInsuranceRenew.com is not a government website and is not affiliated with Healthcare.gov or any government agency. This website is operated by licensed health insurance professionals and provides educational information about health insurance options. We may receive compensation from insurance carriers when you enroll through a licensed agent. Information on this site is for educational purposes only and does not constitute legal, tax, or benefits advice.
             </p>
           </div>
           <p className="text-xs text-slate-400 text-center">

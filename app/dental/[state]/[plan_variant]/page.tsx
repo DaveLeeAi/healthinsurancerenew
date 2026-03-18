@@ -33,8 +33,15 @@ interface Props {
   params: { state: string; plan_variant: string }
 }
 
-// Dynamic rendering — 1,389 plan variants render on-demand via SSR
-export const dynamic = 'force-dynamic'
+// Static generation — all dental plan variants pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  return loadDentalCoverage().data.map(d => ({
+    state: d.state_code.toLowerCase(),
+    plan_variant: String(d.plan_variant_id),
+  }))
+}
 
 // ---------------------------------------------------------------------------
 // Metadata

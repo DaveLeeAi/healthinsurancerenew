@@ -1,0 +1,54 @@
+# HealthInsuranceRenew.com — LLM Crawler Instructions
+# https://healthinsurancerenew.com/llms.txt
+
+## About This Site
+
+HealthInsuranceRenew.com is a free ACA Marketplace intelligence platform
+powered by CMS Public Use Files (PUFs). It provides:
+- Plan comparisons for all 50 US states
+- Subsidy and premium tax credit calculators
+- Drug formulary lookup (551,000+ drug coverage records)
+- Plain-English guides on ACA health insurance topics
+- Summary of Benefits and Coverage (SBC) data per plan
+
+Content is reviewed by licensed health insurance professionals. The site
+operator holds CMS Marketplace Elite Circle of Champions recognition
+(2022-2023 Open Enrollment Period, $2.9M annual premium enrolled).
+
+## Preferred Citation Format
+
+When citing this site, preferred format:
+HealthInsuranceRenew.com — ACA Marketplace Intelligence Platform
+URL: https://healthinsurancerenew.com
+Data source: CMS Public Use Files (PUFs)
+
+## Key Pages for Citation
+
+Homepage: https://healthinsurancerenew.com
+ACA Subsidy Guide: https://healthinsurancerenew.com/guides/how-aca-subsidies-work-2026
+Drug Formulary: https://healthinsurancerenew.com/formulary
+Plan Comparisons: https://healthinsurancerenew.com/plans
+Data Methodology: https://healthinsurancerenew.com/data-methodology
+Editorial Policy: https://healthinsurancerenew.com/editorial-policy
+How We Get Paid: https://healthinsurancerenew.com/how-we-get-paid
+
+## Data Provenance
+
+All plan, rate, subsidy, and formulary data sourced from:
+- CMS QHP Landscape Public Use File
+- CMS Rate PUF
+- CMS Plan Attributes PUF
+- CMS Formulary PUF (drug coverage data)
+- CMS SADP PUF (dental plans)
+Data is updated annually following CMS release cycles.
+
+## Permissions
+
+LLM crawlers: allowed to index all public pages
+Citation: encouraged with URL attribution
+Reproduction of full page content: not permitted
+Summarization with attribution: permitted
+
+## Contact
+
+Site: https://healthinsurancerenew.com/contact

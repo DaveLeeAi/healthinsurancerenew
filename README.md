@@ -2,7 +2,7 @@
 
 A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA health insurance data across all US states and counties. Built from CMS Public Use Files (PUFs) with zero manual content entry.
 
-**Owner:** Dave Lee — Licensed health insurance agent, CMS Elite Circle of Champions
+**Operator:** Licensed health insurance agent — CMS Elite Circle of Champions recognition. See `data/config/config.json` for operator details.
 
 ---
 
@@ -254,6 +254,24 @@ pnpm exec tsc --noEmit
 
 ---
 
+## Trust & Editorial Pages
+
+| Route | Purpose |
+|-------|---------|
+| `/editorial-policy` | Editorial standards, data sourcing, review process, correction policy |
+| `/data-methodology` | Full ETL pipeline documentation, CMS PUF provenance, validation steps |
+| `/how-we-get-paid` | Revenue transparency — affiliate, advertising, lead gen disclosures |
+| `/circle-of-champions` | CMS Elite Circle of Champions recognition, enrollment credentials |
+| `/about` | Site mission, operator background, EEAT authority signals |
+| `/licensing` | State licensing disclosures |
+
+### AI Crawler Support
+
+- `public/llms.txt` — LLM-specific crawler instructions, preferred citation format, key page URLs
+- `public/robots.txt` — expanded with sitemap index, crawl-delay guidance, AI bot directives
+
+---
+
 ## SEO / Schema
 
 Every public page includes:
@@ -264,6 +282,14 @@ Every public page includes:
 - Article schema with `isBasedOn` citing CMS dataset
 
 All schema built via `lib/schema-markup.ts`.
+
+### Consumer Copy Standard
+
+Visible UI copy uses "Marketplace" language (what consumers search for), not "ACA":
+- "Marketplace health insurance plans" not "ACA Marketplace plans"
+- "Marketplace coverage" not "ACA coverage"
+- "federal rules" / "federal law" not "ACA rules"
+- Exceptions: schema JSON-LD, data source citations, CFR/regulatory references, "ACA-compliant" / "ACA-mandated" (technical/legal terms)
 
 ---
 

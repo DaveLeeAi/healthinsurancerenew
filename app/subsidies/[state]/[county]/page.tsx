@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import {
   getSubsidyByCounty,
   getPolicyByCounty,
+  getAllSubsidyStateCountyCombos,
 } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
-import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
+import { stateCodeToSlug, getCountySlug, getCountyName } from '@/lib/county-lookup'
 import {
   buildSubsidySchemas,
   buildBreadcrumbSchema,
@@ -21,8 +22,13 @@ interface Props {
   params: { state: string; county: string }
 }
 
-// Dynamic rendering — renders on-demand via SSR
-export const dynamic = 'force-dynamic'
+// Static generation — all state/county combos pre-built at deploy; revalidate daily
+export const revalidate = 86400
+
+export async function generateStaticParams() {
+  return getAllSubsidyStateCountyCombos()
+    .map(({ state, county }) => ({ state, county }))
+}
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -30,7 +36,7 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const stateUpper   = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
   const subsidy      = getSubsidyByCounty(stateUpper, params.county)
 
   const benchmark = subsidy?.benchmark_silver_premium
@@ -66,7 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function SubsidiesPage({ params }: Props) {
   const stateUpper    = params.state.toUpperCase()
-  const countyDisplay = `County ${params.county}`
+  const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
 
   const subsidy         = getSubsidyByCounty(stateUpper, params.county)
   const policyScenario  = getPolicyByCounty(stateUpper, params.county)

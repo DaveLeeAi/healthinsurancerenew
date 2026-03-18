@@ -4,6 +4,16 @@
   "siteUrl": "https://healthinsurancerenew.com",
   "siteDescription": "Health insurance marketplace resource helping individuals and families understand their coverage options, subsidies, and enrollment periods.",
   "updated": "2025-10-01",
+  "operator": {
+    "name": "Dave Lee",
+    "npn": "7578729",
+    "recognition": "CMS Marketplace Elite Circle of Champions",
+    "recognitionPeriod": "2022-2023 Open Enrollment Period",
+    "recognitionYear": "2023",
+    "enrollmentVolume": "$2.9 million",
+    "recognitionBody": "Centers for Medicare & Medicaid Services",
+    "enrollmentUrl": "https://applyhealthinsuranceonline.com"
+  },
   "licensedStates": [
     { "name": "Alabama", "abbr": "AL", "slug": "alabama" },
     { "name": "California", "abbr": "CA", "slug": "california" },

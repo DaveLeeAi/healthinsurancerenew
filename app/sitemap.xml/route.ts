@@ -2,7 +2,8 @@
  * Sitemap index — points to per-type sub-sitemaps at /sitemaps/[type].
  *
  * Sub-sitemaps: static, plans, subsidies, rates, enhanced-credits,
- *               sbc, formulary, dental, faq, billing, life-events
+ *               sbc, formulary, dental, faq, billing, life-events,
+ *               guides, states, drugs
  */
 
 const BASE = 'https://healthinsurancerenew.com'
@@ -19,6 +20,9 @@ const SITEMAP_TYPES = [
   'faq',
   'billing',
   'life-events',
+  'guides',
+  'states',
+  'drugs',
 ] as const
 
 export const revalidate = 86400
