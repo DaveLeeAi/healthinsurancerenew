@@ -14,7 +14,7 @@ import EntityLinkCard from '@/components/EntityLinkCard'
 import type { PlanRecord } from '@/lib/types'
 import { generateRateVolatilityContent } from '@/lib/content-templates'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
 interface Props {

@@ -732,3 +732,146 @@ export function buildPolicyScenarioSchema(params: {
 
   return [datasetSchema, creditCliffSchema]
 }
+
+// ─── MedicalWebPage ──────────────────────────────────────────────────────────
+
+/**
+ * Builds a schema.org/MedicalWebPage for plan detail pages.
+ * Required for YMYL health+financial pages to signal professional review.
+ */
+export function buildMedicalWebPageSchema(params: {
+  name: string
+  description: string
+  url: string
+  dateModified: string
+  medicalAudience?: string
+  /**
+   * CSS selectors for content sections best suited for AI/voice extraction.
+   * Renders a SpeakableSpecification block — signals to Google AI Overviews,
+   * Perplexity, and ChatGPT Browse which sections are high-signal answer candidates.
+   * Example: ['h1', '#plan-bluf', '#fit-summary-heading']
+   */
+  speakableCssSelectors?: string[]
+}): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    name: params.name,
+    description: params.description,
+    url: params.url,
+    dateModified: params.dateModified,
+    reviewedBy: {
+      '@type': 'Organization',
+      name: 'Licensed Insurance Professionals',
+      url: 'https://healthinsurancerenew.com/about/editorial-policy',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'HealthInsuranceRenew',
+      url: 'https://healthinsurancerenew.com',
+    },
+    medicalAudience: params.medicalAudience ?? 'Patient',
+    lastReviewed: params.dateModified,
+    about: {
+      '@type': 'MedicalCondition',
+      name: 'Health Insurance Coverage',
+    },
+    ...(params.speakableCssSelectors && params.speakableCssSelectors.length > 0
+      ? {
+          speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: params.speakableCssSelectors,
+          },
+        }
+      : {}),
+  }
+}
+
+// ─── FinancialProduct (plan) ─────────────────────────────────────────────────
+
+/**
+ * Builds a schema.org/FinancialProduct for ACA plan pages.
+ * Complements the existing buildSbcProductSchema with the FinancialProduct type
+ * for broader AI engine recognition of plan cost data.
+ */
+export function buildFinancialProductSchema(params: {
+  planName: string
+  issuerName: string
+  description: string
+  url: string
+  areaServed: string
+  annualPremiumAge40?: number
+  deductibleIndividual?: number
+  moopIndividual?: number
+  metalLevel: string
+}): object {
+  const {
+    planName,
+    issuerName,
+    description,
+    url,
+    areaServed,
+    annualPremiumAge40,
+    deductibleIndividual,
+    moopIndividual,
+    metalLevel,
+  } = params
+
+  const feesAndCommissionsSpecification = [
+    annualPremiumAge40 != null
+      ? {
+          '@type': 'UnitPriceSpecification',
+          name: 'Monthly Premium (Age 40)',
+          priceCurrency: 'USD',
+          price: annualPremiumAge40,
+          unitText: 'MON',
+        }
+      : null,
+    deductibleIndividual != null
+      ? {
+          '@type': 'UnitPriceSpecification',
+          name: 'Individual Deductible',
+          priceCurrency: 'USD',
+          price: deductibleIndividual,
+          unitText: 'ANN',
+        }
+      : null,
+    moopIndividual != null
+      ? {
+          '@type': 'UnitPriceSpecification',
+          name: 'Individual Out-of-Pocket Maximum',
+          priceCurrency: 'USD',
+          price: moopIndividual,
+          unitText: 'ANN',
+        }
+      : null,
+  ].filter(Boolean)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FinancialProduct',
+    name: planName,
+    description,
+    url,
+    provider: {
+      '@type': 'Organization',
+      name: issuerName,
+    },
+    // Explicit AdministrativeArea entity — enables plan→county graph relationship
+    // for AI knowledge graph extraction (ChatGPT Browse, Perplexity, Google SGE).
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: areaServed,
+    },
+    category: `ACA Marketplace Health Insurance — ${metalLevel.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} Plan`,
+    feesAndCommissionsSpecification:
+      feesAndCommissionsSpecification.length > 0
+        ? feesAndCommissionsSpecification
+        : undefined,
+    isRelatedTo: {
+      '@type': 'Service',
+      name: 'ACA Marketplace Health Insurance',
+      url: 'https://www.healthcare.gov',
+    },
+  }
+}

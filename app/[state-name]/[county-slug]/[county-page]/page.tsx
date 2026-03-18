@@ -5,7 +5,6 @@ import {
   searchFormulary,
   getPlansByCounty,
   getSbcByPlanVariantId,
-  getDentalByState,
 } from '@/lib/data-loader'
 import {
   getCountyName,
@@ -30,15 +29,25 @@ import {
   buildBreadcrumbSchema,
   buildFAQSchema,
   buildSbcProductSchema,
+  buildMedicalWebPageSchema,
+  buildFinancialProductSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import DrugPageCta from '@/components/DrugPageCta'
 import SBCGrid from '@/components/SBCGrid'
-import EntityLinkCard from '@/components/EntityLinkCard'
-import { generateSbcContent } from '@/lib/content-templates'
-import { getRelatedEntities } from '@/lib/entity-linker'
 import { parsePlanSlug, generatePlanSlug } from '@/lib/plan-slug'
 import { getPlanBySlug } from '@/lib/plan-slug-server'
+// ── Plan Decision Engine components ──────────────────────────────────────────
+import PlanHeroBLUF from '@/components/plan/PlanHeroBLUF'
+import PlanFitSummary from '@/components/plan/PlanFitSummary'
+import PlanCostScenario from '@/components/plan/PlanCostScenario'
+import PlanMetalContext from '@/components/plan/PlanMetalContext'
+import PlanNetworkInsight from '@/components/plan/PlanNetworkInsight'
+import PlanDrugFitIntegration from '@/components/plan/PlanDrugFitIntegration'
+import PlanActionGuide from '@/components/plan/PlanActionGuide'
+import PlanFAQ, { buildPlanFAQItems } from '@/components/plan/PlanFAQ'
+import PlanAuthorityBlock from '@/components/plan/PlanAuthorityBlock'
+import PlanCrossLinks from '@/components/plan/PlanCrossLinks'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -93,19 +102,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // ── Plan detail metadata ──
   if (parsePlanSlug(raw)) {
     const countyFips = getFipsFromSlug(params['county-slug'], stateCode)
-    const plan = getPlanBySlug(raw, stateCode, countyFips ?? undefined)
+    if (!countyFips) return { title: 'Plan Not Found | HealthInsuranceRenew' }
+    const plan = getPlanBySlug(raw, stateCode, countyFips)
     if (!plan) return { title: 'Plan Not Found | HealthInsuranceRenew' }
 
     const stateName = getStateName(stateCode)
-    const countyDisplay = countyFips
-      ? (getCountyName(countyFips) ?? countySlugToName(params['county-slug']))
-      : stateName
+    const countyDisplay = getCountyName(countyFips) ?? countySlugToName(params['county-slug'])
     const stateSlug = stateCodeToSlug(stateCode)
-    const countySlug = countyFips ? getCountySlug(countyFips) : null
+    const countySlug = getCountySlug(countyFips)
     const planSlug = generatePlanSlug(plan.plan_name)
-    const canonicalUrl = countySlug
-      ? `${SITE_URL}/${stateSlug}/${countySlug}/${planSlug}`
-      : `${SITE_URL}/${stateSlug}/${planSlug}`
+    const canonicalUrl = `${SITE_URL}/${stateSlug}/${countySlug}/${planSlug}`
 
     const deductible = plan.moop_individual != null ? `$${plan.moop_individual.toLocaleString()} OOP max` : ''
     const title = `${plan.plan_name} Benefits & Coverage ${PLAN_YEAR} | ${countyDisplay}`
@@ -114,17 +120,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `${deductible ? deductible + '. ' : ''}` +
       `Full cost-sharing grid, covered services, exclusions. Source: CMS PUF ${PLAN_YEAR}.`
 
+    const truncDesc = description.slice(0, 160)
     return {
       title,
-      description: description.slice(0, 160),
+      description: truncDesc,
       alternates: { canonical: canonicalUrl },
       openGraph: {
         type: 'article',
         title,
-        description: description.slice(0, 160),
+        description: truncDesc,
         url: canonicalUrl,
         siteName: 'HealthInsuranceRenew',
         locale: 'en_US',
+      },
+      twitter: {
+        card: 'summary',
+        title,
+        description: truncDesc,
       },
     }
   }
@@ -178,9 +190,8 @@ export default async function CountyContentPage({ params }: Props) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PLAN DETAIL PAGE
+// PLAN DETAIL PAGE — Plan Decision Engine
 // Route: /{state-slug}/{county-slug}/{plan-slug}-plan
-// Canonical SBC / plan detail page with clean location-aware URL.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function CountyPlanDetailPage({ params }: Props) {
@@ -189,51 +200,41 @@ async function CountyPlanDetailPage({ params }: Props) {
   if (!stateCode) notFound()
 
   const countyFips = getFipsFromSlug(params['county-slug'], stateCode)
-  const plan = getPlanBySlug(raw, stateCode, countyFips ?? undefined)
+  if (!countyFips) notFound()
+  const plan = getPlanBySlug(raw, stateCode, countyFips)
   if (!plan) notFound()
 
   const stateSlug = stateCodeToSlug(stateCode)
   const stateName = getStateName(stateCode)
-  const countyDisplay = countyFips
-    ? (getCountyName(countyFips) ?? countySlugToName(params['county-slug']))
-    : stateName
-  const resolvedCountySlug = countyFips ? getCountySlug(countyFips) : null
+  const countyDisplay = getCountyName(countyFips) ?? countySlugToName(params['county-slug'])
+  const resolvedCountySlug = getCountySlug(countyFips)
   const planSlug = generatePlanSlug(plan.plan_name)
-  const canonicalUrl = resolvedCountySlug
-    ? `${SITE_URL}/${stateSlug}/${resolvedCountySlug}/${planSlug}`
-    : `${SITE_URL}/${stateSlug}/${planSlug}`
+  const canonicalUrl = `${SITE_URL}/${stateSlug}/${resolvedCountySlug}/${planSlug}`
 
   // ── Data ──
-  const sbc = await getSbcByPlanVariantId(plan.plan_variant_id ?? plan.plan_id)
+  const [sbc, countyPlans] = await Promise.all([
+    getSbcByPlanVariantId(plan.plan_variant_id ?? plan.plan_id),
+    Promise.resolve(getPlansByCounty(stateCode, countyFips)),
+  ])
 
-  const editorial = generateSbcContent({
-    plan,
-    sbc: sbc ?? { plan_variant_id: plan.plan_variant_id ?? '', cost_sharing_grid: {}, exclusions: [] },
-    planYear: PLAN_YEAR,
-  })
+  const emptySbc: SbcRecord = {
+    plan_variant_id: plan.plan_variant_id ?? '',
+    cost_sharing_grid: {},
+    exclusions: [],
+  }
+  const sbcData = sbc ?? emptySbc
 
-  const hasDentalEquivalent = getDentalByState(plan.state_code).some(
-    (d) => d.issuer_name === plan.issuer_name
-  )
-  const entityLinks = getRelatedEntities({
-    pageType: 'plan-detail',
-    plan: {
-      plan_id: plan.plan_id,
-      plan_name: plan.plan_name,
-      issuer_name: plan.issuer_name,
-      state_code: plan.state_code,
-      county_fips: plan.county_fips,
-      plan_variant_id: plan.plan_variant_id,
-    },
-    countyName: countyDisplay,
-    hasFormularyData: true,
-    hasDentalEquivalent,
-  })
+  const exclusions = sbcData.exclusions ?? []
+  const confirmedExclusions = exclusions.filter(e => !e.needs_pdf_parsing)
+  const pendingExclusions = exclusions.filter(e => e.needs_pdf_parsing)
 
   // ── Schema ──
   const breadcrumbItems = [
     { name: 'Home', url: SITE_URL },
-    { name: `${stateName} Health Insurance Plans`, url: `${SITE_URL}/${stateSlug}/health-insurance-plans` },
+    {
+      name: `${stateName} Health Insurance Plans`,
+      url: `${SITE_URL}/${stateSlug}/health-insurance-plans`,
+    },
     ...(resolvedCountySlug
       ? [{ name: countyDisplay, url: `${SITE_URL}/${stateSlug}/${resolvedCountySlug}` }]
       : []),
@@ -249,37 +250,59 @@ async function CountyPlanDetailPage({ params }: Props) {
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
+  const medicalWebPageSchema = buildMedicalWebPageSchema({
+    name: `${plan.plan_name} Benefits & Coverage ${PLAN_YEAR}`,
+    description: `${plan.metal_level} health insurance plan by ${plan.issuer_name} in ${countyDisplay}, ${stateName}. Deductible, out-of-pocket maximum, cost-sharing grid, and exclusions sourced from CMS PUF.`,
+    url: canonicalUrl,
+    dateModified: new Date().toISOString().split('T')[0],
+    // Signals to AI engines (Google AI Overviews, Perplexity, ChatGPT Browse)
+    // which sections are the highest-signal standalone answer candidates.
+    speakableCssSelectors: [
+      'h1',
+      '#plan-bluf',
+      '#fit-summary-heading',
+      '#cost-scenarios-heading',
+      '#plan-faq-heading',
+    ],
+  })
+
+  const financialProductSchema = buildFinancialProductSchema({
+    planName: plan.plan_name,
+    issuerName: plan.issuer_name,
+    description: `${plan.metal_level.replace(/_/g, ' ')} ACA Marketplace health insurance plan available in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}.`,
+    url: canonicalUrl,
+    areaServed: `${countyDisplay}, ${stateName}`,
+    annualPremiumAge40: plan.premiums?.age_40,
+    deductibleIndividual: plan.deductible_individual ?? undefined,
+    moopIndividual: plan.moop_individual ?? undefined,
+    metalLevel: plan.metal_level,
+  })
+
   const sbcSchemas = sbc ? buildSbcProductSchema({ plan, sbc, planYear: PLAN_YEAR }) : []
 
-  const exclusions = sbc?.exclusions ?? []
-  const confirmedExclusions = exclusions.filter((e) => !e.needs_pdf_parsing)
-  const pendingExclusions = exclusions.filter((e) => e.needs_pdf_parsing)
-
-  const deductibleDisplay = plan.moop_individual != null
-    ? `$${plan.moop_individual.toLocaleString()} for an individual`
-    : 'listed in the plan documents'
-  const oopDisplay = plan.moop_individual != null
-    ? `$${plan.moop_individual.toLocaleString()} for an individual`
-    : 'listed in the plan documents'
-  const metalDisplay = plan.metal_level.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
-
-  const sbcFaqs = buildPlanFAQs(plan.plan_name, plan.issuer_name, metalDisplay, deductibleDisplay, oopDisplay, PLAN_YEAR)
-  const faqSchema = buildFAQSchema(sbcFaqs)
+  // Plan-specific FAQs (also used for FAQPage schema)
+  const planFaqs = buildPlanFAQItems(plan, sbc, countyDisplay, PLAN_YEAR)
+  const faqSchema = buildFAQSchema(planFaqs)
 
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb" />
       <SchemaScript schema={articleSchema} id="schema-article" />
+      <SchemaScript schema={medicalWebPageSchema} id="schema-medical-web-page" />
+      <SchemaScript schema={financialProductSchema} id="schema-financial-product" />
       <SchemaScript schema={faqSchema} id="schema-faq" />
       {sbcSchemas.map((schema, i) => (
         <SchemaScript key={i} schema={schema} id={`schema-sbc-${i}`} />
       ))}
 
       <main className="max-w-4xl mx-auto px-4 py-10">
+
         {/* ── Breadcrumbs ── */}
         <nav aria-label="Breadcrumb" className="text-sm text-neutral-400 mb-6">
           <ol className="flex items-center gap-1.5 flex-wrap">
-            <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
+            <li>
+              <Link href="/" className="hover:text-primary-600 transition-colors">Home</Link>
+            </li>
             <li aria-hidden="true">/</li>
             <li>
               <Link href={`/${stateSlug}/health-insurance-plans`} className="hover:text-primary-600 transition-colors">
@@ -316,7 +339,9 @@ async function CountyPlanDetailPage({ params }: Props) {
             <div>
               <div className="text-xs text-neutral-500 mb-1">Monthly Premium (Age 40)</div>
               <div className="text-sm font-semibold text-navy-800">
-                {plan.premiums?.age_40 != null ? `$${plan.premiums.age_40.toLocaleString()}` : 'Get a quote'}
+                {plan.premiums?.age_40 != null
+                  ? `$${plan.premiums.age_40.toLocaleString()}`
+                  : 'Get a quote'}
               </div>
             </div>
             <div>
@@ -335,58 +360,100 @@ async function CountyPlanDetailPage({ params }: Props) {
         </div>
 
         {/* ── Header ── */}
-        <header className="mb-8">
+        <header className="mb-6">
           <div className="flex items-center gap-3 mb-2 flex-wrap">
             <MetalBadge level={plan.metal_level} />
             <span className="text-sm text-neutral-500">{plan.plan_type}</span>
           </div>
           <h1 className="text-3xl font-bold text-navy-900 mb-1">
-            {plan.plan_name} — Summary of Benefits &amp; Coverage {PLAN_YEAR}
+            {plan.plan_name} — Benefits &amp; Coverage {PLAN_YEAR}
           </h1>
           <p className="text-neutral-500">
             {plan.issuer_name} · {countyDisplay}, {stateName}
           </p>
           <p className="text-xs text-neutral-400 mt-2">
-            Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} ·
-            Data Version: CMS Marketplace PUF {PLAN_YEAR} · Plan Year: {PLAN_YEAR}
+            Last Updated:{' '}
+            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} ·
+            CMS Marketplace PUF {PLAN_YEAR} · Plan Year: {PLAN_YEAR}
           </p>
         </header>
 
-        {/* ── Key costs ── */}
-        <section aria-label="Key costs" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <CostBox label="Deductible" sublabel="Individual" value={dollars(plan.deductible_individual)}
-            tooltip="The amount you pay out of pocket for covered services before your plan begins to pay." />
-          <CostBox label="Deductible" sublabel="Family" value={dollars(plan.deductible_family)}
-            tooltip="Combined amount all family members must pay before the plan pays. Usually 2× individual." />
-          <CostBox label="Out-of-Pocket Max" sublabel="Individual" value={dollars(plan.moop_individual)}
-            tooltip="The most you'll pay in a year for covered in-network care. After this, your plan pays 100%." highlight />
-          <CostBox label="Out-of-Pocket Max" sublabel="Family" value={dollars(plan.moop_family)}
-            tooltip={`The most your family will pay combined. ACA sets the max for families in ${PLAN_YEAR}.`} highlight />
+        {/* 1. PlanHeroBLUF — direct answer for AI + user */}
+        <PlanHeroBLUF plan={plan} countyDisplay={countyDisplay} countyPlans={countyPlans} />
+
+        {/* ── Key cost boxes ── */}
+        <section aria-label="Key cost figures" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <CostBox
+            label="Deductible"
+            sublabel="Individual"
+            value={dollars(plan.deductible_individual)}
+            tooltip="The amount you pay before your plan begins to pay for most covered services."
+          />
+          <CostBox
+            label="Deductible"
+            sublabel="Family"
+            value={dollars(plan.deductible_family)}
+            tooltip="Combined amount all family members must pay before the plan pays."
+          />
+          <CostBox
+            label="Out-of-Pocket Max"
+            sublabel="Individual"
+            value={dollars(plan.moop_individual)}
+            tooltip="After reaching this limit, the plan pays 100% of covered in-network costs."
+            highlight
+          />
+          <CostBox
+            label="Out-of-Pocket Max"
+            sublabel="Family"
+            value={dollars(plan.moop_family)}
+            tooltip={`Combined family maximum. ACA sets a federal cap for ${PLAN_YEAR}.`}
+            highlight
+          />
         </section>
 
-        <WhatThisMeansForYou metalLevel={plan.metal_level} />
-        <RealWorldCostExamples metalLevel={plan.metal_level} deductibleIndividual={plan.deductible_individual} />
+        {/* 2. PlanFitSummary — who is this plan good for? */}
+        <PlanFitSummary plan={plan} countyPlans={countyPlans} />
+
+        {/* 3. PlanCostScenario — real-world cost simulations */}
+        <PlanCostScenario plan={plan} sbc={sbc} />
 
         {/* ── Cost-sharing grid ── */}
         {sbc ? (
-          <div className="mb-10"><SBCGrid sbc={sbc} /></div>
+          <div className="mb-10">
+            <SBCGrid sbc={sbc} />
+          </div>
         ) : (
           <div className="mb-10 p-6 bg-neutral-50 rounded-xl border border-neutral-200 text-center">
-            <p className="text-neutral-500">
-              Detailed cost-sharing data is not yet available for this plan variant.
-              Check back soon or contact the carrier directly.
+            <p className="text-neutral-500 text-sm">
+              Detailed cost-sharing data is not yet available for this plan variant. Contact the
+              carrier or visit{' '}
+              <a
+                href="https://www.healthcare.gov"
+                className="text-primary-600 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                HealthCare.gov
+              </a>{' '}
+              for the full SBC document.
             </p>
           </div>
         )}
 
-        {/* ── Exclusions ── */}
+        {/* 4. PlanMetalContext — metal tier explanation (varies by tier) */}
+        <PlanMetalContext plan={plan} countyPlans={countyPlans} />
+
+        {/* 5. PlanNetworkInsight — network type implications */}
+        <PlanNetworkInsight plan={plan} />
+
+        {/* ── Coverage exclusions ── */}
         {exclusions.length > 0 && (
           <section aria-labelledby="exclusions-heading" className="mb-10">
             <h2 id="exclusions-heading" className="text-xl font-semibold text-navy-800 mb-1">
-              What&apos;s NOT Covered
+              What&apos;s Not Covered
             </h2>
             <p className="text-sm text-neutral-500 mb-4">
-              Services and treatments this plan excludes or limits. Always verify with your carrier before receiving care.
+              Services this plan excludes or limits. Verify with the carrier before receiving care.
             </p>
             {confirmedExclusions.length > 0 && (
               <ul className="space-y-2 mb-4">
@@ -404,7 +471,9 @@ async function CountyPlanDetailPage({ params }: Props) {
             {pendingExclusions.length > 0 && (
               <details className="group">
                 <summary className="text-sm font-medium text-neutral-500 cursor-pointer hover:text-neutral-700 transition-colors">
-                  {pendingExclusions.length} additional exclusion{pendingExclusions.length !== 1 ? 's' : ''} identified — details pending SBC document review
+                  {pendingExclusions.length} additional exclusion
+                  {pendingExclusions.length !== 1 ? 's' : ''} identified — details pending SBC
+                  document review
                 </summary>
                 <ul className="mt-3 space-y-2">
                   {pendingExclusions.map((excl, i) => (
@@ -420,80 +489,74 @@ async function CountyPlanDetailPage({ params }: Props) {
               </details>
             )}
             <p className="text-xs text-neutral-400 mt-3">
-              Source: CMS Plan Attributes PUF exclusion fields. Some exclusions require carrier SBC document review for full detail.
+              Source: CMS Plan Attributes PUF. Some exclusions require full SBC document review.
             </p>
           </section>
         )}
 
-        {/* ── Important Notices ── */}
-        <section aria-labelledby="notices-heading" className="mb-10 rounded-xl border border-blue-200 bg-blue-50/50 p-5">
-          <h2 id="notices-heading" className="text-base font-semibold text-blue-900 mb-2">Important Notices</h2>
+        {/* 6. PlanDrugFitIntegration — drug coverage links */}
+        <PlanDrugFitIntegration
+          plan={plan}
+          sbc={sbc}
+          stateSlug={stateSlug}
+          countySlug={resolvedCountySlug ?? params['county-slug']}
+        />
+
+        {/* ── ACA notice ── */}
+        <section
+          aria-labelledby="notices-heading"
+          className="mb-10 rounded-xl border border-blue-200 bg-blue-50/50 p-5"
+        >
+          <h2 id="notices-heading" className="text-base font-semibold text-blue-900 mb-2">
+            Important Notices
+          </h2>
           <ul className="space-y-2 text-sm text-blue-800">
-            <li>This is a summary of benefits and coverage. It is not a contract. The actual plan documents govern actual coverage terms, limitations, and exclusions.</li>
-            <li>Cost-sharing amounts shown apply to in-network providers. Out-of-network costs may be significantly higher.</li>
-            <li>Preventive care services are covered at no cost under all ACA-compliant plans when provided by an in-network provider.</li>
-          </ul>
-        </section>
-
-        {/* ── Editorial content ── */}
-        {editorial && (
-          <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
-        )}
-
-        {/* ── FAQ ── */}
-        <section aria-labelledby="faq-heading" className="mb-10">
-          <h2 id="faq-heading" className="text-xl font-semibold text-navy-800 mb-4">Frequently Asked Questions</h2>
-          <div className="space-y-3">
-            {sbcFaqs.map((faq, i) => (
-              <details key={i} className="group border border-neutral-200 rounded-xl overflow-hidden">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-neutral-50 transition-colors list-none">
-                  <span className="font-medium text-navy-800 text-sm pr-4">{faq.question}</span>
-                  <svg className="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                  </svg>
-                </summary>
-                <div className="px-5 pb-4 text-sm text-neutral-600 leading-relaxed">{faq.answer}</div>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Data Methodology ── */}
-        <section aria-labelledby="methodology-heading" className="mb-6 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-          <h2 id="methodology-heading" className="text-sm font-semibold text-neutral-700 mb-2">Data Methodology</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Plan cost-sharing numbers are derived from CMS Marketplace Public Use Files for plan year {PLAN_YEAR}.
-            Plan details may vary by county and plan variant. Users should confirm coverage with the insurer before enrollment.
-            Data is updated when CMS publishes new PUF releases.
-          </p>
-        </section>
-
-        {/* ── Sources ── */}
-        <section aria-labelledby="sources-heading" className="mb-10 rounded-xl border border-neutral-200 p-5">
-          <h2 id="sources-heading" className="text-sm font-semibold text-neutral-700 mb-3">Sources</h2>
-          <ul className="space-y-2 text-sm">
             <li>
-              <a href="https://www.cms.gov/marketplace/resources/data/public-use-files" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline font-medium">
-                CMS Plan Attributes PUF
-              </a>
-              <span className="text-neutral-500"> — Plan benefit design, metal level, network type, and cost-sharing parameters.</span>
+              This is a summary only. Plan documents (Evidence of Coverage) govern actual coverage
+              terms, limitations, and exclusions.
             </li>
             <li>
-              <a href="https://www.cms.gov/marketplace/resources/data/public-use-files" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline font-medium">
-                CMS Benefits &amp; Cost Sharing PUF
-              </a>
-              <span className="text-neutral-500"> — Per-service copay/coinsurance grid and exclusion data for all plan variants.</span>
+              Cost-sharing shown applies to in-network providers. Out-of-network costs may be
+              substantially higher or not covered.
             </li>
             <li>
-              <a href="https://www.healthcare.gov/health-care-law-protections/summary-of-benefits-and-coverage/" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline font-medium">
-                Healthcare.gov SBC Documentation
-              </a>
-              <span className="text-neutral-500"> — Official ACA guidance on Summary of Benefits and Coverage requirements.</span>
+              ACA-mandated preventive services are covered at $0 when provided in-network, regardless
+              of deductible status (45 CFR § 147.130).
             </li>
           </ul>
         </section>
 
-        <EntityLinkCard links={entityLinks} title="Explore Related Coverage Data" variant="bottom" />
+        {/* 7. PlanActionGuide — 5-step evaluation guide + GlobalCTA */}
+        <PlanActionGuide
+          plan={plan}
+          stateCode={stateCode}
+          countyFips={countyFips}
+          stateSlug={stateSlug}
+          countySlug={resolvedCountySlug ?? params['county-slug']}
+        />
+
+        {/* 8. PlanFAQ — plan-specific questions (4–6, vary by plan attributes) */}
+        <PlanFAQ
+          plan={plan}
+          sbc={sbc}
+          countyDisplay={countyDisplay}
+          planYear={PLAN_YEAR}
+        />
+
+        {/* 9. PlanAuthorityBlock — YMYL authority, CMS/CFR references */}
+        <PlanAuthorityBlock planYear={PLAN_YEAR} />
+
+        {/* 10. PlanCrossLinks — related pages navigation */}
+        <PlanCrossLinks
+          plan={plan}
+          countyDisplay={countyDisplay}
+          stateSlug={stateSlug}
+          countySlug={resolvedCountySlug ?? params['county-slug']}
+          stateCode={stateCode}
+          countyFips={countyFips}
+          countyPlans={countyPlans}
+        />
+
       </main>
     </>
   )
@@ -867,126 +930,6 @@ function CostBox({ label, sublabel, value, tooltip, highlight }: {
   )
 }
 
-const METAL_GUIDANCE: Record<string, string> = {
-  bronze: "Lower-premium plan. You'll pay less each month but more when you use care. Best for healthy people who rarely visit the doctor and want protection against major medical bills.",
-  expanded_bronze: "Lower-premium plan. You'll pay less each month but more when you use care. Best for healthy people who rarely visit the doctor and want protection against major medical bills.",
-  silver: 'The most popular metal level. Balanced premiums and out-of-pocket costs. If your income is under 250% FPL, Silver plans offer extra savings through Cost Sharing Reductions.',
-  gold: 'Higher monthly premium but lower costs when you use care. Good choice if you see doctors regularly, take multiple medications, or have a planned surgery.',
-  platinum: 'Highest premium but lowest out-of-pocket costs. Best for people with ongoing medical needs who want predictable costs.',
-  catastrophic: 'Very low premiums but very high deductible. Only available to people under 30 or with a hardship exemption. Covers 3 primary care visits and preventive care before the deductible.',
-}
-
-function WhatThisMeansForYou({ metalLevel }: { metalLevel: string }) {
-  const key = metalLevel.toLowerCase().replace(/\s+/g, '_')
-  const description = METAL_GUIDANCE[key]
-  if (!description) return null
-  return (
-    <section aria-labelledby="what-this-means-heading" className="mb-6 rounded-xl border border-green-200 bg-green-50/50 p-5">
-      <h2 id="what-this-means-heading" className="text-base font-semibold text-green-900 mb-2">What This Means For You</h2>
-      <p className="text-sm text-green-800 leading-relaxed">{description}</p>
-    </section>
-  )
-}
-
-const METAL_COINSURANCE: Record<string, number> = {
-  bronze: 0.40, expanded_bronze: 0.40, silver: 0.30, gold: 0.20, platinum: 0.10, catastrophic: 0.40,
-}
-
-const COST_EXAMPLES: Array<{ service: string; typicalCharge: number; costLevel: 'low' | 'moderate' | 'high'; note?: string }> = [
-  { service: 'Preventive Care Visit',  typicalCharge: 0,    costLevel: 'low',      note: 'Free — required by law' },
-  { service: 'Primary Care Visit',     typicalCharge: 150,  costLevel: 'low' },
-  { service: 'Specialist Visit',       typicalCharge: 300,  costLevel: 'moderate' },
-  { service: 'Urgent Care Visit',      typicalCharge: 250,  costLevel: 'moderate' },
-  { service: 'Emergency Room Visit',   typicalCharge: 1500, costLevel: 'high' },
-  { service: 'Generic Drug (30-day)',  typicalCharge: 15,   costLevel: 'low' },
-  { service: 'Branded Drug (30-day)',  typicalCharge: 200,  costLevel: 'moderate' },
-]
-
-const COST_LEVEL_STYLES = {
-  low:      { row: 'bg-green-50/40',  badge: 'bg-green-100 text-green-700',  label: 'Low cost' },
-  moderate: { row: 'bg-yellow-50/40', badge: 'bg-yellow-100 text-yellow-700', label: 'Moderate' },
-  high:     { row: 'bg-red-50/40',    badge: 'bg-red-100 text-red-700',      label: 'High cost' },
-}
-
-function RealWorldCostExamples({ metalLevel, deductibleIndividual }: { metalLevel: string; deductibleIndividual?: number | null }) {
-  const key = metalLevel.toLowerCase().replace(/\s+/g, '_')
-  const coinsurance = METAL_COINSURANCE[key]
-  if (coinsurance == null) return null
-  const pct = Math.round(coinsurance * 100)
-  const deductibleDisplay = deductibleIndividual != null ? `$${deductibleIndividual.toLocaleString()}` : 'your'
-  const levelDisplay = metalLevel.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
-  return (
-    <section aria-labelledby="cost-examples-heading" className="mb-10">
-      <h2 id="cost-examples-heading" className="text-xl font-semibold text-navy-800 mb-1">Real-World Cost Examples</h2>
-      <p className="text-sm text-neutral-500 mb-4">
-        Estimates based on {levelDisplay} tier (~{pct}% coinsurance). Before your {deductibleDisplay} deductible is met, you pay the full charge. After your deductible, you pay your coinsurance percentage.
-      </p>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="bg-neutral-50 text-left text-xs uppercase tracking-wide text-neutral-500">
-              <th className="px-4 py-2 font-semibold">Service</th>
-              <th className="px-4 py-2 font-semibold">Cost Level</th>
-              <th className="px-4 py-2 font-semibold">Typical Charge</th>
-              <th className="px-4 py-2 font-semibold">Before Deductible</th>
-              <th className="px-4 py-2 font-semibold">After Deductible</th>
-            </tr>
-          </thead>
-          <tbody>
-            {COST_EXAMPLES.map((ex) => {
-              const style = COST_LEVEL_STYLES[ex.costLevel]
-              const isPreventive = ex.typicalCharge === 0
-              return (
-                <tr key={ex.service} className={`border-t border-neutral-100 ${style.row}`}>
-                  <td className="px-4 py-2 font-medium text-neutral-700">
-                    {ex.service}
-                    {ex.note && <span className="ml-2 text-xs text-green-600">({ex.note})</span>}
-                  </td>
-                  <td className="px-4 py-2"><span className={`px-2 py-0.5 rounded-full text-xs font-medium ${style.badge}`}>{style.label}</span></td>
-                  <td className="px-4 py-2 text-neutral-600">{isPreventive ? '$0' : `~$${ex.typicalCharge.toLocaleString()}`}</td>
-                  <td className="px-4 py-2 text-neutral-600">
-                    {isPreventive ? <span className="text-green-600 font-medium">$0 (free)</span> : <>~${ex.typicalCharge.toLocaleString()} <span className="text-neutral-400 text-xs">(full cost)</span></>}
-                  </td>
-                  <td className="px-4 py-2 font-medium text-primary-700">
-                    {isPreventive ? <span className="text-green-600">$0 (free)</span> : `~$${Math.round(ex.typicalCharge * coinsurance).toLocaleString()}`}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      <p className="text-xs text-neutral-400 mt-3">
-        Estimates only. Actual costs depend on your network provider, specific service codes, and plan cost-sharing rules.
-      </p>
-    </section>
-  )
-}
-
-function buildPlanFAQs(planName: string, issuerName: string, metalDisplay: string, deductibleDisplay: string, oopDisplay: string, planYear: number) {
-  return [
-    {
-      question: 'What is a Summary of Benefits and Coverage?',
-      answer: `A Summary of Benefits and Coverage (SBC) is a standardized document required by the ACA that explains what a health plan covers and what costs you will pay. All insurers must provide an SBC to help consumers compare plans on equal terms. This page presents the SBC data for ${planName} by ${issuerName} for plan year ${planYear}, sourced from CMS Public Use Files.`,
-    },
-    {
-      question: `What does the deductible mean for this plan?`,
-      answer: `The deductible for this plan is ${deductibleDisplay}. This is the amount you must pay out of pocket for covered services before your plan begins to pay. Most services require the deductible to be met first, though ACA-mandated preventive care is always covered at no cost regardless of deductible status.`,
-    },
-    {
-      question: `What is the out-of-pocket maximum for this plan?`,
-      answer: `The out-of-pocket maximum for this plan is ${oopDisplay}. Once you reach this annual limit, your insurer pays 100% of covered in-network costs for the rest of the plan year. The ACA sets a federal cap on out-of-pocket maximums each year to protect enrollees from catastrophic medical bills.`,
-    },
-    {
-      question: `What is the difference between a copay and coinsurance?`,
-      answer: `A copay is a fixed dollar amount you pay for a covered service — for example, $30 for a primary care visit. Coinsurance is a percentage of the cost you pay after your deductible is met — for example, 20% of a hospital bill. This ${metalDisplay} plan uses a combination of both depending on the service type, as shown in the cost-sharing grid above.`,
-    },
-    {
-      question: `Are preventive services covered before the deductible on this plan?`,
-      answer: `Yes. Under the ACA, all qualified health plans must cover preventive services — including annual checkups, immunizations, cancer screenings, and contraception — at no cost to you, even before your deductible is met. This applies when using in-network providers. ${planName} is an ACA-compliant plan and must follow this rule.`,
-    },
-  ]
-}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SHARED SUB-COMPONENTS (drug coverage)
@@ -1102,5 +1045,3 @@ function buildDrugFAQContent(drugName: string, countyDisplay: string, stateName:
   ]
 }
 
-// Suppress unused import warning — SbcRecord is used in the async function
-void (null as unknown as SbcRecord)

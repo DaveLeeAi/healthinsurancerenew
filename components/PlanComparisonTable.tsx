@@ -238,7 +238,7 @@ export default function PlanComparisonTable({ plans }: Props) {
                       plan.state_code && plan.county_fips
                         ? `/${stateCodeToSlug(plan.state_code)}/${getCountySlug(plan.county_fips)}/${generatePlanSlug(plan.plan_name ?? '')}`
                         : plan.state_code
-                        ? `/${stateCodeToSlug(plan.state_code)}/${generatePlanSlug(plan.plan_name ?? '')}`
+                        ? `/${stateCodeToSlug(plan.state_code)}/health-insurance-plans`
                         : '#'
                     }
                     className="text-primary-600 hover:underline hover:text-primary-800"

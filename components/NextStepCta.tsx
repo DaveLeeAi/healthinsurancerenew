@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
+import { CTA_VARIANTS } from '@/lib/cta-config'
 
 type CtaVariant = 'subsidy-calculator' | 'plan-comparison' | 'agent-consultation' | 'custom'
 
@@ -28,12 +29,12 @@ const VARIANTS: Record<Exclude<CtaVariant, 'custom'>, { title: string; descripti
     label: 'Compare Plans',
     // Base href for the index case (no state/county). State+county builds the
     // canonical /{state-slug}/{county-slug} URL in the component body below.
-    href: '/states',
+    href: '/plans',
   },
   'agent-consultation': {
-    title: 'Talk to a Licensed Agent',
-    description: 'Not sure which plan is right for you? A licensed health insurance agent can review your options and help you enroll at no cost.',
-    label: 'Get Free Help',
+    title: CTA_VARIANTS.network.headline,
+    description: CTA_VARIANTS.network.body,
+    label: CTA_VARIANTS.network.buttonText,
     href: '/contact',
   },
 }

@@ -14,7 +14,7 @@ import SubsidyCalculator from '@/components/SubsidyCalculator'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplTierEstimate } from '@/lib/types'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL  = 'https://healthinsurancerenew.com'
 
 interface Props {

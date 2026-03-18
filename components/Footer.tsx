@@ -26,7 +26,7 @@ const licensedStates = [
 ]
 
 const coverageDataLinks = [
-  { label: 'Plans', url: '/states' },
+  { label: 'Plans', url: '/plans' },
   { label: 'Subsidies', url: '/subsidies' },
   { label: 'Rates', url: '/rates' },
   { label: 'Drug Lookup', url: '/formulary' },

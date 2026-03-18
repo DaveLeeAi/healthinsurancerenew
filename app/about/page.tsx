@@ -66,16 +66,18 @@ export default function AboutPage() {
 
       <div className="bg-white border border-slate-200 rounded-2xl p-6 mt-10">
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-primary-100 text-[#0B1F3B] flex items-center justify-center shrink-0 font-bold text-xl">
-            D
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-primary-100 text-[#0B1F3B] flex items-center justify-center shrink-0">
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Dave Lee</h3>
-            <p className="text-sm text-primary-600 mb-2">Licensed Health Insurance Agent</p>
+            <h3 className="text-lg font-semibold text-slate-900">Licensed Health Insurance Agent</h3>
+            <p className="text-sm text-primary-600 mb-2">Site Operator</p>
             <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
-              Dave Lee is a licensed health insurance agent (NPN: 7578729) serving clients in multiple U.S. states. He
-              operates HealthInsuranceRenew to provide clear, educational information about marketplace health coverage
-              options.
+              This site is operated by a licensed health insurance agent (NPN: 7578729) serving clients in multiple
+              U.S. states. HealthInsuranceRenew was built to provide clear, educational information about marketplace
+              health coverage options.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-sm">
               <span className="text-slate-500">NPN: 7578729</span>
@@ -85,17 +87,6 @@ export default function AboutPage() {
                 {config.licensedStates.map((s) => s.abbr).join(', ')}
               </span>
             </div>
-            <a
-              href="https://www.linkedin.com/in/daveleeai/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-primary-600 hover:text-primary-700 transition-colors mt-3"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-              Connect on LinkedIn
-            </a>
           </div>
         </div>
       </div>

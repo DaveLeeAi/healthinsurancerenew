@@ -27,12 +27,6 @@ const nextConfig = {
   // ---------------------------------------------------------------------------
   async redirects() {
     return [
-      // /plans → states index (legacy top-level)
-      {
-        source: '/plans',
-        destination: '/states',
-        permanent: true,
-      },
       // /drugs/:state → drug hub (legacy state-scoped drug index)
       {
         source: '/drugs/:state',

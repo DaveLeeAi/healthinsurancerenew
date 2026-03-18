@@ -114,7 +114,6 @@ function buildEntries(type: string): SitemapEntry[] | null {
 function buildStaticEntries(): SitemapEntry[] {
   const indexPages = [
     '/',
-    '/states',
     '/subsidies',
     '/rates',
     '/formulary',

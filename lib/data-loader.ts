@@ -162,6 +162,12 @@ export function loadPlanIntelligence(): PlanIntelligenceDataset {
       p.plan_name = nameMap[p.plan_id] ?? p.plan_id
     }
   }
+  // Alias oop_max_individual → moop_individual for component compatibility
+  if (dataset.data.length > 0 && dataset.data[0].oop_max_individual != null && dataset.data[0].moop_individual == null) {
+    for (const p of dataset.data) {
+      if (p.oop_max_individual != null) p.moop_individual = p.oop_max_individual
+    }
+  }
   return dataset
 }
 

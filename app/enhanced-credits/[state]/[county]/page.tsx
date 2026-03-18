@@ -15,7 +15,7 @@ import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplScenarioDetail, AgeScenario } from '@/lib/types'
 import { generatePolicyScenarioContent } from '@/lib/content-templates'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
 interface Props {
@@ -606,7 +606,7 @@ function buildFaqs(
   return [
     {
       question: `What are enhanced premium tax credits?`,
-      answer: `Enhanced premium tax credits were introduced by the American Rescue Plan Act in 2021 and extended by the Inflation Reduction Act through 2025. They lower the percentage of income that households must contribute toward benchmark silver plan premiums and eliminate the 400% FPL income cap on subsidy eligibility.`,
+      answer: `Enhanced premium tax credits were introduced by the American Rescue Plan Act in 2021 and extended by the Inflation Reduction Act. Enhanced credits remain available for the 2026 plan year. They lower the percentage of income that households must contribute toward benchmark silver plan premiums and eliminate the 400% FPL income cap on subsidy eligibility.`,
     },
     {
       question: `What happens if enhanced credits expire in ${countyDisplay}, ${stateUpper}?`,

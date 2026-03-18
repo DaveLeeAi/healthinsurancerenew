@@ -31,7 +31,7 @@ const noDataStates = allStates.filter(s => !STATES_WITH_DATA.has(s.abbr))
 // Drug categories for "Common medications people check"
 // Each category links to a real hub page at /drugs/categories/[id]
 // Pills link to /formulary/[state]/[drug-slug] for immediate drug lookup
-// Source: Definitive Healthcare 2025 claims data + ClinCalc DrugStats 2023
+// Source: Definitive Healthcare 2025 claims data (most recent available) + ClinCalc DrugStats 2023
 const DRUG_CATEGORIES = [
   {
     label: 'Diabetes',

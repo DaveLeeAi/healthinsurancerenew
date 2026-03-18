@@ -103,13 +103,32 @@ Pre-built at deploy via `generateStaticParams()` for all 20 categories (diabetes
 ### Drug Hub Index
 `/drugs` — Master index with priority category grid, full 20-category grid, 8 featured comparisons
 
+### Plans Index
+`/plans` — Plan discovery and comparison index
+
+Distinct from `/states`. Intent: discover and compare marketplace plan inventory.
+
+- **FFM states** (federal exchange): state cards showing county count + plan count, linking into county comparison
+- **SBM states** (own exchange): state cards linking to state's plan hub + exchange info
+- **Missing-inventory states**: greyed tiles with alternative CTAs (subsidy calculator, drug lookup, healthcare.gov) — inventory gaps are handled inside `/plans`, never by redirecting to `/states`
+
 ### County Plan Comparison
 `/{state-slug}/{county-slug}` — All marketplace plans for a county
 
 **Legacy redirects (301):**
 - `/plans/{state}/{fips}` → `/{state-slug}/{county-slug}`
 - `/plans/{state}` → `/{state-slug}/health-insurance-plans`
-- `/plans` → `/states`
+
+### Navigation Architecture
+
+`/plans` and `/states` are **intentionally distinct** destinations:
+
+| Nav item | Route | Intent |
+|----------|-------|--------|
+| Plans | `/plans` | Discover and compare marketplace plan inventory by state/county |
+| States | `/states` | State education directory — exchange type, Medicaid expansion, enrollment guides |
+
+These must never resolve to the same page. If plan inventory is missing for a state, the gap is handled inside `/plans` with alternative CTAs — users are never silently redirected from Plans to States.
 
 ### Other Routes
 - `/{state-slug}/health-insurance-plans` — State marketplace plans index (canonical state route)
@@ -267,12 +286,22 @@ components/             # React TSX components
   SBCGrid.tsx           # Cost-sharing grid
   SchemaScript.tsx      # JSON-LD injector
   EntityLinkCard.tsx    # Related page links
+  GlobalCTA.tsx         # Sitewide agent-consultation CTA block
+  plan/                 # Plan detail sub-components (SBC page sections)
+    PlanHeroBLUF.tsx    #   Above-the-fold plan snapshot + BLUF summary
+    PlanMetalContext.tsx #   Metal tier educational callout
+    PlanCostScenario.tsx #  Real-world cost scenario table
+    PlanFitSummary.tsx  #   Plan fit summary for target enrollee types
+    PlanFAQ.tsx         #   Plan-specific FAQ section
+    PlanCrossLinks.tsx  #   Related plan/county cross-links
+    ...                 #   + 5 additional plan detail components
   ...
 lib/
   data-loader.ts        # Loads processed JSON datasets
   schema-markup.ts      # All Schema.org builders
   content-templates.ts  # Editorial content generators
   entity-linker.ts      # Cross-page link logic
+  cta-config.ts         # Centralized CTA variants (network / generic)
   drug-linking.ts       # Drug category taxonomy + internal linking helpers (20 categories, ~200 drugs)
   formulary-helpers.ts  # CMS tier → consumer-facing label mapping
   county-lookup.ts      # FIPS ↔ county name/slug ↔ state code/slug conversions (3,235 counties)

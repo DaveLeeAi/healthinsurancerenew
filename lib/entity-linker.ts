@@ -81,7 +81,7 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
       if (st) {
         return `${BASE_URL}/${stateCodeToSlug(st.toUpperCase())}/health-insurance-plans`
       }
-      return `${BASE_URL}/states`
+      return `${BASE_URL}/plans`
     }
     case 'subsidy':
       return `${BASE_URL}/subsidies/${st}/${county}`
@@ -97,11 +97,8 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
         const countySlug = getCountySlug(county)
         return `${BASE_URL}/${stateSlug}/${countySlug}/${planSlug}`
       }
-      if (planSlug && st) {
-        return `${BASE_URL}/${stateCodeToSlug(st.toUpperCase())}/${planSlug}`
-      }
-      // Fallback: no plan name or location context available
-      return `${BASE_URL}/states`
+      // County is required for a valid plan/SBC canonical — fall back to plans index
+      return `${BASE_URL}/plans`
     }
     case 'formulary': {
       const drugSlug = (params.drug_name ?? '').toLowerCase().replace(/\s+/g, '-')
@@ -130,11 +127,11 @@ export function planLink(
   if (stateCode && countyFips) {
     href = `/${stateCodeToSlug(stateCode)}/${getCountySlug(countyFips)}/${generatePlanSlug(planName)}`
   } else if (stateCode) {
-    href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
+    // County is required for plan-detail canonical; fall back to state plans index
+    href = `/${stateCodeToSlug(stateCode)}/health-insurance-plans`
   } else {
-    // plan_id without location context — link to state index; callers should
-    // always provide at least stateCode when possible.
-    href = `/states`
+    // No location context — fall back to plans index
+    href = `/plans`
   }
   void planId // plan_id is retained in the signature for future resolution
   return {
@@ -261,10 +258,11 @@ export function sbcLink(
   if (stateCode && countyFips) {
     href = `/${stateCodeToSlug(stateCode)}/${getCountySlug(countyFips)}/${generatePlanSlug(planName)}`
   } else if (stateCode) {
-    href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
+    // County is required for SBC canonical; fall back to state plans index
+    href = `/${stateCodeToSlug(stateCode)}/health-insurance-plans`
   } else {
-    // Callers should always provide at least stateCode when possible.
-    href = `/states`
+    // No location context — fall back to plans index
+    href = `/plans`
   }
   void planId // plan_id retained for future resolution
   return {

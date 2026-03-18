@@ -386,7 +386,7 @@ const DRUG_COMPARISON_DATA: Record<string, {
   ozempic: { type: 'Brand (GLP-1 agonist)', tier: 'Tier 3–4 (Preferred/Non-Preferred Brand)', pa: 'Often required', genericAvailable: 'No', approvedUse: 'Type 2 diabetes' },
   wegovy: { type: 'Brand (GLP-1 agonist)', tier: 'Tier 4 (Specialty)', pa: 'Required on most plans', genericAvailable: 'No', approvedUse: 'Chronic weight management (BMI ≥30)' },
   mounjaro: { type: 'Brand (GIP/GLP-1 agonist)', tier: 'Tier 4 (Specialty)', pa: 'Required on most plans', genericAvailable: 'No', approvedUse: 'Type 2 diabetes' },
-  jardiance: { type: 'Brand (SGLT2 inhibitor)', tier: 'Tier 3 (Non-Preferred Brand)', pa: 'Varies by plan', genericAvailable: 'No (until 2025)', approvedUse: 'Type 2 diabetes, heart failure' },
+  jardiance: { type: 'Brand (SGLT2 inhibitor)', tier: 'Tier 3 (Non-Preferred Brand)', pa: 'Varies by plan', genericAvailable: 'No (patent protected through 2028+)', approvedUse: 'Type 2 diabetes, heart failure' },
   lisinopril: { type: 'Generic (ACE inhibitor)', tier: 'Tier 1 (Generic)', pa: 'Not required', genericAvailable: 'Yes', approvedUse: 'Hypertension, heart failure, CKD' },
   losartan: { type: 'Generic (ARB)', tier: 'Tier 1 (Generic)', pa: 'Not required', genericAvailable: 'Yes', approvedUse: 'Hypertension, diabetic nephropathy' },
   amlodipine: { type: 'Generic (CCB)', tier: 'Tier 1 (Generic)', pa: 'Not required', genericAvailable: 'Yes', approvedUse: 'Hypertension, angina' },

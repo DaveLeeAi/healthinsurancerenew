@@ -6,7 +6,7 @@ const navLinks = [
   { label: 'Guides', href: '/guides' },
   { label: 'Tools', href: '/tools' },
   { label: 'States', href: '/states' },
-  { label: 'Plans', href: '/states' },
+  { label: 'Plans', href: '/plans' },
   { label: 'Subsidies', href: '/subsidies' },
   { label: 'Drug Lookup', href: '/formulary' },
   { label: 'Dental', href: '/dental' },
@@ -32,7 +32,7 @@ export default function Header() {
 
           <div className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-600">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="hover:text-primary-600 transition-colors">
+              <a key={link.label} href={link.href} className="hover:text-primary-600 transition-colors">
                 {link.label}
               </a>
             ))}
@@ -59,7 +59,7 @@ export default function Header() {
           <div className="md:hidden pb-4 border-t border-slate-100 mt-2 pt-4">
             <div className="flex flex-col gap-3 text-sm font-medium text-slate-600">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} className="hover:text-primary-600 transition-colors py-1">
+                <a key={link.label} href={link.href} className="hover:text-primary-600 transition-colors py-1">
                   {link.label}
                 </a>
               ))}

@@ -3,7 +3,7 @@ import { getPolicyByState } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 
-const PLAN_YEAR = 2025
+const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
 interface Props {

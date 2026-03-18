@@ -70,14 +70,14 @@ export interface PageContent {
 // ─── Shared builders ─────────────────────────────────────────────────────────
 
 /**
- * Returns the author attribution block for Dave Lee.
+ * Returns the author attribution block for the site operator.
  * Include on every public page.
  */
 export function buildAuthorBlock(): AuthorBlock {
   const schemaOrg = {
     '@context': 'https://schema.org',
     '@type': 'Person' as const,
-    name: 'Dave Lee',
+    name: 'Licensed Health Insurance Agent',
     jobTitle: 'Licensed Health Insurance Agent',
     award: 'CMS Elite Circle of Champions',
     knowsAbout: [
@@ -87,7 +87,7 @@ export function buildAuthorBlock(): AuthorBlock {
       'Plan comparison and selection',
       'Subsidy optimization strategies',
     ],
-    url: `${BASE_URL}/about/dave-lee`,
+    url: `${BASE_URL}/about`,
   }
 
   const html = `<aside class="author-attribution" aria-label="Content reviewer">
@@ -95,7 +95,7 @@ export function buildAuthorBlock(): AuthorBlock {
     <div class="author-attribution__meta">
       <span class="author-attribution__label">Reviewed by</span>
       <strong class="author-attribution__name" itemprop="author" itemscope itemtype="https://schema.org/Person">
-        <span itemprop="name">Dave Lee</span>
+        <span itemprop="name">Licensed Health Insurance Agent</span>
       </strong>
       <span class="author-attribution__title">Licensed Health Insurance Agent</span>
       <span class="author-attribution__credential">CMS Elite Circle of Champions</span>

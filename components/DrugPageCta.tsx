@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import config from '@/data/config/config.json'
 import { stateCodeToSlug } from '@/lib/county-lookup'
+import { CTA_CONFIG } from '@/lib/cta-config'
 
 const LICENSED_ABBRS = new Set(
   (config.licensedStates as { abbr: string }[]).map((s) => s.abbr.toUpperCase())
@@ -26,7 +27,7 @@ function getCtaHref(stateCode?: string): string {
   if (stateCode) {
     return `/${stateCodeToSlug(stateCode.toUpperCase())}/health-insurance-plans`
   }
-  return '/states'
+  return '/plans'
 }
 
 export default function DrugPageCta({
@@ -70,7 +71,7 @@ export default function DrugPageCta({
         </h2>
         <p className="text-sm text-primary-700 max-w-lg mx-auto mb-2 leading-relaxed">
           {licensed
-            ? 'A licensed agent can help you compare plans that cover your medications and minimize your costs.'
+            ? CTA_CONFIG.body
             : 'Compare marketplace plans to find coverage that includes your medications at the lowest cost.'}
         </p>
         {costRange && stateLabel && (
@@ -99,7 +100,7 @@ export default function DrugPageCta({
         href={licensed ? '/contact' : href}
         className="inline-block px-5 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
       >
-        {licensed ? 'Get Help From a Licensed Agent' : 'Get Help'} &rarr;
+        {licensed ? CTA_CONFIG.buttonText : 'Get Help'} &rarr;
       </Link>
     </section>
   )
