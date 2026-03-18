@@ -211,7 +211,7 @@ export default function SubsidiesStatePage({ params }: Props) {
                     href={`/subsidies/${params.state}/${county}`}
                     className="block p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
                   >
-                    <span className="text-sm font-medium text-primary-700">{getCountyName(county)}</span>
+                    <span className="text-sm font-medium text-primary-700">{getCountyName(county) ?? 'Unknown County'}</span>
                   </a>
                 ))}
               </div>

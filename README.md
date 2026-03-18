@@ -34,8 +34,10 @@ A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA hea
 
 ## Public Pages
 
-### Plan Details
-`/plan-details/[plan_id]/[slug]` — Full SBC for any ACA plan
+### Plan Details / SBC
+`/{state-slug}/{county-slug}/{plan-slug}-plan` — Full SBC for any ACA plan (canonical URL)
+
+URL example: `/north-carolina/wake-county/blue-advantage-bronze-plan`
 
 Features:
 - Plan Snapshot card (metal level, plan type, premium, deductible, OOP max)
@@ -43,9 +45,16 @@ Features:
 - Cost-sharing grid (12 service categories from BenCS PUF)
 - Exclusions section (confirmed + pending PDF review)
 - FAQ section (5 Q&As with plan-specific data) + FAQPage JSON-LD schema
+- Location-aware breadcrumbs: Home › {State} Health Insurance Plans › {County} › {Plan Name}
 - Data Methodology block + Source Citations (CMS Plan Attributes PUF, BenCS PUF, Healthcare.gov)
 - Data version bar: CMS Marketplace PUF 2026
 - Schema: Article, BreadcrumbList, FAQPage, MedicalEntity
+
+**Legacy redirects (301):**
+- `/plan-details/{plan_id}/{slug}` → `/{state}/{county}/{plan-slug}-plan`
+- `/{state-slug}/{plan-slug}-plan` (no county) → `/{state}/{county}/{plan-slug}-plan` (county resolved from data)
+
+**Plan slug format:** `{plan-name-lowercased-hyphenated}-plan` (always ends in `-plan`; no double suffix)
 
 ### Formulary
 `/formulary/[issuer]/[drug_name]` — Drug coverage by insurer
@@ -94,14 +103,36 @@ Pre-built at deploy via `generateStaticParams()` for all 20 categories (diabetes
 ### Drug Hub Index
 `/drugs` — Master index with priority category grid, full 20-category grid, 8 featured comparisons
 
+### County Plan Comparison
+`/{state-slug}/{county-slug}` — All marketplace plans for a county
+
+**Legacy redirects (301):**
+- `/plans/{state}/{fips}` → `/{state-slug}/{county-slug}`
+- `/plans/{state}` → `/{state-slug}/health-insurance-plans`
+- `/plans` → `/states`
+
 ### Other Routes
-- `/plans/[state]/[county]` — Plan comparison by county (includes 12-drug coverage quick-link pills)
+- `/{state-slug}/health-insurance-plans` — State plans index
 - `/subsidies/[state]/[county]` — APTC subsidy calculator
 - `/rates/[state]/[county]` — Rate volatility by county
 - `/dental/[state]` — Dental plan comparison
 - `/enhanced-credits/**` — Policy scenario modeling
 - `/life-events` — SEP and transition guides
 - `/faq` — Friction & guidance Q&A
+
+### Plan Source Adapters (`lib/plan-sources/`)
+
+Adapter-ready architecture for federal (Healthcare.gov) and state-based marketplace (SBM) data:
+
+| File | Purpose |
+|------|---------|
+| `source-registry.ts` | Maps all 50 states + DC to source type (FFM vs SBM) |
+| `federal-adapter.ts` | Wraps CMS PUF data loaders (`plan`, `formulary`, `sbc`) |
+| `sbm-adapter.ts` | Scaffold for SBM states — formulary delegates to federal adapter |
+
+SBM states (no county-level plan data in federal PUF): CA, CO, CT, DC, ID, KY, MA, MD, ME, MN, NJ, NM, NV, NY, OR, PA, RI, VT, WA
+
+Add per-state SBM support via `lib/plan-sources/states/sbm-{state}.ts`.
 
 ---
 
@@ -237,6 +268,8 @@ lib/
   drug-linking.ts       # Drug category taxonomy + internal linking helpers (20 categories, ~200 drugs)
   formulary-helpers.ts  # CMS tier → consumer-facing label mapping
   county-lookup.ts      # FIPS ↔ county name/slug ↔ state code/slug conversions (3,235 counties)
+  plan-slug.ts          # Plan URL slug generation, parsing, lookup (generatePlanSlug / getPlanBySlug)
+  plan-sources/         # Source adapter pattern — federal-adapter, sbm-adapter, source-registry
   types.ts              # All TypeScript interfaces
 content/                # Markdown (guides, FAQ, state pages, tool descriptions)
 data/

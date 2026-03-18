@@ -54,17 +54,26 @@ export function getStateCodeFromFips(fips: string): string | null {
 /**
  * Returns the consumer-facing county name for a 5-digit FIPS code.
  * e.g. "37183" → "Wake County"
- * Falls back to a formatted placeholder if lookup is unavailable.
+ *
+ * If the lookup file is unavailable the function returns null rather than
+ * exposing raw FIPS codes or machine-like labels in the public UI.
+ * Callers must guard against null and either notFound() or show an error.
  */
-export function getCountyName(fips: string): string {
+export function getCountyName(fips: string): string | null {
   const lookup = loadLookup()
   const base = lookup[fips]
   if (base) return `${base} County`
+  return null
+}
 
-  // Graceful fallback: format FIPS into something readable
-  const stateCode = getStateCodeFromFips(fips)
-  if (stateCode) return `${stateCode} County (${fips})`
-  return `County ${fips}`
+/**
+ * Same as getCountyName but throws if the name cannot be resolved.
+ * Use this in contexts where a missing county name is a hard error.
+ */
+export function requireCountyName(fips: string): string {
+  const name = getCountyName(fips)
+  if (!name) throw new Error(`County name not found for FIPS ${fips}`)
+  return name
 }
 
 /**

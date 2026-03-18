@@ -1,6 +1,8 @@
 // lib/entity-linker.ts — Cross-pillar entity linking engine
 
 import type { PlanRecord } from './types'
+import { stateCodeToSlug, getCountySlug } from './county-lookup'
+import { generatePlanSlug } from './plan-slug'
 
 const BASE_URL = 'https://healthinsurancerenew.com'
 
@@ -70,8 +72,14 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
   const county = params.county ?? ''
 
   switch (pageType) {
-    case 'plans':
+    case 'plans': {
+      if (st && county) {
+        const stateSlug = stateCodeToSlug(st.toUpperCase())
+        const countySlug = getCountySlug(county)
+        return `${BASE_URL}/${stateSlug}/${countySlug}`
+      }
       return `${BASE_URL}/plans/${st}/${county}`
+    }
     case 'subsidy':
       return `${BASE_URL}/subsidies/${st}/${county}`
     case 'rates':
@@ -80,10 +88,17 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
       return `${BASE_URL}/enhanced-credits/${st}/${county}`
     case 'plan-detail':
     case 'sbc': {
-      const nameSlug = params.plan_name ? slugify(params.plan_name) : ''
-      return nameSlug
-        ? `${BASE_URL}/plan-details/${params.plan_id ?? ''}/${nameSlug}`
-        : `${BASE_URL}/plan-details/${params.plan_id ?? ''}`
+      const planSlug = params.plan_name ? generatePlanSlug(params.plan_name) : ''
+      if (planSlug && st && county) {
+        const stateSlug = stateCodeToSlug(st.toUpperCase())
+        const countySlug = getCountySlug(county)
+        return `${BASE_URL}/${stateSlug}/${countySlug}/${planSlug}`
+      }
+      if (planSlug && st) {
+        return `${BASE_URL}/${stateCodeToSlug(st.toUpperCase())}/${planSlug}`
+      }
+      // Last-resort fallback — route is a 301 redirect to the correct URL
+      return `${BASE_URL}/plan-details/${params.plan_id ?? ''}`
     }
     case 'formulary': {
       const drugSlug = (params.drug_name ?? '').toLowerCase().replace(/\s+/g, '-')
@@ -102,9 +117,23 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
 
 // ─── Primitive link builders (public — use in page components) ───────────────
 
-export function planLink(planId: string, planName: string): EntityLink {
+export function planLink(
+  planId: string,
+  planName: string,
+  stateCode?: string,
+  countyFips?: string
+): EntityLink {
+  let href: string
+  if (stateCode && countyFips) {
+    href = `/${stateCodeToSlug(stateCode)}/${getCountySlug(countyFips)}/${generatePlanSlug(planName)}`
+  } else if (stateCode) {
+    href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
+  } else {
+    // Fallback — 301 redirects to the clean URL
+    href = `/plan-details/${planId}/${slugify(planName)}`
+  }
   return {
-    href: `/plan-details/${planId}/${slugify(planName)}`,
+    href,
     label: `View full plan details and SBC for ${planName}`,
     type: 'plan',
     relevanceScore: 80,
@@ -118,7 +147,7 @@ export function countyPlansLink(
 ): EntityLink {
   const display = countyName ? `${countyName}, ${stateCode}` : `${stateCode} county ${countyFips}`
   return {
-    href: `/plans/${stateCode.toLowerCase()}/${countyFips}`,
+    href: `/${stateCodeToSlug(stateCode)}/${getCountySlug(countyFips)}`,
     label: `Compare ${CURRENT_YEAR} marketplace health plans in ${display}`,
     type: 'plan',
     relevanceScore: 90,
@@ -217,9 +246,22 @@ export function dentalLink(
   }
 }
 
-export function sbcLink(planId: string, planName: string): EntityLink {
+export function sbcLink(
+  planId: string,
+  planName: string,
+  stateCode?: string,
+  countyFips?: string
+): EntityLink {
+  let href: string
+  if (stateCode && countyFips) {
+    href = `/${stateCodeToSlug(stateCode)}/${getCountySlug(countyFips)}/${generatePlanSlug(planName)}`
+  } else if (stateCode) {
+    href = `/${stateCodeToSlug(stateCode)}/${generatePlanSlug(planName)}`
+  } else {
+    href = `/plan-details/${planId}/${slugify(planName)}`
+  }
   return {
-    href: `/plan-details/${planId}/${slugify(planName)}`,
+    href,
     label: `View full SBC cost-sharing details for ${planName}`,
     type: 'sbc',
     relevanceScore: 75,
@@ -415,7 +457,7 @@ function buildCountyLinks(
 
   if (current !== 'plans') {
     links.push({
-      href: `/plans/${st}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare ${CURRENT_YEAR} marketplace health plans available in ${cn}`,
       type: 'plan',
       relevanceScore: 95,
@@ -480,7 +522,7 @@ function buildPlanDetailLinks(
 
   if (county) {
     links.push({
-      href: `/plans/${st.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(st)}/${getCountySlug(county)}`,
       label: `Compare all ${CURRENT_YEAR} marketplace plans in ${cn}`,
       type: 'plan',
       relevanceScore: 92,
@@ -549,16 +591,9 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
   const cn = countyDisplay(st, county ?? '', countyName)
   const links: EntityLink[] = []
 
-  links.push({
-    href: `/plan-details/${plan.plan_id}/${slugify(plan.plan_name)}`,
-    label: `Full plan overview for ${plan.plan_name}`,
-    type: 'plan',
-    relevanceScore: 95,
-  })
-
   if (county) {
     links.push({
-      href: `/plans/${st.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(st)}/${getCountySlug(county)}`,
       label: `Compare all ${CURRENT_YEAR} marketplace plans in ${cn}`,
       type: 'plan',
       relevanceScore: 88,
@@ -610,6 +645,7 @@ function buildFormularyLinks(
 
   relatedPlans.slice(0, 3).forEach(({ id, name }, i) => {
     links.push({
+      // plan-details route is a 301 redirect to the clean URL (state/county context unknown here)
       href: `/plan-details/${id}/${slugify(name)}`,
       label: `View plan details and full SBC for a marketplace plan covering ${drugName}`,
       type: 'plan',
@@ -628,7 +664,7 @@ function buildFormularyLinks(
   if (state && county) {
     const cn = countyDisplay(state, county, countyName)
     links.push({
-      href: `/plans/${state.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare marketplace plans in ${cn} that cover ${drugName}`,
       type: 'plan',
       relevanceScore: 80,
@@ -678,7 +714,7 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
       relevanceScore: 88,
     })
     links.push({
-      href: `/plans/${state.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare ${CURRENT_YEAR} marketplace plans available in ${cn}`,
       type: 'plan',
       relevanceScore: 85,
@@ -773,7 +809,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
   if (state && county) {
     const cn = countyDisplay(state, county, countyName)
     links.push({
-      href: `/plans/${state.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare ${CURRENT_YEAR} marketplace plans with the best cost-sharing in ${cn}`,
       type: 'plan',
       relevanceScore: 90,
@@ -878,7 +914,7 @@ function buildLifeEventLinks(
       relevanceScore: 95,
     })
     links.push({
-      href: `/plans/${state.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare ${CURRENT_YEAR} marketplace plans in ${cn} available during your SEP window`,
       type: 'plan',
       relevanceScore: 90,
@@ -978,7 +1014,7 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
   if (county) {
     const cn = countyDisplay(state, county, countyName)
     links.push({
-      href: `/plans/${state.toLowerCase()}/${county}`,
+      href: `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`,
       label: `Compare ${CURRENT_YEAR} marketplace medical plans available alongside dental coverage in ${cn}`,
       type: 'plan',
       relevanceScore: 90,
