@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-18",
+  "last_updated": "2026-03-19",
   "research_notes": "2026-03-17 sweep: Tested 80+ URL patterns across all SBM states. Cross-referenced CMS Machine-Readable URL PUF (346 issuer entries). Key discovery: Cambia Health Systems (parent of Regence) publishes drug data for WA, OR, ID, UT through a single index.json. Moda Health and Providence Health Plan confirmed live for OR via MR-PUF URLs. Elevance Health (Anthem) index.json is live but contains only FFM state formulary data (no CT/CA). All Kaiser Permanente URLs return 403/410. Molina 403. Most single-state SBM carriers have no discoverable MR formulary endpoints.",
   "states": {
     "CA": {
@@ -11,37 +11,37 @@
         {
           "issuer_id": "18126",
           "issuer_name": "Molina Healthcare (CA)",
-          "index_url": "https://www.molinahealthcare.com/cms/json/index.json",
+          "index_url": "https://www.molinahealthcare.com/machine-readable-files/ca/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 18126. MR-PUF URL returns 403 Access Denied. Molina MR-PUF lists 6 FFM states (FL/MS/OH/SC/TX/UT) — CA not included. Tested 2026-03-17."
+          "notes": "HIOS ID 18126. URL updated 2026-03-19 to CA-specific MR path — still returns 403 Forbidden. All Molina MR paths blocked."
         },
         {
           "issuer_id": "40513",
           "issuer_name": "Kaiser Permanente (CA)",
           "index_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/data/ca/cms-data-index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 40513. 403 Forbidden. Kaiser root /cms-data-index.json returns 410 Gone. Bot protection on all KP content/dam paths. Tested 2026-03-17."
+          "notes": "HIOS ID 40513. Re-verified 2026-03-19 — still 403 Forbidden. Bot protection on all KP content/dam paths."
         },
         {
           "issuer_id": "67138",
-          "issuer_name": "Centene/Health Net (CA)",
-          "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
+          "issuer_name": "Health Net (CA)",
+          "index_url": "https://www.healthnet.com/content/dam/centene/healthnet/pdfs/machine-readable/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 67138. CA not in Centene Ambetter API state list (27 states; CA excluded). Health Net is Centene subsidiary but does not appear in Ambetter endpoints."
+          "notes": "HIOS ID 67138. URL updated 2026-03-19 — returns 404 Not Found. Health Net MR path does not exist."
         },
         {
           "issuer_id": "70285",
           "issuer_name": "Blue Shield of California",
-          "index_url": "https://www.blueshieldca.com/content/dam/bsca/en/pdf/machine-readable/index.json",
+          "index_url": "https://www.blueshieldca.com/content/dam/bsca/en/member/docs/pharmacy/drugs.json",
           "status": "url_dead",
-          "notes": "HIOS ID 70285. All tested paths (/cms-data-index.json, /bsca/machine-readable/, /content/dam/) return HTML pages, not JSON. Tested 2026-03-17."
+          "notes": "HIOS ID 70285. URL updated 2026-03-19 — returns 404 Not Found. BSC pharmacy drugs.json path does not exist."
         },
         {
           "issuer_id": "92499",
           "issuer_name": "Anthem Blue Cross (CA)",
-          "index_url": "https://www.anthem.com/machine-readable-file/search/",
+          "index_url": "https://www.anthem.com/ca/machine-readable-puf/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 92499. anthem.com returns HTML search page. Elevance Health index at www22.elevancehealth.com is LIVE but contains only FFM state formulary data (IN/FL/MO/NH/OH/TX/WI/GA) — no CA. Tested 2026-03-17."
+          "notes": "HIOS ID 92499. URL updated 2026-03-19 — returns 404 Not Found. Anthem CA MR PUF path does not exist."
         },
         {
           "issuer_id": "92815",
@@ -66,30 +66,30 @@
         {
           "issuer_id": "16842",
           "issuer_name": "Fidelis Care",
-          "index_url": "https://www.fideliscare.org/cms-data-index.json",
+          "index_url": "https://www.fideliscare.org/Portals/0/Member/MachineReadableFiles/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 16842. Returns 200 but content is HTML (redirect to 404 page), not JSON. In MR-PUF as FL issuer (BCBS FL URL). Centene subsidiary. Tested 2026-03-17."
+          "notes": "HIOS ID 16842. URL updated 2026-03-19 — returns 404 Not Found. Fidelis Portals MR path does not exist."
         },
         {
           "issuer_id": "48396",
           "issuer_name": "Oscar Health (NY)",
-          "index_url": "https://www.hioscar.com/cms-data-index.json",
+          "index_url": "https://www.hioscar.com/machine-readable-files/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 48396. 404 on all tested paths (/cms-data-index.json, /machine-readable-file/index.json, /api/). Oscar uses Contentful CDN for PDFs, no JSON MR endpoint found. Tested 2026-03-17."
+          "notes": "HIOS ID 48396. URL updated 2026-03-19 — returns 404 Not Found. Oscar MR path does not exist."
         },
         {
           "issuer_id": "55768",
           "issuer_name": "EmblemHealth",
-          "index_url": "https://www.emblemhealth.com/cms-data-index.json",
+          "index_url": "https://transparency.emblemhealth.com/mrf/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 55768. 404 on all tested paths including /content/dam/emblemhealth/json/. Publishes formulary as PDF only. Tested 2026-03-17."
+          "notes": "HIOS ID 55768. URL updated 2026-03-19 — returns 404 Not Found. EmblemHealth transparency MRF path does not exist."
         },
         {
           "issuer_id": "29179",
           "issuer_name": "Healthfirst (NY)",
-          "index_url": "https://healthfirst.org/cms-data-index.json",
+          "index_url": "https://apps.hf.org/applications/dn/cms_json/files/tic/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 29179. 404 on both healthfirst.org and www.healthfirst.org. Tested 2026-03-17."
+          "notes": "HIOS ID 29179. URL updated 2026-03-19 — connection timeout. apps.hf.org:443 does not respond."
         }
       ]
     },
@@ -319,8 +319,8 @@
           "issuer_id": "86830",
           "issuer_name": "Cigna (CO)",
           "index_url": "https://www.cigna.com/sites/json/cms-data-index.json",
-          "status": "url_dead",
-          "notes": "MR-PUF issuer 86830 (AZ). Cigna index.json is LIVE but drugs.json contains only FFM state plan IDs (AZ/FL/IN/MS/NC/TN). No CO plans found. Tested 2026-03-17."
+          "status": "index_live_no_state_data",
+          "notes": "MR-PUF issuer 86830 (AZ). Cigna index.json is LIVE but drugs.json contains only FFM state plan IDs (AZ/FL/IN/MS/NC/TN). No CO plans found. Re-verified 2026-03-18."
         }
       ]
     },
@@ -346,8 +346,8 @@
           "issuer_id": "00000",
           "issuer_name": "Elevance Health / Anthem (CT)",
           "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
-          "status": "url_dead",
-          "notes": "Elevance index.json is LIVE (200 OK, 3.9 KB). Has CT provider data (PROVIDERS_CT.json = 94 MB). BUT formulary_urls contain only FFM state plan IDs (IN/FL/MO/NH/OH/TX/WI/GA). No CT plans file or CT drug data exists. Tested 2026-03-17."
+          "status": "index_live_no_state_data",
+          "notes": "Elevance index.json is LIVE (200 OK, 3.9 KB). Has CT provider data (PROVIDERS_CT.json = 94 MB). BUT formulary_urls contain only FFM state plan IDs (IN/FL/MO/NH/OH/TX/WI/GA). No CT plans file or CT drug data exists. Re-verified 2026-03-18."
         }
       ]
     },
@@ -519,9 +519,9 @@
         {
           "issuer_id": "00028",
           "issuer_name": "Blue Cross Blue Shield of MA",
-          "index_url": "https://www.bluecrossma.org/cms-data-index.json",
+          "index_url": "https://transparency-in-coverage.bluecrossma.com/2026-03-01_index.json",
           "status": "url_dead",
-          "notes": "403 Forbidden. bluecrossma.com does not resolve. Not in MR-PUF. Tested 2026-03-17."
+          "notes": "HIOS ID 00028. URL updated 2026-03-19 — returns 404 Not Found. BCBS MA TiC transparency path does not exist."
         },
         {
           "issuer_id": "00543",
@@ -532,17 +532,17 @@
         },
         {
           "issuer_id": "77432",
-          "issuer_name": "Harvard Pilgrim Health Care",
-          "index_url": "https://www.harvardpilgrim.org/cms-data-index.json",
+          "issuer_name": "Harvard Pilgrim (Point32Health)",
+          "index_url": "https://www.point32health.org/machine-readable-files/hphc/index.json",
           "status": "url_dead",
-          "notes": "404. Now part of Point32Health (merger with Tufts). point32health.org also returns 404. Tested 2026-03-17."
+          "notes": "HIOS ID 77432. URL updated 2026-03-19 — returns 404 Not Found. Point32Health HPHC MR path does not exist."
         },
         {
           "issuer_id": "00095",
-          "issuer_name": "Tufts Health Plan",
-          "index_url": "https://www.tuftshealthplan.com/cms-data-index.json",
+          "issuer_name": "Tufts Health Plan (Point32Health)",
+          "index_url": "https://www.point32health.org/machine-readable-files/tufts/index.json",
           "status": "url_dead",
-          "notes": "404. Now part of Point32Health. Tested 2026-03-17."
+          "notes": "HIOS ID 00095. URL updated 2026-03-19 — returns 404 Not Found. Point32Health Tufts MR path does not exist."
         }
       ]
     },

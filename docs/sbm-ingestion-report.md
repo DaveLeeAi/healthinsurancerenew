@@ -259,6 +259,59 @@ Carriers: Molina (18126), Kaiser (40513), Centene/Ambetter (67138), Blue Shield 
 
 ---
 
+## Batch 3 — CA, NY, MA URL Update Attempt (2026-03-19)
+
+### Summary
+
+Updated 12 issuer URLs across CA (5), NY (4), MA (3) with new TiC/MR endpoint paths. All 12 URLs failed verification — none returned valid JSON.
+
+**Result: 0 records fetched. No per-state files created. No merge performed.**
+
+### CA (Covered California) — 0/7 live (5 URLs updated)
+
+| Issuer | HIOS ID | New URL | HTTP | Status |
+|--------|---------|---------|------|--------|
+| Blue Shield of CA | 70285 | `.../member/docs/pharmacy/drugs.json` | 404 | url_dead |
+| Kaiser Permanente (CA) | 40513 | `.../kporg/data/ca/cms-data-index.json` | 403 | url_dead |
+| Anthem Blue Cross (CA) | 92499 | `.../ca/machine-readable-puf/index.json` | 404 | url_dead |
+| Health Net (CA) | 67138 | `.../centene/healthnet/.../index.json` | 404 | url_dead |
+| Molina Healthcare (CA) | 18126 | `.../machine-readable-files/ca/index.json` | 403 | url_dead |
+| L.A. Care Health Plan | 92815 | (no URL) | — | url_unknown |
+| IEHP | 51396 | (no URL) | — | url_unknown |
+
+### NY (NY State of Health) — 0/4 live (4 URLs updated)
+
+| Issuer | HIOS ID | New URL | HTTP | Status |
+|--------|---------|---------|------|--------|
+| Fidelis Care | 16842 | `.../Portals/0/Member/MachineReadableFiles/index.json` | 404 | url_dead |
+| Oscar Health (NY) | 48396 | `.../machine-readable-files/index.json` | 404 | url_dead |
+| EmblemHealth | 55768 | `transparency.emblemhealth.com/mrf/index.json` | 404 | url_dead |
+| Healthfirst (NY) | 29179 | `apps.hf.org/.../tic/index.json` | timeout | url_dead |
+
+### MA (Massachusetts Health Connector) — 0/4 live (3 URLs updated)
+
+| Issuer | HIOS ID | New URL | HTTP | Status |
+|--------|---------|---------|------|--------|
+| BCBS MA | 00028 | `transparency-in-coverage.bluecrossma.com/2026-03-01_index.json` | 404 | url_dead |
+| Harvard Pilgrim (Point32Health) | 77432 | `.../machine-readable-files/hphc/index.json` | 404 | url_dead |
+| Tufts Health Plan (Point32Health) | 00095 | `.../machine-readable-files/tufts/index.json` | 404 | url_dead |
+| Kaiser Permanente (MA) | 00543 | (unchanged, known dead) | 403 | url_dead |
+
+### TiC File Skip Assessment
+
+No large (>500 MB) TiC bulk files were encountered — all URLs returned 404/403 before any download was attempted.
+
+### Conclusions
+
+These 3 SBM states remain the hardest to cover:
+- **CA**: Covered California does not publish MR formulary URLs. All 7 carriers block or don't host JSON endpoints.
+- **NY**: All 4 carriers return 404. Healthfirst's `apps.hf.org` doesn't respond at all.
+- **MA**: Point32Health (Harvard Pilgrim + Tufts merger) has no discoverable MR endpoints. BCBS MA TiC subdomain doesn't resolve the provided date-stamped index.
+
+**Registry updated** with verified-dead status on all 12 new URLs.
+
+---
+
 ## Files Created/Modified
 
 | File | Action | Size |
