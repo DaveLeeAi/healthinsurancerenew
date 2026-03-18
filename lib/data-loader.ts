@@ -659,7 +659,7 @@ export function getPolicyByState(stateCode: string): PolicyScenarioRecord[] {
 
 /**
  * Returns all unique state/county combos present in plan_intelligence.json.
- * Suitable for generateStaticParams on the /plans/[state]/[county] route.
+ * Suitable for generateStaticParams on the /sitemaps/plans route (canonical county pages).
  * Uses the module-level cache, so the ~42 MB file is loaded only once per build.
  */
 export function getAllPlanStateCountyCombos(): { state: string; county: string }[] {

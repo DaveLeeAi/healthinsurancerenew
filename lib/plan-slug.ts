@@ -3,14 +3,16 @@
 //
 // Plan slug generation, parsing, and lookup utilities.
 //
-// Public URL pattern for plan detail pages:
-//   /{state-slug}/{county-slug}/{plan-slug}-plan
-//   /{state-slug}/{plan-slug}-plan  (state-level fallback)
+// Canonical public URL pattern for plan detail pages:
+//   /{state-slug}/{county-slug}/{plan-name}-plan
+//
+// The state-level form /{state-slug}/{plan-name}-plan is a transient redirect
+// target only — the county page resolves county from data and issues a 301 to
+// the canonical county-aware URL. Do not emit it as a permanent canonical link.
 //
 // plan_id stays internal. Slugs are derived from plan_name.
 // ============================================================
 
-import { loadPlanIntelligence, getPlansByCounty } from './data-loader'
 import type { PlanRecord } from './types'
 
 /**
@@ -61,28 +63,6 @@ export function planSlugToDisplayName(slug: string): string {
     .split('-')
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ')
-}
-
-/**
- * Looks up a PlanRecord by its public slug + state + (optional) county.
- *
- * When countyFips is provided, only plans in that county are searched.
- * When omitted, all plans in the state are searched (state-level fallback).
- *
- * Returns undefined if no plan matches.
- */
-export function getPlanBySlug(
-  fullSlug: string,
-  stateCode: string,
-  countyFips?: string
-): PlanRecord | undefined {
-  const candidates = countyFips
-    ? getPlansByCounty(stateCode, countyFips)
-    : loadPlanIntelligence().data.filter(
-        (p) => p.state_code === stateCode.toUpperCase()
-      )
-
-  return candidates.find((p) => generatePlanSlug(p.plan_name) === fullSlug)
 }
 
 /**

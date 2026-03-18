@@ -12,8 +12,8 @@ import { generatePlanSlug } from '@/lib/plan-slug'
 //
 // All incoming traffic to /plan-details/... is redirected permanently.
 // The new canonical pages live at the county-level route:
-//   app/[state-name]/[county-slug]/[drug-coverage]/page.tsx
-//   (handles both -coverage and -plan slugs)
+//   app/[state-name]/[county-slug]/[county-page]/page.tsx
+//   (dispatcher: routes -plan slugs to SBC page, -coverage slugs to drug page)
 
 export const dynamic = 'force-dynamic'
 
@@ -28,12 +28,17 @@ export default function PlanDetailsRedirect({ params }: Props) {
   const stateSlug = stateCodeToSlug(plan.state_code)
   const planSlug = generatePlanSlug(plan.plan_name)
 
-  // Prefer county-aware canonical route when county_fips is present
+  // All ACA Marketplace plans carry a county_fips. Always redirect to the
+  // county-aware canonical route: /{state}/{county}/{plan}-plan
+  // Avoids the double-redirect that the state-level fallback would cause
+  // (/{state}/{plan}-plan hits the county page, which issues a second 301).
   if (plan.county_fips) {
     const countySlug = getCountySlug(plan.county_fips)
     permanentRedirect(`/${stateSlug}/${countySlug}/${planSlug}`)
   }
 
-  // State-level fallback when county context is not available
+  // Last-resort fallback for plans without county context (SBM edge cases).
+  // The county page will resolve the county via data lookup and issue a
+  // final redirect — two hops total, but only for plans missing county_fips.
   permanentRedirect(`/${stateSlug}/${planSlug}`)
 }

@@ -23,7 +23,8 @@ import {
   stateCodeToSlug,
   getCountySlug,
 } from '@/lib/county-lookup'
-import { parsePlanSlug, getPlanBySlug, generatePlanSlug } from '@/lib/plan-slug'
+import { parsePlanSlug, generatePlanSlug } from '@/lib/plan-slug'
+import { getPlanBySlug } from '@/lib/plan-slug-server'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'

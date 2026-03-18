@@ -10,24 +10,16 @@
 // fall back gracefully so pages still render (just without friendly names).
 // ============================================================
 
-import fs from 'fs'
-import path from 'path'
+import countyNamesRaw from '@/data/config/county-names.json'
 
 // Maps 5-digit FIPS → county name (without "County" suffix)
 // e.g. "37183" → "Wake",  "48201" → "Harris"
-let fipsToName: Record<string, string> | null = null
+const fipsToName: Record<string, string> = countyNamesRaw as Record<string, string>
 
-// Maps "wake-nc" (slug-state) → FIPS — built lazily from fipsToName
+// Maps "wake-nc" (slug-state) → FIPS — built lazily
 let slugToFips: Map<string, string> | null = null
 
 function loadLookup(): Record<string, string> {
-  if (fipsToName) return fipsToName
-  const filePath = path.join(process.cwd(), 'data', 'config', 'county-names.json')
-  if (fs.existsSync(filePath)) {
-    fipsToName = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as Record<string, string>
-  } else {
-    fipsToName = {}
-  }
   return fipsToName
 }
 

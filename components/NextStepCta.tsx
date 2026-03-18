@@ -1,10 +1,13 @@
 import Link from 'next/link'
+import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 
 type CtaVariant = 'subsidy-calculator' | 'plan-comparison' | 'agent-consultation' | 'custom'
 
 interface NextStepCtaProps {
   variant: CtaVariant
+  // state: ISO 2-letter state code (e.g. "NC")
   state?: string
+  // county: FIPS code (e.g. "37183") — used only for plan-comparison canonical URL
   county?: string
   customTitle?: string
   customDescription?: string
@@ -23,7 +26,9 @@ const VARIANTS: Record<Exclude<CtaVariant, 'custom'>, { title: string; descripti
     title: 'Compare Plans in Your Area',
     description: 'See every marketplace plan available in your county — compare premiums, deductibles, and out-of-pocket maximums side by side.',
     label: 'Compare Plans',
-    href: '/plans',
+    // Base href for the index case (no state/county). State+county builds the
+    // canonical /{state-slug}/{county-slug} URL in the component body below.
+    href: '/states',
   },
   'agent-consultation': {
     title: 'Talk to a Licensed Agent',
@@ -65,10 +70,21 @@ export default function NextStepCta({
 
   const config = VARIANTS[variant]
   let href = config.href
-  if (state && county) {
-    href = `${config.href}/${state.toLowerCase()}/${county}`
-  } else if (state) {
-    href = `${config.href}/${state.toLowerCase()}`
+
+  if (variant === 'plan-comparison') {
+    // Build canonical county plans URL: /{state-slug}/{county-slug}
+    // Avoids the legacy /plans/{state}/{county} redirect chain.
+    if (state && county) {
+      href = `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`
+    } else if (state) {
+      href = `/${stateCodeToSlug(state.toUpperCase())}/health-insurance-plans`
+    }
+  } else if (variant === 'subsidy-calculator') {
+    if (state && county) {
+      href = `/subsidies/${state.toLowerCase()}/${county}`
+    } else if (state) {
+      href = `/subsidies/${state.toLowerCase()}`
+    }
   }
 
   return (

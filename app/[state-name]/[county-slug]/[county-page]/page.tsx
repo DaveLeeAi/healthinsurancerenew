@@ -37,7 +37,8 @@ import SBCGrid from '@/components/SBCGrid'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import { generateSbcContent } from '@/lib/content-templates'
 import { getRelatedEntities } from '@/lib/entity-linker'
-import { parsePlanSlug, getPlanBySlug, generatePlanSlug } from '@/lib/plan-slug'
+import { parsePlanSlug, generatePlanSlug } from '@/lib/plan-slug'
+import { getPlanBySlug } from '@/lib/plan-slug-server'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -47,14 +48,22 @@ export const dynamic = 'force-dynamic'
 
 // ─── Shared params type ──────────────────────────────────────────────────────
 //
-// This route handles two distinct page types at the same URL level:
-//   /{state-slug}/{county-slug}/{drug-slug}-coverage   → drug formulary page
-//   /{state-slug}/{county-slug}/{plan-slug}-plan        → plan detail (SBC) page
+// Route: app/[state-name]/[county-slug]/[county-page]/page.tsx
 //
-// The suffix (-coverage or -plan) determines which page to render.
+// This file is the dispatcher for two distinct county-scoped page types.
+// The slug suffix in the [county-page] segment determines which to render:
+//
+//   /{state-slug}/{county-slug}/{plan-slug}-plan      → CountyPlanDetailPage (SBC)
+//   /{state-slug}/{county-slug}/{drug-slug}-coverage  → CountyDrugPage
+//
+// The parser and rendering logic for each type are explicitly separate:
+//   - parsePlanSlug()   validates -plan suffix; returns null otherwise
+//   - parseDrugSlug()   validates -coverage suffix; returns null otherwise
+//   - CountyPlanDetailPage renders plan/SBC pages only
+//   - CountyDrugPage renders drug formulary pages only
 
 interface Props {
-  params: { 'state-name': string; 'county-slug': string; 'drug-coverage': string }
+  params: { 'state-name': string; 'county-slug': string; 'county-page': string }
 }
 
 // ─── Slug helpers ────────────────────────────────────────────────────────────
@@ -77,7 +86,7 @@ function drugSlugToDisplayName(slug: string): string {
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const raw = params['drug-coverage']
+  const raw = params['county-page']
   const stateCode = stateSlugToCode(params['state-name'])
   if (!stateCode) return { title: 'Not Found' }
 
@@ -131,7 +140,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!drugSlug) return { title: 'Not Found' }
 
   const drugName = drugSlugToDisplayName(drugSlug)
-  const canonicalUrl = `${SITE_URL}/${params['state-name']}/${params['county-slug']}/${params['drug-coverage']}`
+  const canonicalUrl = `${SITE_URL}/${params['state-name']}/${params['county-slug']}/${params['county-page']}`
 
   const title = `${drugName} Coverage in ${countyDisplay} (${PLAN_YEAR})`
   const description =
@@ -156,7 +165,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // ─── Page dispatcher ──────────────────────────────────────────────────────────
 
 export default async function CountyContentPage({ params }: Props) {
-  const raw = params['drug-coverage']
+  const raw = params['county-page']
 
   if (parsePlanSlug(raw)) {
     return <CountyPlanDetailPage params={params} />
@@ -175,7 +184,7 @@ export default async function CountyContentPage({ params }: Props) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function CountyPlanDetailPage({ params }: Props) {
-  const raw = params['drug-coverage']
+  const raw = params['county-page']
   const stateCode = stateSlugToCode(params['state-name'])
   if (!stateCode) notFound()
 
@@ -511,7 +520,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
   const stateName = getStateName(stateCode)
   const countyDisplay = getCountyName(countyFips) ?? countySlugToName(params['county-slug'])
   const drugName = drugSlugToDisplayName(drugSlug)
-  const canonicalUrl = `${SITE_URL}/${params['state-name']}/${params['county-slug']}/${params['drug-coverage']}`
+  const canonicalUrl = `${SITE_URL}/${params['state-name']}/${params['county-slug']}/${params['county-page']}`
 
   const countyPlans = getPlansByCounty(stateCode, countyFips)
   const issuerIds = [...new Set(countyPlans.map((p) => p.issuer_id))]

@@ -6,7 +6,7 @@ const navLinks = [
   { label: 'Guides', href: '/guides' },
   { label: 'Tools', href: '/tools' },
   { label: 'States', href: '/states' },
-  { label: 'Plans', href: '/plans' },
+  { label: 'Plans', href: '/states' },
   { label: 'Subsidies', href: '/subsidies' },
   { label: 'Drug Lookup', href: '/formulary' },
   { label: 'Dental', href: '/dental' },

@@ -229,8 +229,8 @@ pnpm exec tsc --noEmit
 - `experimental.cpus: 1` — prevents worker OOM when loading large datasets
 - `NODE_OPTIONS=--max-old-space-size=8192` — set in package.json build script
 - Large-dataset routes use `export const dynamic = 'force-dynamic'` (SSR):
-  - `/{state-slug}/{county-slug}` (canonical county plans), `/formulary/**`, `/rates/**`, `/subsidies/**`, `/dental/**`, `/enhanced-credits/**`
-  - Legacy `/plans/[state]/[county]` route still present; canonical is `/{state-slug}/{county-slug}`
+  - `/{state-slug}/{county-slug}` (canonical county plans), `/{state-slug}/{county-slug}/{slug}` (plan SBC + drug coverage), `/formulary/**`, `/rates/**`, `/subsidies/**`, `/dental/**`, `/enhanced-credits/**`
+  - Legacy `/plans/[state]/[county]` redirects (301) → canonical `/{state-slug}/{county-slug}`
 - Small-dataset routes are SSG: `/life-events`, `/faq`, `/billing`, `/guides`, `/states/**`
 
 ---
@@ -252,10 +252,12 @@ All schema built via `lib/schema-markup.ts`.
 
 ```
 app/                    # Next.js App Router pages
-  [state-name]/         # County drug coverage + state plans index
-                        #   /{state}/{county}/{drug}-coverage
-                        #   /{state}/health-insurance-plans  (canonical state route)
-  plan-details/         # SBC detail pages (force-dynamic, ~20K plans)
+  [state-name]/         # State + county routes
+    [county-slug]/      #   /{state}/{county}                       (county plan comparison index)
+      [county-page]/    #   /{state}/{county}/{plan-name}-plan      (SBC / plan detail — canonical)
+                        #   /{state}/{county}/{drug-name}-coverage  (county drug coverage)
+    health-insurance-plans/  # /{state}/health-insurance-plans     (canonical state route)
+  plan-details/         # Legacy redirect only → /{state}/{county}/{plan-name}-plan (301)
   formulary/            # Drug formulary pages (force-dynamic)
   drugs/                # Drug hub index + 20 category hubs + comparison pages
   plans/                # Plan comparison by county

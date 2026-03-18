@@ -7,7 +7,7 @@
  *   /sitemaps/subsidies       — /subsidies/[state]/[county]
  *   /sitemaps/rates           — /rates/[state]/[county]
  *   /sitemaps/enhanced-credits— /enhanced-credits/[state]/[county]
- *   /sitemaps/sbc             — /{state-slug}/{county-slug}/{plan-slug}  (canonical plan/SBC)
+ *   /sitemaps/sbc             — /{state-slug}/{county-slug}/{plan-name}-plan  (canonical SBC, route: [county-page])
  *   /sitemaps/formulary       — /formulary/[issuer]/[drug] (static seed only)
  *   /sitemaps/dental          — /dental/[state]/[plan_variant]
  *   /sitemaps/faq             — /faq/[category]/[slug]
@@ -171,7 +171,9 @@ function buildEnhancedCreditEntries(): SitemapEntry[] {
   }))
 }
 
-// ── SBC / Plan Details — /{state-slug}/{county-slug}/{plan-slug}  (canonical) ──
+// ── SBC / Plan Details — /{state-slug}/{county-slug}/{plan-name}-plan  (canonical) ──
+// generatePlanSlug() always appends -plan; every URL here ends in -plan and resolves
+// to the CountyPlanDetailPage branch in app/[state-name]/[county-slug]/[county-page]/page.tsx
 
 function buildSbcEntries(): SitemapEntry[] {
   return getAllSbcPlans()
