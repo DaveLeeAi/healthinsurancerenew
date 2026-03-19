@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-19 (sweep #2 — Centene TiC investigation)",
+  "last_updated": "2026-03-19 (sweep #3 — HIOS ID corrections from Centene TiC plan IDs)",
   "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "states": {
     "CA": {
@@ -134,12 +134,13 @@
       "exchange_url": "https://www.wahealthplanfinder.org",
       "issuers": [
         {
-          "issuer_id": "99164",
+          "issuer_id": "61836",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99164 (placeholder). Centene TiC index plan IDs 61836WA* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (WA)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-WA.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "CONFIRMED LIVE 2026-03-17. 4,424 drug records. Direct drugs URL bypasses index."
+          "notes": "CONFIRMED LIVE 2026-03-17. 4,424 drug records. Direct drugs URL bypasses index. HIOS ID corrected 2026-03-19 from placeholder 99164 to 61836 per Centene TiC index plan IDs."
         },
         {
           "issuer_id": "71281",
@@ -233,12 +234,22 @@
       "exchange_url": "https://pennie.com",
       "issuers": [
         {
-          "issuer_id": "99165",
+          "issuer_id": "15983",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99165 (placeholder). Centene TiC index plan IDs 15983PA* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (PA)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-PA.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "CONFIRMED LIVE 2026-03-17. 4,291 drug records. Direct drugs URL bypasses index."
+          "notes": "CONFIRMED LIVE 2026-03-17. 4,291 drug records. Direct drugs URL bypasses index. HIOS ID corrected 2026-03-19 from placeholder 99165 to 15983 per Centene TiC index plan IDs."
+        },
+        {
+          "issuer_id": "86199",
+          "issuer_id_note": "ADDED 2026-03-19: second Ambetter PA HIOS ID found in Centene TiC index plan IDs 86199PA*.",
+          "issuer_name": "Centene/Ambetter (PA #2)",
+          "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-PA.json",
+          "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
+          "status": "active",
+          "notes": "Same drug file as issuer 15983. Second Ambetter PA HIOS ID (86199PA* plan IDs) confirmed from Centene TiC index 2026-03-19."
         },
         {
           "issuer_id": "54912",
@@ -268,12 +279,13 @@
       "exchange_url": "https://www.getcovered.nj.gov",
       "issuers": [
         {
-          "issuer_id": "99166",
+          "issuer_id": "17970",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99166 (placeholder). Centene TiC index plan IDs 17970NJ* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (NJ)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-NJ.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "CONFIRMED LIVE 2026-03-17. 4,364 drug records. Direct drugs URL bypasses index."
+          "notes": "CONFIRMED LIVE 2026-03-17. 4,364 drug records. Direct drugs URL bypasses index. HIOS ID corrected 2026-03-19 from placeholder 99166 to 17970 per Centene TiC index plan IDs."
         },
         {
           "issuer_id": "00036",
@@ -303,12 +315,13 @@
       "exchange_url": "https://getcovered.illinois.gov",
       "issuers": [
         {
-          "issuer_id": "99167",
+          "issuer_id": "27833",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99167 (placeholder). Centene TiC index plan IDs 27833IL* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (IL)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-IL.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "Same Centene API pattern as NJ/PA/WA."
+          "notes": "Same Centene API pattern as NJ/PA/WA. HIOS ID corrected 2026-03-19 from placeholder 99167 to 27833 per Centene TiC index plan IDs."
         }
       ]
     },
@@ -317,12 +330,13 @@
       "exchange_url": "https://kynect.ky.gov",
       "issuers": [
         {
-          "issuer_id": "99168",
+          "issuer_id": "72001",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99168 (placeholder). Centene TiC index plan IDs 72001KY* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (KY)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-KY.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "Same Centene API pattern as NJ/PA/WA."
+          "notes": "Same Centene API pattern as NJ/PA/WA. HIOS ID corrected 2026-03-19 from placeholder 99168 to 72001 per Centene TiC index plan IDs."
         }
       ]
     },
@@ -331,12 +345,13 @@
       "exchange_url": "https://www.nevadahealthlink.com",
       "issuers": [
         {
-          "issuer_id": "99169",
+          "issuer_id": "45142",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 99169 (placeholder). Centene TiC index plan IDs 45142NV* confirm real HIOS ID.",
           "issuer_name": "Centene/Ambetter (NV)",
           "direct_drugs_url": "https://api.centene.com/ambetter/reference/drugs-AMB-NV.json",
           "index_url": "https://api.centene.com/ambetter/reference/cms-data-index.json",
           "status": "active",
-          "notes": "Same Centene API pattern as NJ/PA/WA."
+          "notes": "Same Centene API pattern as NJ/PA/WA. HIOS ID corrected 2026-03-19 from placeholder 99169 to 45142 per Centene TiC index plan IDs."
         }
       ]
     },
