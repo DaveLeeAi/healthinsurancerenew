@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAllStateCountyCombos, loadSbmSbcData, type SbmSbcRecord } from '@/lib/data-loader'
+import { getAllStateCountyCombos, loadSbmSbcData, generateSbmPlanSlug, type SbmSbcRecord } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
@@ -409,18 +409,32 @@ export default function StatePlansPage({ params }: Props) {
                               <th className="text-right px-4 py-2.5 font-medium">Deductible (Ind)</th>
                               <th className="text-right px-4 py-2.5 font-medium">OOP Max (Ind)</th>
                               <th className="text-left px-4 py-2.5 font-medium">Carrier</th>
+                              <th className="text-right px-4 py-2.5 font-medium"></th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-neutral-100">
-                            {plans.map((plan) => (
-                              <tr key={plan.plan_variant_id} className="hover:bg-neutral-50 transition-colors">
-                                <td className="px-4 py-3 font-medium text-navy-800">{plan.plan_name_from_sbc || plan.plan_id}</td>
-                                <td className="px-4 py-3 text-neutral-500">{plan.network_type || '—'}</td>
-                                <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.deductible_individual)}</td>
-                                <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.oop_max_individual)}</td>
-                                <td className="px-4 py-3 text-neutral-500 text-xs">{plan.issuer_name}</td>
-                              </tr>
-                            ))}
+                            {plans.map((plan) => {
+                              const planSlug = generateSbmPlanSlug(plan.plan_name_from_sbc || plan.plan_id || plan.plan_variant_id)
+                              const planHref = `/${stateSlug}/health-insurance-plans/${planSlug}`
+                              return (
+                                <tr key={plan.plan_variant_id} className="hover:bg-primary-50/40 transition-colors group">
+                                  <td className="px-4 py-3">
+                                    <a href={planHref} className="font-medium text-primary-700 hover:text-primary-800 hover:underline">
+                                      {plan.plan_name_from_sbc || plan.plan_id}
+                                    </a>
+                                  </td>
+                                  <td className="px-4 py-3 text-neutral-500">{plan.network_type || '—'}</td>
+                                  <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.deductible_individual)}</td>
+                                  <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.oop_max_individual)}</td>
+                                  <td className="px-4 py-3 text-neutral-500 text-xs">{plan.issuer_name}</td>
+                                  <td className="px-4 py-2.5 text-right">
+                                    <a href={planHref} className="text-xs text-primary-600 hover:underline whitespace-nowrap">
+                                      View details →
+                                    </a>
+                                  </td>
+                                </tr>
+                              )
+                            })}
                           </tbody>
                         </table>
                       </div>

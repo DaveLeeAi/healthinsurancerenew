@@ -685,6 +685,25 @@ export function getAllPlanStateCountyCombos(): { state: string; county: string }
 // SBM SBC data — per-state files parsed from carrier PDFs
 // ---------------------------------------------------------------------------
 
+export interface SbmSbcCostSharingGrid {
+  primary_care?: string
+  specialist?: string
+  preventive_care?: string
+  diagnostic_lab?: string
+  imaging?: string
+  generic_drugs_tier1?: string
+  preferred_brand_tier2?: string
+  nonpreferred_brand_tier3?: string
+  specialty_tier4?: string
+  er_facility?: string
+  emergency_transport?: string
+  urgent_care?: string
+  inpatient_hospital_facility?: string
+  outpatient_surgery_facility?: string
+  mental_health_outpatient?: string
+  mental_health_inpatient?: string
+}
+
 export interface SbmSbcRecord {
   plan_variant_id: string
   state_code: string
@@ -692,14 +711,24 @@ export interface SbmSbcRecord {
   issuer_name: string
   plan_year: number
   metal_level: string
+  metal_pct?: number | null
   csr_variation: string
   network_type: string
+  marketplace_type?: string
+  marketplace_label?: string
+  is_hdhp?: boolean
+  is_ai_an?: boolean
   plan_name_from_sbc: string
-  plan_id: string
+  plan_id: string | null
+  source?: string
+  source_file?: string
   deductible_individual: number | string | null
   deductible_family: number | string | null
+  drug_deductible?: string | null
   oop_max_individual: number | string | null
   oop_max_family: number | string | null
+  cost_sharing_grid?: SbmSbcCostSharingGrid
+  exclusions?: string[]
 }
 
 const sbmSbcCache = new Map<string, SbmSbcRecord[]>()
@@ -727,4 +756,65 @@ export function loadSbmSbcData(stateCode: string): SbmSbcRecord[] {
     sbmSbcCache.set(code, [])
     return []
   }
+}
+
+/**
+ * Generate a URL slug from an SBM plan name.
+ * Mirrors generatePlanSlug() in lib/plan-slug.ts — kept here to avoid
+ * circular imports since data-loader is used server-side only.
+ */
+export function generateSbmPlanSlug(planName: string): string {
+  const base = planName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return base.endsWith('-plan') ? base : `${base}-plan`
+}
+
+/**
+ * Look up a single SBM plan by state code and URL slug derived from plan name.
+ * Prefers plan_year === 2026 and marketplace_type === 'iex' (on-exchange).
+ * Returns the first match or null if not found.
+ */
+export function getSbmPlanBySlug(
+  stateCode: string,
+  slug: string
+): SbmSbcRecord | null {
+  const all = loadSbmSbcData(stateCode)
+  const matches = all.filter(
+    (p) => generateSbmPlanSlug(p.plan_name_from_sbc) === slug
+  )
+  if (matches.length === 0) return null
+  // Prefer 2026 on-exchange first, then any 2026, then fall back
+  return (
+    matches.find((p) => p.plan_year === 2026 && p.marketplace_type === 'iex') ??
+    matches.find((p) => p.plan_year === 2026) ??
+    matches[0]
+  )
+}
+
+/**
+ * Return all SBM plans for a state, deduplicated by plan name + year,
+ * filtered to on-exchange (iex) plans only, sorted by metal level then name.
+ * Used for generateStaticParams on SBM plan detail pages.
+ */
+export function getSbmPlansForStaticParams(
+  stateCode: string
+): SbmSbcRecord[] {
+  const all = loadSbmSbcData(stateCode)
+  const seen = new Set<string>()
+  const result: SbmSbcRecord[] = []
+  // 2026 iex first, then 2025 iex as fallback
+  const sorted = [
+    ...all.filter((p) => p.plan_year === 2026 && p.marketplace_type === 'iex'),
+    ...all.filter((p) => p.plan_year === 2025 && p.marketplace_type === 'iex'),
+  ]
+  for (const p of sorted) {
+    const slug = generateSbmPlanSlug(p.plan_name_from_sbc)
+    if (!seen.has(slug)) {
+      seen.add(slug)
+      result.push(p)
+    }
+  }
+  return result
 }
