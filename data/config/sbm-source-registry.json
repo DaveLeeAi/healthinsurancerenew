@@ -1,8 +1,8 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-19",
-  "research_notes": "2026-03-19 sweep: Re-verified all 11 missing SBM states. Molina redirects to new national endpoint (cmsjson/378245). Kaiser MD now responds 200. Healthfirst NY intermittent but live. Cigna CO fetched 5,699 records despite prior 'no state data' note. CareFirst DC/MD confirmed VA-only. CA/MA/MN/RI/VT remain blocked. MR-PUF PY2026 downloaded, CMS Marketplace API tested (DataNotProvided for SBM). Centene not present in any of the 11 target states.",
+  "last_updated": "2026-03-19 (sweep #2 — Centene TiC investigation)",
+  "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "states": {
     "CA": {
       "exchange_name": "Covered California",
@@ -27,7 +27,9 @@
           "issuer_name": "Ambetter from Health Net (CA)",
           "index_url": "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). 20+ URL patterns tested 2026-03-19: ifp.healthnetcalifornia.com returns 200 but HTML (not JSON) for all paths. healthnet.com/content/dam/* returns 404. api.centene.com/healthnet/* returns 404. mrf.healthsparq.com/healthnet* returns 404. Health Net uses different infrastructure than the Ambetter API pattern that works for NJ/PA/WA.",
+          "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_healthnet_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only — no formulary/drug data). 58 plans with IDs 67138CA* confirmed in TiC index. FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-CA.json → 404. api.centene.com/ambetter/reference/drugs-HN-CA.json → 404. api.centene.com/healthnet/reference/drugs-HN-CA.json → 404. FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. ifp.healthnetcalifornia.com → 200 HTML (not JSON). 30+ patterns tested 2026-03-19. Health Net CA QHP formulary has no accessible public endpoint.",
+          "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_healthnet_index.json",
+          "centene_tic_index_type": "TiC MRF — in_network_files only, NOT QHP formulary",
           "urls_tested": [
             "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
             "https://ifp.healthnetcalifornia.com/api/formulary/index.json",
@@ -36,9 +38,13 @@
             "https://www.healthnet.com/content/dam/centene/healthnet/machine-readable/index.json",
             "https://api.centene.com/healthnet/reference/drugs-HN-CA.json",
             "https://api.centene.com/ambetter/reference/drugs-AMB-CA.json",
+            "https://api.centene.com/ambetter/reference/drugs-HN-CA.json",
+            "https://api.centene.com/ambetter/reference/drugs-CHN-CA.json",
             "https://mrf.healthsparq.com/healthnetcalifornia.centene.com/machine-readable/index.json",
             "https://www.healthnet.com/content/dam/healthnet/machine-readable/index.json",
-            "https://www.healthnet.com/transparency-in-coverage/index.json"
+            "https://www.healthnet.com/transparency-in-coverage/index.json",
+            "https://fm.formularynavigator.com/jsonFiles/publish/67138/1/drugs.json",
+            "https://fm.formularynavigator.com/jsonFiles/publish/67138/5/drugs.json"
           ]
         },
         {
@@ -76,20 +82,28 @@
       "exchange_url": "https://nystateofhealth.ny.gov",
       "issuers": [
         {
-          "issuer_id": "16842",
+          "issuer_id": "25303",
+          "issuer_id_note": "CORRECTED 2026-03-19: was 16842, Centene TiC index confirms plan IDs are 25303NY* (88 plans). 16842 was incorrect.",
           "issuer_name": "Ambetter from Fidelis Care (NY)",
           "index_url": "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 16842. Centene Marketplace product in NY via Fidelis Care subsidiary. 3 URL patterns tested 2026-03-19: Portals/0/MachineReadableFiles/index.json (404), ambetter.fideliscare.org (DNS fail), ifp.fideliscare.org (DNS fail). Also tested api.centene.com/ambetter/reference/drugs-AMB-NY.json (404) and drugs-FC-NY.json (404). Fidelis Care uses different infrastructure than the Ambetter API pattern that works for NJ/PA/WA.",
+          "notes": "HIOS ID 25303 (corrected from 16842 — Centene TiC index confirms 25303NY* plan IDs). Centene Marketplace product in NY via Fidelis Care subsidiary. CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_fidelis_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only — no formulary/drug data). 88 plans confirmed (2 reporting_structure entries). FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-NY.json → 404. api.centene.com/fideliscare/reference/drugs-FC-NY.json → 404. api.centene.com/fideliscare/reference/drugs-FID-NY.json → 404. api.centene.com/ambetter/reference/drugs-FID-NY.json → 404. FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Fidelis Care NY QHP formulary has no accessible public endpoint.",
+          "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_fidelis_index.json",
+          "centene_tic_index_type": "TiC MRF — in_network_files only, NOT QHP formulary",
           "urls_tested": [
             "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
             "https://ambetter.fideliscare.org/machine-readable-files/index.json",
             "https://ifp.fideliscare.org/machine-readable-files/index.json",
             "https://api.centene.com/ambetter/reference/drugs-AMB-NY.json",
             "https://api.centene.com/fideliscare/reference/drugs-FC-NY.json",
+            "https://api.centene.com/fideliscare/reference/drugs-FID-NY.json",
+            "https://api.centene.com/fideliscare/reference/drugs-25303-NY.json",
+            "https://api.centene.com/ambetter/reference/drugs-FID-NY.json",
             "https://www.fideliscare.org/machine-readable-files/index.json",
             "https://www.fideliscare.org/cms-data-index.json",
-            "https://mrf.healthsparq.com/fideliscare.centene.com/machine-readable/ny/2026-01-01/index.json"
+            "https://mrf.healthsparq.com/fideliscare.centene.com/machine-readable/ny/2026-01-01/index.json",
+            "https://fm.formularynavigator.com/jsonFiles/publish/25303/1/drugs.json",
+            "https://fm.formularynavigator.com/jsonFiles/publish/25303/2/drugs.json"
           ]
         },
         {
