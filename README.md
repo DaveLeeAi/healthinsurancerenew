@@ -130,8 +130,22 @@ Distinct from `/states`. Intent: discover and compare marketplace plan inventory
 
 These must never resolve to the same page. If plan inventory is missing for a state, the gap is handled inside `/plans` with alternative CTAs — users are never silently redirected from Plans to States.
 
+### State Plan Pages (shared template)
+`/{state-slug}/health-insurance-plans` — Canonical state marketplace plans index
+
+Single template (`app/[state-name]/health-insurance-plans/page.tsx`) serving all 50 states. Dynamically generates:
+
+- **FAQ answers** (5 per state) using actual `planCount`, `carrierCount`, `premiumRange`, `avgDeductible`, `exchangeType`, `medicaidExpanded`
+- **About section** (300+ words, 5 paragraphs): exchange type explanation (FFM vs SBM), Medicaid expansion impact, plan/carrier/premium context, OEP + SEP rules, subsidy/CSR details
+- **GEO "At a Glance" stat block** — structured `<dl>` for AI engine extraction (SGE, Perplexity, ChatGPT)
+- **Schema** — Article (Organization author) + FAQPage (Q+A) + Dataset + BreadcrumbList in `<head>`
+- **Byline** — "Reviewed by a licensed health insurance professional" (name/NPN only on homepage + /circle-of-champions)
+
+States with handwritten prose (CA, FL, TX, NY) use curated copy. All others use the dynamic template with real CMS data.
+
+SEO framework coverage: SEO, AEO, GEO, AIO/LLMO, E-E-A-T, HCU, YMYL, Schema, Zero-Click/BLUF, Topical Authority.
+
 ### Other Routes
-- `/{state-slug}/health-insurance-plans` — State marketplace plans index (canonical state route)
 - `/subsidies/[state]/[county]` — APTC subsidy calculator
 - `/rates/[state]/[county]` — Rate volatility by county
 - `/dental/[state]` — Dental plan comparison
