@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Turning 26? Health Insurance Options for 2026 | HealthInsuranceRenew",
   description:
     "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
+  alternates: { canonical: 'https://healthinsurancerenew.com/turning-26-health-insurance-options' },
 }
 
 const breadcrumbs = [

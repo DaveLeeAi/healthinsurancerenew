@@ -5,6 +5,7 @@ import allStatesData from '@/data/config/all-states.json'
 export const metadata: Metadata = {
   title: 'Health Insurance Subsidy Calculator — APTC by State & County',
   description: 'Calculate your 2026 premium tax credit (APTC) by county. Based on CMS benchmark silver premium data for all 50 states.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/subsidies' },
 }
 
 interface StateEntry {

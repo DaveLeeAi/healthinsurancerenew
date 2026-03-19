@@ -138,6 +138,52 @@ export function buildArticleSchema(params: {
   }
 }
 
+// ─── Article with Organization author (state plans pages) ────────────────────
+
+/**
+ * Builds Article schema with Organization author (licensed professionals) and
+ * Dataset reference. Used on state-level plan pages for E-E-A-T signals.
+ *
+ * NOTE: Dave Lee name/NPN must NOT appear in schema on these pages.
+ * Name/NPN only on homepage + /circle-of-champions.
+ */
+export function buildStatePlansArticleSchema(params: {
+  headline: string
+  description: string
+  url: string
+  dateModified: string
+  stateName: string
+}): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: params.headline,
+    description: params.description,
+    url: params.url,
+    author: {
+      '@type': 'Organization',
+      name: 'HealthInsuranceRenew Editorial Team',
+      url: 'https://healthinsurancerenew.com/editorial-policy',
+    },
+    editor: {
+      '@type': 'Organization',
+      name: 'HealthInsuranceRenew Editorial Team',
+    },
+    publisher: PUBLISHER,
+    dateModified: params.dateModified,
+    datePublished: '2025-11-01',
+    isBasedOn: {
+      '@type': 'Dataset',
+      name: 'CMS QHP Landscape Public Use File',
+      url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    },
+    about: {
+      '@type': 'State',
+      name: params.stateName,
+    },
+  }
+}
+
 // ─── Dataset (generic) ──────────────────────────────────────────────────────
 
 export interface DatasetSchema {

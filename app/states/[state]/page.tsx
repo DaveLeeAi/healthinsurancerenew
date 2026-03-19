@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
     description: entry.frontmatter.description,
+    alternates: { canonical: `https://healthinsurancerenew.com/states/${params.state}` },
   }
 }
 

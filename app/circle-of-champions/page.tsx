@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'CMS Marketplace Elite Circle of Champions Recognition | HealthInsuranceRenew',
   description:
     `Health Insurance Renew received ${config.operator.recognition} recognition for the ${config.operator.recognitionPeriod}, enrolling ${config.operator.enrollmentVolume} in annual Marketplace premium.`,
+  alternates: { canonical: 'https://healthinsurancerenew.com/circle-of-champions' },
 }
 
 const breadcrumbs = [

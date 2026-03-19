@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: 'Health Insurance Savings by Income Level: 2026 Guide | HealthInsuranceRenew',
   description:
     'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/aca-income-guide-2026' },
 }
 
 const breadcrumbs = [

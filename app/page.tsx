@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  alternates: { canonical: 'https://healthinsurancerenew.com' },
 }
 
 const guides = [

@@ -6,6 +6,7 @@ import FAQSection from '../../../components/FAQSection'
 import SourcesBox from '../../../components/SourcesBox'
 import { getCollectionSlugs, getCollectionEntry } from '../../../lib/markdown'
 import type { GuideFrontmatter } from '../../../lib/markdown'
+import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '../../../lib/schema-markup'
 
 interface Props {
   params: { slug: string }
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
     description: entry.frontmatter.description,
+    alternates: { canonical: `https://healthinsurancerenew.com/guides/${params.slug}` },
   }
 }
 
@@ -37,8 +39,41 @@ export default async function GuideDetailPage({ params }: Props) {
     { name: title, url: `/guides/${params.slug}` },
   ]
 
+  const articleSchema = {
+    ...buildArticleSchema({
+      headline: title,
+      description,
+      dateModified,
+    }),
+    reviewedBy: {
+      '@type': 'Organization',
+      name: 'Licensed Health Insurance Professionals',
+      url: 'https://healthinsurancerenew.com/editorial-policy',
+    },
+  }
+
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: title, url: `https://healthinsurancerenew.com/guides/${params.slug}` },
+  ])
+
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqs && faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFAQSchema(faqs)) }}
+        />
+      )}
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         {title}

@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "total_errors": 4,
+    "error_breakdown": {
+      "index_fetch_failed": 4
+    },
+    "generated_at": "2026-03-10T00:43:52.721594"
+  },
+  "errors": [
+    {
+      "index_url": "https://cms.deltadental.com/index.json",
+      "issuer_ids": [
+        "21989",
+        "82285",
+        "30045",
+        "26018",
+        "97725",
+        "63366",
+        "28856",
+        "18802",
+        "34930",
+        "49374",
+        "71788",
+        "56891",
+        "87701",
+        "86728",
+        "28415",
+        "23891",
+        "24349",
+        "71246",
+        "76526"
+      ],
+      "states": [
+        "AK",
+        "AL",
+        "AZ",
+        "DE",
+        "FL",
+        "IA",
+        "IN",
+        "LA",
+        "MI",
+        "MS",
+        "MT",
+        "NC",
+        "NH",
+        "OH",
+        "OR",
+        "TX",
+        "UT",
+        "WV"
+      ],
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.modahealth.com/cms-data-index.json",
+      "issuer_ids": [
+        "73836",
+        "39424",
+        "17933"
+      ],
+      "states": [
+        "AK",
+        "OR",
+        "TX"
+      ],
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.bestlife.com/exchange/cms-data-Index.json",
+      "issuer_ids": [
+        "74819",
+        "71051",
+        "35700"
+      ],
+      "states": [
+        "AK",
+        "IA",
+        "MI"
+      ],
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.bestlife.com/exchange/cms-data-index.json",
+      "issuer_ids": [
+        "12538",
+        "26904",
+        "77352",
+        "17121",
+        "10046",
+        "83557",
+        "63790",
+        "78461",
+        "29416",
+        "11324",
+        "93895",
+        "94482",
+        "75329",
+        "50022",
+        "47509",
+        "40254",
+        "89281",
+        "61214",
+        "24601",
+        "47665",
+        "42757",
+        "47731"
+      ],
+      "states": [
+        "AL",
+        "AR",
+        "AZ",
+        "FL",
+        "HI",
+        "IN",
+        "KS",
+        "LA",
+        "MO",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "OH",
+        "OK",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "WY"
+      ],
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    }
+  ]
+}

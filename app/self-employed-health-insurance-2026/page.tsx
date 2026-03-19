@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Self-Employed Health Insurance in 2026 | HealthInsuranceRenew',
   description:
     'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/self-employed-health-insurance-2026' },
 }
 
 const breadcrumbs = [

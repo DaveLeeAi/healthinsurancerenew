@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Employer Coverage Unaffordable? Your Marketplace Options in 2026 | HealthInsuranceRenew",
   description:
     'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/employer-coverage-unaffordable-2026' },
 }
 
 const breadcrumbs = [

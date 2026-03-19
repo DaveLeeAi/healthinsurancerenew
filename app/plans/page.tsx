@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { loadRateVolatility } from '@/lib/data-loader'
 import allStatesData from '@/data/config/all-states.json'
-import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
+import { stateCodeToSlug } from '@/lib/county-lookup'
 
 export const metadata: Metadata = {
   title: 'Compare Health Insurance Plans by State & County | 2026',
@@ -61,11 +61,10 @@ export default function PlansIndexPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {ffmStates.map(([state, counties]) => {
             const totalPlans = counties.reduce((s, c) => s + c.plan_count, 0)
-            const firstCounty = counties[0]
             return (
               <a
                 key={state}
-                href={`/${stateCodeToSlug(state)}/${getCountySlug(firstCounty.fips)}`}
+                href={`/${stateCodeToSlug(state)}/health-insurance-plans`}
                 className="p-4 border border-neutral-200 rounded-xl hover:border-primary-400 hover:shadow-sm transition-all"
               >
                 <div className="text-xl font-bold text-navy-800">{state}</div>

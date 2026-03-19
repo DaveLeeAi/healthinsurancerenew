@@ -1,0 +1,17 @@
+{
+  "source": "CMS MR-PUF + Carrier Formulary JSON Files",
+  "plan_year": 2026,
+  "issuers_attempted": 110,
+  "issuers_successful": 106,
+  "issuers_failed": 4,
+  "success_rate_pct": 96.4,
+  "total_drug_records": 20497198,
+  "unique_drug_names": 49872,
+  "unique_rxnorm_ids": 12249,
+  "unique_issuer_ids_with_data": 114,
+  "priority_drug_records": 678998,
+  "priority_drug_names": 1421,
+  "generated_at": "2026-03-10T02:19:00",
+  "schema_version": "1.0",
+  "note": "Metadata reconstructed post-run (finalize OOM on 7.2GB file - now fixed)"
+}

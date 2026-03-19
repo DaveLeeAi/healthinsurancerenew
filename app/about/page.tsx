@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'About Us | HealthInsuranceRenew',
   description:
     `Learn about HealthInsuranceRenew, an educational health insurance resource operated by a licensed health insurance agent (NPN: ${config.operator.npn}) serving clients in ${config.licensedStates.length} states.`,
+  alternates: { canonical: 'https://healthinsurancerenew.com/about' },
 }
 
 const breadcrumbs = [

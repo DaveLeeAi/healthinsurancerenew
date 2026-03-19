@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Terms of Use | HealthInsuranceRenew',
   description:
     'Terms of use for HealthInsuranceRenew. Understand the conditions for using this educational health insurance resource, including disclaimers and limitations.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/terms' },
 }
 
 const breadcrumbs = [

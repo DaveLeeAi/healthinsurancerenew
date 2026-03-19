@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Health Insurance by State | HealthInsuranceRenew',
   description:
     'Health insurance marketplace information for every U.S. state. Find eligibility details, Medicaid expansion status, exchange info, and 2026 enrollment guides.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/states' },
 }
 
 const breadcrumbs = [

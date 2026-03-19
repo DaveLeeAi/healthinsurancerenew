@@ -608,6 +608,148 @@ export function getAllLifeEventParams(): { event_type: string }[] {
   return getAllLifeEventSlugs().map((slug) => ({ event_type: slug }))
 }
 
+// ---------------------------------------------------------------------------
+// State-level plan aggregation (for /[state-name]/health-insurance-plans)
+// ---------------------------------------------------------------------------
+
+export interface StateAggregateStats {
+  planCount: number
+  carrierCount: number
+  carriers: string[]
+  countyCount: number
+  /** County FIPS codes — sorted by carrier count desc (proxy for population) */
+  topCountyFips: string[]
+  avgPremiumAge21: number | null
+  avgPremiumAge40: number | null
+  avgPremiumAge64: number | null
+  lowestPremiumAge40: number | null
+  highestPremiumAge40: number | null
+  avgDeductible: number | null
+  lowestDeductible: number | null
+  premiumByMetal: Record<string, { avg40: number; min40: number; max40: number; count: number }>
+}
+
+/**
+ * Aggregate plan statistics for an FFM state from rate_volatility + plan_intelligence.
+ * Uses rate_volatility for fast per-county stats, and plan_intelligence for deductible data.
+ */
+export function getStateAggregateStats(stateCode: string): StateAggregateStats | null {
+  const code = stateCode.toUpperCase()
+  const countyRecords = loadRateVolatility().data.filter(r => r.state_code === code)
+  if (countyRecords.length === 0) return null
+
+  const allCarriers = new Set<string>()
+  let totalPlans = 0
+  const premiums21: number[] = []
+  const premiums40: number[] = []
+  const premiums64: number[] = []
+  const metalAgg: Record<string, { sum40: number; min40: number; max40: number; count: number }> = {}
+
+  // Sort counties by carrier_count desc (proxy for populous counties)
+  const sorted = [...countyRecords].sort((a, b) => b.carrier_count - a.carrier_count)
+
+  for (const r of countyRecords) {
+    totalPlans += r.plan_count
+    for (const c of r.carriers) allCarriers.add(c)
+    if (r.avg_premium_age_21 > 0) premiums21.push(r.avg_premium_age_21)
+    if (r.avg_premium_age_40 > 0) premiums40.push(r.avg_premium_age_40)
+    if (r.avg_premium_age_64 > 0) premiums64.push(r.avg_premium_age_64)
+
+    for (const [metal, stats] of Object.entries(r.by_metal_level ?? {})) {
+      if (!stats) continue
+      if (!metalAgg[metal]) metalAgg[metal] = { sum40: 0, min40: Infinity, max40: 0, count: 0 }
+      metalAgg[metal].sum40 += stats.avg_premium_40 * stats.plan_count
+      metalAgg[metal].count += stats.plan_count
+      if (stats.min_premium_40 < metalAgg[metal].min40) metalAgg[metal].min40 = stats.min_premium_40
+      if (stats.max_premium_40 > metalAgg[metal].max40) metalAgg[metal].max40 = stats.max_premium_40
+    }
+  }
+
+  const avg = (arr: number[]) => arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null
+  const min = (arr: number[]) => arr.length > 0 ? Math.round(Math.min(...arr)) : null
+
+  // Deduplicate plan count across counties (rate_volatility counts per-county)
+  // Use unique carrier count * avg plans per carrier as rough unique estimate
+  const carriers = [...allCarriers].sort()
+
+  // Get deductible data from plan_intelligence (sample — first county with data)
+  const plans = loadPlanIntelligence().data.filter(p => p.state_code === code)
+  const deductibles = plans
+    .map(p => p.deductible_individual)
+    .filter((d): d is number => d != null && d > 0)
+  const uniquePlanIds = new Set(plans.map(p => p.plan_id))
+
+  const premiumByMetal: Record<string, { avg40: number; min40: number; max40: number; count: number }> = {}
+  for (const [metal, agg] of Object.entries(metalAgg)) {
+    premiumByMetal[metal] = {
+      avg40: Math.round(agg.sum40 / agg.count),
+      min40: Math.round(agg.min40),
+      max40: Math.round(agg.max40),
+      count: agg.count,
+    }
+  }
+
+  return {
+    planCount: uniquePlanIds.size || totalPlans,
+    carrierCount: carriers.length,
+    carriers,
+    countyCount: countyRecords.length,
+    topCountyFips: sorted.slice(0, 10).map(r => r.county_fips),
+    avgPremiumAge21: avg(premiums21),
+    avgPremiumAge40: avg(premiums40),
+    avgPremiumAge64: avg(premiums64),
+    lowestPremiumAge40: min(premiums40),
+    highestPremiumAge40: premiums40.length > 0 ? Math.round(Math.max(...premiums40)) : null,
+    avgDeductible: avg(deductibles),
+    lowestDeductible: min(deductibles),
+    premiumByMetal,
+  }
+}
+
+/**
+ * Aggregate plan statistics for an SBM state from sbc_sbm_XX.json data.
+ */
+export function getSbmStateAggregateStats(stateCode: string): StateAggregateStats | null {
+  const plans = loadSbmSbcData(stateCode)
+  if (plans.length === 0) return null
+
+  const STANDARD_CSR = new Set(['01', 'Standard'])
+  const standardPlans = plans.filter(p => STANDARD_CSR.has(p.csr_variation))
+  const carriers = [...new Set(standardPlans.map(p => p.issuer_name))].sort()
+
+  const deductibles = standardPlans
+    .map(p => typeof p.deductible_individual === 'number' ? p.deductible_individual : null)
+    .filter((d): d is number => d != null && d > 0)
+
+  const avg = (arr: number[]) => arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null
+  const min = (arr: number[]) => arr.length > 0 ? Math.round(Math.min(...arr)) : null
+
+  // Group by metal level
+  const metalGroups: Record<string, number[]> = {}
+  for (const p of standardPlans) {
+    const m = p.metal_level
+    if (!metalGroups[m]) metalGroups[m] = []
+    const ded = typeof p.deductible_individual === 'number' ? p.deductible_individual : null
+    if (ded != null) metalGroups[m].push(ded)
+  }
+
+  return {
+    planCount: standardPlans.length,
+    carrierCount: carriers.length,
+    carriers,
+    countyCount: 0,
+    topCountyFips: [],
+    avgPremiumAge21: null,
+    avgPremiumAge40: null,
+    avgPremiumAge64: null,
+    lowestPremiumAge40: null,
+    highestPremiumAge40: null,
+    avgDeductible: avg(deductibles),
+    lowestDeductible: min(deductibles),
+    premiumByMetal: {},
+  }
+}
+
 /**
  * Returns all unique state/county combos from subsidy_engine.json (2.7 MB, fast).
  * Suitable for generateStaticParams on the /subsidies/[state]/[county] route.

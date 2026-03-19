@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import type { PlanRecord } from '@/lib/types'
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 import { generatePlanSlug } from '@/lib/plan-slug'
+import CarrierFilterBar from './CarrierFilterBar'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -115,8 +116,21 @@ interface Props {
 export default function PlanComparisonTable({ plans }: Props) {
   const [sortKey, setSortKey] = useState<SortKey>('premium_age_40')
   const [sortDir, setSortDir] = useState<SortDir>('asc')
-  const [metalFilter, setMetalFilter] = useState('all')
-  const [typeFilter, setTypeFilter]   = useState('all')
+  const [metalFilter, setMetalFilter]     = useState('all')
+  const [typeFilter, setTypeFilter]       = useState('all')
+  const [carrierFilter, setCarrierFilter] = useState('all')
+
+  // Derive carrier list from ALL plans, sorted A-Z — counts reflect total per carrier
+  const carriers = useMemo(() => {
+    const counts = new Map<string, number>()
+    plans.forEach((p) => {
+      const name = p.issuer_name ?? 'Unknown'
+      counts.set(name, (counts.get(name) ?? 0) + 1)
+    })
+    return Array.from(counts.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [plans])
 
   // Derive filter option lists from the full plans prop (not the filtered view)
   const metalLevels = useMemo(
@@ -131,14 +145,15 @@ export default function PlanComparisonTable({ plans }: Props) {
   // Apply filters then sort
   const displayed = useMemo(() => {
     let filtered = plans
-    if (metalFilter !== 'all') filtered = filtered.filter((p) => p.metal_level === metalFilter)
-    if (typeFilter  !== 'all') filtered = filtered.filter((p) => p.plan_type  === typeFilter)
+    if (carrierFilter !== 'all') filtered = filtered.filter((p) => p.issuer_name === carrierFilter)
+    if (metalFilter   !== 'all') filtered = filtered.filter((p) => p.metal_level === metalFilter)
+    if (typeFilter    !== 'all') filtered = filtered.filter((p) => p.plan_type   === typeFilter)
     return [...filtered].sort((a, b) => {
       const av = getSortValue(a, sortKey)
       const bv = getSortValue(b, sortKey)
       return sortDir === 'asc' ? av - bv : bv - av
     })
-  }, [plans, metalFilter, typeFilter, sortKey, sortDir])
+  }, [plans, carrierFilter, metalFilter, typeFilter, sortKey, sortDir])
 
   function handleSort(key: SortKey) {
     if (sortKey === key) {
@@ -155,6 +170,14 @@ export default function PlanComparisonTable({ plans }: Props) {
 
   return (
     <div className="space-y-3">
+
+      {/* ── Carrier filter tabs ── */}
+      <CarrierFilterBar
+        carriers={carriers}
+        selected={carrierFilter}
+        totalCount={plans.length}
+        onSelect={setCarrierFilter}
+      />
 
       {/* ── Filter controls ── */}
       <div className="flex flex-wrap items-center gap-4">

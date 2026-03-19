@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'What Is Cost-Sharing Reduction (CSR) in 2026? | HealthInsuranceRenew',
   description:
     'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/csr-explained-2026' },
 }
 
 const breadcrumbs = [

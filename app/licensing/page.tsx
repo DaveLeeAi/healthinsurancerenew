@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Agent Licensing | HealthInsuranceRenew',
   description:
     `HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.`,
+  alternates: { canonical: 'https://healthinsurancerenew.com/licensing' },
 }
 
 const breadcrumbs = [

@@ -3,11 +3,13 @@ import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { getCollectionList } from '../../lib/markdown'
 import type { GuideFrontmatter } from '../../lib/markdown'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Guides | HealthInsuranceRenew',
   description:
     'Educational guides about health insurance marketplace enrollment, subsidies, special enrollment periods, and factors that affect coverage costs.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/guides' },
 }
 
 const breadcrumbs = [
@@ -27,8 +29,17 @@ export default function GuidesIndexPage() {
     }))
     .sort((a, b) => new Date(b.dateModified).getTime() - new Date(a.dateModified).getTime())
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+  ])
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Health Insurance Guides

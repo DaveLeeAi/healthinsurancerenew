@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Early Retirement Health Insurance in 2026 | HealthInsuranceRenew',
   description:
     'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/early-retirement-health-insurance-2026' },
 }
 
 const breadcrumbs = [

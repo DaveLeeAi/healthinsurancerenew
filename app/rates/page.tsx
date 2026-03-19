@@ -5,6 +5,7 @@ import allStatesData from '@/data/config/all-states.json'
 export const metadata: Metadata = {
   title: 'Health Insurance Rate Volatility Tracker — 2026',
   description: 'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/rates' },
 }
 
 interface StateEntry {
