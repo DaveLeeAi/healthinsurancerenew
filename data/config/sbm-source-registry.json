@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-19 (sweep #4 — 2025 SBM PUF issuer discovery)",
+  "last_updated": "2026-03-19 (sweep #5 — CT/ID/ME/NM/VA SBM PUF issuer discovery)",
   "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "states": {
     "CA": {
@@ -520,18 +520,27 @@
           "notes": "LIVE 2026-03-19. Old URL redirects to cmsjson/378245/cms/index.json (national Molina endpoint). Contains formulary data."
         },
         {
-          "issuer_id": "00000",
-          "issuer_name": "ConnectiCare",
+          "issuer_id": "76962",
+          "issuer_name": "ConnectiCare Benefits, Inc. (CT)",
           "index_url": "https://www.connecticare.com/cms-data-index.json",
           "status": "url_dead",
-          "notes": "403 on www.connecticare.com. transparency.connecticare.com serves dynamic JS portal, not JSON. Tested 2026-03-17."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Choice POS network. Plan names: 'Choice Bronze Standard POS'. ConnectiCare Benefits is the primary ConnectiCare entity on CT exchange.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
-          "issuer_name": "Elevance Health / Anthem (CT)",
+          "issuer_id": "86545",
+          "issuer_name": "Anthem Health Plans of Connecticut (Elevance Health)",
           "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
           "status": "url_dead",
-          "notes": "Elevance index.json is LIVE but 11 drug files contain 2.3M national records causing OOM. Drug data is FFM-only (IN/FL/MO/NH/OH/TX/WI/GA). No CT-specific plan IDs. Marked dead to prevent OOM. Re-verified 2026-03-19."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Pathway Enhanced HMO network. Plan names: 'Catastrophic HMO Pathway Enhanced', 'Bronze HMO Pathway Enhanced with Adult Dental and Vision Benefits'. Elevance Health (formerly Anthem) CT entity. Note: Elevance drugs file OOM risk — CT plan IDs not confirmed in drug file.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "94815",
+          "issuer_name": "ConnectiCare Insurance Company, Inc. (CT)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 94815. Value Network (Value Network POS product). Plan names: Value Gold/Silver Standard POS. Second ConnectiCare HIOS entity. Lower-cost 'Value' tier product distinct from 76962 Choice product. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -567,18 +576,62 @@
           "notes": "CONFIRMED LIVE 2026-03-17. Cambia index.json contains ID plan IDs in drugs1.json + drugs2.json (112 MB each). Cambia parent of Regence BCBS Idaho. Same index serves WA/OR/ID/UT. HIOS ID 71281 confirmed from drug file plan_id prefixes."
         },
         {
-          "issuer_id": "00000",
+          "issuer_id": "44648",
           "issuer_name": "Blue Cross of Idaho",
           "index_url": "https://www.bcidaho.com/cms-data-index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Preferred network (IDN001/IDN002). Plan names: 'PREF Bronze HSA 7000'. Blue Cross of Idaho 'Preferred' product line (PREF prefix = Preferred). Primary BCI HIOS ID.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
+          "issuer_id": "26002",
           "issuer_name": "SelectHealth (ID)",
           "index_url": "https://selecthealth.org/cms-data-index.json",
           "status": "url_dead",
-          "notes": "403 on 2026-03-17."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Select Health Med SE / IDN005/IDN002 networks. Plan names: 'Select Health SLHP Silver 3000'. SelectHealth (Intermountain Health subsidiary) ID entity.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "38128",
+          "issuer_name": "Unknown Idaho issuer (LINK plans)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 38128. Engage - Group network (IDN005/IDN002). Plan names: LINK GOLD, LINK SILVER. Identified from 2025 SBM Plan-PUF. 'LINK' branded plans. Possibly SelectHealth Link product or a separate regional carrier. Shares IDN005 network with SelectHealth (26002). No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "60597",
+          "issuer_name": "Possibly Blue Cross of Idaho — Voyager product",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 60597. IDN005/IDN002 networks. Plan names: Voyager Bronze HSA 8050. Identified from 2025 SBM Plan-PUF. 'Voyager' is a BCI product name for HSA plans. May be BCI's secondary HIOS entity (Voyager/HSA line vs Preferred line 44648). No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "61589",
+          "issuer_name": "Unknown Idaho issuer (Choice plans)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 61589. Hometown Southwest Provider Network (IDN005/IDN013). Plan names: Bronze HSA 7150 Choice, Silver 4500 Choice. Identified from 2025 SBM Plan-PUF. Southwestern ID service area. Possibly Mountain Health CO-OP or another regional carrier. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "80588",
+          "issuer_name": "Moda Health Plan (ID)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 80588. Moda Select - individual (IDN001/IDN002). Plan names: Moda Select Gold 2200 + Vision Exam. Identified from 2025 SBM Plan-PUF. Moda Health is an Oregon-based insurer also offering plans in ID. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "91278",
+          "issuer_name": "Molina Healthcare of Idaho",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 91278. Molina Marketplace (IDN001). Plan names: Gold 1, Silver 2. Identified from 2025 SBM Plan-PUF. Molina Marketplace ID entity. Note: national Molina endpoint (cmsjson/378245) may serve ID plan IDs. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "92170",
+          "issuer_name": "St. Luke's Health Plan (ID)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 92170. St. Luke's Health Partners (IDN001). Plan names: St Luke's Health Plan Expanded Bronze, St Luke's Health Plan Silver. Identified from 2025 SBM Plan-PUF. St. Luke's Health System (Boise-based hospital system) health plan subsidiary. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -651,25 +704,35 @@
       "exchange_url": "https://www.bewellnm.com",
       "issuers": [
         {
-          "issuer_id": "00000",
+          "issuer_id": "75605",
           "issuer_name": "BCBS New Mexico",
           "index_url": "https://www.bcbsnm.com/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. NMN002 network. Plan names: 'Blue Community Gold HMO'. BlueCross BlueShield of New Mexico. 'Blue Community' is BCBSNM's exchange product line.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00560",
-          "issuer_name": "Molina Healthcare (NM)",
+          "issuer_id": "19722",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00560 (national Molina placeholder). 2025 SBM Plan-PUF confirms NM-specific entity HIOS is 19722 (Molina Marketplace of NM network, NMN001).",
+          "issuer_name": "Molina Healthcare of New Mexico",
           "index_url": "https://www.molinahealthcare.com/cmsjson/378245/cms/index.json",
           "status": "active",
-          "notes": "LIVE 2026-03-19. Old URL redirects to cmsjson/378245/cms/index.json (national Molina endpoint). Same as CT Molina redirect."
+          "notes": "LIVE 2026-03-19. National Molina endpoint (cmsjson/378245) confirmed active and serves NM plan data regardless of HIOS key. HIOS corrected from placeholder 00560 to real NM entity 19722 per 2025 SBM Plan-PUF."
         },
         {
-          "issuer_id": "00000",
+          "issuer_id": "57173",
           "issuer_name": "Presbyterian Health Plan (NM)",
           "index_url": "https://www.phs.org/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Individual Select Network (NMN001/NMN002). Plan names: 'Presbyterian Clear Cost Gold'. Presbyterian Health Plan is a New Mexico-based non-profit insurer.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "65428",
+          "issuer_name": "UnitedHealthcare of New Mexico",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 65428. Choice Individual Exchange (NMN011). Plan names: UHC Silver Value On Exchange, UHC Bronze Value On Exchange. Identified from 2025 SBM Plan-PUF. UHC entered NM exchange market. No discoverable MR formulary endpoint. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -820,11 +883,12 @@
       "notes": "Maine SBM. No Centene presence (404). Community Health Options and Harvard Pilgrim (Point32Health) have no discoverable MR formulary endpoints. Elevance index references ME in provider data but drug files need verification for ME plan IDs.",
       "issuers": [
         {
-          "issuer_id": "00000",
+          "issuer_id": "33653",
           "issuer_name": "Community Health Options (ME)",
           "index_url": "https://www.communityhealthoptions.org/cms-data-index.json",
           "status": "url_dead",
-          "notes": "Returns 200 but content is HTML, not JSON. No discoverable MR endpoint. Tested 2026-03-18."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Maine Statewide network. Plan names: 'Health Options Clear Choice Bronze $7500 PPO NE'. Community Health Options is a Maine-based CO-OP insurer.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
           "issuer_id": "77432",
@@ -840,6 +904,20 @@
           "direct_drugs_url": "https://fm.formularynavigator.com/jsonFiles/publish/143/35/drugs.json",
           "status": "active",
           "notes": "CONFIRMED LIVE 2026-03-18. Elevance index -> FormularyNavigator drugs/35. ME plan IDs 48396ME* confirmed. 3,791+ drugs in first 100KB. Standard CMS QHP schema."
+        },
+        {
+          "issuer_id": "54879",
+          "issuer_name": "TARO Health (ME)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 54879. Taro Health Maine MP Network. Plan names: TARO Direct Primary Care Bronze 4150, TARO Direct Primary Care Silver 1900. Identified from 2025 SBM Plan-PUF. TARO Health is a Direct Primary Care (DPC) integrated insurer in Maine. New entrant to ME exchange. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "96667",
+          "issuer_name": "Unknown ME issuer (Maine's Choice Plus HMO)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 96667. Maine's Choice Plus HMO network. Plan names: Clear Choice Maine's Choice Plus HMO Silver 4200 w/ Pedi Dental. Identified from 2025 SBM Plan-PUF. 'Clear Choice' prefix shared with CHO (33653). HMO entity distinct from CHO's PPO product. Possibly Community Health Options HMO entity or Harvard Pilgrim Health Care of New England ME-specific entity. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -863,18 +941,62 @@
           "notes": "CONFIRMED LIVE 2026-03-18. Same CareFirst index as issuer 10207. VA plan IDs 40308VA* found in Drugs_1.json. CareFirst BlueChoice is CareFirst subsidiary."
         },
         {
-          "issuer_id": "00000",
-          "issuer_name": "Optima Health / Sentara (VA)",
+          "issuer_id": "20507",
+          "issuer_name": "Sentara Health Plans (VA)",
           "index_url": "https://www.optimahealth.com/cms-data-index.json",
           "status": "url_dead",
-          "notes": "optimahealth.com redirects to sentarahealthplans.com, which returns 404 on /cms-data-index.json. No discoverable MR endpoint. Tested 2026-03-18."
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Sentara IFP (Individual/Family Plan) network. Plan names: 'Sentara M Bronze 6000 Ded HSA', 'Sentara M Gold 800 Ded'. Sentara Healthcare (Norfolk, VA-based system). Formerly Optima Health, rebranded Sentara Health Plans.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00543",
+          "issuer_id": "95185",
           "issuer_name": "Kaiser Permanente (VA)",
           "index_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/data/va/cms-data-index.json",
           "status": "url_dead",
-          "notes": "403 Forbidden. All KP content/dam paths blocked. Tested 2026-03-18."
+          "notes": "HIOS ID corrected 2026-03-19: was 00543 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Kaiser Foundation Health Plan of Mid Atlantic States Incorporated Signature network. Plan names: 'KP VA Platinum 0 Ded/Vision', 'KP VA Gold 0 Ded/Vision'. KP Mid-Atlantic VA entity. Note: 00543 used for KP CO/DC/MD as placeholder; VA-specific HIOS is 95185. MD entry (00543) confirmed live separately.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00543 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "24251",
+          "issuer_name": "UnitedHealthcare of Virginia",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 24251. Individual Exchange Benefit Plans. Plan names: UHC Gold Standard, UHC Bronze Standard, UHC Silver Standard. Identified from 2025 SBM Plan-PUF. UHC VA QHP entity. Standard-tier plans. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "25922",
+          "issuer_name": "Unknown VA issuer (Bronze Classic Standard / Secure)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 25922. Virginia EPO network. Plan names: Secure, Bronze Classic Standard, Silver Classic Standard. Identified from 2025 SBM Plan-PUF. 'Bronze Classic Standard' naming matches NY HIOS 74289 (also unidentified). Possibly Cigna VA or Oscar Health VA. 'Secure' plan also offered. Statewide VA EPO. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "41921",
+          "issuer_name": "Unknown VA issuer (Connect plans)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 41921. Virginia Connect Network. Plan names: Connect Bronze 6500 Indiv Med Deductible, Connect Gold 750 Indiv Med Deductible. Identified from 2025 SBM Plan-PUF. 'Connect' branded plans with Virginia Connect Network. Possibly HealthKeepers Connect or a separate Elevance/Anthem product in VA. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "86443",
+          "issuer_name": "Innovation Health (Aetna subsidiary, VA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 86443. HMO_IH Virginia (Innovation Health HMO). Plan names: Innovation Health - Aetna Bronze S: HMO, Innovation Health - Aetna Gold S: HMO. Identified from 2025 SBM Plan-PUF. Innovation Health is Aetna's Northern Virginia HMO subsidiary (joint venture with Inova Health System). HIOS 86443 = Innovation Health Inc. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "88380",
+          "issuer_name": "Anthem HealthKeepers (VA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 88380. Pathway X Tiered PCP & Hospital / HealthKeepers network. Plan names: Anthem HealthKeepers Catastrophic X DED 9200, Anthem HealthKeepers Bronze X DED 5500. Identified from 2025 SBM Plan-PUF. Anthem HealthKeepers Plus is Anthem's flagship VA HMO/EPO product. Elevance Health VA QHP entity. Elevance national drugs file has OOM risk; VA plan ID 88380VA* not yet verified in drug file. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "93187",
+          "issuer_name": "Aetna Health Inc. (VA) — HMO",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 93187. HMO_Virginia (Aetna HMO network). Plan names: Gold S: HMO Aetna network of doctors & hospitals, Bronze S: HMO Aetna network of doctors & hospitals. Identified from 2025 SBM Plan-PUF. Aetna VA HMO entity (distinct from Innovation Health 86443). Standard Aetna HMO plans. CVS Health subsidiary. No discoverable MR formulary endpoint."
         }
       ]
     }
