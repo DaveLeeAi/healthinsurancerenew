@@ -38,14 +38,14 @@ import {
 } from '@/lib/drug-linking'
 import DrugPageCta from '@/components/DrugPageCta'
 import allStatesData from '@/data/config/all-states.json'
-import { stateCodeToSlug } from '@/lib/county-lookup'
+import { stateCodeToSlug, stateSlugToCode } from '@/lib/county-lookup'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
 
 // ---------------------------------------------------------------------------
 // Clinical data lookup (top-50 common drugs)
-// Information Gain: tier context per alternative, not available on GoodRx/Drugs.com
+// Information Gain: tier context per alternative, unique to this dataset
 // ---------------------------------------------------------------------------
 
 interface DrugAlt {
@@ -291,8 +291,36 @@ const VALID_STATE_CODES = new Set(
   (allStatesData.states as { abbr: string }[]).map((s) => s.abbr.toLowerCase())
 )
 
+/**
+ * Resolves a route param to state info. Supports both:
+ * - 2-letter abbreviation (e.g. "tx") — triggers 301 redirect to slug
+ * - Full state slug (e.g. "texas") — canonical format
+ * Returns null if param is not a state.
+ */
+function resolveStateParam(param: string): { stateCode: string; stateSlug: string; stateName: string; needsRedirect: boolean } | null {
+  // Check abbreviation first (e.g. "tx")
+  if (param.length === 2 && VALID_STATE_CODES.has(param.toLowerCase())) {
+    const code = param.toUpperCase()
+    const slug = stateCodeToSlug(code)
+    const name = getStateNameFromAbbr(param)
+    return { stateCode: code, stateSlug: slug, stateName: name, needsRedirect: true }
+  }
+  // Check full state slug (e.g. "texas", "north-carolina")
+  const code = stateSlugToCode(param)
+  if (code) {
+    const name = getStateNameFromAbbr(code)
+    return { stateCode: code, stateSlug: param.toLowerCase(), stateName: name, needsRedirect: false }
+  }
+  return null
+}
+
+// Keep for backward compat in generateMetadata (where we can't redirect)
 function isStateCode(param: string): boolean {
   return param.length === 2 && VALID_STATE_CODES.has(param.toLowerCase())
+}
+
+function isStateParam(param: string): boolean {
+  return resolveStateParam(param) !== null
 }
 
 function getStateNameFromAbbr(abbr: string): string {
@@ -344,12 +372,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const drugDisplay = decodeURIComponent(params.drug_name).replace(/-/g, ' ')
-  const isState = isStateCode(params.issuer)
-  const stateName = isState ? getStateNameFromAbbr(params.issuer) : undefined
+  const stateInfo = resolveStateParam(params.issuer)
+  const isState = stateInfo !== null
+  const stateName = stateInfo?.stateName
+  const canonicalIssuer = stateInfo ? stateInfo.stateSlug : params.issuer
 
-  const stateConf = isState
+  const stateConf = stateInfo
     ? (allStatesData.states as { abbr: string; name: string; exchange: string; ownExchange: boolean }[])
-        .find(s => s.abbr.toUpperCase() === params.issuer.toUpperCase())
+        .find(s => s.abbr === stateInfo.stateCode)
     : undefined
 
   const issuerName = isState
@@ -359,15 +389,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : 'All Insurers'
 
   const title = isState
-    ? `${titleCase(drugDisplay)} Coverage in ${stateName} — ${PLAN_YEAR} Marketplace (Obamacare) Plans`
-    : `Does ${issuerName} Cover ${titleCase(drugDisplay)}? ${PLAN_YEAR} Marketplace Formulary`
+    ? `${titleCase(drugDisplay)} in ${stateName}: Coverage, Cost & Prior Authorization (${PLAN_YEAR})`
+    : `${titleCase(drugDisplay)} — ${issuerName}: Coverage, Tier & Prior Authorization (${PLAN_YEAR})`
   const description = isState
     ? stateConf?.ownExchange
-      ? `Check if ${drugDisplay} is covered by ${stateName} Marketplace (Obamacare) plans. ${stateName} uses ${stateConf.exchange} for enrollment.`
-      : `Is ${drugDisplay} covered by Marketplace plans in ${stateName}? See tier, cost, and prior authorization details. CMS ${PLAN_YEAR} data.`
-    : `Check if ${issuerName} covers ${drugDisplay} on their ${PLAN_YEAR} Marketplace formulary. ` +
-      `See tier placement, prior authorization requirements, step therapy, and quantity limits. Source: CMS MR-PUF.`
-  const canonical = `${SITE_URL}/formulary/${params.issuer}/${params.drug_name}`
+      ? `Is ${titleCase(drugDisplay)} covered by ${stateName} health insurance plans? ${stateName} uses ${stateConf.exchange} for enrollment. See coverage details.`
+      : `Is ${titleCase(drugDisplay)} covered by health insurance plans in ${stateName}? See tier placement, estimated cost, and prior authorization details. ${PLAN_YEAR} CMS data.`
+    : `Is ${titleCase(drugDisplay)} covered by ${issuerName}? Check tier placement, estimated cost, prior authorization, and restrictions. ${PLAN_YEAR} Marketplace data.`
+  const canonical = `${SITE_URL}/formulary/${canonicalIssuer}/${params.drug_name}`
 
   return {
     title,
@@ -403,19 +432,26 @@ export default async function FormularyDrugPage({ params }: Props) {
     redirect('/formulary')
   }
 
+  // --- State slug detection + redirect from abbreviation to canonical slug ---
+  const stateInfo = resolveStateParam(params.issuer)
+  if (stateInfo?.needsRedirect) {
+    redirect(`/formulary/${stateInfo.stateSlug}/${params.drug_name}`)
+  }
+
   const issuer = params.issuer
-  const isState = isStateCode(issuer)
-  const stateCode = isState ? issuer.toUpperCase() : undefined
+  const isState = stateInfo !== null
+  const stateCode = stateInfo?.stateCode
+  const stateSlug = stateInfo?.stateSlug
   const isSpecificIssuer = !isState && issuer !== 'all'
 
   // Full state config for exchange info
-  const stateConfig = isState
+  const stateConfig = stateInfo
     ? (allStatesData.states as {
         abbr: string; name: string; exchange: string;
         exchangeUrl: string; ownExchange: boolean
-      }[]).find(s => s.abbr.toUpperCase() === issuer.toUpperCase())
+      }[]).find(s => s.abbr === stateInfo.stateCode)
     : undefined
-  const stateName = stateConfig?.name ?? (isState ? issuer.toUpperCase() : undefined)
+  const stateName = stateInfo?.stateName ?? (stateConfig?.name)
   const isSBMState = stateConfig?.ownExchange ?? false
 
   // --- Load drug results ---
@@ -439,7 +475,8 @@ export default async function FormularyDrugPage({ params }: Props) {
   // ── SBM state or state with no formulary data — show explanation page ──
   if (isState && results.length === 0) {
     return <SBMExplanationPage
-      issuer={issuer}
+      issuer={stateSlug ?? issuer}
+      stateSlug={stateSlug ?? issuer}
       drugSlug={drugSlug}
       drugDisplay={drugDisplay}
       stateName={stateName!}
@@ -510,7 +547,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     '@type': 'MedicalWebPage',
     name: `${titleCase(drugDisplay)} ACA Formulary Coverage`,
     description: `Formulary tier placement, cost-sharing, restrictions, and patient guidance for ${titleCase(drugDisplay)} on ACA Marketplace health plans.`,
-    url: `${SITE_URL}/formulary/${params.issuer}/${params.drug_name}`,
+    url: `${SITE_URL}/formulary/${stateSlug ?? issuer}/${params.drug_name}`,
     author: {
       '@type': 'Organization',
       name: 'HealthInsuranceRenew Editorial Team',
@@ -533,18 +570,19 @@ export default async function FormularyDrugPage({ params }: Props) {
     },
   }
 
+  const canonicalIssuerParam = stateSlug ?? issuer
   const breadcrumbItems = isState
     ? [
         { name: 'Home', url: SITE_URL },
         { name: 'Formulary', url: `${SITE_URL}/formulary` },
-        { name: stateName!, url: `${SITE_URL}/formulary/${issuer}/all` },
-        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+        { name: stateName!, url: `${SITE_URL}/formulary/${canonicalIssuerParam}/all` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${canonicalIssuerParam}/${drugSlug}` },
       ]
     : [
         { name: 'Home', url: SITE_URL },
         { name: 'Formulary', url: `${SITE_URL}/formulary` },
-        { name: issuerName, url: `${SITE_URL}/formulary/${issuer}/all` },
-        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+        { name: issuerName, url: `${SITE_URL}/formulary/${canonicalIssuerParam}/all` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${canonicalIssuerParam}/${drugSlug}` },
       ]
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems)
 
@@ -682,7 +720,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         extra={{ drug: titleCase(drugDisplay), issuer: issuerName }}
       />
 
-      <main className="max-w-4xl mx-auto px-4 py-10 space-y-8">
+      <main className="max-w-4xl mx-auto px-4 py-10">
 
         {/* ── Breadcrumbs ── */}
         <nav aria-label="Breadcrumb" className="text-sm text-neutral-500">
@@ -697,7 +735,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
             <li>
               <a
-                href={`/formulary/${issuer}/all`}
+                href={`/formulary/${canonicalIssuerParam}/all`}
                 className="hover:underline text-primary-600"
               >
                 {isState ? stateName : issuerName}
@@ -716,7 +754,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             ════════════════════════════════════════════════════════════════ */}
         <section aria-labelledby="hero-heading">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl font-bold text-navy-900">
-            {titleCase(drugDisplay)} Coverage{isState ? ` in ${stateName}` : isSpecificIssuer ? ` — ${issuerName}` : ''}: Cost &amp; Prior Authorization Guide
+            {titleCase(drugDisplay)}{isState ? ` in ${stateName}` : isSpecificIssuer ? ` — ${issuerName}` : ''}: Coverage, Cost &amp; Prior Authorization
           </h1>
           <p className="text-lg text-neutral-500 mt-1.5 mb-4">
             {isState
@@ -746,52 +784,39 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
           )}
 
+          {/* Decision Summary Strip */}
           {results.length > 0 ? (
-            <div className="rounded-2xl border-2 border-green-200 bg-gradient-to-br from-green-50/80 to-emerald-50/30 p-6 sm:p-7">
-              <div className="space-y-3">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-green-500 text-xl shrink-0">&#10004;</span>
-                  <span className="text-neutral-500 text-base sm:text-lg">Covered:</span>
-                  <span className="text-lg sm:text-xl font-bold text-green-800">
-                    Yes ({results.length} plan{results.length === 1 ? '' : 's'})
-                  </span>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+                <div className="rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-center">
+                  <p className="text-[11px] font-medium text-green-600 uppercase tracking-wide">Coverage</p>
+                  <p className="text-lg font-bold text-green-800 mt-0.5">
+                    Yes <span className="text-sm font-normal text-green-600">({results.length})</span>
+                  </p>
                 </div>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-green-500 text-xl shrink-0">&#10004;</span>
-                  <span className="text-neutral-500 text-base sm:text-lg">Cost:</span>
-                  <span className={`text-lg sm:text-xl font-bold ${dominantHumanTier.color}`}>
-                    {dominantHumanTier.costRange}
-                    <span className="text-sm font-normal text-neutral-500 ml-1">per fill (typical range)</span>
-                  </span>
+                <div className={`rounded-xl ${dominantHumanTier.bg} border ${dominantHumanTier.border} px-4 py-3 text-center`}>
+                  <p className="text-[11px] font-medium text-neutral-500 uppercase tracking-wide">Typical cost</p>
+                  <p className={`text-lg font-bold ${dominantHumanTier.color} mt-0.5`}>{dominantHumanTier.costRange}</p>
                 </div>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-green-500 text-xl shrink-0">&#10004;</span>
-                  <span className="text-neutral-500 text-base sm:text-lg">Tier:</span>
-                  <span className="text-lg sm:text-xl font-bold text-navy-800">
-                    {dominantHumanTier.label}
-                  </span>
+                <div className="rounded-xl bg-neutral-50 border border-neutral-200 px-4 py-3 text-center">
+                  <p className="text-[11px] font-medium text-neutral-500 uppercase tracking-wide">Tier</p>
+                  <p className="text-lg font-bold text-navy-800 mt-0.5">{dominantHumanTier.shortLabel}</p>
                 </div>
-                <div className="flex items-baseline gap-3">
-                  <span className={`text-xl shrink-0 ${hasPriorAuth ? 'text-amber-500' : 'text-green-500'}`}>
-                    {hasPriorAuth ? '\u26A0' : '\u2714'}
-                  </span>
-                  <span className="text-neutral-500 text-base sm:text-lg">Prior Authorization:</span>
-                  <span className={`text-lg sm:text-xl font-bold ${hasPriorAuth ? 'text-amber-700' : 'text-green-700'}`}>
+                <div className={`rounded-xl px-4 py-3 text-center ${hasPriorAuth ? 'bg-amber-50 border border-amber-200' : 'bg-green-50 border border-green-200'}`}>
+                  <p className="text-[11px] font-medium text-neutral-500 uppercase tracking-wide">Prior auth</p>
+                  <p className={`text-lg font-bold mt-0.5 ${hasPriorAuth ? 'text-amber-700' : 'text-green-700'}`}>
                     {priorAuthLabel}
-                  </span>
+                  </p>
                 </div>
               </div>
-
-              <p className="text-xs text-neutral-500 mt-5 pt-3 border-t border-green-200/60">
+              <p className="text-xs text-neutral-400 mt-3">
                 Based on CMS {PLAN_YEAR} plan data &middot; Updated March 2026 &middot; {results.length} plan{results.length === 1 ? '' : 's'} analyzed
-                {isState ? ` in ${stateName}` : ` from ${issuerName}`}
-              </p>
-              <p className="text-xs text-neutral-400 mt-1">
+                {isState ? ` in ${stateName}` : ` from ${issuerName}`}.
                 Actual cost varies by plan, deductible, and pharmacy.
               </p>
-            </div>
+            </>
           ) : (
-            <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 mt-5">
               <p className="text-neutral-600 text-lg leading-relaxed">
                 No formulary records found for{' '}
                 <strong>{titleCase(drugDisplay)}</strong>
@@ -809,27 +834,38 @@ export default async function FormularyDrugPage({ params }: Props) {
           )}
         </section>
 
-        {/* ═══ HERO CTA — plan check prompt ═══ */}
+        {/* ═══ HERO CTA ═══ */}
         {results.length > 0 && (
-          <DrugPageCta
-            variant="hero"
-            drugName={titleCase(drugDisplay)}
-            stateCode={stateCode}
-            stateName={stateName}
-          />
+          <div className="mt-5">
+            <DrugPageCta
+              variant="hero"
+              drugName={titleCase(drugDisplay)}
+              stateCode={stateCode}
+              stateName={stateName}
+            />
+          </div>
+        )}
+
+        {/* ═══ What this means — plain-English interpretation (high priority) ═══ */}
+        {results.length > 0 && (
+          <section aria-labelledby="interpretation-heading" className="mt-6 rounded-xl bg-primary-50/60 border border-primary-200 p-5">
+            <h2 id="interpretation-heading" className="text-base font-bold text-navy-900 mb-1.5">
+              What this means for you
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-700 leading-relaxed">
+              {coverageInterpretation}
+            </p>
+          </section>
         )}
 
         {/* ════════════════════════════════════════════════════════════════
-            LAYER 2: CLINICAL CONTEXT
-            Drug class, indications, alternatives with tier context
-            Information Gain: competitors show drug info without tier context
+            ZONE 2: COST & COVERAGE DETAILS
             ════════════════════════════════════════════════════════════════ */}
-        <DrugClinicalContext drugDisplay={drugDisplay} drugSlug={drugSlug} issuer={issuer} />
 
         {/* ═══ COST — Estimated cost per fill ═══ */}
         {results.length > 0 && humanTiers.length > 0 && (
-          <section aria-labelledby="cost-heading">
-            <h2 id="cost-heading" className="text-lg font-semibold text-navy-800 mb-3">
+          <section aria-labelledby="cost-heading" className="mt-10">
+            <h2 id="cost-heading" className="text-xl font-bold text-navy-800 mb-4">
               Estimated cost per fill
             </h2>
             <ul className="space-y-2">
@@ -851,31 +887,8 @@ export default async function FormularyDrugPage({ params }: Props) {
           </section>
         )}
 
-        {/* ═══ WHAT THIS MEANS — Plain-English interpretation ═══ */}
-        {results.length > 0 && (
-          <section aria-labelledby="interpretation-heading" className="rounded-xl bg-primary-50 border-2 border-primary-200 p-5 sm:p-6">
-            <h2 id="interpretation-heading" className="text-lg font-bold text-navy-900 mb-2">
-              What this means for you
-            </h2>
-            <p className="text-base sm:text-lg text-neutral-800 leading-relaxed">
-              {coverageInterpretation}
-            </p>
-          </section>
-        )}
-
-        {/* ═══ MID-PAGE CTA — primary conversion ═══ */}
-        {results.length > 0 && (
-          <DrugPageCta
-            variant="mid"
-            drugName={titleCase(drugDisplay)}
-            stateCode={stateCode}
-            stateName={stateName}
-            costRange={dominantHumanTier.costRange}
-          />
-        )}
-
         {/* ════════════════════════════════════════════════════════════════
-            LAYER 3: CASH PRICE vs INSURANCE
+            CASH PRICE vs INSURANCE
             Information Gain: pre-deductible reality check not on competitor pages
             ════════════════════════════════════════════════════════════════ */}
         {results.length > 0 && (
@@ -891,8 +904,8 @@ export default async function FormularyDrugPage({ params }: Props) {
             Prior auth, step therapy, quantity limit — clean compact cards
             ════════════════════════════════════════════════════════════════ */}
         {results.length > 0 && (hasPriorAuth || hasStepTherapy || hasQuantityLimit) && (
-          <section aria-labelledby="restrictions-heading">
-            <h2 id="restrictions-heading" className="text-lg font-semibold text-navy-800 mb-3">
+          <section aria-labelledby="restrictions-heading" className="mt-8">
+            <h2 id="restrictions-heading" className="text-xl font-bold text-navy-800 mb-4">
               Coverage restrictions
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -937,36 +950,28 @@ export default async function FormularyDrugPage({ params }: Props) {
             SECTION 5: HOW TO SAVE ON THIS MEDICATION
             ════════════════════════════════════════════════════════════════ */}
         {results.length > 0 && (
-          <section aria-labelledby="save-tips-heading" className="rounded-xl border border-green-200 bg-green-50/50 p-5">
-            <h2 id="save-tips-heading" className="text-base font-semibold text-green-900 mb-3">
+          <section aria-labelledby="save-tips-heading" className="mt-8">
+            <h2 id="save-tips-heading" className="text-xl font-bold text-navy-800 mb-3">
               How to save on {titleCase(drugDisplay)}
             </h2>
-            <ul className="space-y-2 text-sm text-green-800">
+            <ul className="space-y-2.5 text-sm text-neutral-700">
               {isGenericAvailable && (
-                <li className="flex gap-2">
-                  <span className="text-green-600 font-bold shrink-0">&#10003;</span>
-                  <span>
-                    <strong>Generic available</strong> — ask your doctor to prescribe the generic version for a lower copay.
-                  </span>
+                <li className="flex gap-2.5">
+                  <span className="text-green-600 font-bold shrink-0 mt-0.5">&#10003;</span>
+                  <span><strong>Ask for the generic</strong> — same drug at a lower copay tier.</span>
                 </li>
               )}
-              <li className="flex gap-2">
-                <span className="text-green-600 font-bold shrink-0">&#10003;</span>
-                <span>
-                  <strong>90-day mail order</strong> — many plans offer a lower per-dose cost for 90-day supplies.
-                </span>
+              <li className="flex gap-2.5">
+                <span className="text-green-600 font-bold shrink-0 mt-0.5">&#10003;</span>
+                <span><strong>90-day mail order</strong> — many plans offer a lower per-dose cost for 90-day supplies.</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-green-600 font-bold shrink-0">&#10003;</span>
-                <span>
-                  <strong>Manufacturer copay cards</strong> — most brand-name drugs have copay assistance programs. Search &ldquo;{drugDisplay} copay card.&rdquo;
-                </span>
+              <li className="flex gap-2.5">
+                <span className="text-green-600 font-bold shrink-0 mt-0.5">&#10003;</span>
+                <span><strong>Manufacturer copay cards</strong> — most brand drugs have copay assistance. Search &ldquo;{drugDisplay} copay card.&rdquo;</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-green-600 font-bold shrink-0">&#10003;</span>
-                <span>
-                  <strong>Compare plans at open enrollment</strong> — formulary tiers change yearly. Always check the formulary when comparing plans.
-                </span>
+              <li className="flex gap-2.5">
+                <span className="text-green-600 font-bold shrink-0 mt-0.5">&#10003;</span>
+                <span><strong>Compare plans at open enrollment</strong> — formulary tiers change yearly.</span>
               </li>
             </ul>
           </section>
@@ -977,15 +982,43 @@ export default async function FormularyDrugPage({ params }: Props) {
             Only for non-generic / non-preventive tiers — YMYL + E-E-A-T
             ════════════════════════════════════════════════════════════════ */}
         {results.length > 0 && dominantGroup !== 'generic' && dominantGroup !== 'preventive' && (
-          <DrugManufacturerAssistance drugDisplay={drugDisplay} />
+          <div className="mt-8">
+            <DrugCostHelp drugDisplay={drugDisplay} />
+          </div>
         )}
 
         {/* ════════════════════════════════════════════════════════════════
-            SECTION 6: INSURER COMPARISON (moved higher)
+            ZONE 3: ACTION PLAN
+            ════════════════════════════════════════════════════════════════ */}
+        {results.length > 0 && (
+          <div className="mt-10">
+            <DrugPatientActionGuide
+              drugDisplay={drugDisplay}
+              drugSlug={drugSlug}
+              stateCode={stateCode}
+            />
+          </div>
+        )}
+
+        {/* ═══ MID-PAGE CTA ═══ */}
+        {results.length > 0 && (
+          <div className="mt-6">
+            <DrugPageCta
+              variant="mid"
+              drugName={titleCase(drugDisplay)}
+              stateCode={stateCode}
+              stateName={stateName}
+              costRange={dominantHumanTier.costRange}
+            />
+          </div>
+        )}
+
+        {/* ════════════════════════════════════════════════════════════════
+            ZONE 4: COMPARISON & CARRIERS
             ════════════════════════════════════════════════════════════════ */}
         {otherIssuers.length > 0 && (
-          <section aria-labelledby="insurers-heading">
-            <h2 id="insurers-heading" className="text-lg font-semibold text-navy-800 mb-3">
+          <section aria-labelledby="insurers-heading" className="mt-10">
+            <h2 id="insurers-heading" className="text-xl font-bold text-navy-800 mb-4">
               Insurers that cover {titleCase(drugDisplay)}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -995,7 +1028,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                   <a
                     key={ins.id}
                     href={`/formulary/${ins.id}/${drugSlug}`}
-                    className="block p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="block p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50/60 transition-colors"
                   >
                     <span className="text-sm font-medium text-primary-700">
                       {ins.name}
@@ -1009,145 +1042,71 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
           </section>
         )}
-
-        {/* ═══ WHAT IF NOT COVERED? ═══ */}
-        {results.length > 0 && (
-          <section aria-labelledby="not-covered-heading" className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-            <h2 id="not-covered-heading" className="text-base font-semibold text-navy-800 mb-3">
-              What if your plan doesn&apos;t cover this drug?
-            </h2>
-            <div className="space-y-3 text-sm text-neutral-700">
-              <div className="flex gap-3">
-                <span className="text-primary-600 font-bold shrink-0">1.</span>
-                <div>
-                  <strong>Request a formulary exception.</strong>{' '}
-                  Your doctor submits a letter of medical necessity explaining why listed alternatives won&apos;t work for you.
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-primary-600 font-bold shrink-0">2.</span>
-                <div>
-                  <strong>File an internal appeal.</strong>{' '}
-                  The insurer must respond within <strong>72 hours</strong> for urgent requests or 30 days for standard requests.
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-primary-600 font-bold shrink-0">3.</span>
-                <div>
-                  <strong>Request external review.</strong>{' '}
-                  An independent reviewer makes a binding decision. You have this right under federal law.
-                </div>
-              </div>
-              <p className="text-xs text-neutral-400 pt-2 border-t border-neutral-200">
-                Source: 42 U.S.C. §300gg-19, 45 CFR §147.136. Contact your state insurance commissioner or a licensed agent for specific guidance.
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* ════════════════════════════════════════════════════════════════
-            LAYER 6: PATIENT ACTION GUIDE
-            SXO: completes the user's task — they should not need to Google again
-            ════════════════════════════════════════════════════════════════ */}
-        {results.length > 0 && (
-          <DrugPatientActionGuide
-            drugDisplay={drugDisplay}
-            drugSlug={drugSlug}
-            stateCode={stateCode}
-          />
-        )}
-
-        {/* ════════════════════════════════════════════════════════════════
-            RELATED MEDICATIONS — category-aware internal linking
-            ════════════════════════════════════════════════════════════════ */}
-        {relatedDrugs.length > 0 && (
-          <section aria-labelledby="related-drugs-heading">
-            <h2 id="related-drugs-heading" className="text-lg font-semibold text-navy-800 mb-1">
+        {(relatedDrugs.length > 0 || comparisonLinks.length > 0) && (
+          <section aria-labelledby="related-drugs-heading" className="mt-10">
+            <h2 id="related-drugs-heading" className="text-xl font-bold text-navy-800 mb-1">
               Related medications
             </h2>
             {drugCategory && (
-              <p className="text-sm text-neutral-500 mb-3">
+              <p className="text-sm text-neutral-500 mb-4">
                 Other {drugCategory.label.toLowerCase()} covered by Marketplace plans
               </p>
             )}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {relatedDrugs.map((drug) => (
-                <a
-                  key={drug.slug}
-                  href={drug.href}
-                  className="flex items-center gap-2 p-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
-                >
-                  <span className="text-primary-500 shrink-0">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  </span>
-                  <span className="text-sm font-medium text-primary-700">
-                    {drug.name}
-                  </span>
-                </a>
-              ))}
-            </div>
+            {relatedDrugs.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {relatedDrugs.map((drug) => (
+                  <a
+                    key={drug.slug}
+                    href={drug.href}
+                    className="flex items-center gap-2 p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50/60 transition-colors"
+                  >
+                    <span className="text-primary-500 shrink-0">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    </span>
+                    <span className="text-sm font-medium text-primary-700">{drug.name}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+            {comparisonLinks.length > 0 && (
+              <div className={`${relatedDrugs.length > 0 ? 'mt-4 pt-4 border-t border-neutral-100' : ''} space-y-2`}>
+                <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wide">Compare</h3>
+                {comparisonLinks.map((comp) => (
+                  <a
+                    key={comp.href}
+                    href={comp.href}
+                    className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-neutral-50 transition-colors group"
+                  >
+                    <span className="text-primary-400 group-hover:text-primary-600 shrink-0">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                      </svg>
+                    </span>
+                    <span className="text-sm font-medium text-primary-700 group-hover:text-primary-900">{comp.label}</span>
+                  </a>
+                ))}
+              </div>
+            )}
             <p className="text-xs text-neutral-400 mt-3">
-              <a href={`/formulary/${issuer}/all`} className="underline hover:text-neutral-600">
+              <a href={`/formulary/${canonicalIssuerParam}/all`} className="underline hover:text-neutral-600">
                 Browse all {isState ? stateName : issuerName} formulary drugs &rarr;
               </a>
             </p>
           </section>
         )}
 
-        {/* ════════════════════════════════════════════════════════════════
-            COMPARISON LINKS — high SEO value "Drug A vs Drug B"
-            ════════════════════════════════════════════════════════════════ */}
-        {comparisonLinks.length > 0 && (
-          <section aria-labelledby="compare-heading">
-            <h2 id="compare-heading" className="text-lg font-semibold text-navy-800 mb-3">
-              Compare {titleCase(drugDisplay)}
-            </h2>
-            <div className="space-y-2">
-              {comparisonLinks.map((comp) => (
-                <a
-                  key={comp.href}
-                  href={comp.href}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group"
-                >
-                  <span className="text-primary-400 group-hover:text-primary-600 shrink-0">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                    </svg>
-                  </span>
-                  <span className="text-sm font-medium text-primary-700 group-hover:text-primary-900">
-                    {comp.label}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* ── Clinical Context (drug info — supporting, not the main answer) ── */}
+        <div className="mt-10">
+          <DrugClinicalContext drugDisplay={drugDisplay} drugSlug={drugSlug} issuer={issuer} />
+        </div>
 
         {/* ════════════════════════════════════════════════════════════════
-            STATE + PLAN LINKS — contextual when state is selected
+            ZONE 5: RESOURCES & DATA
             ════════════════════════════════════════════════════════════════ */}
-        {statePlanLinks.length > 0 && (
-          <section aria-labelledby="state-links-heading">
-            <h2 id="state-links-heading" className="text-lg font-semibold text-navy-800 mb-3">
-              {stateName} Marketplace resources
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {statePlanLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="block p-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors text-sm font-medium text-primary-700"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* ═══ DETAILED DATA — Expandable table ═══ */}
         {results.length > 0 && (
-          <section aria-labelledby="detail-table-heading">
+          <section aria-labelledby="detail-table-heading" className="mt-10">
             <details className="group">
               <summary className="flex items-center justify-between cursor-pointer list-none">
                 <div>
@@ -1215,31 +1174,53 @@ export default async function FormularyDrugPage({ params }: Props) {
           </section>
         )}
 
-        {/* ════════════════════════════════════════════════════════════════
-            LEARN MORE — contextual educational links
-            ════════════════════════════════════════════════════════════════ */}
-        {educationalLinks.length > 0 && (
-          <section aria-labelledby="learn-links-heading">
-            <h2 id="learn-links-heading" className="text-lg font-semibold text-navy-800 mb-3">
-              Learn more
+        {/* ── Resources (merged: state links + educational links + related guides) ── */}
+        {(statePlanLinks.length > 0 || educationalLinks.length > 0 || relatedGuides.length > 0) && (
+          <section aria-labelledby="resources-heading" className="mt-12 border-t border-neutral-200 pt-10">
+            <h2 id="resources-heading" className="text-lg font-semibold text-navy-800 mb-4">
+              Resources
             </h2>
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {statePlanLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="flex items-center gap-2.5 p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50/60 transition-colors text-sm font-medium text-primary-700"
+                >
+                  {link.label}
+                </a>
+              ))}
               {educationalLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="flex items-start gap-3 p-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group"
+                  className="flex items-start gap-2.5 p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50/60 transition-colors"
                 >
-                  <span className="text-primary-400 group-hover:text-primary-600 mt-0.5 shrink-0">
+                  <span className="text-primary-400 mt-0.5 shrink-0">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
                   </span>
                   <div>
-                    <span className="text-sm font-medium text-primary-700 group-hover:text-primary-900 block">
-                      {link.label}
-                    </span>
+                    <span className="text-sm font-medium text-primary-700 block">{link.label}</span>
                     <span className="text-xs text-neutral-500">{link.context}</span>
+                  </div>
+                </a>
+              ))}
+              {relatedGuides.map((guide) => (
+                <a
+                  key={guide.href}
+                  href={guide.href}
+                  className="flex items-start gap-2.5 p-3 rounded-lg border border-neutral-200 hover:border-primary-300 hover:bg-primary-50/60 transition-colors"
+                >
+                  <span className="text-primary-400 mt-0.5 shrink-0">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                  <div>
+                    <span className="text-sm font-medium text-primary-700 block">{guide.label}</span>
+                    <span className="text-xs text-neutral-500">{guide.context}</span>
                   </div>
                 </a>
               ))}
@@ -1248,121 +1229,15 @@ export default async function FormularyDrugPage({ params }: Props) {
         )}
 
         {/* ── Entity Links ── */}
-        <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+        <div className="mt-8">
+          <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+        </div>
 
         {/* ════════════════════════════════════════════════════════════════
-            SECTION 9: EDUCATIONAL EXPLAINERS (collapsed by default)
-            Moved lower — supporting education, not the main answer
+            ZONE 6: FAQ + DEEP DIVE + TRUST
             ════════════════════════════════════════════════════════════════ */}
-        {editorial && (
-          <section aria-labelledby="learn-more-heading">
-            <h2 id="learn-more-heading" className="text-sm font-semibold text-neutral-600 mb-3 uppercase tracking-wide">
-              Understanding formulary coverage
-            </h2>
-            <div className="space-y-2">
-              <ExpandableSection title="How formulary tiers work">
-                <p className="mb-3">
-                  Marketplace plans organize covered medications into tiers to manage costs. Here is why the system works the way it does — not just what the tiers are:
-                </p>
-                <ol className="space-y-3 list-decimal list-inside text-sm text-neutral-700 mb-3">
-                  <li><strong>Tier 1 — Generic ($5–$20):</strong> Generics have no R&amp;D recoupment costs — the original patent has expired and multiple manufacturers compete, driving prices down. Insurers place generics at Tier 1 to steer utilization toward lower-cost options.</li>
-                  <li><strong>Tier 2 — Preferred Brand ($30–$60):</strong> Brand-name drugs that pay rebates to pharmacy benefit managers (PBMs) in exchange for favorable tier placement. The rebate system means a drug&apos;s tier reflects negotiated pricing agreements, not just clinical effectiveness.</li>
-                  <li><strong>Tier 3 — Non-Preferred Brand ($60–$100+):</strong> Brand drugs that did not negotiate preferred placement, or where a generic is available. The higher cost-sharing is deliberate — it incentivizes you to use the generic alternative.</li>
-                  <li><strong>Tier 4 — Specialty (20–33% coinsurance):</strong> High-cost biologics and complex medications requiring clinical management, cold-chain distribution, or injection administration. Cost-sharing is often coinsurance, not a flat copay.</li>
-                  <li><strong>Preventive ($0):</strong> Drugs on the federal preventive services list covered with zero cost-sharing regardless of deductible status — required by federal law.</li>
-                </ol>
-                <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
-                  <strong>Why the same drug can be Tier 2 on one plan and Tier 4 on another:</strong> PBM rebate contracts differ by insurer. A drug&apos;s tier reflects the specific negotiated deal between the drug manufacturer and your insurer&apos;s PBM — not the drug&apos;s clinical profile. If your drug is on a high tier, ask your doctor to request a therapeutic substitution or file a tier exception.
-                </p>
-              </ExpandableSection>
-
-              {hasPriorAuth && (
-                <ExpandableSection title="What is prior authorization — and what to do when it&apos;s required">
-                  <p className="mb-3">
-                    Prior authorization (PA) means your insurer requires clinical justification before they will cover a medication. It is not a coverage denial — it is a prerequisite. Most PA requests that are properly documented are approved.
-                  </p>
-                  <p className="mb-3 font-medium text-navy-800">Step-by-step PA process:</p>
-                  <ol className="space-y-2 list-decimal list-inside text-sm text-neutral-700 mb-3">
-                    <li>Your doctor submits a PA request with diagnosis code, clinical rationale, and alternatives already tried.</li>
-                    <li>Insurer clinical team reviews — standard timeline is 2–3 business days; urgent requests must be decided within 24–72 hours.</li>
-                    <li>If approved: prescription proceeds normally. If denied: insurer must provide written denial with the specific clinical reason.</li>
-                    <li>Your doctor can request a peer-to-peer review — a direct call between your doctor and the insurer&apos;s medical director. This overturns denials approximately 40–50% of the time.</li>
-                    <li>If still denied: file a formal internal appeal. Marketplace plans are required to decide within 30 days (standard) or 72 hours (urgent).</li>
-                    <li>If internal appeal fails: request an independent External Review Organization (IRO) review. The IRO decision is binding on the insurer under federal law.</li>
-                  </ol>
-                  <p className="text-sm text-neutral-600 bg-primary-50 border border-primary-200 rounded-lg px-4 py-3">
-                    <strong>Word-for-word call script:</strong> &ldquo;I am calling to request a prior authorization for [drug name] prescribed by Dr. [name] for [condition]. I need this medication within [X] days. Can you initiate an expedited review?&rdquo;
-                  </p>
-                </ExpandableSection>
-              )}
-
-              {hasStepTherapy && (
-                <ExpandableSection title="What is step therapy — and your legal rights to override it">
-                  <p className="mb-3">
-                    Step therapy (also called &ldquo;fail first&rdquo;) requires you to try a lower-cost drug before the insurer will authorize the prescribed medication. This is a cost-containment strategy — insurers want you to attempt the cheaper option before they cover the more expensive one.
-                  </p>
-                  <p className="mb-3">
-                    <strong>Why this matters:</strong> Step therapy can delay access to the right medication by weeks or months while you try drugs your doctor may already know will not work for you.
-                  </p>
-                  <p className="mb-2 font-medium text-navy-800">You have the right to request a step therapy override when:</p>
-                  <ul className="space-y-1.5 text-sm list-disc list-inside text-neutral-700 mb-3">
-                    <li>You have already tried and failed the required step drug</li>
-                    <li>The required drug is contraindicated for your specific condition</li>
-                    <li>The required drug would cause a clinically significant adverse reaction</li>
-                    <li>Delay of treatment would cause significant irreversible harm (emergency override)</li>
-                  </ul>
-                  <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
-                    <strong>State protections:</strong> States including NY, TX, CA, VA, IL, and others have enacted step therapy reform laws requiring insurers to respond to override requests within 72 hours for urgent cases. Your state insurance commissioner can enforce these protections if the insurer does not comply.
-                  </p>
-                </ExpandableSection>
-              )}
-
-              {hasQuantityLimit && (
-                <ExpandableSection title="What are quantity limits — and how to request an exception">
-                  <p className="mb-3">
-                    Quantity limits (QL) restrict the amount of a drug dispensed per fill or per month. Common examples: 30 tablets per 30-day fill for controlled substances; 1 rescue inhaler per 30 days; 4 glucose test strips per day for diabetes.
-                  </p>
-                  <p className="mb-3">
-                    <strong>Why QL exists:</strong> Insurers use quantity limits to prevent hoarding of controlled substances, align with clinical dosing guidelines, and flag unusual prescribing patterns. Some limits are clinically appropriate; others are not.
-                  </p>
-                  <p className="mb-2 font-medium text-navy-800">When QL is clinically inappropriate (grounds for exception):</p>
-                  <ul className="space-y-1.5 text-sm list-disc list-inside text-neutral-700 mb-3">
-                    <li>Your condition requires a higher dose than the standard limit (e.g., titration period)</li>
-                    <li>You take split doses — twice-daily dosing of a once-daily-limited drug</li>
-                    <li>You need breakthrough medication in addition to standard doses</li>
-                    <li>Your prescriber documents that the limit is clinically inappropriate for your specific diagnosis</li>
-                  </ul>
-                  <p className="text-sm text-neutral-600 bg-primary-50 border border-primary-200 rounded-lg px-4 py-3">
-                    <strong>Practical tip:</strong> Ask your doctor to write &ldquo;Quantity limit exception required — medical necessity documented&rdquo; on the prescription. This signals to the pharmacy that a PA/exception is already in process.
-                  </p>
-                </ExpandableSection>
-              )}
-
-              <ExpandableSection title="How to request a formulary exception — full step-by-step guide">
-                <p className="mb-3">
-                  A formulary exception asks the insurer to cover a drug that is either off-formulary or placed on a higher tier than is clinically appropriate. This is distinct from a prior authorization — PA gets the drug covered at all; a formulary exception gets it covered at a lower cost tier.
-                </p>
-                <ol className="space-y-2.5 list-decimal list-inside text-sm text-neutral-700 mb-3">
-                  <li><strong>Get the denial in writing.</strong> Request an Explanation of Benefits (EOB) or denial letter stating the exact reason for non-coverage.</li>
-                  <li><strong>Call Member Services.</strong> Confirm the denial reason and get the exact fax number or portal address for exception submissions.</li>
-                  <li><strong>Doctor submits exception package:</strong> diagnosis code, clinical rationale, alternatives tried and why they failed, letter of medical necessity.</li>
-                  <li><strong>First-level internal appeal.</strong> Insurer must respond within 30 days (standard) or 72 hours (urgent). Urgent = when standard processing would seriously jeopardize your health.</li>
-                  <li><strong>If denied: External IRO review.</strong> An independent reviewer makes a binding decision. The insurer must comply. You have this right under 45 CFR § 147.136.</li>
-                  <li><strong>State insurance commissioner complaint.</strong> If the IRO is also denied (rare), file with your state insurance commissioner for regulatory enforcement.</li>
-                </ol>
-                <div className="text-sm text-neutral-600 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-                  <strong>Success rate context:</strong> Internal appeals succeed approximately 40–50% of the time when properly documented. External IRO reviews overturn insurer decisions about 40% of the time. Filing an appeal is almost always worth attempting — the cost is your doctor&apos;s time, not yours.
-                </div>
-              </ExpandableSection>
-            </div>
-          </section>
-        )}
-
-        {/* ════════════════════════════════════════════════════════════════
-            SECTION 10: FAQ
-            ════════════════════════════════════════════════════════════════ */}
-        <section aria-labelledby="faq-heading">
-          <h2 id="faq-heading" className="text-lg font-semibold text-navy-800 mb-3">
+        <section aria-labelledby="faq-heading" className="mt-12 border-t border-neutral-200 pt-10">
+          <h2 id="faq-heading" className="text-xl font-bold text-navy-800 mb-4">
             Frequently asked questions
           </h2>
           <div className="space-y-2">
@@ -1380,131 +1255,179 @@ export default async function FormularyDrugPage({ params }: Props) {
               </details>
             ))}
           </div>
-        </section>
 
-        {/* ════════════════════════════════════════════════════════════════
-            SECTION 11: DATA METHODOLOGY + SOURCES
-            ════════════════════════════════════════════════════════════════ */}
-        <section aria-labelledby="methodology-heading" className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-          <h2 id="methodology-heading" className="text-sm font-semibold text-neutral-700 mb-2">Data Methodology</h2>
-          <p className="text-sm text-neutral-600 leading-relaxed">
-            Formulary data is derived from CMS Machine-Readable Public Use Files
-            for plan year {PLAN_YEAR}. Drug tier placement, prior authorization requirements,
-            and quantity limits may change during the plan year. Cost ranges shown are general
-            estimates based on typical Marketplace plan cost-sharing structures and do not reflect
-            your specific plan. Always verify coverage with your insurer before enrollment.
-            Data is updated when CMS publishes new PUF releases.
-          </p>
-        </section>
+          {/* Deep dive — educational explainers (collapsed) */}
+          {editorial && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-neutral-500 mb-3 uppercase tracking-wide">
+                Deep dive
+              </h3>
+              <div className="space-y-2">
+                <ExpandableSection title="How formulary tiers work">
+                  <p className="mb-3">
+                    Marketplace plans organize covered medications into tiers to manage costs. Here is why the system works the way it does — not just what the tiers are:
+                  </p>
+                  <ol className="space-y-3 list-decimal list-inside text-sm text-neutral-700 mb-3">
+                    <li><strong>Tier 1 — Generic ($5–$20):</strong> Generics have no R&amp;D recoupment costs — the original patent has expired and multiple manufacturers compete, driving prices down. Insurers place generics at Tier 1 to steer utilization toward lower-cost options.</li>
+                    <li><strong>Tier 2 — Preferred Brand ($30–$60):</strong> Brand-name drugs that pay rebates to pharmacy benefit managers (PBMs) in exchange for favorable tier placement. The rebate system means a drug&apos;s tier reflects negotiated pricing agreements, not just clinical effectiveness.</li>
+                    <li><strong>Tier 3 — Non-Preferred Brand ($60–$100+):</strong> Brand drugs that did not negotiate preferred placement, or where a generic is available. The higher cost-sharing is deliberate — it incentivizes you to use the generic alternative.</li>
+                    <li><strong>Tier 4 — Specialty (20–33% coinsurance):</strong> High-cost biologics and complex medications requiring clinical management, cold-chain distribution, or injection administration. Cost-sharing is often coinsurance, not a flat copay.</li>
+                    <li><strong>Preventive ($0):</strong> Drugs on the federal preventive services list covered with zero cost-sharing regardless of deductible status — required by federal law.</li>
+                  </ol>
+                  <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                    <strong>Why the same drug can be Tier 2 on one plan and Tier 4 on another:</strong> PBM rebate contracts differ by insurer. A drug&apos;s tier reflects the specific negotiated deal between the drug manufacturer and your insurer&apos;s PBM — not the drug&apos;s clinical profile. If your drug is on a high tier, ask your doctor to request a therapeutic substitution or file a tier exception.
+                  </p>
+                </ExpandableSection>
 
-        {/* ════ E-E-A-T: Author attribution ════ */}
-        <section className="rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-          <p className="text-sm text-neutral-600">
-            <strong>Reviewed by licensed health insurance professionals</strong> &bull; {siteConfig.operator.recognition} &bull; Licensed in {siteConfig.licensedStates.length}+ states &bull;{' '}
-            <a
-              href="/editorial-policy"
-              className="text-primary-600 hover:underline"
-            >
-              Editorial policy &rarr;
-            </a>
-          </p>
-        </section>
+                {hasPriorAuth && (
+                  <ExpandableSection title="What is prior authorization — and what to do when it&apos;s required">
+                    <p className="mb-3">
+                      Prior authorization (PA) means your insurer requires clinical justification before they will cover a medication. It is not a coverage denial — it is a prerequisite. Most PA requests that are properly documented are approved.
+                    </p>
+                    <p className="mb-3 font-medium text-navy-800">Step-by-step PA process:</p>
+                    <ol className="space-y-2 list-decimal list-inside text-sm text-neutral-700 mb-3">
+                      <li>Your doctor submits a PA request with diagnosis code, clinical rationale, and alternatives already tried.</li>
+                      <li>Insurer clinical team reviews — standard timeline is 2–3 business days; urgent requests must be decided within 24–72 hours.</li>
+                      <li>If approved: prescription proceeds normally. If denied: insurer must provide written denial with the specific clinical reason.</li>
+                      <li>Your doctor can request a peer-to-peer review — a direct call between your doctor and the insurer&apos;s medical director. This overturns denials approximately 40–50% of the time.</li>
+                      <li>If still denied: file a formal internal appeal. Marketplace plans are required to decide within 30 days (standard) or 72 hours (urgent).</li>
+                      <li>If internal appeal fails: request an independent External Review Organization (IRO) review. The IRO decision is binding on the insurer under federal law.</li>
+                    </ol>
+                    <p className="text-sm text-neutral-600 bg-primary-50 border border-primary-200 rounded-lg px-4 py-3">
+                      <strong>Word-for-word call script:</strong> &ldquo;I am calling to request a prior authorization for [drug name] prescribed by Dr. [name] for [condition]. I need this medication within [X] days. Can you initiate an expedited review?&rdquo;
+                    </p>
+                  </ExpandableSection>
+                )}
 
-        <section aria-labelledby="sources-heading" className="rounded-xl border border-neutral-200 p-5">
-          <h2 id="sources-heading" className="text-sm font-semibold text-neutral-700 mb-3">Sources</h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a
-                href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                CMS Machine-Readable PUF ({PLAN_YEAR})
-              </a>
-              <span className="text-neutral-500"> — Standardized drug coverage data submitted by all ACA-certified plans. The primary source for all tier, PA, step therapy, and quantity limit data on this page.</span>
-            </li>
-            <li>
-              <span className="font-medium text-neutral-700">CMS — ACA Formulary Requirements</span>
-              <span className="text-neutral-500"> — Federal guidance on how formularies work in ACA Marketplace plans. Source: CMS.gov regulatory guidance.</span>
-            </li>
-            <li>
-              <a
-                href="https://www.needymeds.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                NeedyMeds.org
-              </a>
-              <span className="text-neutral-500"> — Patient assistance program database. Use to find manufacturer PAP programs for uninsured or underinsured patients.</span>
-            </li>
-            <li>
-              <a
-                href="https://www.rxassist.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                RxAssist.org
-              </a>
-              <span className="text-neutral-500"> — Comprehensive database of pharmaceutical manufacturer patient assistance programs.</span>
-            </li>
-            <li>
-              <span className="font-medium text-neutral-700">42 CFR § 156.122</span>
-              <span className="text-neutral-500"> — ACA formulary adequacy standards. Requires plans to cover at least one drug in each United States Pharmacopeia category.</span>
-            </li>
-            <li>
-              <span className="font-medium text-neutral-700">45 CFR § 156.172</span>
-              <span className="text-neutral-500"> — Exception and appeals requirements. Requires Marketplace plans to offer formulary exception processes and respond within 72 hours for urgent requests.</span>
-            </li>
-          </ul>
-        </section>
+                {hasStepTherapy && (
+                  <ExpandableSection title="What is step therapy — and your legal rights to override it">
+                    <p className="mb-3">
+                      Step therapy (also called &ldquo;fail first&rdquo;) requires you to try a lower-cost drug before the insurer will authorize the prescribed medication. This is a cost-containment strategy — insurers want you to attempt the cheaper option before they cover the more expensive one.
+                    </p>
+                    <p className="mb-3">
+                      <strong>Why this matters:</strong> Step therapy can delay access to the right medication by weeks or months while you try drugs your doctor may already know will not work for you.
+                    </p>
+                    <p className="mb-2 font-medium text-navy-800">You have the right to request a step therapy override when:</p>
+                    <ul className="space-y-1.5 text-sm list-disc list-inside text-neutral-700 mb-3">
+                      <li>You have already tried and failed the required step drug</li>
+                      <li>The required drug is contraindicated for your specific condition</li>
+                      <li>The required drug would cause a clinically significant adverse reaction</li>
+                      <li>Delay of treatment would cause significant irreversible harm (emergency override)</li>
+                    </ul>
+                    <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                      <strong>State protections:</strong> States including NY, TX, CA, VA, IL, and others have enacted step therapy reform laws requiring insurers to respond to override requests within 72 hours for urgent cases. Your state insurance commissioner can enforce these protections if the insurer does not comply.
+                    </p>
+                  </ExpandableSection>
+                )}
 
-        {/* ════════════════════════════════════════════════════════════════
-            RELATED COVERAGE GUIDES — bottom-of-page topical authority
-            ════════════════════════════════════════════════════════════════ */}
-        {relatedGuides.length > 0 && (
-          <section aria-labelledby="related-guides-heading" className="rounded-xl border border-neutral-200 bg-neutral-50/50 p-5">
-            <h2 id="related-guides-heading" className="text-base font-semibold text-navy-800 mb-3">
-              Related coverage guides
-            </h2>
-            <div className="space-y-3">
-              {relatedGuides.map((guide) => (
-                <a
-                  key={guide.href}
-                  href={guide.href}
-                  className="flex items-start gap-3 group"
-                >
-                  <span className="text-primary-400 group-hover:text-primary-600 mt-0.5 shrink-0">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                  </span>
-                  <div>
-                    <span className="text-sm font-medium text-primary-700 group-hover:text-primary-900 group-hover:underline block">
-                      {guide.label}
-                    </span>
-                    <span className="text-xs text-neutral-500">{guide.context}</span>
+                {hasQuantityLimit && (
+                  <ExpandableSection title="What are quantity limits — and how to request an exception">
+                    <p className="mb-3">
+                      Quantity limits (QL) restrict the amount of a drug dispensed per fill or per month. Common examples: 30 tablets per 30-day fill for controlled substances; 1 rescue inhaler per 30 days; 4 glucose test strips per day for diabetes.
+                    </p>
+                    <p className="mb-3">
+                      <strong>Why QL exists:</strong> Insurers use quantity limits to prevent hoarding of controlled substances, align with clinical dosing guidelines, and flag unusual prescribing patterns. Some limits are clinically appropriate; others are not.
+                    </p>
+                    <p className="mb-2 font-medium text-navy-800">When QL is clinically inappropriate (grounds for exception):</p>
+                    <ul className="space-y-1.5 text-sm list-disc list-inside text-neutral-700 mb-3">
+                      <li>Your condition requires a higher dose than the standard limit (e.g., titration period)</li>
+                      <li>You take split doses — twice-daily dosing of a once-daily-limited drug</li>
+                      <li>You need breakthrough medication in addition to standard doses</li>
+                      <li>Your prescriber documents that the limit is clinically inappropriate for your specific diagnosis</li>
+                    </ul>
+                    <p className="text-sm text-neutral-600 bg-primary-50 border border-primary-200 rounded-lg px-4 py-3">
+                      <strong>Practical tip:</strong> Ask your doctor to write &ldquo;Quantity limit exception required — medical necessity documented&rdquo; on the prescription. This signals to the pharmacy that a PA/exception is already in process.
+                    </p>
+                  </ExpandableSection>
+                )}
+
+                <ExpandableSection title="How to request a formulary exception — full step-by-step guide">
+                  <p className="mb-3">
+                    A formulary exception asks the insurer to cover a drug that is either off-formulary or placed on a higher tier than is clinically appropriate. This is distinct from a prior authorization — PA gets the drug covered at all; a formulary exception gets it covered at a lower cost tier.
+                  </p>
+                  <ol className="space-y-2.5 list-decimal list-inside text-sm text-neutral-700 mb-3">
+                    <li><strong>Get the denial in writing.</strong> Request an Explanation of Benefits (EOB) or denial letter stating the exact reason for non-coverage.</li>
+                    <li><strong>Call Member Services.</strong> Confirm the denial reason and get the exact fax number or portal address for exception submissions.</li>
+                    <li><strong>Doctor submits exception package:</strong> diagnosis code, clinical rationale, alternatives tried and why they failed, letter of medical necessity.</li>
+                    <li><strong>First-level internal appeal.</strong> Insurer must respond within 30 days (standard) or 72 hours (urgent). Urgent = when standard processing would seriously jeopardize your health.</li>
+                    <li><strong>If denied: External IRO review.</strong> An independent reviewer makes a binding decision. The insurer must comply. You have this right under 45 CFR § 147.136.</li>
+                    <li><strong>State insurance commissioner complaint.</strong> If the IRO is also denied (rare), file with your state insurance commissioner for regulatory enforcement.</li>
+                  </ol>
+                  <div className="text-sm text-neutral-600 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                    <strong>Success rate context:</strong> Internal appeals succeed approximately 40–50% of the time when properly documented. External IRO reviews overturn insurer decisions about 40% of the time. Filing an appeal is almost always worth attempting — the cost is your doctor&apos;s time, not yours.
                   </div>
-                </a>
-              ))}
+                </ExpandableSection>
+              </div>
             </div>
-          </section>
-        )}
+          )}
+        </section>
+
+        {/* ── About this data (merged: methodology + EEAT + sources) ── */}
+        <section aria-labelledby="trust-heading" className="mt-8">
+          <h2 id="trust-heading" className="text-lg font-semibold text-navy-800 mb-3">
+            About this data
+          </h2>
+          <div className="text-sm text-neutral-600 leading-relaxed mb-4">
+            <p>
+              Formulary data is derived from CMS Machine-Readable Public Use Files
+              for plan year {PLAN_YEAR}. Drug tier placement, prior authorization requirements,
+              and quantity limits may change during the plan year. Cost ranges shown are general
+              estimates based on typical Marketplace plan cost-sharing structures and do not reflect
+              your specific plan. Always verify coverage with your insurer before enrollment.
+            </p>
+          </div>
+          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 space-y-4">
+            <p className="text-sm text-neutral-600">
+              <strong>Reviewed by licensed health insurance professionals</strong> &bull; {siteConfig.operator.recognition} &bull; Licensed in {siteConfig.licensedStates.length}+ states &bull;{' '}
+              <a href="/editorial-policy" className="text-primary-600 hover:underline">Editorial policy &rarr;</a>
+            </p>
+            <details className="group">
+              <summary className="text-sm font-semibold text-neutral-600 cursor-pointer hover:text-neutral-800 list-none flex items-center gap-2">
+                <span>Sources &amp; methodology</span>
+                <svg className="h-3.5 w-3.5 text-neutral-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+              </summary>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li>
+                  <a href="https://www.cms.gov/marketplace/resources/data/public-use-files" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline font-medium">
+                    CMS Machine-Readable PUF ({PLAN_YEAR})
+                  </a>
+                  <span className="text-neutral-500"> — Primary source for all tier, PA, step therapy, and quantity limit data.</span>
+                </li>
+                <li>
+                  <span className="font-medium text-neutral-700">CMS — ACA Formulary Requirements</span>
+                  <span className="text-neutral-500"> — Federal guidance on Marketplace formulary requirements.</span>
+                </li>
+                <li>
+                  <span className="font-medium text-neutral-700">42 CFR § 156.122</span>
+                  <span className="text-neutral-500"> — ACA formulary adequacy standards.</span>
+                </li>
+                <li>
+                  <span className="font-medium text-neutral-700">45 CFR § 156.172</span>
+                  <span className="text-neutral-500"> — Exception and appeals requirements for Marketplace plans.</span>
+                </li>
+              </ul>
+            </details>
+          </div>
+        </section>
 
         {/* ═══ BOTTOM CTA — final conversion prompt ═══ */}
-        <DrugPageCta
-          variant="bottom"
-          drugName={titleCase(drugDisplay)}
-          stateCode={stateCode}
-          stateName={stateName}
-        />
+        <div className="mt-10">
+          <DrugPageCta
+            variant="bottom"
+            drugName={titleCase(drugDisplay)}
+            stateCode={stateCode}
+            stateName={stateName}
+          />
+        </div>
 
-        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+        <div className="mt-8">
+          <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+        </div>
 
         {/* ── Disclaimer ── */}
-        <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
+        <footer className="border-t border-neutral-200 mt-8 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
             Formulary data sourced from the CMS Machine-Readable PUF, plan year{' '}
             {PLAN_YEAR}. Drug tier placement, prior authorization requirements,
@@ -1530,6 +1453,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
 function SBMExplanationPage({
   issuer,
+  stateSlug,
   drugSlug,
   drugDisplay,
   stateName,
@@ -1539,6 +1463,7 @@ function SBMExplanationPage({
   allResults,
 }: {
   issuer: string
+  stateSlug: string
   drugSlug: string
   drugDisplay: string
   stateName: string
@@ -1573,7 +1498,7 @@ function SBMExplanationPage({
         </nav>
 
         <h1 className="text-3xl font-bold text-slate-900 mt-6 mb-4">
-          {titleCase(drugDisplay)} Formulary Coverage in {stateName}
+          {titleCase(drugDisplay)} in {stateName}: Coverage Information
         </h1>
 
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-6">
@@ -1606,7 +1531,7 @@ function SBMExplanationPage({
             Search all states for {titleCase(drugDisplay)}
           </a>
           <a
-            href={`/${stateCodeToSlug(issuer.toUpperCase())}/health-insurance-plans`}
+            href={`/${stateSlug}/health-insurance-plans`}
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-primary-200 bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100 transition-colors"
           >
             View {stateName} health plans
@@ -1842,53 +1767,37 @@ function DrugCashPriceComparison({
   return (
     <section aria-labelledby="cash-price-heading" className="rounded-xl border border-neutral-200 p-5">
       <h2 id="cash-price-heading" className="text-lg font-semibold text-navy-800 mb-1">
-        Cash Price vs. Insurance Cost
+        What You Might Pay
       </h2>
       <p className="text-xs text-neutral-500 mb-4">
-        Insurance copays are post-deductible. If you have not met your deductible, your actual cost may be higher.
+        Insurance copays apply after your deductible. If you have not met your deductible, your actual cost may be higher.
       </p>
 
       <div className="overflow-x-auto rounded-lg border border-neutral-200">
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="bg-neutral-50 text-left">
-              <th className="px-4 py-2.5 font-semibold text-navy-700">Source</th>
-              <th className="px-4 py-2.5 font-semibold text-navy-700">30-day cost</th>
+              <th className="px-4 py-2.5 font-semibold text-navy-700">Payment method</th>
+              <th className="px-4 py-2.5 font-semibold text-navy-700">Estimated 30-day cost</th>
               <th className="px-4 py-2.5 font-semibold text-navy-700 hidden sm:table-cell">Notes</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-neutral-100">
-              <td className="px-4 py-2.5 font-medium">
-                <a href="https://www.goodrx.com" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
-                  GoodRx
-                </a>
-                {dominantGroup === 'generic' ? ' (generic)' : ' (brand)'}
-              </td>
-              <td className="px-4 py-2.5 text-neutral-600">Check GoodRx &rarr;</td>
-              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Varies by pharmacy &amp; ZIP code</td>
-            </tr>
             <tr className="border-t border-neutral-100 bg-primary-50/30">
               <td className="px-4 py-2.5 font-medium">Insurance copay ({dominantHumanTier.shortLabel})</td>
               <td className="px-4 py-2.5 font-semibold text-primary-700">{dominantHumanTier.costRange}</td>
-              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">After deductible; may be higher pre-deductible</td>
+              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">After deductible is met; may be higher pre-deductible</td>
+            </tr>
+            <tr className="border-t border-neutral-100">
+              <td className="px-4 py-2.5 font-medium">Pharmacy cash price</td>
+              <td className="px-4 py-2.5 text-neutral-600">Varies by pharmacy</td>
+              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Ask your pharmacist — cash may be cheaper pre-deductible</td>
             </tr>
             <tr className="border-t border-neutral-100">
               <td className="px-4 py-2.5 font-medium">90-day mail order</td>
               <td className="px-4 py-2.5 text-neutral-600">~67% of 3× 30-day cost</td>
               <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Preferred pharmacy or mail-order program</td>
             </tr>
-            {dominantGroup === 'generic' && (
-              <tr className="border-t border-neutral-100">
-                <td className="px-4 py-2.5 font-medium">
-                  <a href="https://costplusdrugs.com" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
-                    Cost Plus Drugs
-                  </a>
-                </td>
-                <td className="px-4 py-2.5 text-neutral-600">Cost + 15% markup + $3</td>
-                <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Generic only — often dramatically lower than pharmacy cash price</td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>
@@ -1897,7 +1806,7 @@ function DrugCashPriceComparison({
         <p className="text-sm text-amber-800 leading-relaxed">
           <strong>Pre-deductible reality check:</strong> If you have not met your deductible, you pay the plan&apos;s full allowed amount — not the copay.
           For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be $30–$120+ depending on your plan&apos;s negotiated rate with the pharmacy.
-          GoodRx or Cost Plus Drugs often beat the pre-deductible insurance price significantly.
+          In some cases, paying the pharmacy cash price is cheaper than using insurance before your deductible is met.
         </p>
       </div>
 
@@ -1912,57 +1821,52 @@ function DrugCashPriceComparison({
 }
 
 // ---------------------------------------------------------------------------
-// Layer 4 — Manufacturer Assistance
+// Layer 4 — Ways to Lower Your Prescription Cost
 // ---------------------------------------------------------------------------
 
-function DrugManufacturerAssistance({ drugDisplay }: { drugDisplay: string }) {
+function DrugCostHelp({ drugDisplay }: { drugDisplay: string }) {
   return (
-    <section aria-labelledby="manufacturer-assistance-heading">
-      <h2 id="manufacturer-assistance-heading" className="text-lg font-semibold text-navy-800 mb-3">
-        Manufacturer &amp; Patient Assistance Programs
+    <section aria-labelledby="cost-help-heading">
+      <h2 id="cost-help-heading" className="text-lg font-semibold text-navy-800 mb-3">
+        Ways to Lower Your Prescription Cost
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Card 1 */}
         <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
-          <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Manufacturer Copay Card</p>
+          <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Manufacturer Savings Card</p>
           <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            Brand-drug manufacturers offer copay cards that can reduce your out-of-pocket cost by up to $150–$200/month.
+            Many brand-name drug makers offer savings cards that can reduce your out-of-pocket cost by $150–$200 per month.
           </p>
           <ul className="text-xs text-neutral-600 space-y-1 mb-3">
-            <li><strong>Who qualifies:</strong> Commercially insured patients only — NOT Medicare or Medicaid (federal law prohibits this)</li>
-            <li><strong>How to find:</strong> Search &ldquo;{drugDisplay} copay card&rdquo; or visit the manufacturer&apos;s patient services page</li>
+            <li><strong>Who can use this:</strong> People with private insurance — this is not available for Medicare or Medicaid</li>
+            <li><strong>How to find one:</strong> Search &ldquo;{drugDisplay} savings card&rdquo; or call the drug manufacturer</li>
           </ul>
           <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
-            <strong>Warning:</strong> Copay accumulator programs may prevent this from counting toward your deductible — check your plan SBC.
+            <strong>Heads up:</strong> Some plans have &ldquo;copay accumulator&rdquo; rules that prevent savings cards from counting toward your deductible. Check your plan details.
           </p>
         </div>
 
         {/* Card 2 */}
         <div className="rounded-xl border border-green-200 bg-green-50/50 p-4">
-          <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Patient Assistance Program (PAP)</p>
+          <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Help If You Can&apos;t Afford It</p>
           <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            If you are uninsured or cannot afford your medication, PAPs may provide the drug free or for $0–$10/month.
+            If you are uninsured or your medication costs too much, the drug manufacturer may provide it free or at very low cost ($0–$10/month).
           </p>
           <ul className="text-xs text-neutral-600 space-y-1">
-            <li><strong>Who qualifies:</strong> Typically uninsured or underinsured, income below 400% FPL</li>
-            <li>
-              <strong>Resources:</strong>{' '}
-              <a href="https://www.needymeds.org" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">NeedyMeds.org</a>,{' '}
-              <a href="https://www.rxassist.org" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">RxAssist.org</a>,
-              manufacturer PAP portal
-            </li>
+            <li><strong>Who qualifies:</strong> People who are uninsured, underinsured, or whose income is below about 4× the Federal Poverty Level (roughly $62,400/year for one person in 2026)</li>
+            <li><strong>How to apply:</strong> Ask your doctor&apos;s office — they often handle the paperwork, or search the drug manufacturer&apos;s website for &ldquo;patient assistance&rdquo;</li>
           </ul>
         </div>
 
         {/* Card 3 */}
         <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4">
-          <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">State Pharmaceutical Assistance (SPAP)</p>
+          <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">State Drug Assistance Programs</p>
           <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            Many states offer drug assistance programs for seniors and low-income adults, often stacking with Medicare or Marketplace coverage.
+            Many states run their own programs to help residents pay for prescriptions — especially seniors and lower-income adults.
           </p>
           <ul className="text-xs text-neutral-600 space-y-1">
-            <li><strong>Who qualifies:</strong> Varies by state — often seniors or adults below 200–400% FPL</li>
-            <li><strong>Resource:</strong> Your state Medicaid office or StateCoverageInfo.org</li>
+            <li><strong>Who qualifies:</strong> Varies by state — often seniors or adults with moderate income</li>
+            <li><strong>How to find out:</strong> Contact your state Medicaid or insurance department, or ask a licensed agent</li>
           </ul>
         </div>
       </div>
@@ -2011,10 +1915,10 @@ function DrugPatientActionGuide({
           <div>
             <p className="text-sm font-semibold text-navy-800 mb-1">If covered but expensive — options in priority order</p>
             <ul className="text-sm text-neutral-600 space-y-1 mt-1">
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Compare <a href="https://www.goodrx.com" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">GoodRx</a> / <a href="https://costplusdrugs.com" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">Cost Plus Drugs</a> cash price — often cheaper pre-deductible</li>
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Request 90-day supply via mail order — saves ~10–15% typically</li>
+              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Ask your pharmacist about the cash price — it can be cheaper than insurance before your deductible is met</li>
+              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Request a 90-day supply via mail order — saves ~10–15% typically</li>
               <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Ask your doctor for a therapeutic alternative on a lower tier</li>
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Apply for manufacturer copay card (brand drugs only — not valid on Medicare/Medicaid)</li>
+              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Check if the manufacturer offers a savings card (brand drugs only — not valid with Medicare/Medicaid)</li>
             </ul>
           </div>
         </div>

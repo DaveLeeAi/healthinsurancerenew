@@ -4,6 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import DrugAutocomplete from '@/components/DrugAutocomplete'
 
+function stateNameToSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '-')
+}
+
 interface StateEntry {
   name: string
   abbr: string
@@ -45,14 +49,14 @@ export default function FormularySearch({ dataStates, noDataStates }: FormularyS
           <option value="">All states (nationwide search)</option>
           <optgroup label="States with Formulary Data">
             {dataStates.map((s) => (
-              <option key={s.abbr} value={s.abbr.toLowerCase()}>
+              <option key={s.abbr} value={stateNameToSlug(s.name)}>
                 {s.name}
               </option>
             ))}
           </optgroup>
           <optgroup label="State-Based Exchanges (linked to state tools)">
             {noDataStates.map((s) => (
-              <option key={s.abbr} value={s.abbr.toLowerCase()}>
+              <option key={s.abbr} value={stateNameToSlug(s.name)}>
                 {s.name} — {s.exchange}
               </option>
             ))}

@@ -485,16 +485,17 @@ export function getStatePlanLinks(
   if (!stateCode || !stateName) return []
 
   const display = titleCase(normalizeDrugName(drugName))
+  const stateSlug = stateCodeToSlug(stateCode.toUpperCase())
   const st = stateCode.toLowerCase()
 
   return [
     {
       label: `Marketplace plans in ${stateName}`,
-      href: `/${stateCodeToSlug(stateCode.toUpperCase())}/health-insurance-plans`,
+      href: `/${stateSlug}/health-insurance-plans`,
     },
     {
       label: `Browse all drugs covered in ${stateName}`,
-      href: `/formulary/${st}/all`,
+      href: `/formulary/${stateSlug}/all`,
     },
     {
       label: `${stateName} subsidy calculator — see if you qualify for help with premiums`,

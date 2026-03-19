@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   description:
     'Compare ACA health insurance plans, calculate subsidies, and understand your coverage options. Data from CMS for all 50 states.',
   metadataBase: new URL('https://healthinsurancerenew.com'),
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+  },
   robots: { index: true, follow: true },
   openGraph: {
     siteName: 'HealthInsuranceRenew',
