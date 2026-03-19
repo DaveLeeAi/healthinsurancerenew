@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SchemaScript from '../../components/SchemaScript'
 
 export const metadata: Metadata = {
@@ -7,7 +9,17 @@ export const metadata: Metadata = {
   description:
     'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals with CMS Elite Circle of Champions recognition.',
   alternates: { canonical: 'https://healthinsurancerenew.com/editorial-policy' },
+  openGraph: {
+    title: 'Editorial Policy | HealthInsuranceRenew',
+    description:
+      'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals.',
+    url: 'https://healthinsurancerenew.com/editorial-policy',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
+
+// NOTE: No name/NPN on this page — generic byline only
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -61,6 +73,7 @@ export default function EditorialPolicyPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <SchemaScript schema={faqSchema} id="schema-faq-editorial" />
       <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb-editorial" />
+      <LlmComment pageType="editorial-policy" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Editorial Policy</h1>
 
@@ -140,6 +153,8 @@ export default function EditorialPolicyPage() {
           . No advertiser influences content.
         </p>
       </div>
+
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
       <div className="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 mt-8">
         <p className="text-sm text-slate-600 leading-relaxed">

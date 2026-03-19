@@ -1,11 +1,21 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Terms of Use | HealthInsuranceRenew',
+  title: 'Terms of Service | HealthInsuranceRenew',
   description:
     'Terms of use for HealthInsuranceRenew. Understand the conditions for using this educational health insurance resource, including disclaimers and limitations.',
   alternates: { canonical: 'https://healthinsurancerenew.com/terms' },
+  openGraph: {
+    title: 'Terms of Service | HealthInsuranceRenew',
+    description:
+      'Terms of use for HealthInsuranceRenew. Understand the conditions for using this educational health insurance resource, including disclaimers and limitations.',
+    url: 'https://healthinsurancerenew.com/terms',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -13,9 +23,18 @@ const breadcrumbs = [
   { name: 'Terms of Use', url: '/terms' },
 ]
 
+// NOTE: No name/NPN on this page — generic byline only (legal page, no byline needed)
+
 export default function TermsPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <LlmComment pageType="terms" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Terms of Use</h1>
 
@@ -47,7 +66,7 @@ export default function TermsPage() {
         <p className="text-slate-700 leading-relaxed mb-4">
           Visitors may browse the site, use the educational tools, and interact with the chat feature for their
           personal, non-commercial use. The following activities are prohibited: attempting to gain unauthorized access
-          to the site's systems, using automated tools to scrape or download content in bulk, misrepresenting identity
+          to the site&apos;s systems, using automated tools to scrape or download content in bulk, misrepresenting identity
           or affiliation when interacting with agents, and using the site to engage in any activity that violates
           applicable law.
         </p>

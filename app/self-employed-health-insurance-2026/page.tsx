@@ -1,14 +1,25 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Self-Employed Health Insurance in 2026 | HealthInsuranceRenew',
+  title: 'Self-Employed Health Insurance Guide (2026) | HealthInsuranceRenew',
   description:
     'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
   alternates: { canonical: 'https://healthinsurancerenew.com/self-employed-health-insurance-2026' },
+  openGraph: {
+    title: 'Self-Employed Health Insurance Guide (2026)',
+    description: 'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
+    url: 'https://healthinsurancerenew.com/self-employed-health-insurance-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -58,8 +69,22 @@ const sources = [
 ]
 
 export default function SelfEmployedPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: 'Self-Employed Coverage', url: 'https://healthinsurancerenew.com/self-employed-health-insurance-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Self-Employed Health Insurance Guide (2026)',
+    description: 'Health insurance for freelancers and self-employed workers in 2026.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="self-employed-guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Self-Employed Health Insurance in 2026: Your Options
@@ -198,6 +223,8 @@ export default function SelfEmployedPage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

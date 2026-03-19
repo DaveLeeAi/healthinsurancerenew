@@ -1,7 +1,11 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadDentalCoverage } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
+import PageFaq from '@/components/PageFaq'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -19,6 +23,14 @@ const STATE_NAMES: Record<string, string> = {
   SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VA: 'Virginia',
   VT: 'Vermont', WA: 'Washington', WI: 'Wisconsin', WV: 'West Virginia', WY: 'Wyoming',
 }
+
+const FAQ_ITEMS = [
+  { question: 'What is a Stand-Alone Dental Plan (SADP)?', answer: 'A Stand-Alone Dental Plan (SADP) is a separate dental insurance policy purchased through the ACA marketplace alongside your medical plan. Adult dental coverage is not considered an essential health benefit under the ACA, so SADPs are the primary way to get dental coverage through the exchange.' },
+  { question: 'Are dental premiums eligible for premium tax credits?', answer: 'No. SADP premiums are not eligible for the Advance Premium Tax Credit (APTC). Only medical plan premiums qualify for marketplace subsidies. However, pediatric dental premiums embedded in a medical plan may be included in the premium used to calculate the APTC.' },
+  { question: 'What do dental plans typically cover?', answer: 'Most marketplace dental plans cover three tiers of care: preventive (cleanings, exams, X-rays), basic restorative (fillings, extractions), and major restorative (crowns, bridges, root canals). Coverage percentages vary by tier, and some plans also include orthodontia for adults or children.' },
+  { question: 'How do waiting periods work on dental plans?', answer: 'Some dental plans impose waiting periods before certain services are covered — especially for basic and major restorative work. Preventive services often have no waiting period. Waiting periods typically range from 3 to 12 months depending on the plan and service category.' },
+  { question: 'Do I need a separate dental plan if I have a medical marketplace plan?', answer: 'It depends. Medical marketplace plans are required to include pediatric dental coverage for children under 19, but adult dental is not required. If you want dental coverage as an adult, you will typically need to purchase a separate SADP through the marketplace or a private dental plan.' },
+]
 
 export const metadata: Metadata = {
   title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
@@ -69,6 +81,12 @@ export default function DentalIndexPage() {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
+
+      <LlmComment
+        pageType="dental-index"
+        data="CMS-SADP-PUF"
+        extra={{ plans: dataset.data.length, issuers: totalIssuers, states: states.length }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -136,6 +154,13 @@ export default function DentalIndexPage() {
             ))}
           </div>
         </section>
+
+        <PageFaq faqs={FAQ_ITEMS} />
+
+        <GenericByline
+          dataSource="CMS SADP Public Use File"
+          planYear={PLAN_YEAR}
+        />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

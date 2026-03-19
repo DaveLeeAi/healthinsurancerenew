@@ -199,7 +199,7 @@ export default function SEPDecisionTree({ nodes, eventTitle }: Props) {
             <div>
               <h3 className="font-semibold text-trust-800 text-base">Decision Guide Complete</h3>
               <p className="text-sm text-trust-700 mt-1">
-                You've reviewed all the key decision points for {eventTitle.toLowerCase()}.
+                You&apos;ve reviewed all the key decision points for {eventTitle.toLowerCase()}.
                 Use your answers above to determine your best coverage path.
               </p>
             </div>

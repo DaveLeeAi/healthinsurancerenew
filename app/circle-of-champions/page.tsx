@@ -1,12 +1,23 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import LlmComment from '../../components/LlmComment'
+import SchemaScript from '../../components/SchemaScript'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 import config from '../../data/config/config.json'
 
 export const metadata: Metadata = {
-  title: 'CMS Marketplace Elite Circle of Champions Recognition | HealthInsuranceRenew',
+  title: 'CMS Elite Circle of Champions | HealthInsuranceRenew',
   description:
     `Health Insurance Renew received ${config.operator.recognition} recognition for the ${config.operator.recognitionPeriod}, enrolling ${config.operator.enrollmentVolume} in annual Marketplace premium.`,
   alternates: { canonical: 'https://healthinsurancerenew.com/circle-of-champions' },
+  openGraph: {
+    title: 'CMS Elite Circle of Champions | HealthInsuranceRenew',
+    description:
+      `Health Insurance Renew received ${config.operator.recognition} recognition for the ${config.operator.recognitionPeriod}, enrolling ${config.operator.enrollmentVolume} in annual Marketplace premium.`,
+    url: 'https://healthinsurancerenew.com/circle-of-champions',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -38,8 +49,26 @@ const faqItems = [
 ]
 
 export default function CircleOfChampionsPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb-circle-of-champions" />
+      <SchemaScript schema={faqSchema} id="schema-faq-circle-of-champions" />
+      <LlmComment pageType="circle-of-champions" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         CMS Marketplace Elite Circle of Champions Recognition

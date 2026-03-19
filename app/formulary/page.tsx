@@ -1,8 +1,12 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import FormularySearch from '@/components/FormularySearch'
 import allStatesData from '@/data/config/all-states.json'
 import formularyMeta from '@/data/processed/formulary_intelligence.meta.json'
 import { buildBreadcrumbSchema, buildDatasetSchema } from '@/lib/schema-markup'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
+import PageFaq from '@/components/PageFaq'
 
 // ── State classification ─────────────────────────────────────────────────────
 
@@ -66,6 +70,16 @@ const DRUG_CATEGORIES = [
     hubId: 'weight-loss',
     drugs: ['Ozempic', 'Wegovy', 'Mounjaro', 'Saxenda', 'Qsymia', 'Contrave'],
   },
+]
+
+// ── FAQ items ────────────────────────────────────────────────────────────────
+
+const FAQ_ITEMS = [
+  { question: 'What is a drug formulary?', answer: 'A drug formulary is a list of prescription medications covered by a health insurance plan. Each plan maintains its own formulary, which determines whether a drug is covered, what tier it falls under, and what cost-sharing (copay or coinsurance) applies. Formularies are updated annually and may change during the plan year.' },
+  { question: 'Why does drug coverage vary between health insurance plans?', answer: 'Each insurance issuer negotiates its own drug pricing with manufacturers and pharmacy benefit managers. These negotiations result in different formularies per plan. A drug that is Tier 1 (low cost) on one plan may be Tier 3 (higher cost) or not covered at all on another plan from a different issuer.' },
+  { question: 'What does "prior authorization" mean?', answer: 'Prior authorization means your doctor must get approval from the insurance company before the plan will cover the medication. The insurer reviews whether the drug is medically necessary for your condition. Without prior authorization, the plan may deny coverage or require you to pay full price.' },
+  { question: 'What are drug tiers on a health insurance plan?', answer: 'Drug tiers are categories that determine your out-of-pocket cost for a medication. Most plans use 4 to 6 tiers: Tier 1 (preferred generic, lowest cost), Tier 2 (generic), Tier 3 (preferred brand), Tier 4 (non-preferred brand), Tier 5 (specialty). The higher the tier, the more you pay.' },
+  { question: 'How do I check if my medication is covered?', answer: 'Use this formulary lookup tool to search for your medication by name. Select your state and issuer to see whether the drug is covered, which tier it falls under, and whether it requires prior authorization, step therapy, or quantity limits. Always confirm coverage with your plan before filling a prescription.' },
 ]
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
@@ -141,6 +155,12 @@ export default function FormularyIndexPage() {
         />
       ))}
 
+      <LlmComment
+        pageType="formulary-index"
+        data="CMS-MR-PUF"
+        extra={{ drugs: DRUG_COUNT, issuers: ISSUER_COUNT, states: STATES_WITH_DATA.size }}
+      />
+
       <main className="max-w-3xl mx-auto px-4 pt-10 pb-16">
 
         {/* ── HERO ─────────────────────────────────────────────── */}
@@ -178,7 +198,7 @@ export default function FormularyIndexPage() {
           <span className="hidden sm:inline text-neutral-300">|</span>
           <span className="inline-flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-            Built by a licensed U.S. health insurance agent
+            Reviewed by a licensed health insurance professional
           </span>
         </div>
 
@@ -280,11 +300,18 @@ export default function FormularyIndexPage() {
               explained for consumers, not just brokers
             </TrustBullet>
             <TrustBullet>
-              Built and maintained by a licensed U.S. health insurance agent with CMS
+              Reviewed by a licensed health insurance professional with CMS
               Elite Circle of Champions recognition
             </TrustBullet>
           </ul>
         </section>
+
+        <PageFaq faqs={FAQ_ITEMS} />
+
+        <GenericByline
+          dataSource="CMS Machine-Readable PUF + Carrier Formulary JSON Files"
+          planYear={2026}
+        />
       </main>
     </>
   )

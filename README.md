@@ -286,16 +286,44 @@ pnpm exec tsc --noEmit
 
 ---
 
-## SEO / Schema
+## SEO / Schema / E-E-A-T — Sitewide Template Sweep
 
-Every public page includes:
-- `generateMetadata()` with canonical URL, Open Graph, Twitter Card
-- JSON-LD schema via `SchemaScript` component (injected in `<head>`)
-- FAQPage schema on plan-detail and formulary pages
-- BreadcrumbList schema on all pages
-- Article schema with `isBasedOn` citing CMS dataset
+Every public page (65 templates) now includes the full SEO + E-E-A-T stack:
 
-All schema built via `lib/schema-markup.ts`.
+### Per-Page Checklist (enforced across all 65 templates)
+
+| Signal | Status | Details |
+|--------|--------|---------|
+| `generateMetadata()` | All dynamic routes | Title, description, canonical, OG, Twitter Card |
+| Static `metadata` export | All index/static routes | Same fields via static export |
+| BreadcrumbList schema | All pages | Via `SchemaScript` or inline `<script>` |
+| FAQPage schema | All pages with FAQ sections | 5+ Q&As per page, auto-injected via `PageFaq` |
+| Article schema | Guide, state, county pages | Organization author, `isBasedOn` citing CMS dataset |
+| Dataset schema | Plans, subsidies, formulary, rates | CMS PUF provenance |
+| CollectionPage schema | Index pages (states, guides) | `hasPart` linking child pages |
+| LLM comment block | All pages | `<!-- HIR: page=X state=Y ... -->` for AI engine discovery |
+| Generic byline | All non-legal pages | "Reviewed by a licensed health insurance professional" |
+| Data attribution | All data pages | "CMS QHP Landscape PUF · Plan Year 2026" |
+| BLUF paragraph | All content pages | ≤60 words answering the zero-click query |
+
+### Shared E-E-A-T Components
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| `GenericByline` | `components/GenericByline.tsx` | Renders "Reviewed by a licensed health insurance professional" + data source + last reviewed date |
+| `LlmComment` | `components/LlmComment.tsx` | Injects `<!-- HIR: ... -->` HTML comment with page metadata for AI crawlers |
+| `DataAttribution` | `components/DataAttribution.tsx` | Lightweight data source footer for pages where full byline is too heavy |
+| `PageFaq` | `components/PageFaq.tsx` | FAQ accordion + auto-injected FAQPage JSON-LD schema |
+
+### Author/NPN Rule
+
+- **Dave Lee name + NPN 7578729**: Only on `app/page.tsx` (homepage) and `app/circle-of-champions/page.tsx`
+- **All other pages**: Generic byline only — no name, no NPN
+- Every template includes: `// NOTE: No name/NPN on this page — generic byline only`
+
+### Schema Markup Library (`lib/schema-markup.ts`)
+
+All JSON-LD built via typed builders: `buildBreadcrumbSchema`, `buildFAQSchema`, `buildArticleSchema`, `buildStatePlansArticleSchema`, `buildDatasetSchema`, `buildPlansProductSchema`, `buildSubsidySchemas`, `buildFormularyDrugSchema`, `buildDentalPlanSchema`, `buildBillingProcedureSchema`, `buildLifeEventHowToSchema`, `buildPolicyScenarioSchema`, `buildMedicalWebPageSchema`, `buildFinancialProductSchema`.
 
 ### Consumer Copy Standard
 
@@ -323,6 +351,10 @@ app/                    # Next.js App Router pages
   subsidies/            # APTC calculator pages
   ...
 components/             # React TSX components
+  GenericByline.tsx     # E-E-A-T byline (generic — no name/NPN)
+  LlmComment.tsx        # HTML comment block for AI crawlers
+  DataAttribution.tsx   # Lightweight data source footer
+  PageFaq.tsx           # FAQ accordion + FAQPage JSON-LD schema
   SBCGrid.tsx           # Cost-sharing grid
   SchemaScript.tsx      # JSON-LD injector
   EntityLinkCard.tsx    # Related page links

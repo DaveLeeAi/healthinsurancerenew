@@ -11,6 +11,8 @@ import {
   buildArticleSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { PlanRecord } from '@/lib/types'
 import { generateRateVolatilityContent } from '@/lib/content-templates'
@@ -79,6 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+// NOTE: No name/NPN on this page — generic byline only
 export default function RatesPage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
   const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
@@ -162,6 +165,18 @@ export default function RatesPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       {datasetSchema && <SchemaScript schema={datasetSchema} id="dataset-schema" />}
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment
+        pageType="rates-county"
+        state={stateUpper}
+        county={countyDisplay}
+        planCount={rates.plan_count}
+        carrierCount={rates.carrier_count}
+        data="CMS-Rate-Review-PUF"
+        extra={{
+          avgPremium40: `$${rates.avg_premium_age_40.toFixed(0)}`,
+          yoyChange: rates.yoy_change_pct != null ? `${rates.yoy_change_pct.toFixed(1)}%` : 'N/A',
+        }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -399,6 +414,9 @@ export default function RatesPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        {/* ── Byline ── */}
+        <GenericByline dataSource="CMS Rate Review PUF" />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

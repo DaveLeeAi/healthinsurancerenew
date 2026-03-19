@@ -1,12 +1,23 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 import config from '../../data/config/config.json'
 
 export const metadata: Metadata = {
-  title: 'Agent Licensing | HealthInsuranceRenew',
+  title: 'Licensing Information | HealthInsuranceRenew',
   description:
     `HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.`,
   alternates: { canonical: 'https://healthinsurancerenew.com/licensing' },
+  openGraph: {
+    title: 'Licensing Information | HealthInsuranceRenew',
+    description:
+      `HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.`,
+    url: 'https://healthinsurancerenew.com/licensing',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -14,9 +25,18 @@ const breadcrumbs = [
   { name: 'Licensing', url: '/licensing' },
 ]
 
+// NOTE: No name/NPN on this page — generic byline only
+
 export default function LicensingPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <LlmComment pageType="licensing" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Agent Licensing</h1>
 
@@ -70,6 +90,8 @@ export default function LicensingPage() {
           completed.
         </p>
       </div>
+
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
       <div className="mt-12 rounded-2xl bg-white border border-slate-200/80 shadow-sm shadow-slate-200/50 p-8 sm:p-10 text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight mb-6">

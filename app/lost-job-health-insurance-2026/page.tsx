@@ -1,15 +1,26 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 
 export const metadata: Metadata = {
-  title: 'Lost Your Job? Health Insurance Options for 2026 | HealthInsuranceRenew',
+  title: "Lost Your Job? Health Insurance Options (2026) | HealthInsuranceRenew",
   description:
     'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
   alternates: { canonical: 'https://healthinsurancerenew.com/lost-job-health-insurance-2026' },
+  openGraph: {
+    title: 'Lost Your Job? Health Insurance Options (2026)',
+    description: 'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
+    url: 'https://healthinsurancerenew.com/lost-job-health-insurance-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const g = fplData.guidelines
@@ -67,8 +78,22 @@ const sources = [
 ]
 
 export default function LostJobPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: 'Lost Your Job', url: 'https://healthinsurancerenew.com/lost-job-health-insurance-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Lost Your Job? Health Insurance Options (2026)',
+    description: 'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="job-loss-guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Lost Your Job? Health Insurance Options for 2026
@@ -181,6 +206,8 @@ export default function LostJobPage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

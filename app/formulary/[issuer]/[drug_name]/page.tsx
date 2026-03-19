@@ -1,3 +1,4 @@
+// NOTE: No name/NPN on this page — generic byline only
 import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import siteConfig from '@/data/config/config.json'
@@ -16,6 +17,8 @@ import {
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import { generateFormularyContent } from '@/lib/content-templates'
 import {
   humanizeTier,
@@ -670,6 +673,14 @@ export default async function FormularyDrugPage({ params }: Props) {
       <SchemaScript schema={medicalWebPageSchema} id="medical-web-page-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment
+        pageType="formulary-drug"
+        state={stateCode}
+        planCount={results.length}
+        year={PLAN_YEAR}
+        data="CMS-MR-PUF"
+        extra={{ drug: titleCase(drugDisplay), issuer: issuerName }}
+      />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-8">
 
@@ -1490,6 +1501,8 @@ export default async function FormularyDrugPage({ params }: Props) {
           stateName={stateName}
         />
 
+        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
@@ -1618,6 +1631,8 @@ function SBMExplanationPage({
             </a>
           </div>
         )}
+
+        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
 
         <footer className="border-t border-neutral-200 mt-8 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

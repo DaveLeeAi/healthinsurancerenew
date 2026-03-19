@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+// NOTE: No name/NPN on this page — generic byline only
 import { notFound } from 'next/navigation'
 import {
   getSbmPlanBySlug,
@@ -10,6 +11,8 @@ import {
 } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import allStatesData from '@/data/config/all-states.json'
 import { stateSlugToCode, stateCodeToSlug } from '@/lib/county-lookup'
 
@@ -273,6 +276,7 @@ export default function SbmPlanDetailPage({ params }: Props) {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment pageType="plan-slug" state={stateCode} exchange={exchange} year={PLAN_YEAR} data="SBM-SBC" extra={{ plan: plan.plan_name_from_sbc, metal: plan.metal_level, issuer: plan.issuer_name }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -488,6 +492,8 @@ export default function SbmPlanDetailPage({ params }: Props) {
             Licensed agents are available to assist with {exchange} enrollment.
           </p>
         </section>
+
+        <GenericByline dataSource={`${plan.issuer_name} Summary of Benefits and Coverage (SBC)`} planYear={plan.plan_year} />
 
         {/* ── Back link ── */}
         <div className="border-t border-neutral-200 pt-6">

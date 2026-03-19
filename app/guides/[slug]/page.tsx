@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import FAQSection from '../../../components/FAQSection'
+import GenericByline from '../../../components/GenericByline'
+import LlmComment from '../../../components/LlmComment'
 import SourcesBox from '../../../components/SourcesBox'
 import { getCollectionSlugs, getCollectionEntry } from '../../../lib/markdown'
 import type { GuideFrontmatter } from '../../../lib/markdown'
@@ -24,6 +26,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
     description: entry.frontmatter.description,
     alternates: { canonical: `https://healthinsurancerenew.com/guides/${params.slug}` },
+    openGraph: {
+      type: 'article',
+      title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
+      description: entry.frontmatter.description,
+      url: `https://healthinsurancerenew.com/guides/${params.slug}`,
+      siteName: 'HealthInsuranceRenew',
+    },
   }
 }
 
@@ -74,6 +83,7 @@ export default async function GuideDetailPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFAQSchema(faqs)) }}
         />
       )}
+      <LlmComment pageType="guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         {title}
@@ -104,6 +114,9 @@ export default async function GuideDetailPage({ params }: Props) {
       />
 
       {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
+
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 my-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>

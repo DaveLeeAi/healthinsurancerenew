@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SchemaScript from '../../components/SchemaScript'
 
 export const metadata: Metadata = {
@@ -7,7 +9,17 @@ export const metadata: Metadata = {
   description:
     'HealthInsuranceRenew.com discloses all revenue sources. The site earns through standard CMS-regulated agent compensation when consumers enroll in health plans — at no cost to the consumer.',
   alternates: { canonical: 'https://healthinsurancerenew.com/how-we-get-paid' },
+  openGraph: {
+    title: 'How We Get Paid | HealthInsuranceRenew',
+    description:
+      'HealthInsuranceRenew.com discloses all revenue sources. The site earns through standard CMS-regulated agent compensation when consumers enroll in health plans — at no cost to the consumer.',
+    url: 'https://healthinsurancerenew.com/how-we-get-paid',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
+
+// NOTE: No name/NPN on this page — generic byline only
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -42,6 +54,7 @@ export default function HowWeGetPaidPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <SchemaScript schema={aboutPageSchema} id="schema-about-how-we-get-paid" />
       <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb-how-we-get-paid" />
+      <LlmComment pageType="how-we-get-paid" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">How We Get Paid</h1>
 
@@ -104,6 +117,8 @@ export default function HowWeGetPaidPage() {
           .
         </p>
       </div>
+
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

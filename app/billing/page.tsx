@@ -1,7 +1,10 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadBillingIntel } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema, extractCptCodes } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
 
@@ -100,6 +103,7 @@ export default function BillingIndexPage() {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
+      <LlmComment pageType="billing-index" year={2026} data="AMA-CPT+CMS-ACA" extra={{ scenarios: dataset.data.length, cptCodes: totalCptCodes }} />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -194,6 +198,8 @@ export default function BillingIndexPage() {
             </section>
           )
         })}
+
+        <GenericByline dataSource="AMA CPT + CMS ACA Regulations" planYear={2026} />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

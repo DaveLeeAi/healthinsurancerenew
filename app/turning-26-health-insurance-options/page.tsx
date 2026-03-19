@@ -1,14 +1,25 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: "Turning 26? Health Insurance Options for 2026 | HealthInsuranceRenew",
+  title: "Turning 26? Health Insurance Options Explained | HealthInsuranceRenew",
   description:
     "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
   alternates: { canonical: 'https://healthinsurancerenew.com/turning-26-health-insurance-options' },
+  openGraph: {
+    title: 'Turning 26? Health Insurance Options Explained',
+    description: "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
+    url: 'https://healthinsurancerenew.com/turning-26-health-insurance-options',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -57,8 +68,22 @@ const sources = [
 ]
 
 export default function Turning26Page() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: 'Turning 26', url: 'https://healthinsurancerenew.com/turning-26-health-insurance-options' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Turning 26? Health Insurance Options Explained',
+    description: "Aging off a parent's health plan at 26? Learn your health insurance options for 2026.",
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="turning-26-guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Turning 26? Your Health Insurance Options Explained
@@ -191,6 +216,8 @@ export default function Turning26Page() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

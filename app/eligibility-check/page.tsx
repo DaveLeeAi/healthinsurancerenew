@@ -1,14 +1,25 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Do I Qualify for Health Insurance Savings in 2026? | HealthInsuranceRenew',
+  title: 'ACA Eligibility Check — Do You Qualify for Savings? | HealthInsuranceRenew',
   description:
     'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
   alternates: { canonical: 'https://healthinsurancerenew.com/eligibility-check' },
+  openGraph: {
+    title: 'ACA Eligibility Check — Do You Qualify for Savings?',
+    description: 'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
+    url: 'https://healthinsurancerenew.com/eligibility-check',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -57,8 +68,21 @@ const sources = [
 ]
 
 export default function EligibilityCheckPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Eligibility Check', url: 'https://healthinsurancerenew.com/eligibility-check' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'ACA Eligibility Check — Do You Qualify for Savings?',
+    description: 'Find out if you qualify for marketplace health insurance savings in 2026.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="eligibility-tool" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Do I Qualify for Health Insurance Savings in 2026?
@@ -335,6 +359,8 @@ export default function EligibilityCheckPage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

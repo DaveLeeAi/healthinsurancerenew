@@ -1,7 +1,10 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadFrictionQA } from '@/lib/data-loader'
 import { buildFAQSchema, buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
 
@@ -95,6 +98,7 @@ export default function FAQIndexPage() {
     <>
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="faq-index" year={2026} data="CMS-ACA-Regulations" extra={{ questions: dataset.data.length, categories: byCategory.size }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -215,6 +219,8 @@ export default function FAQIndexPage() {
             Contact me for personalized guidance on your specific situation.
           </p>
         </section>
+
+        <GenericByline dataSource="CMS ACA Regulations & Enrollment Policy" planYear={2026} />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

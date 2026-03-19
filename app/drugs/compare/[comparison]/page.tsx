@@ -1,8 +1,11 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { DRUG_TAXONOMY, getDrugCategory } from '@/lib/drug-linking'
 import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -125,6 +128,12 @@ export default function ComparisonPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment
+        pageType="drug-compare"
+        year={PLAN_YEAR}
+        data="CMS-MR-PUF"
+        extra={{ drugA: nameA, drugB: nameB }}
+      />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -303,6 +312,8 @@ export default function ComparisonPage({ params }: Props) {
             Check Plans Near You
           </a>
         </section>
+
+        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

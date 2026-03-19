@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import config from '../data/config/config.json'
 import SchemaScript from '../components/SchemaScript'
+import LlmComment from '../components/LlmComment'
 
 export const metadata: Metadata = {
   title: 'HealthInsuranceRenew | 2026 Health Insurance Marketplace — Plans, Savings & Tools',
@@ -157,6 +158,7 @@ export default function HomePage() {
       <SchemaScript schema={websiteSchema} id="schema-website" />
       <SchemaScript schema={organizationSchema} id="schema-organization" />
       <SchemaScript schema={speakableSchema} id="schema-speakable" />
+      <LlmComment pageType="homepage" year={2026} data="CMS-QHP-PUF" />
 
       <p id="site-bluf" className="sr-only">
         HealthInsuranceRenew.com is a free ACA health insurance intelligence platform

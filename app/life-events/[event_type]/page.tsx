@@ -1,3 +1,4 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getLifeEventBySlug, getAllLifeEventParams, loadLifeEvents } from '@/lib/data-loader'
@@ -5,6 +6,8 @@ import { buildLifeEventHowToSchema, buildBreadcrumbSchema } from '@/lib/schema-m
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import { generateLifeEventContent } from '@/lib/content-templates'
 import SEPDecisionTree from '@/components/SEPDecisionTree'
 
@@ -42,6 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `https://healthinsurancerenew.com/life-events/${event.slug}`,
       type: 'article',
+      siteName: 'HealthInsuranceRenew',
+      locale: 'en_US',
     },
   }
 }
@@ -123,6 +128,11 @@ export default function LifeEventPage({ params }: Props) {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={howToSchema} id="howto-schema" />
+      <LlmComment
+        pageType="life-event"
+        data="editorial"
+        extra={{ event: event.slug, category: event.category }}
+      />
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
         <Breadcrumbs eventTitle={event.title} />
@@ -226,7 +236,7 @@ export default function LifeEventPage({ params }: Props) {
             <div className="border border-amber-200 bg-amber-50 rounded-xl overflow-hidden">
               <div className="px-4 py-3 bg-amber-100 border-b border-amber-200">
                 <span className="text-xs font-semibold text-amber-800 uppercase tracking-wide">
-                  Don't miss these dates
+                  Don&apos;t miss these dates
                 </span>
               </div>
               <div className="divide-y divide-amber-100">
@@ -385,6 +395,8 @@ export default function LifeEventPage({ params }: Props) {
           title="Related Resources"
           variant="bottom"
         />
+
+        <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
         {/* ── Medical Disclaimer ───────────────────────────────────── */}
         <footer className="mt-6 pt-4 border-t border-neutral-100">

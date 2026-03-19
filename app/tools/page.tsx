@@ -1,11 +1,28 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import { buildBreadcrumbSchema } from '@/lib/schema-markup'
+import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
+
+const SITE_URL = 'https://healthinsurancerenew.com'
 
 export const metadata: Metadata = {
-  title: 'Free 2026 Health Insurance Tools | HealthInsuranceRenew',
+  title: 'Health Insurance Tools & Calculators',
   description:
     'Free tools to estimate your health insurance savings, check eligibility, compare employer plans to marketplace options, and understand COBRA vs. marketplace costs. No sign-up required.',
+  alternates: { canonical: `${SITE_URL}/tools` },
+  openGraph: {
+    type: 'website',
+    title: 'Health Insurance Tools & Calculators',
+    description:
+      'Free tools to estimate your health insurance savings, check eligibility, compare employer plans to marketplace options, and understand COBRA costs.',
+    url: `${SITE_URL}/tools`,
+    siteName: 'HealthInsuranceRenew',
+    locale: 'en_US',
+  },
 }
 
 const breadcrumbs = [
@@ -84,7 +101,16 @@ const moreTools = [
 ]
 
 export default function ToolsIndexPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: SITE_URL },
+    { name: 'Tools', url: `${SITE_URL}/tools` },
+  ])
+
   return (
+    <>
+      <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="tools-index" year={2026} data="CMS-FPL+IRS" />
+
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
@@ -183,6 +209,9 @@ export default function ToolsIndexPage() {
           </p>
         </div>
       </section>
+
+      <GenericByline dataSource="CMS Federal Poverty Level Guidelines + IRS Contribution Percentages" planYear={2026} />
     </div>
+    </>
   )
 }

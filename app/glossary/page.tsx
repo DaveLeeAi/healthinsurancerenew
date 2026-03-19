@@ -1,11 +1,22 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Health Insurance Glossary | Plain-English Terms | HealthInsuranceRenew',
+  title: 'Health Insurance Glossary — Key Terms Explained | HealthInsuranceRenew',
   description:
     'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
   alternates: { canonical: 'https://healthinsurancerenew.com/glossary' },
+  openGraph: {
+    title: 'Health Insurance Glossary — Key Terms Explained',
+    description: 'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
+    url: 'https://healthinsurancerenew.com/glossary',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -97,8 +108,21 @@ const terms = [
 ]
 
 export default function GlossaryPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Glossary', url: 'https://healthinsurancerenew.com/glossary' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Health Insurance Glossary — Key Terms Explained',
+    description: 'Simple definitions for common health insurance terms.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="glossary" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Health Insurance Glossary</h1>
 
@@ -129,6 +153,8 @@ export default function GlossaryPage() {
           .
         </p>
       </div>
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

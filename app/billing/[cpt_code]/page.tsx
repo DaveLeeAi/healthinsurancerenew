@@ -1,3 +1,4 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadBillingIntel, getBillingByCategory } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
@@ -10,6 +11,8 @@ import {
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import { generateBillingContent } from '@/lib/content-templates'
 import type { BillingScenario, BillingCodeEntry } from '@/lib/types'
 
@@ -221,6 +224,11 @@ export default function BillingScenarioPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={billingSchema} id="billing-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment
+        pageType="billing-scenario"
+        data="AMA-CPT"
+        extra={{ category: scenario.billing_category, riskLevel: scenario.consumer_risk_level }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -488,6 +496,8 @@ export default function BillingScenarioPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        <GenericByline dataSource="AMA CPT code database" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

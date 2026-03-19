@@ -1,3 +1,4 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { getDentalByPlanVariant, getDentalByState, loadDentalCoverage } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
@@ -9,6 +10,8 @@ import {
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import type { DentalRecord } from '@/lib/types'
 import { generateDentalContent } from '@/lib/content-templates'
 
@@ -203,6 +206,13 @@ export default function DentalPlanPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={dentalSchema} id="dental-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment
+        pageType="dental-plan"
+        state={stateUpper}
+        year={PLAN_YEAR}
+        data="CMS-SADP-PUF"
+        extra={{ plan: plan.plan_name, issuer: plan.issuer_name }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -550,6 +560,8 @@ export default function DentalPlanPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        <GenericByline dataSource="CMS SADP PUF" planYear={PLAN_YEAR} />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

@@ -1,14 +1,28 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadLifeEvents } from '@/lib/data-loader'
 import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
+
+const SITE_URL = 'https://healthinsurancerenew.com'
 
 export const metadata: Metadata = {
-  title: 'Life Events & Special Enrollment Periods — 2026 SEP Guide',
+  title: 'Life Events & Health Insurance — Special Enrollment Periods',
   description:
     'Navigate health insurance coverage changes after major life events: turning 26, job loss, marriage, having a baby, divorce, early retirement, Medicare at 65, moving states, and immigration status changes. SEP windows, deadlines, and required documentation.',
   alternates: {
-    canonical: 'https://healthinsurancerenew.com/life-events',
+    canonical: `${SITE_URL}/life-events`,
+  },
+  openGraph: {
+    type: 'website',
+    title: 'Life Events & Health Insurance — Special Enrollment Periods',
+    description:
+      'Navigate health insurance coverage changes after major life events. SEP windows, deadlines, and required documentation.',
+    url: `${SITE_URL}/life-events`,
+    siteName: 'HealthInsuranceRenew',
+    locale: 'en_US',
   },
 }
 
@@ -64,6 +78,7 @@ export default function LifeEventsIndexPage() {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="life-events-index" year={2026} data="CMS-SEP-Rules" extra={{ events: events.length, categories: byCategory.size }} />
 
       <main className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         {/* Breadcrumbs */}
@@ -177,6 +192,8 @@ export default function LifeEventsIndexPage() {
             Get Free Help
           </a>
         </div>
+
+        <GenericByline dataSource="CMS Special Enrollment Period Rules" planYear={2026} />
 
         {/* Disclaimer */}
         <footer className="mt-8 pt-4 border-t border-neutral-100">

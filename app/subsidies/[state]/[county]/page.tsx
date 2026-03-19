@@ -11,6 +11,8 @@ import {
   buildBreadcrumbSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import SubsidyCalculator from '@/components/SubsidyCalculator'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplTierEstimate } from '@/lib/types'
@@ -70,6 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+// NOTE: No name/NPN on this page — generic byline only
 export default function SubsidiesPage({ params }: Props) {
   const stateUpper    = params.state.toUpperCase()
   const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
@@ -119,6 +122,15 @@ export default function SubsidiesPage({ params }: Props) {
         <SchemaScript key={i} schema={schema} id={`subsidy-schema-${i}`} />
       ))}
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment
+        pageType="subsidies-county"
+        state={stateUpper}
+        county={countyDisplay}
+        data="CMS-Benchmark-Premium-IRS-FPL"
+        extra={{
+          benchmark: subsidy ? `$${subsidy.benchmark_silver_premium.toFixed(0)}` : 'N/A',
+        }}
+      />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -332,6 +344,9 @@ export default function SubsidiesPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        {/* ── Byline ── */}
+        <GenericByline dataSource="CMS Benchmark Premium & IRS FPL Tables" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

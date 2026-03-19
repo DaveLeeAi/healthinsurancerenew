@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 import config from '../../data/config/config.json'
 
 export const metadata: Metadata = {
@@ -7,6 +10,14 @@ export const metadata: Metadata = {
   description:
     'Get in touch with licensed health insurance agents at HealthInsuranceRenew. Learn how to reach our team for questions about marketplace health insurance coverage.',
   alternates: { canonical: 'https://healthinsurancerenew.com/contact' },
+  openGraph: {
+    title: 'Contact Us | HealthInsuranceRenew',
+    description:
+      'Get in touch with licensed health insurance agents at HealthInsuranceRenew. Learn how to reach our team for questions about marketplace health insurance coverage.',
+    url: 'https://healthinsurancerenew.com/contact',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -14,9 +25,18 @@ const breadcrumbs = [
   { name: 'Contact', url: '/contact' },
 ]
 
+// NOTE: No name/NPN on this page — generic byline only
+
 export default function ContactPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <LlmComment pageType="contact" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Contact Us</h1>
 
@@ -35,7 +55,7 @@ export default function ContactPage() {
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
           Agents hold active licenses in {config.licensedStates.length} states across the country. When a question
-          relates to a specific state's marketplace, it is handled by an agent who is licensed and appointed in that
+          relates to a specific state&apos;s marketplace, it is handled by an agent who is licensed and appointed in that
           state. This ensures that any guidance provided complies with state-specific regulations and reflects the most
           current local information.
         </p>
@@ -77,6 +97,8 @@ export default function ContactPage() {
           .
         </p>
       </div>
+
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

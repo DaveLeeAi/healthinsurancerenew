@@ -1,7 +1,10 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadFrictionQA, getFrictionQAByCategory } from '@/lib/data-loader'
 import { buildFAQSchema, buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
 
@@ -156,6 +159,11 @@ export default function FAQCategoryPage({ params }: Props) {
     <>
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment
+        pageType="faq-category"
+        data="editorial"
+        extra={{ category: params.category, questions: questions.length }}
+      />
 
       <main className="max-w-3xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -242,6 +250,8 @@ export default function FAQCategoryPage({ params }: Props) {
             ← Browse all FAQ categories
           </a>
         </div>
+
+        <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

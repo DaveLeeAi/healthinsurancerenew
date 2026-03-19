@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { loadRateVolatility } from '@/lib/data-loader'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import configData from '@/data/config/config.json'
 import allStatesData from '@/data/config/all-states.json'
 
@@ -127,6 +129,7 @@ export default function StatesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <LlmComment pageType="states-index" planCount={totalPlans} year={2026} data="CMS-QHP-PUF" />
 
       <Breadcrumbs items={breadcrumbs} />
 
@@ -204,6 +207,9 @@ export default function StatesIndexPage() {
           ))}
         </div>
       </section>
+
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="CMS QHP Landscape & Rate PUF" />
 
       {/* Source citation */}
       <footer className="text-xs text-slate-400 border-t border-slate-100 pt-4">

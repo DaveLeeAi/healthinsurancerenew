@@ -1,14 +1,25 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Early Retirement Health Insurance in 2026 | HealthInsuranceRenew',
+  title: 'Early Retirement Health Insurance — Bridge to Medicare | HealthInsuranceRenew',
   description:
     'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
   alternates: { canonical: 'https://healthinsurancerenew.com/early-retirement-health-insurance-2026' },
+  openGraph: {
+    title: 'Early Retirement Health Insurance — Bridge to Medicare',
+    description: 'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
+    url: 'https://healthinsurancerenew.com/early-retirement-health-insurance-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -58,8 +69,22 @@ const sources = [
 ]
 
 export default function EarlyRetirementPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: 'Early Retirement', url: 'https://healthinsurancerenew.com/early-retirement-health-insurance-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Early Retirement Health Insurance — Bridge to Medicare',
+    description: 'Retiring before 65? Learn your health insurance options for 2026.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="early-retirement-guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Early Retirement Health Insurance: Your 2026 Options
@@ -203,6 +228,8 @@ export default function EarlyRetirementPage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

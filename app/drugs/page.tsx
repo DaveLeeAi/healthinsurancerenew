@@ -1,7 +1,10 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { DRUG_TAXONOMY } from '@/lib/drug-linking'
 import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -69,6 +72,7 @@ export default function DrugsIndexPage() {
     <>
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="drugs-index" year={PLAN_YEAR} data="CMS-MR-Formulary-PUF" extra={{ categories: DRUG_TAXONOMY.length }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-12">
 
@@ -208,6 +212,8 @@ export default function DrugsIndexPage() {
             </p>
           </div>
         </section>
+
+        <GenericByline dataSource="CMS Machine-Readable Formulary PUF" planYear={PLAN_YEAR} />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

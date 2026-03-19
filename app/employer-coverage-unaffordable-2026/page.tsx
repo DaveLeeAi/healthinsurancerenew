@@ -1,14 +1,25 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: "Employer Coverage Unaffordable? Your Marketplace Options in 2026 | HealthInsuranceRenew",
+  title: "Employer Coverage Unaffordable? Your ACA Options (2026) | HealthInsuranceRenew",
   description:
     'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
   alternates: { canonical: 'https://healthinsurancerenew.com/employer-coverage-unaffordable-2026' },
+  openGraph: {
+    title: 'Employer Coverage Unaffordable? Your ACA Options (2026)',
+    description: 'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
+    url: 'https://healthinsurancerenew.com/employer-coverage-unaffordable-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -58,8 +69,22 @@ const sources = [
 ]
 
 export default function EmployerCoverageUnaffordablePage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
+    { name: 'Employer Coverage Unaffordable', url: 'https://healthinsurancerenew.com/employer-coverage-unaffordable-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Employer Coverage Unaffordable? Your ACA Options (2026)',
+    description: 'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and marketplace options.',
+    dateModified: '2026-03-19',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="employer-unaffordable-guide" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Employer Coverage Unaffordable? Your Marketplace Options in 2026
@@ -191,6 +216,8 @@ export default function EmployerCoverageUnaffordablePage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

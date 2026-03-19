@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import { getCollectionList } from '../../lib/markdown'
 import type { GuideFrontmatter } from '../../lib/markdown'
 import { buildBreadcrumbSchema } from '../../lib/schema-markup'
@@ -10,6 +12,13 @@ export const metadata: Metadata = {
   description:
     'Educational guides about health insurance marketplace enrollment, subsidies, special enrollment periods, and factors that affect coverage costs.',
   alternates: { canonical: 'https://healthinsurancerenew.com/guides' },
+  openGraph: {
+    title: 'Health Insurance Guides',
+    description: 'Educational guides about marketplace enrollment, subsidies, special enrollment, and coverage costs.',
+    url: 'https://healthinsurancerenew.com/guides',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -34,12 +43,31 @@ export default function GuidesIndexPage() {
     { name: 'Guides', url: 'https://healthinsurancerenew.com/guides' },
   ])
 
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Health Insurance Guides',
+    description: 'Educational guides about marketplace health insurance.',
+    url: 'https://healthinsurancerenew.com/guides',
+    numberOfItems: guides.length,
+    hasPart: guides.map((g) => ({
+      '@type': 'Article',
+      name: g.title,
+      url: `https://healthinsurancerenew.com/guides/${g.slug}`,
+    })),
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      <LlmComment pageType="guides-index" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Health Insurance Guides
@@ -74,6 +102,9 @@ export default function GuidesIndexPage() {
           </Link>
         ))}
       </div>
+
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

@@ -109,7 +109,7 @@ export default function JobPlanAffordabilityPage() {
               className="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
             />
             <p className="text-xs text-slate-500 mt-1">
-              Enter only the employee's share of the premium for employee-only coverage (not
+              Enter only the employee&apos;s share of the premium for employee-only coverage (not
               family coverage).
             </p>
           </div>

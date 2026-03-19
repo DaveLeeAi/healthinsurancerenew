@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { getAllSubsidyStateCountyCombos } from '@/lib/data-loader'
 import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
 import allStatesData from '@/data/config/all-states.json'
 import { getCountyName } from '@/lib/county-lookup'
@@ -86,6 +88,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+// NOTE: No name/NPN on this page — generic byline only
 export default function SubsidiesStatePage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
   const stateEntry = getStateEntry(stateUpper)
@@ -110,6 +113,12 @@ export default function SubsidiesStatePage({ params }: Props) {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment
+        pageType="subsidies-state"
+        state={stateUpper}
+        data="CMS-Benchmark-Premium-IRS-FPL"
+        extra={{ counties: counties.length, isSbm: isSbm }}
+      />
 
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-8">
 
@@ -245,6 +254,9 @@ export default function SubsidiesStatePage({ params }: Props) {
             </section>
           </>
         )}
+
+        {/* Byline */}
+        <GenericByline dataSource="CMS Benchmark Premium & IRS FPL Tables" />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400">

@@ -1,8 +1,12 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 
 export const metadata: Metadata = {
@@ -10,6 +14,13 @@ export const metadata: Metadata = {
   description:
     '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
   alternates: { canonical: 'https://healthinsurancerenew.com/fpl-2026' },
+  openGraph: {
+    title: '2026 Federal Poverty Level (FPL) Guidelines | HealthInsuranceRenew',
+    description: '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
+    url: 'https://healthinsurancerenew.com/fpl-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -75,8 +86,23 @@ const sources = [
 ]
 
 export default function FPL2026Page() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: '2026 FPL Guidelines', url: 'https://healthinsurancerenew.com/fpl-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: '2026 Federal Poverty Level (FPL) Guidelines',
+    description: '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds.',
+    dateModified: '2026-03-19',
+    dataSourceName: 'HHS Federal Poverty Guidelines',
+    dataSourceUrl: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="fpl-guide" year={2026} data="HHS-FPL" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         2026 Federal Poverty Level (FPL) Guidelines
@@ -188,6 +214,8 @@ export default function FPL2026Page() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

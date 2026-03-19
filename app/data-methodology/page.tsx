@@ -1,12 +1,23 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SchemaScript from '../../components/SchemaScript'
+import { buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Data & Methodology | HealthInsuranceRenew',
+  title: 'Data Methodology — How We Process CMS Public Use Files | HealthInsuranceRenew',
   description:
     'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
   alternates: { canonical: 'https://healthinsurancerenew.com/data-methodology' },
+  openGraph: {
+    title: 'Data Methodology — How We Process CMS Public Use Files',
+    description: 'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
+    url: 'https://healthinsurancerenew.com/data-methodology',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -102,12 +113,22 @@ const dataSchemaIds = [
 ]
 
 export default function DataMethodologyPage() {
+  const articleSchema = buildArticleSchema({
+    headline: 'Data Methodology — How We Process CMS Public Use Files',
+    description: 'Where our numbers come from. All data sourced from CMS Public Use Files.',
+    dateModified: '2026-03-19',
+    dataSourceName: 'CMS Marketplace Public Use Files',
+    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  })
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb-data" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       {datasetSchemas.map((schema, i) => (
         <SchemaScript key={dataSchemaIds[i]} schema={schema} id={dataSchemaIds[i]} />
       ))}
+      <LlmComment pageType="data-methodology" year={2026} data="CMS-PUF" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Data &amp; Methodology</h1>
 
@@ -250,6 +271,8 @@ export default function DataMethodologyPage() {
           . We take accuracy seriously and will correct any errors as quickly as possible.
         </p>
       </div>
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

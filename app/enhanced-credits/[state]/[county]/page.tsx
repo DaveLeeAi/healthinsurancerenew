@@ -12,6 +12,8 @@ import {
   buildFAQSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import type { FplScenarioDetail, AgeScenario } from '@/lib/types'
 import { generatePolicyScenarioContent } from '@/lib/content-templates'
@@ -66,6 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+// NOTE: No name/NPN on this page — generic byline only
 export default function EnhancedCreditsPage({ params }: Props) {
   const stateUpper = params.state.toUpperCase()
   const countyDisplay = getCountyName(params.county) ?? `County ${params.county}`
@@ -170,6 +173,16 @@ export default function EnhancedCreditsPage({ params }: Props) {
         <SchemaScript key={i} schema={schema} id={`policy-schema-${i}`} />
       ))}
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment
+        pageType="enhanced-credits-county"
+        state={stateUpper}
+        county={countyDisplay}
+        data="CMS-Rate-PUF-IRS-FPL"
+        extra={{
+          benchmark40: `$${scenario.benchmark_silver_premium_age40.toFixed(0)}`,
+          monthlyIncrease: `$${headline.monthly_increase_at_expiration.toFixed(0)}`,
+        }}
+      />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -577,6 +590,9 @@ export default function EnhancedCreditsPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        {/* ── Byline ── */}
+        <GenericByline dataSource="CMS Rate PUF & IRS FPL Tables" />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

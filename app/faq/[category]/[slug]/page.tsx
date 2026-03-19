@@ -1,9 +1,12 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadFrictionQA, getFrictionQABySlug, getFrictionQAByCategory } from '@/lib/data-loader'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import { buildFAQSchema, buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
 
@@ -125,6 +128,11 @@ export default function FAQDetailPage({ params }: Props) {
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment
+        pageType="faq-detail"
+        data="editorial"
+        extra={{ category: qa.category, slug: qa.id }}
+      />
 
       <main className="max-w-3xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -233,6 +241,8 @@ export default function FAQDetailPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Resources" variant="bottom" />
+
+        <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

@@ -1,16 +1,27 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import csrData from '../../data/config/csr-tiers.json'
 import fplData from '../../data/config/fpl-current.json'
 
 export const metadata: Metadata = {
-  title: 'What Is Cost-Sharing Reduction (CSR) in 2026? | HealthInsuranceRenew',
+  title: 'Cost-Sharing Reductions (CSR) Explained for 2026 | HealthInsuranceRenew',
   description:
     'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
   alternates: { canonical: 'https://healthinsurancerenew.com/csr-explained-2026' },
+  openGraph: {
+    title: 'Cost-Sharing Reductions (CSR) Explained for 2026',
+    description: 'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
+    url: 'https://healthinsurancerenew.com/csr-explained-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -72,8 +83,23 @@ const tierColors: Record<string, { bg: string; badge: string }> = {
 }
 
 export default function CSRExplainedPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'CSR Explained 2026', url: 'https://healthinsurancerenew.com/csr-explained-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Cost-Sharing Reductions (CSR) Explained for 2026',
+    description: 'Plain-English explanation of cost-sharing reductions (CSR) for 2026.',
+    dateModified: '2026-03-19',
+    dataSourceName: 'CMS Actuarial Value Standards',
+    dataSourceUrl: 'https://www.healthcare.gov/choose-a-plan/plans-categories/',
+  })
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="csr-guide" year={2026} data="CMS-CSR-tiers" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         What Is Cost-Sharing Reduction (CSR) in 2026?
@@ -238,6 +264,8 @@ export default function CSRExplainedPage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

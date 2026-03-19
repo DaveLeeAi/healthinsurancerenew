@@ -1,11 +1,26 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadRateVolatility } from '@/lib/data-loader'
 import allStatesData from '@/data/config/all-states.json'
+import { buildBreadcrumbSchema } from '@/lib/schema-markup'
+import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
+
+const SITE_URL = 'https://healthinsurancerenew.com'
 
 export const metadata: Metadata = {
-  title: 'Health Insurance Rate Volatility Tracker — 2026',
+  title: 'Health Insurance Premium Rate Trends by State (2026)',
   description: 'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
-  alternates: { canonical: 'https://healthinsurancerenew.com/rates' },
+  alternates: { canonical: `${SITE_URL}/rates` },
+  openGraph: {
+    type: 'website',
+    title: 'Health Insurance Premium Rate Trends by State (2026)',
+    description: 'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
+    url: `${SITE_URL}/rates`,
+    siteName: 'HealthInsuranceRenew',
+    locale: 'en_US',
+  },
 }
 
 interface StateEntry {
@@ -49,7 +64,16 @@ export default function RatesIndexPage() {
     .filter((s) => s.ownExchange && !ffmStateCodes.has(s.abbr))
     .sort((a, b) => a.name.localeCompare(b.name))
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: SITE_URL },
+    { name: 'Rate Trends', url: `${SITE_URL}/rates` },
+  ])
+
   return (
+    <>
+      <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="rates-index" year={2026} data="CMS-Rate-PUF" extra={{ counties: dataset.data.length, states: states.length }} />
+
     <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
       <div>
         <h1 className="text-3xl font-bold text-navy-900 mb-2">Health Insurance Rate Volatility</h1>
@@ -132,6 +156,9 @@ export default function RatesIndexPage() {
           </div>
         </section>
       )}
+
+      <GenericByline dataSource="CMS Rate PUF" planYear={2026} />
     </main>
+    </>
   )
 }

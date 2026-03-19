@@ -3,6 +3,8 @@ import { loadRateVolatility } from '@/lib/data-loader'
 import allStatesData from '@/data/config/all-states.json'
 import { stateCodeToSlug } from '@/lib/county-lookup'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 export const metadata: Metadata = {
   title: 'Compare Health Insurance Plans by State & County (2026) | HealthInsuranceRenew',
@@ -144,6 +146,7 @@ export default function PlansIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
+      <LlmComment pageType="plans-index" planCount={totalPlans} carrierCount={allCarriers.size} year={2026} />
 
       <Breadcrumbs items={breadcrumbs} />
 
@@ -310,6 +313,9 @@ export default function PlansIndexPage() {
           ))}
         </div>
       </section>
+
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="CMS QHP Landscape & Rate PUF" />
 
       {/* Source citation */}
       <footer className="text-xs text-slate-400 border-t border-slate-100 pt-4">

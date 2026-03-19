@@ -4,8 +4,14 @@ import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
 import FAQSection from '../../../components/FAQSection'
 import SourcesBox from '../../../components/SourcesBox'
+import SchemaScript from '../../../components/SchemaScript'
+import GenericByline from '../../../components/GenericByline'
+import LlmComment from '../../../components/LlmComment'
 import { getCollectionSlugs, getCollectionEntry } from '../../../lib/markdown'
 import type { StateFrontmatter } from '../../../lib/markdown'
+import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '../../../lib/schema-markup'
+
+// NOTE: No name/NPN on this page — generic byline only
 
 interface Props {
   params: { state: string }
@@ -19,10 +25,23 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const entry = await getCollectionEntry<StateFrontmatter>('states', params.state)
   if (!entry) return {}
+  const pageTitle = `${entry.frontmatter.title} | HealthInsuranceRenew`
   return {
-    title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
+    title: pageTitle,
     description: entry.frontmatter.description,
     alternates: { canonical: `https://healthinsurancerenew.com/states/${params.state}` },
+    openGraph: {
+      type: 'article',
+      title: pageTitle,
+      description: entry.frontmatter.description,
+      url: `https://healthinsurancerenew.com/states/${params.state}`,
+      siteName: 'HealthInsuranceRenew',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: entry.frontmatter.description,
+    },
   }
 }
 
@@ -40,8 +59,34 @@ export default async function StateDetailPage({ params }: Props) {
     { name: stateName, url: `/states/${slug}` },
   ]
 
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'States', url: 'https://healthinsurancerenew.com/states' },
+    { name: stateName, url: `https://healthinsurancerenew.com/states/${slug}` },
+  ])
+
+  const articleSchema = buildArticleSchema({
+    headline: title,
+    description,
+    dateModified: dateModified ?? new Date().toISOString().slice(0, 10),
+    dataSourceName: 'CMS Public Use Files',
+    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  })
+
+  const faqSchemaData = faqs && faqs.length > 0
+    ? buildFAQSchema(faqs)
+    : null
+
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={articleSchema} id="article-schema" />
+      {faqSchemaData && <SchemaScript schema={faqSchemaData} id="faq-schema" />}
+      <LlmComment
+        pageType="state-overview"
+        state={stateAbbr}
+        exchange={exchange}
+      />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         {title}
@@ -64,6 +109,11 @@ export default async function StateDetailPage({ params }: Props) {
       />
 
       {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
+
+      <GenericByline
+        dataSource="CMS Public Use Files"
+        planYear={2026}
+      />
 
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 my-8">
         <h2 className="text-lg font-semibold text-slate-800 mb-3">Related Resources</h2>

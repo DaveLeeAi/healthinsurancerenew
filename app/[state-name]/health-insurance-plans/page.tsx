@@ -20,6 +20,7 @@ import {
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
+import GenericByline from '@/components/GenericByline'
 import allStatesData from '@/data/config/all-states.json'
 import {
   stateSlugToCode,
@@ -1018,31 +1019,13 @@ export default function StatePlansPage({ params }: Props) {
 
         {/* ── E-E-A-T: Author Byline + Data Attribution ── */}
         {/* DO NOT add Dave Lee name or NPN here — name/NPN only on homepage + /circle-of-champions */}
-        <section className="border-t border-neutral-200 pt-6 space-y-4">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm shrink-0">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-sm font-semibold text-navy-800">
-                Reviewed by a licensed health insurance professional
-              </div>
-              <div className="text-xs text-neutral-500">
-                CMS-certified marketplace enrollment assistance &middot; Licensed in 20+ states
-              </div>
-            </div>
-          </div>
-          <div className="text-xs text-neutral-400 space-y-1">
-            <p>
-              <strong>Data source:</strong> CMS QHP Landscape Public Use File &middot; Plan Year {PLAN_YEAR}
-            </p>
-            <p>
-              <strong>Last reviewed:</strong> {new Date(BUILD_DATE).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </p>
-          </div>
-        </section>
+        <GenericByline
+          dataSource={isSbm
+            ? `${stateEntry.exchange} carrier Summary of Benefits and Coverage documents`
+            : 'CMS QHP Landscape Public Use File'}
+          planYear={PLAN_YEAR}
+          lastReviewed={new Date(BUILD_DATE).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        />
 
         {/* ── Editorial Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

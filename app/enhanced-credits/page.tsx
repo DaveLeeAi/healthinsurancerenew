@@ -1,7 +1,10 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadPolicyScenarios } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -98,6 +101,7 @@ export default function EnhancedCreditsIndexPage() {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
+      <LlmComment pageType="enhanced-credits-index" year={PLAN_YEAR} data="CMS-QHP-Rate-PUF+IRS-FPL" extra={{ counties: recordsWithHeadline.length, states: states.length }} />
 
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -256,6 +260,8 @@ export default function EnhancedCreditsIndexPage() {
             ))}
           </div>
         </section>
+
+        <GenericByline dataSource="CMS QHP Rate PUF + IRS FPL Tables" planYear={PLAN_YEAR} />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

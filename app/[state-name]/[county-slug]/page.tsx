@@ -15,6 +15,9 @@ import {
 import SchemaScript from '@/components/SchemaScript'
 import PlanComparisonTable from '@/components/PlanComparisonTable'
 import EntityLinkCard from '@/components/EntityLinkCard'
+import PageFaq from '@/components/PageFaq'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import { generatePlanComparisonContent } from '@/lib/content-templates'
 import {
   stateSlugToCode,
@@ -108,6 +111,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+// NOTE: No name/NPN on this page — generic byline only
 export default function CountyPlansPage({ params }: Props) {
   const stateCode = stateSlugToCode(params['state-name'])
   if (!stateCode) notFound()
@@ -199,6 +203,7 @@ export default function CountyPlansPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={productSchema} id="product-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <LlmComment pageType="county" state={stateCode} county={countyDisplay} planCount={planCount} carrierCount={carrierCount} exchange="FFM" />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
 
@@ -347,6 +352,65 @@ export default function CountyPlansPage({ params }: Props) {
           <section className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }} />
         )}
 
+        {/* ── At a Glance card ── */}
+        {planCount > 0 && (
+          <section className="rounded-xl border border-primary-200 bg-primary-50/50 p-5">
+            <h2 className="text-sm font-bold text-navy-800 uppercase tracking-wide mb-3">
+              {countyDisplay}, {stateName}: At a Glance ({PLAN_YEAR})
+            </h2>
+            <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 text-sm">
+              <div>
+                <dt className="text-neutral-500">Plans Available</dt>
+                <dd className="font-semibold text-navy-800">{planCount}</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">Carriers</dt>
+                <dd className="font-semibold text-navy-800">{carrierCount}</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">Avg Premium (Age 40)</dt>
+                <dd className="font-semibold text-navy-800">
+                  {premiums40.length > 0
+                    ? `$${Math.round(premiums40.reduce((a, b) => a + b, 0) / premiums40.length)}/mo`
+                    : '—'}
+                </dd>
+              </div>
+              {minPremium != null && (
+                <div>
+                  <dt className="text-neutral-500">Lowest Premium</dt>
+                  <dd className="font-semibold text-navy-800">${minPremium.toFixed(0)}/mo</dd>
+                </div>
+              )}
+              {maxPremium != null && (
+                <div>
+                  <dt className="text-neutral-500">Highest Premium</dt>
+                  <dd className="font-semibold text-navy-800">${maxPremium.toFixed(0)}/mo</dd>
+                </div>
+              )}
+              {subsidy && (
+                <div>
+                  <dt className="text-neutral-500">Benchmark Silver</dt>
+                  <dd className="font-semibold text-navy-800">
+                    ${subsidy.benchmark_silver_premium.toFixed(0)}/mo
+                  </dd>
+                </div>
+              )}
+              <div>
+                <dt className="text-neutral-500">Exchange</dt>
+                <dd className="font-semibold text-navy-800">FFM (HealthCare.gov)</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">OEP</dt>
+                <dd className="font-semibold text-navy-800">Nov 1 – Jan 15</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">Plan Year</dt>
+                <dd className="font-semibold text-navy-800">{PLAN_YEAR}</dd>
+              </div>
+            </dl>
+          </section>
+        )}
+
         {/* ── Drug coverage quick-links ── */}
         <DrugCoveragePills
           countyDisplay={countyDisplay}
@@ -355,8 +419,28 @@ export default function CountyPlansPage({ params }: Props) {
           stateCode={stateCode}
         />
 
+        {/* ── FAQ section ── */}
+        <PageFaq
+          faqs={buildCountyFaqs({
+            countyDisplay,
+            stateName,
+            stateCode,
+            planCount,
+            carrierCount,
+            minPremium,
+            maxPremium,
+            premiums40,
+            subsidy,
+            plans,
+          })}
+          sectionTitle={`${countyDisplay} Health Insurance: Frequently Asked Questions`}
+        />
+
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
+
+        {/* ── E-E-A-T byline ── */}
+        <GenericByline />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
@@ -480,4 +564,97 @@ function StatCard({
       {note && <div className="text-xs text-neutral-400 mt-0.5">{note}</div>}
     </div>
   )
+}
+
+// ---------------------------------------------------------------------------
+// FAQ builder — generates 5 county-specific FAQ items from plan data
+// ---------------------------------------------------------------------------
+
+function buildCountyFaqs({
+  countyDisplay,
+  stateName,
+  stateCode,
+  planCount,
+  carrierCount,
+  minPremium,
+  maxPremium,
+  premiums40,
+  subsidy,
+  plans,
+}: {
+  countyDisplay: string
+  stateName: string
+  stateCode: string
+  planCount: number
+  carrierCount: number
+  minPremium: number | null
+  maxPremium: number | null
+  premiums40: number[]
+  subsidy: ReturnType<typeof getSubsidyByCounty>
+  plans: ReturnType<typeof getPlansByCounty>
+}): Array<{ question: string; answer: string }> {
+  const avgPremium =
+    premiums40.length > 0
+      ? Math.round(premiums40.reduce((a, b) => a + b, 0) / premiums40.length)
+      : null
+
+  const carriers = [...new Set(plans.map((p) => p.issuer_name))].sort()
+  const carrierList =
+    carriers.length <= 3
+      ? carriers.join(', ')
+      : `${carriers.slice(0, 3).join(', ')}, and ${carriers.length - 3} more`
+
+  const cheapestPlan = minPremium != null
+    ? plans.find((p) => p.premiums?.age_40 === minPremium)
+    : null
+
+  const medianSubsidy = subsidy?.subsidy_estimates?.fpl_250
+
+  return [
+    {
+      question: `How many health insurance plans are available in ${countyDisplay}, ${stateName}?`,
+      answer:
+        `There are ${planCount} Marketplace (Obamacare) health insurance plans available in ${countyDisplay} for the ${PLAN_YEAR} plan year, offered by ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}. ` +
+        `Plans span all metal levels including Bronze, Silver, Gold, and Platinum. You can compare them on HealthCare.gov during Open Enrollment (November 1 – January 15). Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`,
+    },
+    {
+      question: `What is the cheapest health insurance plan in ${countyDisplay}?`,
+      answer:
+        minPremium != null
+          ? `The lowest-cost plan in ${countyDisplay} starts at $${minPremium.toFixed(0)}/month for a 40-year-old before subsidies` +
+            (cheapestPlan ? ` (${cheapestPlan.plan_name} from ${cheapestPlan.issuer_name})` : '') +
+            `. If you qualify for a premium tax credit (APTC), your net cost could be significantly lower. ` +
+            `Consult a licensed agent to find the plan that best fits your budget and health needs.`
+          : `Premium data for ${countyDisplay} is currently unavailable. Contact a licensed health insurance agent for current plan pricing in your area.`,
+    },
+    {
+      question: `How much does health insurance cost in ${countyDisplay}?`,
+      answer:
+        avgPremium != null && minPremium != null && maxPremium != null
+          ? `For a 40-year-old in ${countyDisplay}, ${stateName}, monthly premiums range from $${minPremium.toFixed(0)} to $${maxPremium.toFixed(0)} before subsidies, ` +
+            `with an average of $${avgPremium}/month across all ${planCount} plans. ` +
+            (medianSubsidy
+              ? `At 250% FPL, the estimated monthly subsidy (APTC) is $${medianSubsidy.monthly_aptc.toFixed(0)}, which can dramatically reduce your out-of-pocket premium. `
+              : '') +
+            `Actual costs depend on age, income, household size, tobacco use, and the plan you select. Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`
+          : `Premium information for ${countyDisplay} is not yet available for ${PLAN_YEAR}. Check back during Open Enrollment or contact a licensed agent.`,
+    },
+    {
+      question: `What insurance carriers offer plans in ${countyDisplay}?`,
+      answer:
+        `${carrierCount} carrier${carrierCount !== 1 ? 's offer' : ' offers'} Marketplace plans in ${countyDisplay} for ${PLAN_YEAR}: ${carrierList}. ` +
+        `Carrier availability can vary year to year. Each carrier offers plans at multiple metal levels with different premium, deductible, and network configurations. ` +
+        `Compare all available plans to find the best combination of cost and coverage for your needs.`,
+    },
+    {
+      question: `How do I get subsidized health insurance in ${countyDisplay}, ${stateName}?`,
+      answer:
+        `Most ${countyDisplay} residents with household income between 100% and 400% of the Federal Poverty Level (FPL) qualify for Advance Premium Tax Credits (APTC) that lower monthly premiums. ` +
+        (medianSubsidy
+          ? `For example, a household at 250% FPL (~$${medianSubsidy.annual_income.toLocaleString()}/year) may receive about $${medianSubsidy.monthly_aptc.toFixed(0)}/month in subsidies. `
+          : '') +
+        `Under the Inflation Reduction Act's enhanced credits (through ${PLAN_YEAR}), no one pays more than 8.5% of income toward a benchmark Silver plan. ` +
+        `Apply through HealthCare.gov during Open Enrollment or a qualifying Special Enrollment Period. A licensed agent can help you maximize your subsidy.`,
+    },
+  ]
 }

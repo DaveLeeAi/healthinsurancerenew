@@ -1,11 +1,21 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | HealthInsuranceRenew',
   description:
     'Privacy policy for HealthInsuranceRenew. Learn what information is collected, how it is used, and how your privacy is protected.',
   alternates: { canonical: 'https://healthinsurancerenew.com/privacy' },
+  openGraph: {
+    title: 'Privacy Policy | HealthInsuranceRenew',
+    description:
+      'Privacy policy for HealthInsuranceRenew. Learn what information is collected, how it is used, and how your privacy is protected.',
+    url: 'https://healthinsurancerenew.com/privacy',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -13,9 +23,18 @@ const breadcrumbs = [
   { name: 'Privacy Policy', url: '/privacy' },
 ]
 
+// NOTE: No name/NPN on this page — generic byline only (legal page, no byline needed)
+
 export default function PrivacyPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <LlmComment pageType="privacy" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Privacy Policy</h1>
 
@@ -45,7 +64,7 @@ export default function PrivacyPage() {
           Cookies and similar technologies are used for site functionality and analytics.
         </h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          This site may use cookies, which are small text files stored on a visitor's device. Cookies help the site
+          This site may use cookies, which are small text files stored on a visitor&apos;s device. Cookies help the site
           function properly, remember visitor preferences, and gather aggregate analytics data. Third-party analytics
           services may also place cookies to help understand how the site is used. Most web browsers allow visitors to
           control or disable cookies through their settings. Disabling cookies may limit some site functionality.
@@ -79,8 +98,8 @@ export default function PrivacyPage() {
           <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
             contact page
           </a>
-          . This policy may be updated periodically to reflect changes in practices or legal requirements. The "last
-          updated" date at the top of this page indicates when the most recent revision was made.
+          . This policy may be updated periodically to reflect changes in practices or legal requirements. The &ldquo;last
+          updated&rdquo; date at the top of this page indicates when the most recent revision was made.
         </p>
       </div>
     </div>

@@ -1,12 +1,23 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
+import { buildBreadcrumbSchema } from '../../lib/schema-markup'
 import config from '../../data/config/config.json'
 
 export const metadata: Metadata = {
-  title: 'About Us | HealthInsuranceRenew',
+  title: 'About HealthInsuranceRenew',
   description:
-    `Learn about HealthInsuranceRenew, an educational health insurance resource operated by a licensed health insurance agent (NPN: ${config.operator.npn}) serving clients in ${config.licensedStates.length} states.`,
+    `Learn about HealthInsuranceRenew, an educational health insurance resource operated by licensed health insurance professionals serving clients in ${config.licensedStates.length} states.`,
   alternates: { canonical: 'https://healthinsurancerenew.com/about' },
+  openGraph: {
+    title: 'About HealthInsuranceRenew',
+    description:
+      `Learn about HealthInsuranceRenew, an educational health insurance resource operated by licensed health insurance professionals serving clients in ${config.licensedStates.length} states.`,
+    url: 'https://healthinsurancerenew.com/about',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -14,9 +25,18 @@ const breadcrumbs = [
   { name: 'About', url: '/about' },
 ]
 
+// NOTE: No name/NPN on this page — generic byline only
+
 export default function AboutPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <LlmComment pageType="about" year={2026} data="editorial" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">About HealthInsuranceRenew</h1>
 
@@ -65,32 +85,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 mt-10">
-        <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-primary-100 text-[#0B1F3B] flex items-center justify-center shrink-0">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900">Licensed Health Insurance Agent</h3>
-            <p className="text-sm text-primary-600 mb-2">Site Operator</p>
-            <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
-              This site is operated by a licensed health insurance agent (NPN: {config.operator.npn}) serving clients in multiple
-              U.S. states. HealthInsuranceRenew was built to provide clear, educational information about marketplace
-              health coverage options.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              <span className="text-slate-500">NPN: {config.operator.npn}</span>
-              <span className="text-slate-300">|</span>
-              <span className="text-slate-500">
-                Licensed in {config.licensedStates.length} states:{' '}
-                {config.licensedStates.map((s) => s.abbr).join(', ')}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 
       <div className="bg-white border border-slate-200 rounded-2xl p-6 mt-6">
         <div className="flex items-start gap-4">

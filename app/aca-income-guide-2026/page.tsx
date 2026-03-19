@@ -1,17 +1,28 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
 import FAQSection from '../../components/FAQSection'
+import GenericByline from '../../components/GenericByline'
+import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
+import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 import csrData from '../../data/config/csr-tiers.json'
 import contributionData from '../../data/config/contribution-scale.json'
 
 export const metadata: Metadata = {
-  title: 'Health Insurance Savings by Income Level: 2026 Guide | HealthInsuranceRenew',
+  title: 'Health Insurance Savings by Income Level (2026) | HealthInsuranceRenew',
   description:
     'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
   alternates: { canonical: 'https://healthinsurancerenew.com/aca-income-guide-2026' },
+  openGraph: {
+    title: 'Health Insurance Savings by Income Level (2026)',
+    description: 'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
+    url: 'https://healthinsurancerenew.com/aca-income-guide-2026',
+    type: 'article',
+    siteName: 'HealthInsuranceRenew',
+  },
 }
 
 const breadcrumbs = [
@@ -61,8 +72,23 @@ const sources = [
 ]
 
 export default function ACAIncomeGuidePage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: 'Home', url: 'https://healthinsurancerenew.com' },
+    { name: 'Health Insurance Savings by Income', url: 'https://healthinsurancerenew.com/aca-income-guide-2026' },
+  ])
+  const articleSchema = buildArticleSchema({
+    headline: 'Health Insurance Savings by Income Level (2026)',
+    description: 'Understand what health insurance savings you qualify for at every income level.',
+    dateModified: '2026-03-19',
+    dataSourceName: 'IRS Premium Tax Credit & CMS CSR Data',
+    dataSourceUrl: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit',
+  })
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <LlmComment pageType="income-guide" year={2026} data="IRS-CMS" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Health Insurance Savings by Income Level: 2026 Guide
@@ -225,6 +251,8 @@ export default function ACAIncomeGuidePage() {
 
       <FAQSection faqs={faqs} />
       <SourcesBox sources={sources} />
+      {/* NOTE: No name/NPN on this page — generic byline only */}
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
     </div>
   )
 }

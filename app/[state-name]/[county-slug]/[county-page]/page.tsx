@@ -1,3 +1,4 @@
+// NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -35,6 +36,8 @@ import {
   buildFinancialProductSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
+import GenericByline from '@/components/GenericByline'
+import LlmComment from '@/components/LlmComment'
 import DrugPageCta from '@/components/DrugPageCta'
 import SBCGrid from '@/components/SBCGrid'
 import { parsePlanSlug, generatePlanSlug } from '@/lib/plan-slug'
@@ -338,6 +341,7 @@ async function CountyPlanDetailPage({ params }: Props) {
       {sbcSchemas.map((schema, i) => (
         <SchemaScript key={i} schema={schema} id={`schema-sbc-${i}`} />
       ))}
+      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="CMS-Plan-Attributes-PUF" extra={{ plan: plan.plan_name, metal: plan.metal_level, issuer: plan.issuer_name }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10">
 
@@ -596,6 +600,8 @@ async function CountyPlanDetailPage({ params }: Props) {
           countyPlans={countyPlans}
         />
 
+        <GenericByline dataSource="CMS Plan Attributes & Benefits Cost Sharing PUF" planYear={PLAN_YEAR} />
+
       </main>
     </>
   )
@@ -693,6 +699,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
+      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="CMS-MR-Formulary-PUF" extra={{ drug: drugName, carriers: carrierCount }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -899,6 +906,8 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
         )}
 
         <DrugPageCta variant="bottom" drugName={drugName} stateCode={stateCode} stateName={stateName} />
+
+        <GenericByline dataSource="CMS Machine-Readable Formulary PUF" planYear={PLAN_YEAR} />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
