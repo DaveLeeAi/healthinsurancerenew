@@ -1,6 +1,6 @@
 # HealthInsuranceRenew — ACA Intelligence Platform
 
-A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA health insurance data across all US states and counties. Built from CMS Public Use Files (PUFs) with zero manual content entry.
+A Next.js 14 programmatic SEO site powering 12,000+ pages of structured ACA health insurance data across all US states and counties, with additional routes rendered on-demand via SSR. Built from CMS Public Use Files (PUFs) with zero manual content entry.
 
 **Operator:** Licensed health insurance agent — CMS Elite Circle of Champions recognition. See `data/config/config.json` for operator details.
 
