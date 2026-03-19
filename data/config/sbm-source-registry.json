@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-19 (sweep #3 — HIOS ID corrections from Centene TiC plan IDs)",
+  "last_updated": "2026-03-19 (sweep #4 — 2025 SBM PUF issuer discovery)",
   "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "states": {
     "CA": {
@@ -74,6 +74,41 @@
           "index_url": "",
           "status": "url_unknown",
           "notes": "HIOS ID 51396. No discoverable MR endpoint. Covered California does not publish MR URLs."
+        },
+        {
+          "issuer_id": "20523",
+          "issuer_name": "Oscar Health Plan of California",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 20523. CA statewide HMO. Oscar entered Covered California market. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "27603",
+          "issuer_name": "Chinese Community Health Plan (CA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 27603. Bay Area EPO/HMO. Pathway EPO network. Serves Alameda, Contra Costa, and broader Bay Area/Central CA counties. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "47579",
+          "issuer_name": "Unknown CA issuer (SF + San Mateo counties only)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 47579. Serves San Francisco and San Mateo counties only. Generic HMO plans with 'Medical Network'. Possibly Sutter Health Plus or San Francisco Health Plan. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "84014",
+          "issuer_name": "Valley Health Plan (CA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 84014. Santa Clara County only. Narrow-network HMO. Valley Health Plan is the Santa Clara County employee/individual health plan on Covered California. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "93689",
+          "issuer_name": "Western Health Advantage (CA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 93689. Sacramento/Northern CA regional HMO. WHA Network. Serves El Dorado, Marin, Napa, Placer, Sacramento, Solano, Sonoma, Yolo counties. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -126,6 +161,104 @@
           "index_url": "https://apps.hf.org/applications/dn/cms_json/files/tic/index.json",
           "status": "url_dead",
           "notes": "Index.json is LIVE but is TIC pricing MRF for Health First FLORIDA (plan IDs 36194FL*), not Healthfirst NY. drugs.json also contains FL-only data. No NY formulary data. Re-verified 2026-03-19."
+        },
+        {
+          "issuer_id": "11177",
+          "issuer_name": "MetroPlus Health Plan (NY)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 11177. NYC HMO. MetroPlus-MP network. Affiliated with NYC Health+Hospitals. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "18029",
+          "issuer_name": "Independent Health (NY)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 18029. Western NY. IHC Marketplace network. Buffalo/Western NY regional plan. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "40064",
+          "issuer_name": "HealthNow New York / BlueCross BlueShield of WNY",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 40064. Western NY. Blue Marketplace network. myBlue Access EX plan branding. BlueCross BlueShield of Western New York. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "41046",
+          "issuer_name": "Anthem Health Plans of New York (Elevance Health)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 41046. NY statewide. Individual Network. Anthem Gatekeeper HMO product. Elevance Health (formerly Anthem) NY medical entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "44113",
+          "issuer_name": "Anthem Insurance Companies Inc. (NY) — medical/dental",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 44113. NY statewide. Prime Network. Anthem NY secondary entity with Bronze/Gold/Platinum/Silver metal levels — medical QHP presence confirmed. Dental-bundled medical plans. Elevance Health subsidiary. Identified from 2025 SBM Plan-PUF."
+        },
+        {
+          "issuer_id": "54235",
+          "issuer_name": "UnitedHealthcare of New York",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 54235. NY statewide. UHC Compass network. UHC Compass Bronze/Gold/Silver plan names. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "56184",
+          "issuer_name": "MVP Health Care (NY) — HMO",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 56184. Upstate/statewide NY. NY Small Group HMO network. MVP HMO Bronze plan names. Note: separate HIOS from MVP EPO entity 89846. Identified from 2025 SBM Plan-PUF."
+        },
+        {
+          "issuer_id": "74289",
+          "issuer_name": "Unknown NY issuer (Circle network)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 74289. NY statewide. Circle / Wellness Rewards network. Bronze Classic plan names. Possibly Molina Healthcare of New York or Cigna NY. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "78124",
+          "issuer_name": "Excellus BlueCross BlueShield (NY)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 78124. Rochester/Central NY. Excellus BCBS EPO network — confirmed in plan names. Serves Rochester, Syracuse, CNY, Utica, Bassett healthcare region. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "85629",
+          "issuer_name": "Oscar Health Plan of New York",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 85629. NYC metro area. FRDM EPO network (FRDM NG plan branding = Oscar Freedom EPO). Oscar Health NY EPO product. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "88582",
+          "issuer_name": "EmblemHealth (NY)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 88582. NYC area. EmblemHealth Millennium Individual / Select Care Individual networks. EmblemHealth (merger of GHI and HIP of Greater NY). Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "89846",
+          "issuer_name": "MVP Health Care (NY) — EPO",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 89846. Upstate/statewide NY. NY Small Group EPO network. MVP EPO Bronze plan names. Separate HIOS from HMO entity 56184. Identified from 2025 SBM Plan-PUF."
+        },
+        {
+          "issuer_id": "92551",
+          "issuer_name": "CDPHP Universal Benefits Inc. (NY)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 92551. Capital District NY. UBI National Network. EPO Copay First plan names. CDPHP Universal Benefits Inc. — subsidiary of CDPHP. Identified from 2025 SBM Plan-PUF."
+        },
+        {
+          "issuer_id": "94788",
+          "issuer_name": "Capital District Physicians' Health Plan (CDPHP)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 94788. Capital District NY. CDPHP HMO network. HDHMO plan names. Primary CDPHP entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -474,25 +607,42 @@
       "exchange_url": "https://www.mnsure.org",
       "issuers": [
         {
-          "issuer_id": "00000",
+          "issuer_id": "79888",
           "issuer_name": "HealthPartners (MN)",
           "index_url": "https://www.healthpartners.com/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
-          "issuer_name": "Medica (MN)",
+          "issuer_id": "31616",
+          "issuer_name": "Medica Health Plans (MN)",
           "index_url": "https://www.medica.com/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "403 on 2026-03-17. Not in MR-PUF."
+          "notes": "403 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
+          "issuer_id": "85736",
           "issuer_name": "UCare (MN)",
           "index_url": "https://www.ucare.org/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "57129",
+          "issuer_name": "BlueCross BlueShield of Minnesota (Blue Plus)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 57129. MN statewide. Blue Plus Minnesota Value/Metro/SE networks. Blue Plus Easy Compare Bronze plan names. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "70373",
+          "issuer_name": "Quartz (MN)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 70373. MN statewide. Select-MN network. QUARTZ EASY COMPARE BRONZE plan names. Wisconsin/Minnesota regional health plan. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
         }
       ]
     },
@@ -528,18 +678,20 @@
       "exchange_url": "https://healthsourceri.com",
       "issuers": [
         {
-          "issuer_id": "00000",
-          "issuer_name": "BCBS Rhode Island",
+          "issuer_id": "15287",
+          "issuer_name": "BlueCross BlueShield of Rhode Island",
           "index_url": "https://www.bcbsri.com/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
-          "issuer_name": "Neighborhood Health Plan of RI",
+          "issuer_id": "77514",
+          "issuer_name": "Neighborhood Health Plan of Rhode Island",
           "index_url": "https://www.nhpri.org/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         }
       ]
     },
@@ -548,18 +700,20 @@
       "exchange_url": "https://portal.healthconnect.vermont.gov",
       "issuers": [
         {
-          "issuer_id": "00000",
-          "issuer_name": "BCBS Vermont",
+          "issuer_id": "13627",
+          "issuer_name": "Blue Cross Blue Shield of Vermont",
           "index_url": "https://www.bluecrossvt.org/machine-readable-file/index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00000",
+          "issuer_id": "77566",
           "issuer_name": "MVP Health Care (VT)",
           "index_url": "https://www.mvphealthcare.com/cms-data-index.json",
           "status": "url_dead",
-          "notes": "404 on 2026-03-17. MVP uses HealthSparq portal for MRFs, not direct JSON. Not in MR-PUF."
+          "notes": "404 on 2026-03-17. MVP uses HealthSparq portal for MRFs, not direct JSON. Not in MR-PUF.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         }
       ]
     },
@@ -570,11 +724,12 @@
       "centene_notes": "Centene only has Wellcare Medicare PDP in MA — not a Marketplace/QHP product. MA cannot be fetched via Centene API. Requires local VPN fetch for BCBS MA / Harvard Pilgrim / Tufts.",
       "issuers": [
         {
-          "issuer_id": "00028",
-          "issuer_name": "Blue Cross Blue Shield of MA",
+          "issuer_id": "42690",
+          "issuer_name": "Blue Cross Blue Shield of Massachusetts",
           "index_url": "https://transparency-in-coverage.bluecrossma.com/2026-03-01_index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 00028. URL updated 2026-03-19 — returns 404 Not Found. BCBS MA TiC transparency path does not exist."
+          "notes": "HIOS ID 00028. URL updated 2026-03-19 — returns 404 Not Found. BCBS MA TiC transparency path does not exist.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00028 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
           "issuer_id": "00543",
@@ -584,18 +739,55 @@
           "notes": "403 Forbidden. All KP content/dam paths blocked. Tested 2026-03-17."
         },
         {
-          "issuer_id": "77432",
-          "issuer_name": "Harvard Pilgrim (Point32Health)",
+          "issuer_id": "36046",
+          "issuer_name": "Harvard Pilgrim Health Care (Point32Health)",
           "index_url": "https://www.point32health.org/machine-readable-files/hphc/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 77432. URL updated 2026-03-19 — returns 404 Not Found. Point32Health HPHC MR path does not exist."
+          "notes": "HIOS ID 77432. URL updated 2026-03-19 — returns 404 Not Found. Point32Health HPHC MR path does not exist.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 77432 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
-          "issuer_id": "00095",
+          "issuer_id": "59763",
           "issuer_name": "Tufts Health Plan (Point32Health)",
           "index_url": "https://www.point32health.org/machine-readable-files/tufts/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 00095. URL updated 2026-03-19 — returns 404 Not Found. Point32Health Tufts MR path does not exist."
+          "notes": "HIOS ID 00095. URL updated 2026-03-19 — returns 404 Not Found. Point32Health Tufts MR path does not exist.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00095 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+        },
+        {
+          "issuer_id": "31779",
+          "issuer_name": "UnitedHealthcare of New England (MA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 31779. MA statewide. UHC Navigate network. UHC Navigate Gold/Bronze plan names. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "34484",
+          "issuer_name": "Health New England (MA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 34484. Western MA. HNE Commercial Network. HNE Thrive Bronze/Gold plan names. Springfield MA-based HMO. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "41304",
+          "issuer_name": "Fallon Health (MA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 41304. Central/Western MA. Complete HMO/PPO networks. Complete HMO 1000 plan names. Worcester MA-based HMO. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "82569",
+          "issuer_name": "WellSense Health Plan (MA)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 82569. MA statewide. WellSense Clarity Network. WellSense Clarity Gold/Bronze plan names. Formerly BMC HealthNet Plan, rebranded WellSense. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "88806",
+          "issuer_name": "Unknown MA issuer (Community Care Connector)",
+          "index_url": "",
+          "status": "url_unknown",
+          "notes": "HIOS 88806. MA statewide. Community Care network. Community Care Connector Low Gold/High Bronze plan names. Possibly AllWays Health Partners (formerly Neighborhood Health Plan / MGB) or Fallon TPA entity. Identified from 2025 SBM Plan-PUF."
         }
       ]
     },
