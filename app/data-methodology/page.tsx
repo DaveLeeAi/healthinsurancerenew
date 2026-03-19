@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Data & Methodology | HealthInsuranceRenew',
   description:
     'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/data-methodology' },
 }
 
 const breadcrumbs = [
@@ -227,16 +228,11 @@ export default function DataMethodologyPage() {
           understand your rough situation before applying.
         </p>
         <p className="text-slate-700 leading-relaxed mb-4">
-          For accurate premium quotes and subsidy amounts, visit{' '}
-          <a
-            href="https://www.healthcare.gov/"
-            className="text-primary-600 hover:text-primary-700 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Healthcare.gov
+          For accurate premium quotes and subsidy amounts based on your exact situation,{' '}
+          <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+            contact a licensed agent
           </a>{' '}
-          or your state marketplace, where you can see real plan prices based on your exact information.
+          who can pull real plan prices for your county and income level at no cost to you.
         </p>
 
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">How we keep data current</h2>

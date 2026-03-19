@@ -442,7 +442,7 @@ export default async function FormularyDrugPage({ params }: Props) {
       stateName={stateName!}
       isSBMState={isSBMState}
       exchangeName={stateConfig?.exchange ?? `${stateName} Marketplace`}
-      exchangeUrl={stateConfig?.exchangeUrl ?? 'https://www.healthcare.gov'}
+      exchangeUrl={stateConfig?.exchangeUrl ?? '/contact'}
       allResults={allResults}
     />
   }
@@ -1414,15 +1414,8 @@ export default async function FormularyDrugPage({ params }: Props) {
               <span className="text-neutral-500"> — Standardized drug coverage data submitted by all ACA-certified plans. The primary source for all tier, PA, step therapy, and quantity limit data on this page.</span>
             </li>
             <li>
-              <a
-                href="https://www.healthcare.gov/glossary/formulary/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-600 hover:underline font-medium"
-              >
-                Healthcare.gov — Formulary Guide
-              </a>
-              <span className="text-neutral-500"> — Official federal guidance on how formularies work in ACA Marketplace plans.</span>
+              <span className="font-medium text-neutral-700">CMS — ACA Formulary Requirements</span>
+              <span className="text-neutral-500"> — Federal guidance on how formularies work in ACA Marketplace plans. Source: CMS.gov regulatory guidance.</span>
             </li>
             <li>
               <a

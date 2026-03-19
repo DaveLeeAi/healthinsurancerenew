@@ -108,7 +108,7 @@ export default function PlansIndexPage() {
           <h2 className="text-xl font-semibold text-navy-800 mb-1">Plan Data Coming Soon</h2>
           <p className="text-neutral-500 text-sm mb-4">
             These states use the federal marketplace but county-level plan data has not been loaded yet.
-            You can still check subsidy eligibility, browse drug coverage, or compare plans on healthcare.gov.
+            You can still check subsidy eligibility and browse drug coverage using the tools on this site. A licensed agent can help you compare plans at no cost.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
             {ffmNoDataStates.map((s) => (

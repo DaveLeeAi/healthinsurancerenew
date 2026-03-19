@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Health Insurance Glossary | Plain-English Terms | HealthInsuranceRenew',
   description:
     'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/glossary' },
 }
 
 const breadcrumbs = [
@@ -121,14 +122,9 @@ export default function GlossaryPage() {
       <div className="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 mt-10">
         <p className="text-sm text-slate-600 leading-relaxed">
           <strong className="text-slate-700">Note:</strong> These definitions are simplified for general
-          understanding. For official definitions and current rules, visit{' '}
-          <a
-            href="https://www.healthcare.gov/glossary/"
-            className="text-primary-600 hover:text-primary-700 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Healthcare.gov&apos;s glossary
+          understanding. For questions about your specific plan or coverage situation,{' '}
+          <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+            contact a licensed agent
           </a>
           .
         </p>
