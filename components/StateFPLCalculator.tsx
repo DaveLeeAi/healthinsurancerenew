@@ -261,17 +261,11 @@ export default function StateFPLCalculator({
 
           {/* Disclaimer with inline exchange link */}
           <p className="text-xs text-slate-400 text-center mt-3">
-            This is a national average estimate. For exact premiums in{' '}
-            {stateName}, visit{' '}
-            <a
-              href={exchangeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-slate-600"
-            >
-              {exchangeName}
+            This is a national average estimate. For exact premiums in {stateName},{' '}
+            <a href="/contact" className="underline hover:text-slate-600">
+              contact a licensed agent
             </a>
-            {' '}when you&apos;re ready to enroll.
+            {' '}who can enroll you at no cost.
           </p>
         </div>
       )}

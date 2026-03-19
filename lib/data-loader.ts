@@ -278,7 +278,7 @@ function getIssuerStateMap(): Map<string, Set<string>> {
   }
 
   // 2. SBM states from per-state formulary files (formulary_sbm_NJ.json, etc.)
-  const sbmStates = ['NJ', 'PA', 'WA', 'IL', 'KY', 'NV', 'OR', 'ID', 'GA', 'VA', 'ME']
+  const sbmStates = ['NJ', 'PA', 'WA', 'IL', 'KY', 'NV', 'OR', 'ID', 'GA', 'VA', 'ME', 'CA', 'CO', 'CT', 'DC', 'MD', 'NM']
   for (const state of sbmStates) {
     const sbmPath = path.join(DATA_DIR, `formulary_sbm_${state}.json`)
     if (!fs.existsSync(sbmPath)) continue
@@ -679,4 +679,52 @@ export function getAllPlanStateCountyCombos(): { state: string; county: string }
     }
   }
   return result
+}
+
+// ---------------------------------------------------------------------------
+// SBM SBC data — per-state files parsed from carrier PDFs
+// ---------------------------------------------------------------------------
+
+export interface SbmSbcRecord {
+  plan_variant_id: string
+  state_code: string
+  issuer_id: string
+  issuer_name: string
+  plan_year: number
+  metal_level: string
+  csr_variation: string
+  network_type: string
+  plan_name_from_sbc: string
+  plan_id: string
+  deductible_individual: number | string | null
+  deductible_family: number | string | null
+  oop_max_individual: number | string | null
+  oop_max_family: number | string | null
+}
+
+const sbmSbcCache = new Map<string, SbmSbcRecord[]>()
+
+/**
+ * Load SBC plan records for a specific SBM state from sbc_sbm_XX.json.
+ * Returns an empty array if the file doesn't exist.
+ */
+export function loadSbmSbcData(stateCode: string): SbmSbcRecord[] {
+  const code = stateCode.toUpperCase()
+  if (sbmSbcCache.has(code)) return sbmSbcCache.get(code)!
+  const filePath = path.join(DATA_DIR, `sbc_sbm_${code}.json`)
+  if (!fs.existsSync(filePath)) {
+    sbmSbcCache.set(code, [])
+    return []
+  }
+  try {
+    const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as {
+      data?: SbmSbcRecord[]
+    }
+    const records = raw.data ?? []
+    sbmSbcCache.set(code, records)
+    return records
+  } catch {
+    sbmSbcCache.set(code, [])
+    return []
+  }
 }

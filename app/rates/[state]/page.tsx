@@ -169,20 +169,12 @@ export default function RatesStatePage({ params }: Props) {
                 </a>
               </div>
 
-              {/* External demoted */}
-              {stateEntry.exchangeUrl && (
-                <p className="text-sm text-slate-500 mt-4">
-                  For current rate filings in {stateName},{' '}
-                  <a
-                    href={stateEntry.exchangeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary-600 hover:text-primary-700 underline"
-                  >
-                    visit {stateEntry.exchange} directly
-                  </a>.
-                </p>
-              )}
+              <p className="text-sm text-slate-500 mt-4">
+                A licensed agent can help you review current plan options and rates in {stateName} at no cost.{' '}
+                <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+                  Contact a licensed agent &rarr;
+                </a>
+              </p>
             </section>
           </>
         ) : (

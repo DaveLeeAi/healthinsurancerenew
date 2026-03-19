@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAllStateCountyCombos } from '@/lib/data-loader'
+import { getAllStateCountyCombos, loadSbmSbcData, type SbmSbcRecord } from '@/lib/data-loader'
 import { buildBreadcrumbSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import StateFPLCalculator from '@/components/StateFPLCalculator'
@@ -94,6 +94,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Page
 // ---------------------------------------------------------------------------
 
+const METAL_ORDER = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Catastrophic', 'Expanded Bronze']
+
+function formatCurrency(val: number | string | null | undefined): string {
+  if (val === null || val === undefined || val === '') return '—'
+  if (typeof val === 'string') {
+    // Already formatted (e.g. '$5,800' from SBM SBC PDFs)
+    return val.startsWith('$') ? val : `$${val}`
+  }
+  return `$${val.toLocaleString()}`
+}
+
+function metalBadgeClass(metal: string): string {
+  const m = metal.toLowerCase()
+  if (m === 'bronze' || m === 'expanded bronze') return 'bg-amber-100 text-amber-800'
+  if (m === 'silver') return 'bg-slate-100 text-slate-700'
+  if (m === 'gold') return 'bg-yellow-100 text-yellow-800'
+  if (m === 'platinum') return 'bg-indigo-100 text-indigo-800'
+  if (m === 'catastrophic') return 'bg-red-100 text-red-700'
+  return 'bg-neutral-100 text-neutral-600'
+}
+
 export default function StatePlansPage({ params }: Props) {
   const stateCode = stateSlugToCode(params['state-name'])
   if (!stateCode) notFound()
@@ -108,6 +129,17 @@ export default function StatePlansPage({ params }: Props) {
   )
   const isSbm = stateEntry.ownExchange && counties.length === 0
   const canonical = `${SITE_URL}/${stateSlug}/health-insurance-plans`
+
+  // Load SBM plan data (from parsed carrier SBCs) if available
+  const sbmPlans: SbmSbcRecord[] = isSbm ? loadSbmSbcData(stateCode) : []
+  const sbmIssuers = [...new Set(sbmPlans.map(p => p.issuer_name))].sort()
+  // '01' = FFM standard variant code; 'Standard' = SBM carrier PDF label (e.g. CA Ambetter)
+  const STANDARD_CSR = new Set(['01', 'Standard'])
+  const sbmByMetal = METAL_ORDER.reduce<Record<string, SbmSbcRecord[]>>((acc, m) => {
+    const plans = sbmPlans.filter(p => p.metal_level === m && STANDARD_CSR.has(p.csr_variation))
+    if (plans.length > 0) acc[m] = plans
+    return acc
+  }, {})
 
   // If no county data AND not an SBM state, 404
   if (counties.length === 0 && !stateEntry.ownExchange) notFound()
@@ -183,21 +215,78 @@ export default function StatePlansPage({ params }: Props) {
 
 
 
-                {stateEntry.exchangeUrl && (
-                  <p className="text-sm text-slate-500 mt-4">
-                    To compare and enroll in {stateName} plans,{' '}
-                    <a
-                      href={stateEntry.exchangeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary-600 hover:text-primary-700 underline"
-                    >
-                      visit {stateEntry.exchange} directly
-                    </a>.
-                  </p>
-                )}
+                <p className="text-sm text-slate-500 mt-4">
+                  A licensed agent can help you compare and enroll in {stateName} plans at no cost.{' '}
+                  <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+                    Contact a licensed agent &rarr;
+                  </a>
+                </p>
               </div>
             </section>
+
+            {/* SBM Plan Listings — shown when we have parsed SBC data */}
+            {sbmPlans.length > 0 && (
+              <section aria-labelledby="sbm-plans-heading">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 id="sbm-plans-heading" className="text-xl font-semibold text-navy-800">
+                    {PLAN_YEAR} Plans Available in {stateName}
+                  </h2>
+                  <span className="text-sm text-neutral-500">
+                    {sbmPlans.length} plan variants · {sbmIssuers.length} {sbmIssuers.length === 1 ? 'carrier' : 'carriers'}
+                  </span>
+                </div>
+
+                <p className="text-sm text-neutral-500 mb-5">
+                  Standard plan variants (base rates, no CSR). Deductibles and out-of-pocket maxima sourced from carrier Summary of Benefits and Coverage (SBC) documents.
+                  Plans are available through <strong>{stateEntry.exchange}</strong>.{' '}
+                  <a href="/contact" className="text-primary-600 underline hover:text-primary-700">
+                    Contact a licensed agent to enroll &rarr;
+                  </a>
+                </p>
+
+                <div className="space-y-6">
+                  {Object.entries(sbmByMetal).map(([metal, plans]) => (
+                    <div key={metal}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${metalBadgeClass(metal)}`}>
+                          {metal}
+                        </span>
+                        <span className="text-xs text-neutral-400">{plans.length} plans</span>
+                      </div>
+                      <div className="overflow-x-auto rounded-xl border border-neutral-200">
+                        <table className="w-full text-sm">
+                          <thead className="bg-neutral-50 text-xs text-neutral-500 uppercase tracking-wide">
+                            <tr>
+                              <th className="text-left px-4 py-2.5 font-medium">Plan Name</th>
+                              <th className="text-left px-4 py-2.5 font-medium">Network</th>
+                              <th className="text-right px-4 py-2.5 font-medium">Deductible (Ind)</th>
+                              <th className="text-right px-4 py-2.5 font-medium">OOP Max (Ind)</th>
+                              <th className="text-left px-4 py-2.5 font-medium">Carrier</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-neutral-100">
+                            {plans.map((plan) => (
+                              <tr key={plan.plan_variant_id} className="hover:bg-neutral-50 transition-colors">
+                                <td className="px-4 py-3 font-medium text-navy-800">{plan.plan_name_from_sbc || plan.plan_id}</td>
+                                <td className="px-4 py-3 text-neutral-500">{plan.network_type || '—'}</td>
+                                <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.deductible_individual)}</td>
+                                <td className="px-4 py-3 text-right text-neutral-700">{formatCurrency(plan.oop_max_individual)}</td>
+                                <td className="px-4 py-3 text-neutral-500 text-xs">{plan.issuer_name}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-neutral-400 mt-4">
+                  Source: {sbmIssuers.join(', ')} Summary of Benefits and Coverage documents, plan year {PLAN_YEAR}.
+                  Premiums vary by age, household size, and income. Contact a licensed agent to enroll.
+                </p>
+              </section>
+            )}
 
             <section aria-labelledby="subsidy-calc-heading">
               <h2 id="subsidy-calc-heading" className="text-xl font-semibold text-navy-800 mb-4">
@@ -207,7 +296,7 @@ export default function StatePlansPage({ params }: Props) {
                 stateName={stateName}
                 stateAbbr={stateCode}
                 exchangeName={stateEntry.exchange}
-                exchangeUrl={stateEntry.exchangeUrl ?? 'https://www.healthcare.gov'}
+                exchangeUrl="/contact"
               />
             </section>
 

@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Lost Your Job? Health Insurance Options for 2026 | HealthInsuranceRenew',
   description:
     'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/lost-job-health-insurance-2026' },
 }
 
 const g = fplData.guidelines
@@ -145,11 +146,11 @@ export default function LostJobPage() {
             tool.
           </li>
           <li>
-            <strong>Apply within 60 days.</strong> Enroll through{' '}
-            <a href="https://www.healthcare.gov/" className="text-primary-600 hover:text-primary-700 underline" target="_blank" rel="noopener noreferrer">
-              Healthcare.gov
+            <strong>Apply within 60 days.</strong> Enroll through your state marketplace or{' '}
+            <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+              contact a licensed agent
             </a>{' '}
-            or your state exchange.
+            for help at no cost.
           </li>
         </ol>
       </section>

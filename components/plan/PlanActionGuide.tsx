@@ -66,11 +66,11 @@ export default function PlanActionGuide({
     {
       number: '04',
       title: 'Verify your providers are in-network',
-      description: `Use ${plan.issuer_name}'s provider directory to confirm your primary care physician, specialists, and preferred hospital accept this plan.`,
+      description: `Use ${plan.issuer_name}'s provider directory to confirm your primary care physician, specialists, and preferred hospital accept this plan. A licensed agent can also help you verify network coverage.`,
       link: {
-        href: 'https://www.healthcare.gov/find-premium-estimates/',
-        label: 'Find provider directory at HealthCare.gov →',
-        external: true,
+        href: '/contact',
+        label: 'Ask a licensed agent about network coverage →',
+        external: false,
       },
     },
     {
@@ -79,9 +79,9 @@ export default function PlanActionGuide({
       description:
         'Open Enrollment runs November 1 – January 15. Coverage typically begins January 1 for enrollments completed by December 15. Special Enrollment Periods are available for qualifying life events.',
       link: {
-        href: 'https://www.healthcare.gov',
-        label: 'Enroll at HealthCare.gov →',
-        external: true,
+        href: '/contact',
+        label: 'Enroll with help from a licensed agent →',
+        external: false,
       },
     },
   ]

@@ -146,7 +146,7 @@ export default function SubsidiesStatePage({ params }: Props) {
                 stateName={stateName}
                 stateAbbr={stateUpper}
                 exchangeName={stateEntry.exchange}
-                exchangeUrl={stateEntry.exchangeUrl ?? 'https://www.healthcare.gov'}
+                exchangeUrl="/contact"
               />
             </section>
 
@@ -177,20 +177,12 @@ export default function SubsidiesStatePage({ params }: Props) {
                 </a>
               </div>
 
-              {/* External demoted */}
-              {stateEntry.exchangeUrl && (
-                <p className="text-sm text-slate-500 mt-4">
-                  For exact premium quotes in {stateName},{' '}
-                  <a
-                    href={stateEntry.exchangeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary-600 hover:text-primary-700 underline"
-                  >
-                    visit {stateEntry.exchange} directly
-                  </a>.
-                </p>
-              )}
+              <p className="text-sm text-slate-500 mt-4">
+                A licensed agent can provide exact premium quotes and enroll you in {stateName} plans at no cost.{' '}
+                <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+                  Contact a licensed agent &rarr;
+                </a>
+              </p>
             </section>
           </>
         ) : (

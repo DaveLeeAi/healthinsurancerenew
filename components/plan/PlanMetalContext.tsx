@@ -163,13 +163,8 @@ export default function PlanMetalContext({ plan, countyPlans }: Props) {
             Cost Sharing Reductions are only available on Silver plans for enrollees with income
             between 100–250% FPL. If you qualify, you receive a better plan at no additional
             premium.{' '}
-            <a
-              href="https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/"
-              className="underline hover:text-blue-900"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn more at HealthCare.gov →
+            <a href="/contact" className="underline hover:text-blue-900">
+              Ask a licensed agent if you qualify →
             </a>
           </p>
         </div>

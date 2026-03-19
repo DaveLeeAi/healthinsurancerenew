@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Compare Health Insurance Plans by State & County | 2026',
   description:
     'Find and compare 2026 marketplace health insurance plans by state and county. County-level CMS data for all FFM states. Select your state to see available plans.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/plans' },
 }
 
 interface StateEntry {
@@ -146,15 +147,13 @@ export default function PlansIndexPage() {
               </div>
             </a>
             <a
-              href="https://www.healthcare.gov/see-plans/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
               className="flex items-start gap-3 p-4 rounded-xl border border-neutral-200 bg-white hover:border-primary-300 transition-all"
             >
               <div>
-                <div className="font-semibold text-navy-800 text-sm">Compare Plans on HealthCare.gov</div>
+                <div className="font-semibold text-navy-800 text-sm">Talk to a Licensed Agent</div>
                 <div className="text-xs text-neutral-500 mt-0.5">
-                  Official federal marketplace — compare all plans available in your area.
+                  Get personalized plan recommendations and enroll at no cost.
                 </div>
               </div>
             </a>

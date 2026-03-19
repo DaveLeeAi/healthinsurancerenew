@@ -470,16 +470,11 @@ async function CountyPlanDetailPage({ params }: Props) {
           <div className="mb-10 p-6 bg-neutral-50 rounded-xl border border-neutral-200 text-center">
             <p className="text-neutral-500 text-sm">
               Detailed cost-sharing data is not yet available for this plan variant. Contact the
-              carrier or visit{' '}
-              <a
-                href="https://www.healthcare.gov"
-                className="text-primary-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                HealthCare.gov
+              carrier directly or{' '}
+              <a href="/contact" className="text-primary-600 hover:underline">
+                speak with a licensed agent
               </a>{' '}
-              for the full SBC document.
+              to get the full Summary of Benefits and Coverage.
             </p>
           </div>
         )}

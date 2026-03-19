@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Do I Qualify for Health Insurance Savings in 2026? | HealthInsuranceRenew',
   description:
     'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
+  alternates: { canonical: 'https://healthinsurancerenew.com/eligibility-check' },
 }
 
 const breadcrumbs = [
@@ -249,16 +250,11 @@ export default function EligibilityCheckPage() {
             <div className="mt-3 pt-3 border-t border-slate-100 text-slate-600 leading-relaxed font-serif">
               <p>
                 As of early 2026, most states have expanded Medicaid. A few holdout states have not. Check your state
-                page on this site or visit{' '}
-                <a
-                  href="https://www.healthcare.gov/medicaid-chip/getting-medicaid-chip/"
-                  className="text-primary-600 hover:text-primary-700 underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Healthcare.gov
+                page on this site or{' '}
+                <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">
+                  contact a licensed agent
                 </a>{' '}
-                to see if your state has expanded.
+                to confirm your state&apos;s Medicaid eligibility.
               </p>
             </div>
           </details>

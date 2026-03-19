@@ -53,16 +53,11 @@ export default function PlanAuthorityBlock({ planYear = 2026 }: { planYear?: num
           >
             subsidy estimator
           </a>{' '}
-          on this site or the official calculator at{' '}
-          <a
-            href="https://www.healthcare.gov/lower-costs/"
-            className="text-primary-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            HealthCare.gov
+          on this site, or{' '}
+          <a href="/contact" className="text-primary-600 hover:underline">
+            contact a licensed agent
           </a>
-          .
+          {' '}for a personalized quote.
         </p>
 
         <p className="text-xs text-neutral-400 border-t border-neutral-200 pt-3 mt-3">
