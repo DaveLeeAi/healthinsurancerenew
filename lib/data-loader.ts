@@ -265,7 +265,7 @@ export function getFrictionQABySlug(slug: string): FrictionQA | undefined {
 
 let issuerStateMapCache: Map<string, Set<string>> | null = null
 
-function getIssuerStateMap(): Map<string, Set<string>> {
+export function getIssuerStateMap(): Map<string, Set<string>> {
   if (issuerStateMapCache) return issuerStateMapCache
   const map = new Map<string, Set<string>>()
 
@@ -412,11 +412,17 @@ function parseFormularyBlock(
       const record = JSON.parse(line.trim().replace(/,$/, '')) as FormularyDrug
 
       // State filter: check if any of the record's issuer_ids operate in the requested state
+      // CRITICAL: Also strip out-of-state issuer_ids to prevent cross-state bleed
       if (params.state_code && issuerStateMap) {
         const stateUpper = params.state_code.toUpperCase()
         const issuerIds = record.issuer_ids ?? (record.issuer_id ? [record.issuer_id] : [])
-        const isInState = issuerIds.some((id) => issuerStateMap.get(id)?.has(stateUpper))
-        if (!isInState) continue
+        const inStateIds = issuerIds.filter((id) => issuerStateMap.get(id)?.has(stateUpper))
+        if (inStateIds.length === 0) continue
+        // Replace issuer_ids with only the in-state ones
+        record.issuer_ids = inStateIds
+        if (record.issuer_id && !inStateIds.includes(record.issuer_id)) {
+          record.issuer_id = inStateIds[0]
+        }
       }
 
       // Issuer filter

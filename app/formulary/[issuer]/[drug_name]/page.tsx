@@ -7,6 +7,7 @@ import {
   getIssuerName,
   getPlanById,
   getTopIssuerIds,
+  getIssuerStateMap,
 } from '@/lib/data-loader'
 import type { FormularyDrug } from '@/lib/types'
 import {
@@ -32,8 +33,11 @@ import AboutBlock from '@/components/AboutBlock'
 import {
   humanizeTier,
   humanizeTiers,
+  humanizeTierForDrug,
+  humanizeTiersForDrug,
   summarizeTierPlacement,
   getDominantTierGroup,
+  getDominantTierGroupForDrug,
   interpretCoverage,
 } from '@/lib/formulary-helpers'
 import type { HumanTier } from '@/lib/formulary-helpers'
@@ -505,10 +509,11 @@ export default async function FormularyDrugPage({ params }: Props) {
   // --- Derived coverage details ---
   const rawTiers = results.map((r) => r.drug_tier).filter(Boolean) as string[]
   const tiers = [...new Set(rawTiers)]
-  const humanTiers = humanizeTiers(rawTiers)
-  const dominantGroup = getDominantTierGroup(rawTiers)
-  const dominantHumanTier = humanizeTier(
-    results.find(r => getDominantTierGroup([r.drug_tier]) === dominantGroup)?.drug_tier
+  const humanTiers = humanizeTiersForDrug(rawTiers, drugDisplay)
+  const dominantGroup = getDominantTierGroupForDrug(rawTiers, drugDisplay)
+  const dominantHumanTier = humanizeTierForDrug(
+    results.find(r => getDominantTierGroupForDrug([r.drug_tier], drugDisplay) === dominantGroup)?.drug_tier,
+    drugDisplay,
   )
 
   const hasPriorAuth = results.some((r) => r.prior_authorization)
@@ -522,7 +527,7 @@ export default async function FormularyDrugPage({ params }: Props) {
   const rxnormId = results.find((r) => r.rxnorm_id)?.rxnorm_id
 
   // --- Other issuers covering this drug ---
-  const otherIssuers = getUniqueIssuers(allResults).filter((i) => i.id !== issuer)
+  const otherIssuers = getUniqueIssuers(allResults, stateCode).filter((i) => i.id !== issuer)
 
   // --- Schema.org ---
   const drugSchema = buildFormularyDrugSchema({
@@ -705,30 +710,31 @@ export default async function FormularyDrugPage({ params }: Props) {
         'Updated March 2026',
       ]} />
 
-      <main id="main-content" className="max-w-4xl mx-auto px-4 py-10">
+      <main id="main-content" className="mx-auto px-5 py-10" style={{ maxWidth: 800 }}>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:px-4 focus:py-2 focus:z-50 focus:rounded focus:shadow">Skip to main content</a>
 
         {/* ── Breadcrumbs ── */}
-        <nav aria-label="Breadcrumb" className="text-sm text-slate-500">
-          <ol className="flex flex-wrap items-center gap-1">
+        <nav aria-label="Breadcrumb" className="text-faint" style={{ fontSize: 13 }}>
+          <ol className="flex flex-wrap items-center gap-1.5">
             <li>
-              <a href="/" className="hover:underline text-blue-700">Home</a>
+              <a href="/" className="hover:underline text-vblue" style={{ fontWeight: 500 }}>Home</a>
             </li>
-            <li aria-hidden="true" className="text-slate-300">&rsaquo;</li>
+            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
             <li>
-              <a href="/formulary" className="hover:underline text-blue-700">Drug Coverage</a>
+              <a href="/formulary" className="hover:underline text-vblue" style={{ fontWeight: 500 }}>Drug Coverage</a>
             </li>
-            <li aria-hidden="true" className="text-slate-300">&rsaquo;</li>
+            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
             <li>
               <a
                 href={`/formulary/${canonicalIssuerParam}/all`}
-                className="hover:underline text-blue-700"
+                className="hover:underline text-vblue"
+                style={{ fontWeight: 500 }}
               >
                 {isState ? stateName : issuerName}
               </a>
             </li>
-            <li aria-hidden="true" className="text-slate-300">&rsaquo;</li>
-            <li aria-current="page" className="text-slate-700 font-medium">
+            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
+            <li aria-current="page" className="text-ink3" style={{ fontWeight: 600 }}>
               {titleCase(drugDisplay)}
             </li>
           </ol>
@@ -736,7 +742,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         <article>
           {/* ── 1. H1 ── */}
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mt-6">
+          <h1 className="font-serif text-ink mt-6" style={{ fontSize: 27, fontWeight: 500, lineHeight: 1.25 }}>
             {isState
               ? `${titleCase(drugDisplay)} Coverage in ${stateName}: What ${results.length} Health Plans Show for ${PLAN_YEAR}`
               : isSpecificIssuer
@@ -746,7 +752,7 @@ export default async function FormularyDrugPage({ params }: Props) {
           </h1>
 
           {/* ── 2. Date line ── */}
-          <p className="text-sm text-slate-500 mt-2 mb-4">
+          <p className="text-muted mt-2 mb-4" style={{ fontSize: 14, fontWeight: 500 }}>
             <time dateTime="2026-03-20">Last reviewed March 2026</time>
             {' \u00b7 '}
             {isState ? stateName : issuerName} {PLAN_YEAR}
@@ -782,27 +788,41 @@ export default async function FormularyDrugPage({ params }: Props) {
             />
           )}
 
-          {/* ── 5. Primary CTA (green) ── */}
+          {/* ── 5. Primary CTA (green — V19 .cta-primary) ── */}
           {results.length > 0 && (
-            <div className="rounded-xl bg-green-50 border border-green-200 px-6 py-5 mt-6">
-              <p className="text-base font-semibold text-green-900 mb-2">
-                Find a {isState ? `${stateName} ` : ''}Plan That Covers {titleCase(drugDisplay)}
+            <div className="rounded-lg w-full mt-6" style={{ background: '#0b6e4a', padding: '15px 20px' }}>
+              <p className="text-white mb-0.5" style={{ fontSize: 15, fontWeight: 500 }}>
+                Find a {isState ? `${stateName} ` : ''}plan that covers {titleCase(drugDisplay)}
               </p>
-              <a href="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-700 text-white font-semibold hover:bg-green-800 transition-colors text-sm">
+              <p className="mb-3" style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
+                A licensed agent compares every plan's drug list — at no cost to you.
+              </p>
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-lg bg-white font-semibold hover:bg-greendim transition-colors"
+                style={{ color: '#0b6e4a', fontSize: 14, padding: '10px 22px' }}
+              >
                 Compare Plans &rarr;
               </a>
             </div>
           )}
 
           {/* ── DIVIDER ── */}
-          <hr className="border-slate-200 my-10" />
+          <hr className="border-rule my-10" />
 
           {/* ── 6. Cost section ── */}
           {results.length > 0 && humanTiers.length > 0 && (
             <section aria-labelledby="cost-heading" className="mt-0">
-              <h2 id="cost-heading" className="text-xl font-bold text-slate-900 mb-4">
-                How much {titleCase(drugDisplay)} costs on {isState ? stateName : 'Marketplace'} plans
-              </h2>
+              <div
+                id="cost-heading"
+                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
+                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              >
+                Cost details
+                <span className="float-right normal-case text-muted not-italic" style={{ fontSize: 11, letterSpacing: 0 }}>
+                  {titleCase(drugDisplay)} on {isState ? stateName : 'Marketplace'} plans
+                </span>
+              </div>
               <CostBlock
                 rows={costRows}
                 note={`Estimated from ${PLAN_YEAR} plan benefit filings \u2014 not live prices. Actual cost depends on your plan, pharmacy, and deductible.`}
@@ -817,11 +837,18 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 7. Mid CTA (blue accent) ── */}
           {results.length > 0 && (
-            <div className="border-l-4 border-blue-600 bg-white rounded-r-lg px-6 py-5 my-8">
-              <p className="text-base font-semibold text-slate-900 mb-2">
+            <div
+              className="bg-white border border-rule rounded-r-lg px-5 py-4 my-8"
+              style={{ borderLeft: '3px solid #1a56a0' }}
+            >
+              <p className="text-ink2 mb-2" style={{ fontSize: 14, fontWeight: 600 }}>
                 See plans in {isState ? stateName : 'your area'} with lower out-of-pocket drug costs
               </p>
-              <a href="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-700 text-white font-semibold hover:bg-blue-800 transition-colors text-sm">
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-lg bg-vblue text-white font-semibold hover:opacity-90 transition-opacity"
+                style={{ fontSize: 13, padding: '8px 18px' }}
+              >
                 Compare Plans &rarr;
               </a>
             </div>
@@ -830,9 +857,13 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 8. Plan rules section ── */}
           {results.length > 0 && (
             <section aria-labelledby="rules-heading" className="mt-8">
-              <h2 id="rules-heading" className="text-xl font-bold text-slate-900 mb-4">
-                Plan rules for {titleCase(drugDisplay)}
-              </h2>
+              <div
+                id="rules-heading"
+                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
+                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              >
+                Plan rules
+              </div>
               <PlanRulesBlock
                 rules={[
                   {
@@ -876,9 +907,13 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 9. Approval timeline (only if hasPriorAuth) ── */}
           {results.length > 0 && hasPriorAuth && (
             <section aria-labelledby="timeline-heading" className="mt-8">
-              <h2 id="timeline-heading" className="text-xl font-bold text-slate-900 mb-4">
-                What to expect: prior authorization timeline
-              </h2>
+              <div
+                id="timeline-heading"
+                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
+                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              >
+                Prior authorization timeline
+              </div>
               <TimelineSteps
                 steps={[
                   { title: 'Doctor submits request', desc: 'Your doctor sends clinical documentation to the insurer', time: 'Day 1' },
@@ -894,9 +929,13 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 10. Ways to save ── */}
           {results.length > 0 && (
             <section aria-labelledby="savings-heading" className="mt-8">
-              <h2 id="savings-heading" className="text-xl font-bold text-slate-900 mb-4">
-                Ways to save on {titleCase(drugDisplay)}
-              </h2>
+              <div
+                id="savings-heading"
+                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
+                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              >
+                Ways to save
+              </div>
               <SavingsRows
                 rows={[
                   { icon: '\ud83d\udc8a', title: 'Manufacturer savings card', desc: `Search '${drugDisplay} savings card' \u2014 most brand drugs offer copay assistance for privately insured people.` },
@@ -931,9 +970,13 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── 12. Related drugs (pill-style links) ── */}
         {(relatedDrugs.length > 0 || comparisonLinks.length > 0) && (
           <section aria-labelledby="related-drugs-heading" className="mt-0">
-            <h2 id="related-drugs-heading" className="text-lg font-bold text-slate-900 mb-1">
+            <div
+              id="related-drugs-heading"
+              className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-3"
+              style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+            >
               Related medications
-            </h2>
+            </div>
             {drugCategory && (
               <p className="text-sm text-slate-500 mb-4">
                 Other {drugCategory.label.toLowerCase()} covered by Marketplace plans
@@ -969,42 +1012,57 @@ export default async function FormularyDrugPage({ params }: Props) {
           </section>
         )}
 
-        {/* ── 13. Insurer table ── */}
+        {/* ── 13. Insurer list (V19 .ins-block) ── */}
         {otherIssuers.length > 0 && (
           <section aria-labelledby="insurers-heading" className="mt-10">
-            <h2 id="insurers-heading" className="text-lg font-bold text-slate-900 mb-4">
-              Insurers that cover {titleCase(drugDisplay)}
-            </h2>
-            <div className="overflow-x-auto rounded-xl border border-slate-200">
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 text-left">
-                    <th className="px-4 py-2.5 font-semibold text-slate-700">Insurer</th>
-                    <th className="px-4 py-2.5 font-semibold text-slate-700">Tier</th>
-                    <th className="px-4 py-2.5 font-semibold text-slate-700">Typical cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {otherIssuers.slice(0, 12).map((ins) => {
-                    const ht = humanizeTier(ins.tier)
-                    return (
-                      <tr key={ins.id} className="border-t border-slate-100 hover:bg-slate-50">
-                        <td className="px-4 py-2.5">
-                          <a href={`/formulary/${ins.id}/${drugSlug}`} className="text-sm font-medium text-blue-700 hover:underline">
-                            {ins.name}
-                          </a>
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ht.bg} ${ht.color}`}>
-                            {ht.shortLabel}
-                          </span>
-                        </td>
-                        <td className="px-4 py-2.5 text-sm text-slate-600">{ht.costRange}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+            <div
+              className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-0"
+              style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+            >
+              Insurers covering {titleCase(drugDisplay)}
+            </div>
+            <div className="bg-white border border-rule rounded-lg overflow-hidden mt-3">
+              {otherIssuers.slice(0, 12).map((ins, i) => {
+                const ht = humanizeTierForDrug(ins.tier, drugDisplay)
+                const isPref = ht.group === 'preferred-brand' || ht.group === 'generic' || ht.group === 'insulin-ira'
+                return (
+                  <a
+                    key={ins.id}
+                    href={`/formulary/${ins.id}/${drugSlug}`}
+                    className={`flex items-center justify-between px-4 py-2.5 hover:bg-surface transition-colors ${i > 0 ? 'border-t border-rule/50' : ''}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <div>
+                      <span className="text-vblue block" style={{ fontSize: 14, fontWeight: 600 }}>
+                        {ins.name}
+                      </span>
+                      <span className="text-muted block" style={{ fontSize: 12 }}>
+                        {hasPriorAuth ? 'Prior authorization seen' : 'No prior authorization'}
+                      </span>
+                    </div>
+                    <span
+                      className="shrink-0 rounded-full text-center"
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        padding: '3px 12px',
+                        background: isPref ? '#e6eef9' : '#f3f7fa',
+                        color: isPref ? '#1a56a0' : '#4a6278',
+                        border: isPref ? 'none' : '1px solid #dbe3ec',
+                      }}
+                    >
+                      {ht.shortLabel}
+                    </span>
+                  </a>
+                )
+              })}
+              {/* Footer note */}
+              <div
+                className="bg-surface border-t border-rule px-4 py-2.5"
+                style={{ fontSize: '11.5px', fontStyle: 'italic', color: '#728fa4' }}
+              >
+                Tier placement may vary by specific plan. Confirm with your insurer.
+              </div>
             </div>
           </section>
         )}
@@ -1025,20 +1083,24 @@ export default async function FormularyDrugPage({ params }: Props) {
         )}
 
         {/* ── 15. FAQ — 7 questions, static details/summary, first item open ── */}
-        <section aria-labelledby="faq-heading" className="mt-12 border-t border-slate-200 pt-10">
-          <h2 id="faq-heading" className="text-xl font-bold text-slate-900 mb-4">
+        <section aria-labelledby="faq-heading" className="mt-12 border-t border-rule pt-10">
+          <div
+            id="faq-heading"
+            className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
+            style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+          >
             Frequently asked questions
-          </h2>
+          </div>
           <div className="space-y-2">
             {formularyFaqs.map((faq, i) => (
-              <details key={i} open={i === 0} className="group border border-slate-200 rounded-xl overflow-hidden">
-                <summary className="flex items-center justify-between px-5 py-3.5 cursor-pointer hover:bg-slate-50 transition-colors list-none">
-                  <span className="font-medium text-slate-800 text-sm pr-4">{faq.question}</span>
-                  <svg className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <details key={i} open={i === 0} className="group border border-rule rounded-lg overflow-hidden">
+                <summary className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-surface transition-colors list-none">
+                  <span className="text-ink2 pr-4" style={{ fontSize: 14, fontWeight: 600 }}>{faq.question}</span>
+                  <svg className="h-4 w-4 shrink-0 text-faint transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
                   </svg>
                 </summary>
-                <div className="px-5 pb-4 text-sm text-slate-600 leading-relaxed">
+                <div className="px-4 pb-4 text-mid leading-relaxed" style={{ fontSize: 14 }}>
                   {faq.answer}
                 </div>
               </details>
@@ -1058,22 +1120,39 @@ export default async function FormularyDrugPage({ params }: Props) {
           />
         </div>
 
-        {/* ── 17. Education links (max 2) ── */}
-        <div className="mt-6 space-y-2">
-          <a href="/guides/how-deductibles-affect-drug-costs" className="block text-sm text-blue-700 hover:underline">
-            How your deductible affects what you pay for prescription drugs &rarr;
+        {/* ── 17. Education links (V19 .edu-list) ── */}
+        <div className="mt-6">
+          <a
+            href="/guides/how-deductibles-affect-drug-costs"
+            className="flex items-center gap-2 py-2.5 border-b border-rule text-vblue hover:underline"
+            style={{ fontSize: 13, fontWeight: 500 }}
+          >
+            <span className="text-muted" aria-hidden="true">&rarr;</span>
+            How your deductible affects what you pay for prescription drugs
           </a>
-          <a href="/guides/how-approval-rules-work-for-prescriptions" className="block text-sm text-blue-700 hover:underline">
-            How approval rules work &mdash; and what happens if a request is not approved &rarr;
+          <a
+            href="/guides/how-approval-rules-work-for-prescriptions"
+            className="flex items-center gap-2 py-2.5 border-b border-rule text-vblue hover:underline"
+            style={{ fontSize: 13, fontWeight: 500 }}
+          >
+            <span className="text-muted" aria-hidden="true">&rarr;</span>
+            How approval rules work — and what happens if a request is not approved
           </a>
         </div>
 
-        {/* ── 18. Bottom CTA (navy/dark) ── */}
-        <div className="rounded-xl bg-slate-900 text-white px-6 py-6 mt-8">
-          <p className="text-lg font-semibold mb-2">
+        {/* ── 18. Bottom CTA (V19 .cta-bottom — dark navy) ── */}
+        <div className="rounded-lg mt-8 px-6 py-6" style={{ background: '#0d1b2a' }}>
+          <p className="font-serif text-white mb-1" style={{ fontSize: 21 }}>
             Compare Plans That Cover {titleCase(drugDisplay)}
           </p>
-          <a href="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-slate-900 font-semibold hover:bg-slate-100 transition-colors text-sm">
+          <p className="mb-4" style={{ fontSize: 13, color: '#9eb5c4' }}>
+            A licensed agent compares every plan's drug list — at no cost to you.
+          </p>
+          <a
+            href="/contact"
+            className="inline-flex items-center gap-2 rounded-lg bg-white font-semibold hover:bg-surface transition-colors"
+            style={{ color: '#0d1b2a', fontSize: 14, padding: '10px 22px' }}
+          >
             See {isState ? stateName : 'Plan'} Options &rarr;
           </a>
         </div>
@@ -1084,7 +1163,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         </div>
 
         {/* ── 20. Page disclaimer footer ── */}
-        <footer className="border-t border-slate-200 mt-8 pt-6 text-xs text-slate-400 space-y-2">
+        <footer className="border-t border-rule mt-8 pt-5 text-muted space-y-2" style={{ fontSize: '11.5px', lineHeight: 1.55 }}>
           <p>
             This page is for informational purposes only and does not constitute
             medical or insurance advice. Formulary data sourced from CMS plan benefit
@@ -1202,7 +1281,7 @@ function SBMExplanationPage({
               {allResults.length} formulary {allResults.length === 1 ? 'record' : 'records'} from{' '}
               {new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size} insurers.
               {allResults[0]?.drug_tier && (
-                <> It is typically listed as a {humanizeTier(allResults[0].drug_tier).shortLabel.toLowerCase()} drug.</>
+                <> It is typically listed as a {humanizeTierForDrug(allResults[0].drug_tier, drugDisplay).shortLabel.toLowerCase()} drug.</>
               )}
             </p>
             <a href={`/formulary/all/${drugSlug}`} className="text-sm text-primary-600 font-semibold hover:text-primary-700">
@@ -1678,17 +1757,25 @@ function groupByFormulation(drugs: FormularyDrug[]): FormulationGroup[] {
   return [...map.values()]
 }
 
-function getUniqueIssuers(drugs: FormularyDrug[]): IssuerInfo[] {
-  const seen = new Map<string, IssuerInfo>()
+function getUniqueIssuers(drugs: FormularyDrug[], stateCode?: string): IssuerInfo[] {
+  // Build state filter: only include issuer IDs that actually serve the requested state
+  const stateMap = stateCode ? getIssuerStateMap() : undefined
+  const stateUpper = stateCode?.toUpperCase()
+
+  const seenNames = new Map<string, IssuerInfo>()
   for (const d of drugs) {
     const ids = d.issuer_ids ?? (d.issuer_id ? [d.issuer_id] : [])
     for (const id of ids) {
-      if (!seen.has(id)) {
-        const name = getIssuerName(id)
-        if (!name) continue
-        seen.set(id, { id, name, tier: d.drug_tier })
+      // Skip issuer IDs that don't serve the current state
+      if (stateMap && stateUpper && !stateMap.get(id)?.has(stateUpper)) continue
+
+      const name = getIssuerName(id)
+      if (!name) continue
+      // Deduplicate by display name to avoid showing the same insurer multiple times
+      if (!seenNames.has(name)) {
+        seenNames.set(name, { id, name, tier: d.drug_tier })
       }
     }
   }
-  return [...seen.values()]
+  return [...seenNames.values()]
 }

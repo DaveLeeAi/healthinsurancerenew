@@ -27,6 +27,7 @@ export interface HumanTier {
 
 export type TierGroup =
   | 'preventive'
+  | 'insulin-ira'
   | 'generic'
   | 'preferred-brand'
   | 'non-preferred-brand'
@@ -42,6 +43,16 @@ const TIER_GROUPS: Record<TierGroup, Omit<HumanTier, 'group'>> = {
     costHint: 'Covered at no cost on eligible Marketplace plans',
     costRange: '$0',
     sortOrder: 0,
+    color: 'text-emerald-700',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+  },
+  'insulin-ira': {
+    label: 'Insulin (IRA $35 cap)',
+    shortLabel: 'Insulin (IRA $35 cap)',
+    costHint: 'Capped at $35 per month under the Inflation Reduction Act for all Marketplace plans',
+    costRange: '$35',
+    sortOrder: 0.5,
     color: 'text-emerald-700',
     bg: 'bg-emerald-50',
     border: 'border-emerald-200',
@@ -109,7 +120,8 @@ export function classifyTier(rawTier: string | undefined | null): TierGroup {
   const upper = rawTier.toUpperCase().replace(/[-\s]+/g, '_')
 
   // Preventive — must check before generic (some labels include both words)
-  if (upper.includes('PREVENTIVE') || upper.includes('ACA_PREVENTIVE'))
+  if (upper.includes('PREVENTIVE') || upper.includes('ACA_PREVENTIVE')
+      || upper === 'ZERO_COST_SHARE_PREVENTIVE' || upper === 'ZERO_COST_SHARE_PREVENTIVE_DRUGS')
     return 'preventive'
 
   // Specialty — check before preferred (some labels are "PREFERRED-SPECIALTY")
@@ -120,7 +132,15 @@ export function classifyTier(rawTier: string | undefined | null): TierGroup {
   if (upper.includes('NON_PREFERRED') || upper.includes('NONPREFERRED'))
     return 'non-preferred-brand'
 
-  // Preferred brand
+  // Carrier-specific numbered tiers: TIER-THREE, TIER-FOUR
+  if (upper === 'TIER_THREE')
+    return 'non-preferred-brand'
+  if (upper === 'TIER_FOUR')
+    return 'specialty'
+
+  // Preferred brand (including TIER-TWO)
+  if (upper === 'TIER_TWO')
+    return 'preferred-brand'
   if (
     upper.includes('PREFERRED') &&
     !upper.includes('GENERIC') &&
@@ -128,14 +148,22 @@ export function classifyTier(rawTier: string | undefined | null): TierGroup {
   )
     return 'preferred-brand'
 
-  // Generic (including "PREFERRED-GENERIC")
+  // Generic (including "PREFERRED-GENERIC", "TIER-ONE", "TIER-ONE-B")
   if (upper.includes('GENERIC'))
+    return 'generic'
+  if (upper === 'TIER_ONE' || upper === 'TIER_ONE_B')
+    return 'generic'
+
+  // Catch-all: any unrecognized tier containing "ONE" or "GENERIC" → Generic
+  if (upper.includes('ONE') || upper.includes('GENERIC'))
     return 'generic'
 
   // Formulary-level catch-alls that CMS sometimes uses
   if (upper.includes('FORMULARY'))
     return 'preferred-brand'
 
+  // Log unknown tiers for discovery
+  console.warn(`[formulary-helpers] Unknown tier label: "${rawTier}" (normalized: "${upper}")`)
   return 'unknown'
 }
 
@@ -183,6 +211,8 @@ export function summarizeTierPlacement(
     switch (primary.group) {
       case 'preventive':
         return `${drugName} is classified as a preventive drug, meaning it should be covered at $0 cost-sharing on eligible Marketplace plans.`
+      case 'insulin-ira':
+        return `${drugName} is an insulin product capped at $35 per month under the Inflation Reduction Act on all Marketplace plans.`
       case 'generic':
         return `${drugName} is placed on a generic (lowest-cost) tier across all plans in this dataset — typically $5–$20 per month.`
       case 'preferred-brand':
@@ -240,6 +270,9 @@ export function interpretCoverage(opts: {
     case 'preventive':
       result = `${drugName} is covered at no cost on most Marketplace plans as a preventive medication.`
       break
+    case 'insulin-ira':
+      result = `${drugName} is an insulin product capped at $35 per month under the Inflation Reduction Act on all Marketplace plans.`
+      break
     case 'generic':
       result = `${drugName} is covered on most Marketplace plans as a low-cost generic, typically $5–$20 per month.`
       break
@@ -271,4 +304,116 @@ export function interpretCoverage(opts: {
   }
 
   return result
+}
+
+// ─── Drug-specific tier overrides ──────────────────────────────────────────
+
+/** Insulin drug name patterns — IRA $35/month cap applies */
+const INSULIN_PATTERNS = [
+  'insulin', 'humulin', 'novolog', 'lantus', 'tresiba', 'basaglar',
+  'humalog', 'levemir', 'toujeo', 'admelog', 'semglee', 'fiasp',
+]
+
+/** Biologic drugs that should NEVER be classified as Preventive */
+const BIOLOGIC_BLOCKLIST = [
+  'dupixent', 'enbrel', 'humira', 'cosentyx', 'skyrizi', 'rinvoq',
+  'xeljanz', 'otezla', 'xolair', 'stelara', 'tremfya', 'taltz',
+  'kevzara', 'actemra', 'orencia', 'cimzia', 'simponi',
+]
+
+/** Returns true if the drug name matches an insulin product */
+export function isInsulinDrug(drugName: string): boolean {
+  const lower = drugName.toLowerCase()
+  return INSULIN_PATTERNS.some((p) => lower.includes(p))
+}
+
+/** Returns true if the drug name matches a biologic that should never be Preventive */
+export function isBiologicDrug(drugName: string): boolean {
+  const lower = drugName.toLowerCase()
+  return BIOLOGIC_BLOCKLIST.some((p) => lower.includes(p))
+}
+
+/**
+ * Applies drug-specific tier overrides:
+ * - Insulins marked PREVENTIVE/ZERO-COST-SHARE → "insulin-ira" ($35/month IRA cap)
+ * - Biologics marked PREVENTIVE → reclassified as "specialty"
+ *
+ * Call this AFTER classifyTier() when the drug name is known.
+ */
+export function applyDrugTierOverride(
+  group: TierGroup,
+  drugName: string,
+  rawTier?: string | null,
+): TierGroup {
+  // Insulin IRA $35 cap: insulins in preventive/zero-cost-share tier are $35, not $0
+  if (isInsulinDrug(drugName) && (group === 'preventive')) {
+    return 'insulin-ira'
+  }
+
+  // Biologic preventive override: carrier data error — reclassify as specialty
+  if (isBiologicDrug(drugName) && group === 'preventive') {
+    console.warn(
+      `[formulary-helpers] Biologic "${drugName}" incorrectly marked as Preventive` +
+      `${rawTier ? ` (raw: "${rawTier}")` : ''} — overriding to Specialty`
+    )
+    return 'specialty'
+  }
+
+  return group
+}
+
+/**
+ * Drug-aware version of humanizeTier — applies insulin/biologic overrides.
+ */
+export function humanizeTierForDrug(
+  rawTier: string | undefined | null,
+  drugName: string,
+): HumanTier {
+  const baseGroup = classifyTier(rawTier)
+  const group = applyDrugTierOverride(baseGroup, drugName, rawTier)
+  return { ...TIER_GROUPS[group], group }
+}
+
+/**
+ * Drug-aware version of humanizeTiers — applies insulin/biologic overrides.
+ */
+export function humanizeTiersForDrug(
+  rawTiers: (string | undefined | null)[],
+  drugName: string,
+): HumanTier[] {
+  const seen = new Set<TierGroup>()
+  const result: HumanTier[] = []
+  for (const raw of rawTiers) {
+    const baseGroup = classifyTier(raw)
+    const group = applyDrugTierOverride(baseGroup, drugName, raw)
+    if (!seen.has(group)) {
+      seen.add(group)
+      result.push({ ...TIER_GROUPS[group], group })
+    }
+  }
+  return result.sort((a, b) => a.sortOrder - b.sortOrder)
+}
+
+/**
+ * Drug-aware version of getDominantTierGroup — applies insulin/biologic overrides.
+ */
+export function getDominantTierGroupForDrug(
+  rawTiers: (string | undefined | null)[],
+  drugName: string,
+): TierGroup {
+  const counts = new Map<TierGroup, number>()
+  for (const raw of rawTiers) {
+    const baseGroup = classifyTier(raw)
+    const group = applyDrugTierOverride(baseGroup, drugName, raw)
+    counts.set(group, (counts.get(group) ?? 0) + 1)
+  }
+  let maxGroup: TierGroup = 'unknown'
+  let maxCount = 0
+  for (const [group, count] of counts) {
+    if (count > maxCount) {
+      maxGroup = group
+      maxCount = count
+    }
+  }
+  return maxGroup
 }
