@@ -161,7 +161,7 @@ export default function FormularyIndexPage() {
         extra={{ drugs: DRUG_COUNT, issuers: ISSUER_COUNT, states: STATES_WITH_DATA.size }}
       />
 
-      <main className="max-w-3xl mx-auto px-4 pt-10 pb-16">
+      <main className="mx-auto px-5 pt-10 pb-16" style={{ maxWidth: 800 }}>
 
         {/* ── HERO ─────────────────────────────────────────────── */}
         <div className="text-center mb-8">

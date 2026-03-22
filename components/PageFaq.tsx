@@ -10,7 +10,7 @@ interface PageFaqProps {
 export default function PageFaq({
   faqs,
   includeSchema = true,
-  sectionTitle = 'Frequently Asked Questions',
+  sectionTitle: _sectionTitle,
 }: PageFaqProps) {
   if (faqs.length === 0) return null
 
@@ -20,19 +20,20 @@ export default function PageFaq({
     <>
       {faqSchema && <SchemaScript schema={faqSchema} id="page-faq-schema" />}
       <section aria-labelledby="faq-heading">
-        <h2 id="faq-heading" className="text-xl font-semibold text-navy-800 mb-4">
-          {sectionTitle}
-        </h2>
-        <div className="space-y-3">
+        <div className="flex flex-col" style={{ gap: '5px' }}>
           {faqs.map((faq, i) => (
             <details
               key={i}
-              className="group rounded-xl border border-neutral-200 bg-white overflow-hidden"
+              className="group bg-white border border-rule overflow-hidden"
+              style={{ borderRadius: '8px' }}
             >
-              <summary className="flex items-center justify-between gap-3 cursor-pointer px-5 py-4 text-sm font-medium text-navy-800 hover:bg-neutral-50 transition-colors select-none">
+              <summary
+                className="flex items-center justify-between cursor-pointer text-ink font-medium hover:bg-surface transition-colors select-none [&::-webkit-details-marker]:hidden list-none"
+                style={{ padding: '13px 18px', fontSize: '13.5px', gap: '8px' }}
+              >
                 <span>{faq.question}</span>
                 <svg
-                  className="w-4 h-4 text-neutral-400 shrink-0 transition-transform group-open:rotate-180"
+                  className="w-[10px] h-[10px] text-faint shrink-0 transition-transform group-open:rotate-180"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -41,7 +42,10 @@ export default function PageFaq({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </summary>
-              <div className="px-5 pb-4 text-sm text-neutral-600 leading-relaxed">
+              <div
+                className="text-mid border-t border-rule"
+                style={{ padding: '10px 18px 15px', fontSize: '13.5px', lineHeight: 1.65 }}
+              >
                 {faq.answer}
               </div>
             </details>

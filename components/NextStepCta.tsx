@@ -6,9 +6,7 @@ type CtaVariant = 'subsidy-calculator' | 'plan-comparison' | 'agent-consultation
 
 interface NextStepCtaProps {
   variant: CtaVariant
-  // state: ISO 2-letter state code (e.g. "NC")
   state?: string
-  // county: FIPS code (e.g. "37183") — used only for plan-comparison canonical URL
   county?: string
   customTitle?: string
   customDescription?: string
@@ -27,8 +25,6 @@ const VARIANTS: Record<Exclude<CtaVariant, 'custom'>, { title: string; descripti
     title: 'Compare Plans in Your Area',
     description: 'See every marketplace plan available in your county — compare premiums, deductibles, and out-of-pocket maximums side by side.',
     label: 'Compare Plans',
-    // Base href for the index case (no state/county). State+county builds the
-    // canonical /{state-slug}/{county-slug} URL in the component body below.
     href: '/plans',
   },
   'agent-consultation': {
@@ -39,6 +35,7 @@ const VARIANTS: Record<Exclude<CtaVariant, 'custom'>, { title: string; descripti
   },
 }
 
+/** NextStepCta — V19 .cta-mid: white bg, left blue border, blue button. */
 export default function NextStepCta({
   variant,
   state,
@@ -50,17 +47,25 @@ export default function NextStepCta({
 }: NextStepCtaProps) {
   if (variant === 'custom') {
     return (
-      <section className="rounded-xl bg-primary-50 border border-primary-200 p-6 text-center">
-        <h2 className="text-lg font-semibold text-primary-900 mb-2">
-          {customTitle ?? 'Next Step'}
-        </h2>
-        <p className="text-sm text-primary-700 max-w-lg mx-auto mb-4">
-          {customDescription ?? ''}
-        </p>
+      <section
+        className="bg-white border border-rule flex items-center justify-between flex-wrap"
+        style={{ borderLeft: '3px solid #1a56a0', borderRadius: '0 8px 8px 0', padding: '14px 18px', gap: '14px' }}
+      >
+        <div>
+          <p className="text-ink font-medium" style={{ fontSize: '14px' }}>
+            {customTitle ?? 'Next Step'}
+          </p>
+          {customDescription && (
+            <p className="text-muted" style={{ fontSize: '12px', marginTop: '2px' }}>
+              {customDescription}
+            </p>
+          )}
+        </div>
         {customHref && (
           <Link
             href={customHref}
-            className="inline-block px-6 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
+            className="inline-block shrink-0 bg-vblue text-white font-medium hover:bg-ink transition-colors"
+            style={{ borderRadius: '6px', padding: '9px 20px', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}
           >
             {customLabel ?? 'Learn More'}
           </Link>
@@ -73,8 +78,6 @@ export default function NextStepCta({
   let href = config.href
 
   if (variant === 'plan-comparison') {
-    // Build canonical county plans URL: /{state-slug}/{county-slug}
-    // Avoids the legacy /plans/{state}/{county} redirect chain.
     if (state && county) {
       href = `/${stateCodeToSlug(state.toUpperCase())}/${getCountySlug(county)}`
     } else if (state) {
@@ -89,16 +92,22 @@ export default function NextStepCta({
   }
 
   return (
-    <section className="rounded-xl bg-primary-50 border border-primary-200 p-6 text-center">
-      <h2 className="text-lg font-semibold text-primary-900 mb-2">
-        {config.title}
-      </h2>
-      <p className="text-sm text-primary-700 max-w-lg mx-auto mb-4">
-        {config.description}
-      </p>
+    <section
+      className="bg-white border border-rule flex items-center justify-between flex-wrap"
+      style={{ borderLeft: '3px solid #1a56a0', borderRadius: '0 8px 8px 0', padding: '14px 18px', gap: '14px' }}
+    >
+      <div>
+        <p className="text-ink font-medium" style={{ fontSize: '14px' }}>
+          {config.title}
+        </p>
+        <p className="text-muted" style={{ fontSize: '12px', marginTop: '2px' }}>
+          {config.description}
+        </p>
+      </div>
       <Link
         href={href}
-        className="inline-block px-6 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
+        className="inline-block shrink-0 bg-vblue text-white font-medium hover:bg-ink transition-colors"
+        style={{ borderRadius: '6px', padding: '9px 20px', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}
       >
         {config.label} &rarr;
       </Link>

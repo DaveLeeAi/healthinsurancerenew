@@ -15,26 +15,41 @@ export interface PlanRulesBlockProps {
 }
 
 const badgeColors: Record<Rule['badge'], string> = {
-  blue: 'bg-blue-100 text-blue-800',
-  green: 'bg-green-100 text-green-800',
-  gray: 'bg-slate-100 text-slate-600',
+  blue: 'bg-bluedim text-vblue',
+  green: 'bg-greendim text-vgreen',
+  gray: 'bg-surface text-mid border border-rule',
 }
 
 export default function PlanRulesBlock({ rules }: PlanRulesBlockProps) {
   return (
-    <div className="space-y-3">
+    <div className="bg-white border border-rule rounded-[10px] overflow-hidden">
       {rules.map((r, i) => (
-        <div key={i} className="rounded-lg border border-slate-200 bg-white px-5 py-4">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span
-              className={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${badgeColors[r.badge]}`}
-            >
-              {r.badgeText}
-            </span>
-            <span className="text-sm font-bold text-slate-900">{r.title}</span>
+        <div
+          key={i}
+          className={`flex items-start ${i > 0 ? 'border-t border-rule' : ''}`}
+          style={{ gap: '14px', padding: '15px 20px' }}
+        >
+          {/* Badge */}
+          <span
+            className={`shrink-0 w-[30px] h-[30px] rounded-md flex items-center justify-center font-medium ${badgeColors[r.badge]}`}
+            style={{ fontSize: '11px', marginTop: '2px' }}
+          >
+            {r.badgeText}
+          </span>
+
+          <div className="min-w-0">
+            <p style={{ fontSize: '13.5px' }}>
+              <span className="font-medium text-ink">{r.title}</span>
+              {r.observation && (
+                <span className="text-muted italic font-normal" style={{ fontSize: '11px', marginLeft: '6px' }}>
+                  {r.observation}
+                </span>
+              )}
+            </p>
+            <div className="text-mid" style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '3px' }}>
+              {r.body}
+            </div>
           </div>
-          <p className="text-xs text-slate-500 mb-1.5">{r.observation}</p>
-          <div className="text-sm text-slate-700 leading-relaxed">{r.body}</div>
         </div>
       ))}
     </div>

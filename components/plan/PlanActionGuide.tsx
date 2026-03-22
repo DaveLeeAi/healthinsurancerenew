@@ -117,11 +117,7 @@ export default function PlanActionGuide({
         ))}
       </ol>
 
-      <GlobalCTA
-        pageType="plan"
-        intent="enroll"
-        location={{ state: stateCode, county: countyFips }}
-      />
+      <GlobalCTA />
     </section>
   )
 }

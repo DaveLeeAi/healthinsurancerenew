@@ -14,7 +14,6 @@ interface DrugPageCtaProps {
   drugName: string
   stateCode?: string
   stateName?: string
-  /** e.g. "$5–$20 per month" — shown in cost hook when available */
   costRange?: string
 }
 
@@ -30,6 +29,7 @@ function getCtaHref(stateCode?: string): string {
   return '/plans'
 }
 
+/** DrugPageCta — V19 green/mid/bottom CTA variants for drug pages. */
 export default function DrugPageCta({
   variant,
   drugName,
@@ -41,15 +41,25 @@ export default function DrugPageCta({
   const href = getCtaHref(stateCode)
   const stateLabel = stateName ?? stateCode?.toUpperCase()
 
+  /* ── Hero: green bg, white button (V19 .cta-primary) ── */
   if (variant === 'hero') {
     return (
-      <section className="mt-4 rounded-xl bg-primary-50/60 border border-primary-200/80 px-5 py-4 text-center">
-        <p className="text-sm text-primary-800 mb-3">
-          Need help choosing a plan that covers this medication?
-        </p>
+      <section
+        className="flex items-center justify-between flex-wrap"
+        style={{ background: '#0b6e4a', borderRadius: '10px', padding: '15px 20px', gap: '14px', marginTop: '14px' }}
+      >
+        <div>
+          <p className="text-white font-medium" style={{ fontSize: '15px', lineHeight: 1.3 }}>
+            Need help choosing a plan that covers this medication?
+          </p>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginTop: '2px' }}>
+            Compare plans covering {drugName}{stateLabel ? ` in ${stateLabel}` : ''}
+          </p>
+        </div>
         <Link
           href={href}
-          className="inline-block px-5 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
+          className="inline-block shrink-0 bg-white font-medium hover:opacity-90 transition-opacity"
+          style={{ color: '#0b6e4a', borderRadius: '6px', padding: '9px 22px', fontSize: '13.5px', textDecoration: 'none' }}
         >
           {stateLabel ? `Check Plans in ${stateLabel}` : 'Check Plans'} &rarr;
         </Link>
@@ -57,32 +67,33 @@ export default function DrugPageCta({
     )
   }
 
+  /* ── Mid: white bg, left blue border (V19 .cta-mid) ── */
   if (variant === 'mid') {
     return (
       <section
-        aria-labelledby="coverage-help-heading"
-        className="rounded-xl bg-primary-50 border-2 border-primary-200 p-5 sm:p-6 text-center"
+        className="bg-white border border-rule flex items-center justify-between flex-wrap"
+        style={{ borderLeft: '3px solid #1a56a0', borderRadius: '0 8px 8px 0', padding: '14px 18px', gap: '14px' }}
       >
-        <h2
-          id="coverage-help-heading"
-          className="text-lg font-semibold text-primary-900 mb-2"
-        >
-          Not sure which plan is best for your prescriptions?
-        </h2>
-        <p className="text-sm text-primary-700 max-w-lg mx-auto mb-2 leading-relaxed">
-          {licensed
-            ? CTA_CONFIG.body
-            : 'Compare marketplace plans to find coverage that includes your medications at the lowest cost.'}
-        </p>
-        {costRange && stateLabel && (
-          <p className="text-xs text-primary-600 mb-3">
-            Plans covering {drugName}{stateLabel ? ` in ${stateLabel}` : ''} typically
-            cost {costRange} per month.
+        <div>
+          <p className="text-ink font-medium" style={{ fontSize: '14px' }}>
+            Not sure which plan is best for your prescriptions?
           </p>
-        )}
+          <p className="text-muted" style={{ fontSize: '12px', marginTop: '2px' }}>
+            {licensed
+              ? CTA_CONFIG.body
+              : 'Compare marketplace plans to find coverage that includes your medications at the lowest cost.'}
+          </p>
+          {costRange && stateLabel && (
+            <p className="text-vblue" style={{ fontSize: '12px', marginTop: '4px' }}>
+              Plans covering {drugName}{stateLabel ? ` in ${stateLabel}` : ''} typically
+              cost {costRange} per month.
+            </p>
+          )}
+        </div>
         <Link
           href={href}
-          className="inline-block px-6 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
+          className="inline-block shrink-0 bg-vblue text-white font-medium hover:bg-ink transition-colors"
+          style={{ borderRadius: '6px', padding: '9px 20px', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}
         >
           See Plans That Cover {drugName} &rarr;
         </Link>
@@ -90,15 +101,27 @@ export default function DrugPageCta({
     )
   }
 
-  // bottom variant
+  /* ── Bottom: dark ink bg, Lora serif title (V19 .cta-bottom) ── */
   return (
-    <section className="rounded-xl bg-neutral-50 border border-neutral-200 px-5 py-5 text-center">
-      <p className="text-sm text-neutral-700 mb-3">
-        Still have questions about your coverage?
-      </p>
+    <section
+      className="flex items-center justify-between flex-wrap"
+      style={{ background: '#0d1b2a', borderRadius: '16px', padding: '28px 32px', gap: '18px', marginTop: '36px' }}
+    >
+      <div>
+        <p
+          className="font-heading text-white font-medium"
+          style={{ fontSize: '21px', lineHeight: 1.2, marginBottom: '4px' }}
+        >
+          Still have questions about your coverage?
+        </p>
+        <p style={{ fontSize: '13px', color: '#7fb3e0' }}>
+          Get personalized help with your health plan options
+        </p>
+      </div>
       <Link
         href={licensed ? '/contact' : href}
-        className="inline-block px-5 py-2.5 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
+        className="inline-block shrink-0 bg-white text-ink font-medium hover:opacity-90 transition-opacity"
+        style={{ borderRadius: '6px', padding: '12px 26px', fontSize: '14px', textDecoration: 'none', whiteSpace: 'nowrap' }}
       >
         {licensed ? CTA_CONFIG.buttonText : 'Get Help'} &rarr;
       </Link>

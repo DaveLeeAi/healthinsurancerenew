@@ -710,53 +710,44 @@ export default async function FormularyDrugPage({ params }: Props) {
         'Updated March 2026',
       ]} />
 
-      <main id="main-content" className="mx-auto px-5 py-10" style={{ maxWidth: 800 }}>
+      <main id="main-content" className="mx-auto" style={{ maxWidth: 800, padding: '0 20px 72px' }}>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:px-4 focus:py-2 focus:z-50 focus:rounded focus:shadow">Skip to main content</a>
 
-        {/* ── Breadcrumbs ── */}
-        <nav aria-label="Breadcrumb" className="text-faint" style={{ fontSize: 13 }}>
-          <ol className="flex flex-wrap items-center gap-1.5">
-            <li>
-              <a href="/" className="hover:underline text-vblue" style={{ fontWeight: 500 }}>Home</a>
-            </li>
-            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
-            <li>
-              <a href="/formulary" className="hover:underline text-vblue" style={{ fontWeight: 500 }}>Drug Coverage</a>
-            </li>
-            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
-            <li>
-              <a
-                href={`/formulary/${canonicalIssuerParam}/all`}
-                className="hover:underline text-vblue"
-                style={{ fontWeight: 500 }}
-              >
-                {isState ? stateName : issuerName}
-              </a>
-            </li>
-            <li aria-hidden="true" className="text-rule">&rsaquo;</li>
-            <li aria-current="page" className="text-ink3" style={{ fontWeight: 600 }}>
-              {titleCase(drugDisplay)}
-            </li>
-          </ol>
+        {/* ── Breadcrumbs (V19 .bc) ── */}
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center text-faint" style={{ fontSize: '12px', gap: '4px', paddingTop: '20px' }}>
+          <a href="/" className="text-vblue hover:underline">Home</a>
+          <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
+          <a href="/formulary" className="text-vblue hover:underline">Drug Coverage</a>
+          <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
+          <a href={`/formulary/${canonicalIssuerParam}/all`} className="text-vblue hover:underline">
+            {isState ? stateName : issuerName}
+          </a>
+          <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
+          <span className="text-ink3">{titleCase(drugDisplay)}</span>
         </nav>
 
         <article>
-          {/* ── 1. H1 ── */}
-          <h1 className="font-serif text-ink mt-6" style={{ fontSize: 27, fontWeight: 500, lineHeight: 1.25 }}>
-            {isState
-              ? `${titleCase(drugDisplay)} Coverage in ${stateName}: What ${results.length} Health Plans Show for ${PLAN_YEAR}`
-              : isSpecificIssuer
-                ? `${titleCase(drugDisplay)} \u2014 ${issuerName}: What Plans Show for ${PLAN_YEAR}`
-                : `${titleCase(drugDisplay)} Coverage: What Marketplace Plans Show for ${PLAN_YEAR}`
-            }
-          </h1>
+          {/* ── 1. H1 (V19 .page-h1) ── */}
+          <div style={{ paddingTop: '16px' }}>
+            <h1
+              className="font-serif text-ink"
+              style={{ fontSize: '27px', fontWeight: 500, lineHeight: 1.2, letterSpacing: '-0.3px', maxWidth: 680 }}
+            >
+              {isState
+                ? `${titleCase(drugDisplay)} Coverage in ${stateName}: What ${results.length} Health Plans Show for ${PLAN_YEAR}`
+                : isSpecificIssuer
+                  ? `${titleCase(drugDisplay)} \u2014 ${issuerName}: What Plans Show for ${PLAN_YEAR}`
+                  : `${titleCase(drugDisplay)} Coverage: What Marketplace Plans Show for ${PLAN_YEAR}`
+              }
+            </h1>
 
-          {/* ── 2. Date line ── */}
-          <p className="text-muted mt-2 mb-4" style={{ fontSize: 14, fontWeight: 500 }}>
-            <time dateTime="2026-03-20">Last reviewed March 2026</time>
-            {' \u00b7 '}
-            {isState ? stateName : issuerName} {PLAN_YEAR}
-          </p>
+            {/* ── 2. Date line (V19 .page-date) ── */}
+            <p className="text-muted" style={{ fontSize: '12px', marginTop: '6px' }}>
+              <time dateTime="2026-03-20">Last reviewed March 2026</time>
+              {' \u00a0·\u00a0 '}
+              {isState ? stateName : issuerName} {PLAN_YEAR}
+            </p>
+          </div>
 
           {/* ── 3. AeoBlock ── */}
           {results.length > 0 && (
@@ -788,38 +779,43 @@ export default async function FormularyDrugPage({ params }: Props) {
             />
           )}
 
-          {/* ── 5. Primary CTA (green — V19 .cta-primary) ── */}
+          {/* ── 5. Primary CTA (V19 .cta-primary) ── */}
           {results.length > 0 && (
-            <div className="rounded-lg w-full mt-6" style={{ background: '#0b6e4a', padding: '15px 20px' }}>
-              <p className="text-white mb-0.5" style={{ fontSize: 15, fontWeight: 500 }}>
-                Find a {isState ? `${stateName} ` : ''}plan that covers {titleCase(drugDisplay)}
-              </p>
-              <p className="mb-3" style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
-                A licensed agent compares every plan's drug list — at no cost to you.
-              </p>
+            <div
+              className="flex items-center justify-between flex-wrap"
+              style={{ background: '#0b6e4a', borderRadius: '10px', padding: '15px 20px', gap: '14px', marginTop: '14px' }}
+            >
+              <div>
+                <div className="text-white font-medium" style={{ fontSize: '15px', lineHeight: 1.3 }}>
+                  Find a {isState ? `${stateName} ` : ''}Plan That Covers {titleCase(drugDisplay)}
+                </div>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginTop: '2px' }}>
+                  Compare tier placement, costs, and prior authorization rules across plans
+                </div>
+              </div>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-lg bg-white font-semibold hover:bg-greendim transition-colors"
-                style={{ color: '#0b6e4a', fontSize: 14, padding: '10px 22px' }}
+                className="inline-block shrink-0 bg-white font-medium hover:opacity-90 transition-opacity"
+                style={{ color: '#0b6e4a', borderRadius: '6px', padding: '9px 22px', fontSize: '13.5px', textDecoration: 'none', whiteSpace: 'nowrap' }}
               >
                 Compare Plans &rarr;
               </a>
             </div>
           )}
 
-          {/* ── DIVIDER ── */}
-          <hr className="border-rule my-10" />
+          {/* ── DIVIDER (V19 .divider) ── */}
+          <hr className="border-rule" style={{ margin: '36px 0' }} />
 
           {/* ── 6. Cost section ── */}
           {results.length > 0 && humanTiers.length > 0 && (
-            <section aria-labelledby="cost-heading" className="mt-0">
+            <section aria-labelledby="cost-heading" style={{ marginTop: '36px' }}>
               <div
                 id="cost-heading"
-                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
-                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+                className="text-faint uppercase font-medium border-b border-rule flex justify-between items-baseline flex-wrap"
+                style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px', gap: '4px' }}
               >
-                Cost details
-                <span className="float-right normal-case text-muted not-italic" style={{ fontSize: 11, letterSpacing: 0 }}>
+                <span>How much {titleCase(drugDisplay)} costs on {isState ? `${stateCode}` : 'Marketplace'} plans</span>
+                <span className="text-muted normal-case italic font-normal" style={{ fontSize: '11px', letterSpacing: 0 }}>
                   {titleCase(drugDisplay)} on {isState ? stateName : 'Marketplace'} plans
                 </span>
               </div>
@@ -835,19 +831,24 @@ export default async function FormularyDrugPage({ params }: Props) {
             </section>
           )}
 
-          {/* ── 7. Mid CTA (blue accent) ── */}
+          {/* ── 7. Mid CTA (V19 .cta-mid) ── */}
           {results.length > 0 && (
             <div
-              className="bg-white border border-rule rounded-r-lg px-5 py-4 my-8"
-              style={{ borderLeft: '3px solid #1a56a0' }}
+              className="bg-white border border-rule flex items-center justify-between flex-wrap"
+              style={{ borderLeft: '3px solid #1a56a0', borderRadius: '0 8px 8px 0', padding: '14px 18px', gap: '14px', marginTop: '14px' }}
             >
-              <p className="text-ink2 mb-2" style={{ fontSize: 14, fontWeight: 600 }}>
-                See plans in {isState ? stateName : 'your area'} with lower out-of-pocket drug costs
-              </p>
+              <div>
+                <div className="text-ink font-medium" style={{ fontSize: '14px' }}>
+                  See plans in {isState ? stateName : 'your area'} with lower out-of-pocket drug costs
+                </div>
+                <div className="text-muted" style={{ fontSize: '12px', marginTop: '2px' }}>
+                  Tier and deductible design vary — comparing plans can reveal a meaningfully lower total cost
+                </div>
+              </div>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-lg bg-vblue text-white font-semibold hover:opacity-90 transition-opacity"
-                style={{ fontSize: 13, padding: '8px 18px' }}
+                className="inline-block shrink-0 bg-vblue text-white font-medium hover:bg-ink transition-colors"
+                style={{ borderRadius: '6px', padding: '9px 20px', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap' }}
               >
                 Compare Plans &rarr;
               </a>
@@ -856,13 +857,13 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 8. Plan rules section ── */}
           {results.length > 0 && (
-            <section aria-labelledby="rules-heading" className="mt-8">
+            <section aria-labelledby="rules-heading" style={{ marginTop: '36px' }}>
               <div
                 id="rules-heading"
-                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
-                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+                className="text-faint uppercase font-medium border-b border-rule"
+                style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
               >
-                Plan rules
+                Plan rules for {titleCase(drugDisplay)}
               </div>
               <PlanRulesBlock
                 rules={[
@@ -906,13 +907,13 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 9. Approval timeline (only if hasPriorAuth) ── */}
           {results.length > 0 && hasPriorAuth && (
-            <section aria-labelledby="timeline-heading" className="mt-8">
+            <section aria-labelledby="timeline-heading" style={{ marginTop: '36px' }}>
               <div
                 id="timeline-heading"
-                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
-                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+                className="text-faint uppercase font-medium border-b border-rule"
+                style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
               >
-                Prior authorization timeline
+                How the prior authorization process works
               </div>
               <TimelineSteps
                 steps={[
@@ -928,13 +929,13 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 10. Ways to save ── */}
           {results.length > 0 && (
-            <section aria-labelledby="savings-heading" className="mt-8">
+            <section aria-labelledby="savings-heading" style={{ marginTop: '36px' }}>
               <div
                 id="savings-heading"
-                className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
-                style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+                className="text-faint uppercase font-medium border-b border-rule"
+                style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
               >
-                Ways to save
+                Ways to pay less
               </div>
               <SavingsRows
                 rows={[
@@ -950,7 +951,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 11. LimitsBlock ── */}
           {results.length > 0 && (
-            <div className="mt-8">
+            <div style={{ marginTop: '36px' }}>
               <LimitsBlock
                 items={[
                   'Your exact pharmacy cost for this medication',
@@ -964,31 +965,27 @@ export default async function FormularyDrugPage({ params }: Props) {
           )}
         </article>
 
-        {/* ── DIVIDER ── */}
-        <hr className="border-slate-200 my-10" />
+        {/* ── DIVIDER (V19 .divider) ── */}
+        <hr className="border-rule" style={{ margin: '36px 0' }} />
 
-        {/* ── 12. Related drugs (pill-style links) ── */}
+        {/* ── 12. Related drugs (V19 .drug-pills) ── */}
         {(relatedDrugs.length > 0 || comparisonLinks.length > 0) && (
-          <section aria-labelledby="related-drugs-heading" className="mt-0">
+          <section aria-labelledby="related-drugs-heading" style={{ marginTop: '36px' }}>
             <div
               id="related-drugs-heading"
-              className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-3"
-              style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              className="text-faint uppercase font-medium border-b border-rule"
+              style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
             >
-              Related medications
+              Related drugs — {isState ? `${stateName} coverage` : 'coverage'}
             </div>
-            {drugCategory && (
-              <p className="text-sm text-slate-500 mb-4">
-                Other {drugCategory.label.toLowerCase()} covered by Marketplace plans
-              </p>
-            )}
             {relatedDrugs.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap" style={{ gap: '8px' }}>
                 {relatedDrugs.map((drug) => (
                   <a
                     key={drug.slug}
                     href={drug.href}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-sm font-medium text-blue-700 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                    className="bg-white border border-rule text-vblue font-medium hover:border-vblue hover:bg-bluedim transition-colors"
+                    style={{ padding: '7px 15px', borderRadius: '20px', fontSize: '13px', textDecoration: 'none' }}
                   >
                     {drug.name}
                   </a>
@@ -996,13 +993,13 @@ export default async function FormularyDrugPage({ params }: Props) {
               </div>
             )}
             {comparisonLinks.length > 0 && (
-              <div className={`${relatedDrugs.length > 0 ? 'mt-4 pt-4 border-t border-slate-100' : ''} space-y-2`}>
-                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Compare</h3>
+              <div className={`${relatedDrugs.length > 0 ? 'border-t border-rule' : ''}`} style={{ marginTop: relatedDrugs.length > 0 ? '14px' : 0, paddingTop: relatedDrugs.length > 0 ? '14px' : 0 }}>
                 {comparisonLinks.map((comp) => (
                   <a
                     key={comp.href}
                     href={comp.href}
-                    className="flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-900 hover:underline"
+                    className="flex items-center text-vblue font-medium hover:underline"
+                    style={{ fontSize: '13px', gap: '6px' }}
                   >
                     {comp.label} &rarr;
                   </a>
@@ -1014,14 +1011,17 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── 13. Insurer list (V19 .ins-block) ── */}
         {otherIssuers.length > 0 && (
-          <section aria-labelledby="insurers-heading" className="mt-10">
+          <section aria-labelledby="insurers-heading" style={{ marginTop: '36px' }}>
             <div
-              className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-0"
-              style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+              className="text-faint uppercase font-medium border-b border-rule flex justify-between items-baseline flex-wrap"
+              style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px', gap: '4px' }}
             >
-              Insurers covering {titleCase(drugDisplay)}
+              <span>{isState ? `${stateCode}` : ''} insurers that included {titleCase(drugDisplay)} in {PLAN_YEAR}</span>
+              <span className="text-muted normal-case italic font-normal" style={{ fontSize: '11px', letterSpacing: 0 }}>
+                Tier from plan documents reviewed · prior auth status noted
+              </span>
             </div>
-            <div className="bg-white border border-rule rounded-lg overflow-hidden mt-3">
+            <div className="bg-white border border-rule rounded-[10px] overflow-hidden">
               {otherIssuers.slice(0, 12).map((ins, i) => {
                 const ht = humanizeTierForDrug(ins.tier, drugDisplay)
                 const isPref = ht.group === 'preferred-brand' || ht.group === 'generic' || ht.group === 'insulin-ira'
@@ -1029,78 +1029,92 @@ export default async function FormularyDrugPage({ params }: Props) {
                   <a
                     key={ins.id}
                     href={`/formulary/${ins.id}/${drugSlug}`}
-                    className={`flex items-center justify-between px-4 py-2.5 hover:bg-surface transition-colors ${i > 0 ? 'border-t border-rule/50' : ''}`}
-                    style={{ textDecoration: 'none' }}
+                    className={`flex items-center justify-between hover:bg-surface transition-colors ${i > 0 ? 'border-t border-rule' : ''}`}
+                    style={{ padding: '12px 20px', fontSize: '13.5px', textDecoration: 'none', color: 'inherit' }}
                   >
                     <div>
-                      <span className="text-vblue block" style={{ fontSize: 14, fontWeight: 600 }}>
-                        {ins.name}
-                      </span>
-                      <span className="text-muted block" style={{ fontSize: 12 }}>
-                        {hasPriorAuth ? 'Prior authorization seen' : 'No prior authorization'}
+                      <span className="text-vblue block font-medium">{ins.name}</span>
+                      <span className="text-muted block" style={{ fontSize: '11.5px', marginTop: '1px' }}>
+                        {hasPriorAuth ? 'Prior authorization seen on reviewed plans' : 'No prior authorization'}
                       </span>
                     </div>
-                    <span
-                      className="shrink-0 rounded-full text-center"
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        padding: '3px 12px',
-                        background: isPref ? '#e6eef9' : '#f3f7fa',
-                        color: isPref ? '#1a56a0' : '#4a6278',
-                        border: isPref ? 'none' : '1px solid #dbe3ec',
-                      }}
-                    >
-                      {ht.shortLabel}
-                    </span>
+                    <div className="flex items-center shrink-0" style={{ gap: '10px' }}>
+                      <span
+                        className="font-medium"
+                        style={{
+                          fontSize: '11px',
+                          padding: '2px 8px',
+                          borderRadius: '20px',
+                          background: isPref ? '#e6eef9' : '#f3f7fa',
+                          color: isPref ? '#1a3a87' : '#4a6278',
+                          border: isPref ? 'none' : '1px solid #dbe3ec',
+                        }}
+                      >
+                        {ht.shortLabel}
+                      </span>
+                    </div>
                   </a>
                 )
               })}
-              {/* Footer note */}
               <div
-                className="bg-surface border-t border-rule px-4 py-2.5"
-                style={{ fontSize: '11.5px', fontStyle: 'italic', color: '#728fa4' }}
+                className="bg-surface border-t border-rule"
+                style={{ padding: '9px 20px', fontSize: '11.5px', color: '#728fa4', fontStyle: 'italic' }}
               >
-                Tier placement may vary by specific plan. Confirm with your insurer.
+                Tier placement from plan benefit documents reviewed January 2026. Click any insurer to see plan-level detail. Confirm current coverage before enrolling.
               </div>
             </div>
           </section>
         )}
 
-        {/* ── 14. State nav ── */}
+        {/* ── 14. State nav (V19 .state-nav) ── */}
         {isState && (
-          <section className="mt-10">
-            <p className="text-sm text-slate-600 mb-3">
-              See drug coverage data for all medications reviewed in {stateName} health plans.
-            </p>
-            <a
-              href={`/formulary/${canonicalIssuerParam}/all`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-900 hover:bg-slate-50 transition-colors"
+          <section style={{ marginTop: '36px' }}>
+            <div
+              className="bg-white border border-rule rounded-[10px] flex items-center justify-between flex-wrap"
+              style={{ padding: '15px 20px', gap: '12px' }}
             >
-              All {stateCode} drug coverage &rarr;
-            </a>
+              <div className="text-mid" style={{ fontSize: '13.5px' }}>
+                See drug coverage data for all medications reviewed in <strong className="text-ink font-medium">{stateName}</strong> health plans.
+              </div>
+              <a
+                href={`/formulary/${canonicalIssuerParam}/all`}
+                className="border border-rule text-vblue font-medium hover:border-vblue transition-colors"
+                style={{ borderRadius: '6px', padding: '7px 16px', fontSize: '13px', textDecoration: 'none' }}
+              >
+                All {stateCode} drug coverage &rarr;
+              </a>
+            </div>
           </section>
         )}
 
-        {/* ── 15. FAQ — 7 questions, static details/summary, first item open ── */}
-        <section aria-labelledby="faq-heading" className="mt-12 border-t border-rule pt-10">
+        {/* ── 15. FAQ (V19 .faq-wrap) ── */}
+        <section aria-labelledby="faq-heading" style={{ marginTop: '36px' }}>
           <div
             id="faq-heading"
-            className="text-faint uppercase tracking-wide border-b border-rule pb-2 mb-4"
-            style={{ fontSize: '10.5px', fontWeight: 500, letterSpacing: '0.1em' }}
+            className="text-faint uppercase font-medium border-b border-rule"
+            style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
           >
-            Frequently asked questions
+            Common questions
           </div>
-          <div className="space-y-2">
+          <div className="flex flex-col" style={{ gap: '5px' }}>
             {formularyFaqs.map((faq, i) => (
-              <details key={i} open={i === 0} className="group border border-rule rounded-lg overflow-hidden">
-                <summary className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-surface transition-colors list-none">
-                  <span className="text-ink2 pr-4" style={{ fontSize: 14, fontWeight: 600 }}>{faq.question}</span>
-                  <svg className="h-4 w-4 shrink-0 text-faint transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                  </svg>
+              <details
+                key={i}
+                open={i === 0}
+                className="group bg-white border border-rule overflow-hidden"
+                style={{ borderRadius: '8px' }}
+              >
+                <summary
+                  className="flex items-center justify-between cursor-pointer text-ink font-medium hover:bg-surface transition-colors [&::-webkit-details-marker]:hidden list-none"
+                  style={{ padding: '13px 18px', fontSize: '13.5px', gap: '8px' }}
+                >
+                  <span>{faq.question}</span>
+                  <span className="text-faint shrink-0 transition-transform group-open:rotate-180" style={{ fontSize: '10px' }}>&#x25BC;</span>
                 </summary>
-                <div className="px-4 pb-4 text-mid leading-relaxed" style={{ fontSize: 14 }}>
+                <div
+                  className="text-mid border-t border-rule"
+                  style={{ padding: '10px 18px 15px', fontSize: '13.5px', lineHeight: 1.65 }}
+                >
                   {faq.answer}
                 </div>
               </details>
@@ -1109,7 +1123,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         </section>
 
         {/* ── 16. AboutBlock ── */}
-        <div className="mt-8">
+        <div style={{ marginTop: '36px' }}>
           <AboutBlock
             text={`This page summarizes formulary data from ${PLAN_YEAR} plan benefit filings published by CMS. Tier placement, prior authorization requirements, and cost-sharing details may change during the plan year. Cost ranges shown are general estimates based on typical Marketplace plan structures \u2014 not live pharmacy prices. Always verify current coverage with your insurer before enrolling or filling a prescription.`}
             reviewedLine="Reviewed by licensed health insurance professionals"
@@ -1121,49 +1135,65 @@ export default async function FormularyDrugPage({ params }: Props) {
         </div>
 
         {/* ── 17. Education links (V19 .edu-list) ── */}
-        <div className="mt-6">
-          <a
-            href="/guides/how-deductibles-affect-drug-costs"
-            className="flex items-center gap-2 py-2.5 border-b border-rule text-vblue hover:underline"
-            style={{ fontSize: 13, fontWeight: 500 }}
+        <div style={{ marginTop: '36px' }}>
+          <div
+            className="text-faint uppercase font-medium border-b border-rule"
+            style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
           >
-            <span className="text-muted" aria-hidden="true">&rarr;</span>
-            How your deductible affects what you pay for prescription drugs
-          </a>
-          <a
-            href="/guides/how-approval-rules-work-for-prescriptions"
-            className="flex items-center gap-2 py-2.5 border-b border-rule text-vblue hover:underline"
-            style={{ fontSize: 13, fontWeight: 500 }}
-          >
-            <span className="text-muted" aria-hidden="true">&rarr;</span>
-            How approval rules work — and what happens if a request is not approved
-          </a>
+            Related guides
+          </div>
+          <div className="flex flex-col">
+            <a
+              href="/guides/how-deductibles-affect-drug-costs"
+              className="flex items-center justify-between border-b border-rule text-ink hover:text-vblue transition-colors"
+              style={{ padding: '12px 0', fontSize: '13.5px', textDecoration: 'none' }}
+            >
+              How your deductible affects what you pay for prescription drugs
+              <span className="text-rule" style={{ fontSize: '12px' }}>&rsaquo;</span>
+            </a>
+            <a
+              href="/guides/how-approval-rules-work-for-prescriptions"
+              className="flex items-center justify-between text-ink hover:text-vblue transition-colors"
+              style={{ padding: '12px 0', fontSize: '13.5px', textDecoration: 'none' }}
+            >
+              How approval rules work — and what happens if a request is not approved
+              <span className="text-rule" style={{ fontSize: '12px' }}>&rsaquo;</span>
+            </a>
+          </div>
         </div>
 
-        {/* ── 18. Bottom CTA (V19 .cta-bottom — dark navy) ── */}
-        <div className="rounded-lg mt-8 px-6 py-6" style={{ background: '#0d1b2a' }}>
-          <p className="font-serif text-white mb-1" style={{ fontSize: 21 }}>
-            Compare Plans That Cover {titleCase(drugDisplay)}
-          </p>
-          <p className="mb-4" style={{ fontSize: 13, color: '#9eb5c4' }}>
-            A licensed agent compares every plan's drug list — at no cost to you.
-          </p>
+        {/* ── 18. Bottom CTA (V19 .cta-bottom) ── */}
+        <div
+          className="flex items-center justify-between flex-wrap"
+          style={{ background: '#0d1b2a', borderRadius: '16px', padding: '28px 32px', gap: '18px', marginTop: '36px' }}
+        >
+          <div>
+            <div
+              className="font-serif text-white font-medium"
+              style={{ fontSize: '21px', lineHeight: 1.2, marginBottom: '4px' }}
+            >
+              Compare Plans That Cover {titleCase(drugDisplay)}
+            </div>
+            <div style={{ fontSize: '13px', color: '#7fb3e0' }}>
+              Review {isState ? `${stateName} ` : ''}plan options, tier placement, and estimated monthly costs before you enroll.
+            </div>
+          </div>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-lg bg-white font-semibold hover:bg-surface transition-colors"
-            style={{ color: '#0d1b2a', fontSize: 14, padding: '10px 22px' }}
+            className="inline-block shrink-0 bg-white text-ink font-medium hover:opacity-90 transition-opacity"
+            style={{ borderRadius: '6px', padding: '12px 26px', fontSize: '14px', textDecoration: 'none', whiteSpace: 'nowrap' }}
           >
-            See {isState ? stateName : 'Plan'} Options &rarr;
+            See {isState ? `${stateName} ` : ''}Plan Options &rarr;
           </a>
         </div>
 
         {/* ── 19. GenericByline ── */}
-        <div className="mt-8">
+        <div style={{ marginTop: '24px' }}>
           <GenericByline dataSource="CMS plan benefit filings" planYear={PLAN_YEAR} />
         </div>
 
-        {/* ── 20. Page disclaimer footer ── */}
-        <footer className="border-t border-rule mt-8 pt-5 text-muted space-y-2" style={{ fontSize: '11.5px', lineHeight: 1.55 }}>
+        {/* ── 20. Page disclaimer footer (V19 .disc) ── */}
+        <footer className="border-t border-rule text-muted" style={{ fontSize: '11.5px', lineHeight: 1.65, paddingTop: '18px', marginTop: '24px' }}>
           <p>
             This page is for informational purposes only and does not constitute
             medical or insurance advice. Formulary data sourced from CMS plan benefit
@@ -1216,7 +1246,7 @@ function SBMExplanationPage({
   return (
     <>
       <SchemaScript schema={bSchema} id="breadcrumb-schema" />
-      <main className="max-w-3xl mx-auto px-4 py-10">
+      <main className="mx-auto px-5 pb-[72px]" style={{ maxWidth: 800 }}>
 
         <nav aria-label="Breadcrumb" className="text-sm text-neutral-500">
           <ol className="flex flex-wrap items-center gap-1">

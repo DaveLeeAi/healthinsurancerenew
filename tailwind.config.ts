@@ -9,6 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        /* V19 editorial palette */
+        ink:      '#0d1b2a',
+        ink2:     '#1c3148',
+        ink3:     '#2c4260',
+        mid:      '#4a6278',
+        muted:    '#728fa4',
+        faint:    '#9eb5c4',
+        rule:     '#dbe3ec',
+        surface:  '#f3f7fa',
+        page:     '#ecf1f7',
+        vblue:    '#1a56a0',
+        bluedim:  '#e6eef9',
+        vgreen:   '#0b6e4a',
+        greendim: '#e2f2eb',
         navy: {
           50: '#f0f4f8', 100: '#d9e2ec', 200: '#bcccdc', 300: '#9fb3c8',
           400: '#829ab1', 500: '#627d98', 600: '#486581', 700: '#334e68',
@@ -57,8 +71,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        heading: ['"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"DM Sans"', '"Public Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        heading: ['Lora', 'Georgia', 'Cambria', 'serif'],
         serif: ['Lora', 'Georgia', 'Cambria', 'serif'],
       },
       spacing: {

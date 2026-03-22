@@ -333,6 +333,26 @@ Visible UI copy uses "Marketplace" language (what consumers search for), not "AC
 - "federal rules" / "federal law" not "ACA rules"
 - Exceptions: schema JSON-LD, data source citations, CFR/regulatory references, "ACA-compliant" / "ACA-mandated" (technical/legal terms)
 
+### V19 Formulary Component Library
+
+All formulary drug page components are pixel-matched to the approved `ozempic_nc_formulary_v19.html` mockup. Design tokens: body bg `#ecf1f7`, shell `max-width: 800px`, H1 Lora 27px/500, borders `#dbe3ec`, muted `#728fa4`, blue accent `#1a56a0`, green `#0b6e4a`.
+
+| Component | File | V19 Section |
+|-----------|------|-------------|
+| `ProcessBar` | `components/ProcessBar.tsx` | Light trust strip — bg `#f3f7fa`, text `#728fa4`, green dots |
+| `AeoBlock` | `components/AeoBlock.tsx` | Quick answer card — 3px blue left border, white bg, caveat inside |
+| `EvidenceBlock` | `components/EvidenceBlock.tsx` | 3-col stat grid + key/value rows + italic note footer |
+| `CostBlock` | `components/CostBlock.tsx` | Progress bar cost rows + "why costs vary" sub-card |
+| `PlanRulesBlock` | `components/PlanRulesBlock.tsx` | Prior auth / step therapy / supply limit rule rows |
+| `TimelineSteps` | `components/TimelineSteps.tsx` | Numbered timeline with vertical connector line |
+| `SavingsRows` | `components/SavingsRows.tsx` | Green icon + title/desc savings tips |
+| `LimitsBlock` | `components/LimitsBlock.tsx` | YMYL "what this page can't confirm" surface card |
+| `AboutBlock` | `components/AboutBlock.tsx` | Data attribution + green dot reviewed line + links |
+| `DrugPageCta` | `components/DrugPageCta.tsx` | Green primary CTA (`.cta-primary`) |
+| `NextStepCta` | `components/NextStepCta.tsx` | Blue-accent mid-page CTA (`.cta-mid`) |
+| `GlobalCTA` | `components/GlobalCTA.tsx` | Bottom-of-page CTA (`.cta-bottom`) |
+| `PageFaq` | `components/PageFaq.tsx` | Accordion FAQ with chevron rotation |
+
 ---
 
 ## Folder Structure

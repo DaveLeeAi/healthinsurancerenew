@@ -202,7 +202,7 @@ export function summarizeTierPlacement(
   rawTiers: (string | undefined | null)[],
   drugName: string,
 ): string {
-  const groups = humanizeTiers(rawTiers)
+  const groups = humanizeTiersForDrug(rawTiers, drugName)
   if (groups.length === 0) return `Tier information is not available for ${drugName} in this dataset.`
 
   const primary = groups[0]
@@ -321,6 +321,15 @@ const BIOLOGIC_BLOCKLIST = [
   'kevzara', 'actemra', 'orencia', 'cimzia', 'simponi',
 ]
 
+/** GLP-1 receptor agonists — expensive brand/specialty drugs sometimes
+ *  miscoded as preventive in carrier formulary files */
+const GLP1_BLOCKLIST = [
+  'ozempic', 'wegovy', 'mounjaro', 'zepbound', 'rybelsus', 'saxenda',
+  'victoza', 'trulicity', 'byetta', 'bydureon', 'adlyxin', 'tanzeum',
+  'semaglutide', 'tirzepatide', 'liraglutide', 'dulaglutide',
+  'exenatide', 'lixisenatide',
+]
+
 /** Returns true if the drug name matches an insulin product */
 export function isInsulinDrug(drugName: string): boolean {
   const lower = drugName.toLowerCase()
@@ -333,10 +342,17 @@ export function isBiologicDrug(drugName: string): boolean {
   return BIOLOGIC_BLOCKLIST.some((p) => lower.includes(p))
 }
 
+/** Returns true if the drug name matches a GLP-1 agonist that should never be Preventive */
+export function isGlp1Drug(drugName: string): boolean {
+  const lower = drugName.toLowerCase()
+  return GLP1_BLOCKLIST.some((p) => lower.includes(p))
+}
+
 /**
  * Applies drug-specific tier overrides:
  * - Insulins marked PREVENTIVE/ZERO-COST-SHARE → "insulin-ira" ($35/month IRA cap)
  * - Biologics marked PREVENTIVE → reclassified as "specialty"
+ * - GLP-1 agonists marked PREVENTIVE → reclassified as "non-preferred-brand"
  *
  * Call this AFTER classifyTier() when the drug name is known.
  */
@@ -357,6 +373,15 @@ export function applyDrugTierOverride(
       `${rawTier ? ` (raw: "${rawTier}")` : ''} — overriding to Specialty`
     )
     return 'specialty'
+  }
+
+  // GLP-1 preventive override: carrier data error — reclassify as non-preferred brand
+  if (isGlp1Drug(drugName) && group === 'preventive') {
+    console.warn(
+      `[formulary-helpers] GLP-1 "${drugName}" incorrectly marked as Preventive` +
+      `${rawTier ? ` (raw: "${rawTier}")` : ''} — overriding to Non-Preferred Brand`
+    )
+    return 'non-preferred-brand'
   }
 
   return group

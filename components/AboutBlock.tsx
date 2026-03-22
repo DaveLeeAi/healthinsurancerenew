@@ -1,4 +1,4 @@
-/** AboutBlock — data methodology + trust signals (V19 .about-block) */
+/** AboutBlock — V19 .about-block: surface bg, 1px border, 13px muted text, green dot before reviewed line */
 
 interface AboutLink {
   href: string
@@ -13,21 +13,35 @@ export interface AboutBlockProps {
 
 export default function AboutBlock({ text, reviewedLine, links }: AboutBlockProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 space-y-3">
-      <p className="text-sm text-slate-600 leading-relaxed">{text}</p>
-      <p className="text-sm text-slate-700 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" aria-hidden="true" />
-        {reviewedLine}
+    <div className="bg-surface border border-rule rounded-[10px]" style={{ padding: '18px 20px' }}>
+      <p className="text-mid" style={{ fontSize: '13px', lineHeight: 1.7 }}>
+        {text}
       </p>
+
+      {/* Reviewed line with green dot */}
+      <div
+        className="flex items-start text-muted border-t border-rule"
+        style={{ gap: '7px', fontSize: '12px', lineHeight: 1.55, marginTop: '12px', paddingTop: '12px' }}
+      >
+        <span
+          className="rounded-full shrink-0"
+          style={{ width: 6, height: 6, background: '#4ade80', marginTop: '3px' }}
+          aria-hidden="true"
+        />
+        {reviewedLine}
+      </div>
+
+      {/* Links */}
       {links.length > 0 && (
-        <div className="flex flex-wrap gap-3 pt-1">
+        <div className="flex flex-wrap" style={{ gap: '16px', marginTop: '10px' }}>
           {links.map((link, i) => (
             <a
               key={i}
               href={link.href}
-              className="text-sm text-blue-700 hover:underline font-medium"
+              className="text-vblue hover:underline"
+              style={{ fontSize: '12px' }}
             >
-              {link.label} &rarr;
+              {link.label}
             </a>
           ))}
         </div>

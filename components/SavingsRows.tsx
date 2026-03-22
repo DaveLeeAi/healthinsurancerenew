@@ -15,18 +15,39 @@ export interface SavingsRowsProps {
 
 export default function SavingsRows({ rows, note }: SavingsRowsProps) {
   return (
-    <div className="space-y-3">
+    <div>
       {rows.map((r, i) => (
-        <div key={i} className="flex gap-3 items-start">
-          <span className="text-lg shrink-0 mt-0.5" aria-hidden="true">{r.icon}</span>
+        <div
+          key={i}
+          className="flex items-start"
+          style={{
+            gap: '14px',
+            padding: '13px 0',
+            borderBottom: i < rows.length - 1 ? '1px solid #dbe3ec' : 'none',
+          }}
+        >
+          <span
+            className="shrink-0 rounded-md bg-greendim text-vgreen flex items-center justify-center"
+            style={{ width: 28, height: 28, fontSize: '13px', marginTop: '2px' }}
+            aria-hidden="true"
+          >
+            {r.icon}
+          </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-slate-900">{r.title}</p>
-            <div className="text-sm text-slate-600 leading-relaxed mt-0.5">{r.desc}</div>
+            <p className="text-ink font-medium" style={{ fontSize: '13.5px' }}>{r.title}</p>
+            <div className="text-mid" style={{ fontSize: '13px', marginTop: '2px', lineHeight: 1.55 }}>
+              {r.desc}
+            </div>
           </div>
         </div>
       ))}
       {note && (
-        <p className="text-xs text-slate-400 mt-2 italic">{note}</p>
+        <p
+          className="text-muted italic border-t border-rule"
+          style={{ fontSize: '12px', marginTop: '12px', paddingTop: '12px' }}
+        >
+          {note}
+        </p>
       )}
     </div>
   )

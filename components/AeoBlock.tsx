@@ -1,4 +1,6 @@
-/** AeoBlock — AI Overview extraction target (V19 .aeo-block) */
+/** AeoBlock — AI Overview extraction target (V19 .aeo-block)
+ *  White bg, 1px border, left 3px solid blue, rounded-right only.
+ *  Caveat INSIDE the card below a rule line (not a separate element). */
 export default function AeoBlock({
   label = 'Quick answer',
   answer,
@@ -9,16 +11,27 @@ export default function AeoBlock({
   caveat: string
 }) {
   return (
-    <>
-      <div className="border-l-4 border-blue-600 bg-white rounded-r-lg px-5 py-4 mb-1">
-        <span className="block text-xs font-semibold text-blue-700 uppercase tracking-wide mb-1.5">
-          {label}
-        </span>
-        <div className="text-sm sm:text-base text-slate-800 leading-relaxed">
-          {answer}
-        </div>
+    <div
+      className="bg-white border border-rule mt-[18px]"
+      style={{ borderLeft: '3px solid #1a56a0', borderRadius: '0 8px 8px 0', padding: '15px 20px' }}
+    >
+      <span
+        className="block text-vblue uppercase font-medium mb-1.5"
+        style={{ fontSize: '10px', letterSpacing: '0.1em' }}
+      >
+        {label}
+      </span>
+      <div className="text-ink font-medium" style={{ fontSize: '14px', lineHeight: 1.5 }}>
+        {answer}
       </div>
-      <p className="text-xs text-slate-500 mt-1 mb-5">{caveat}</p>
-    </>
+      {caveat && (
+        <p
+          className="text-muted border-t border-rule"
+          style={{ fontSize: '11.5px', fontStyle: 'italic', marginTop: '10px', paddingTop: '9px' }}
+        >
+          {caveat}
+        </p>
+      )}
+    </div>
   )
 }
