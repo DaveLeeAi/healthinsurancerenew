@@ -3,6 +3,19 @@
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
   "last_updated": "2026-03-19 (sweep #5 — CT/ID/ME/NM/VA SBM PUF issuer discovery)",
   "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
+  "sbc_bulk_sources": {
+    "centene_ambetter": {
+      "url": "https://api.centene.com/SBC/2026/",
+      "type": "directory_listing",
+      "format": "PDF",
+      "naming_pattern": "{HIOS_plan_id}-{variant}.pdf",
+      "languages": ["en", "es"],
+      "coverage": "All Centene/Ambetter states (AZ, NE, GA, IL, FL, TX, NC, etc.)",
+      "status": "verified",
+      "verified_date": "2026-03-22",
+      "notes": "Open directory, no auth required. Contains SBC PDFs for all Ambetter/Centene QHP plans. Plan IDs match HIOS format. English and Spanish versions available."
+    }
+  },
   "states": {
     "CA": {
       "exchange_name": "Covered California",
