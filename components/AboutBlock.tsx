@@ -14,14 +14,14 @@ export interface AboutBlockProps {
 export default function AboutBlock({ text, reviewedLine, links }: AboutBlockProps) {
   return (
     <div className="bg-surface border border-rule rounded-[10px]" style={{ padding: '18px 20px' }}>
-      <p className="text-mid" style={{ fontSize: '13px', lineHeight: 1.7 }}>
+      <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.7 }}>
         {text}
       </p>
 
       {/* Reviewed line with green dot */}
       <div
         className="flex items-start text-muted border-t border-rule"
-        style={{ gap: '7px', fontSize: '12px', lineHeight: 1.55, marginTop: '12px', paddingTop: '12px' }}
+        style={{ gap: '7px', fontSize: '12.5px', lineHeight: 1.55, marginTop: '12px', paddingTop: '12px' }}
       >
         <span
           className="rounded-full shrink-0"
@@ -39,7 +39,7 @@ export default function AboutBlock({ text, reviewedLine, links }: AboutBlockProp
               key={i}
               href={link.href}
               className="text-vblue hover:underline"
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: '13px' }}
             >
               {link.label}
             </a>

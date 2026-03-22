@@ -2,20 +2,23 @@
  * Sitemap index — points to per-type sub-sitemaps at /sitemaps/[type].
  *
  * Sub-sitemaps: static, plans, subsidies, rates, enhanced-credits,
- *               sbc, formulary, dental, faq, billing, life-events,
- *               guides, states, drugs
+ *               sbc, formulary-1..N (split at 50K), dental, faq,
+ *               billing, life-events, guides, states, drugs
  */
+
+import { loadFormularySitemapIndex } from '@/lib/data-loader'
 
 const BASE = 'https://healthinsurancerenew.com'
 
-const SITEMAP_TYPES = [
+const MAX_URLS_PER_SITEMAP = 50_000
+
+const FIXED_SITEMAP_TYPES = [
   'static',
   'plans',
   'subsidies',
   'rates',
   'enhanced-credits',
   'sbc',
-  'formulary',
   'dental',
   'faq',
   'billing',
@@ -30,10 +33,29 @@ export const revalidate = 86400
 export async function GET() {
   const lastmod = new Date().toISOString().slice(0, 10)
 
+  // Calculate how many formulary sub-sitemaps are needed
+  const formularyIndex = loadFormularySitemapIndex()
+  const totalPairs = formularyIndex.pairs.length
+  const formularyChunks = totalPairs > 0
+    ? Math.ceil(totalPairs / MAX_URLS_PER_SITEMAP)
+    : 1 // at least formulary-1 even if empty (graceful fallback)
+
+  const allTypes: string[] = []
+
+  for (const type of FIXED_SITEMAP_TYPES) {
+    allTypes.push(type)
+    // Insert formulary chunks right after 'sbc' (where 'formulary' used to be)
+    if (type === 'sbc') {
+      for (let i = 1; i <= formularyChunks; i++) {
+        allTypes.push(`formulary-${i}`)
+      }
+    }
+  }
+
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...SITEMAP_TYPES.map(
+    ...allTypes.map(
       (type) =>
         `  <sitemap>\n    <loc>${BASE}/sitemaps/${type}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`
     ),

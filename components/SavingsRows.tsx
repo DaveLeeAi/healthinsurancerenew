@@ -35,9 +35,17 @@ export default function SavingsRows({ rows, note }: SavingsRowsProps) {
           </span>
           <div className="min-w-0">
             <p className="text-ink font-medium" style={{ fontSize: '13.5px' }}>{r.title}</p>
-            <div className="text-mid" style={{ fontSize: '13px', marginTop: '2px', lineHeight: 1.55 }}>
-              {r.desc}
-            </div>
+            {typeof r.desc === 'string' ? (
+              <div
+                className="text-mid [&_a]:text-vblue [&_a:hover]:underline"
+                style={{ fontSize: '13px', marginTop: '2px', lineHeight: 1.55 }}
+                dangerouslySetInnerHTML={{ __html: r.desc }}
+              />
+            ) : (
+              <div className="text-mid" style={{ fontSize: '13px', marginTop: '2px', lineHeight: 1.55 }}>
+                {r.desc}
+              </div>
+            )}
           </div>
         </div>
       ))}

@@ -6,6 +6,7 @@ interface Rule {
   badge: 'blue' | 'green' | 'gray'
   badgeText: string
   title: string
+  titleSuffix?: string
   observation: string
   body: string | ReactNode
 }
@@ -40,15 +41,28 @@ export default function PlanRulesBlock({ rules }: PlanRulesBlockProps) {
           <div className="min-w-0">
             <p style={{ fontSize: '13.5px' }}>
               <span className="font-medium text-ink">{r.title}</span>
+              {r.titleSuffix && (
+                <span className="text-muted font-normal" style={{ marginLeft: '4px' }}>
+                  {r.titleSuffix}
+                </span>
+              )}
               {r.observation && (
                 <span className="text-muted italic font-normal" style={{ fontSize: '11px', marginLeft: '6px' }}>
-                  {r.observation}
+                  — {r.observation}
                 </span>
               )}
             </p>
-            <div className="text-mid" style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '3px' }}>
-              {r.body}
-            </div>
+            {typeof r.body === 'string' ? (
+              <div
+                className="text-mid"
+                style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '3px' }}
+                dangerouslySetInnerHTML={{ __html: r.body }}
+              />
+            ) : (
+              <div className="text-mid" style={{ fontSize: '13px', lineHeight: 1.6, marginTop: '3px' }}>
+                {r.body}
+              </div>
+            )}
           </div>
         </div>
       ))}

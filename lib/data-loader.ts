@@ -599,6 +599,39 @@ export function getIssuerName(issuerId: string): string | undefined {
 }
 
 // ---------------------------------------------------------------------------
+// Formulary sitemap index (pre-built by scripts/etl/build_formulary_sitemap_index.py)
+// ---------------------------------------------------------------------------
+
+interface FormularySitemapIndex {
+  metadata: {
+    total_pairs: number
+    unique_drugs: number
+    unique_states: number
+    states: string[]
+    generated_at: string
+  }
+  pairs: string[] // "state-slug/drug-slug" entries
+}
+
+let formularySitemapCache: FormularySitemapIndex | null = null
+
+/**
+ * Load the pre-built formulary sitemap index.
+ * Returns all valid state-slug/drug-slug pairs for sitemap generation.
+ * Falls back to empty if index hasn't been generated yet.
+ */
+export function loadFormularySitemapIndex(): FormularySitemapIndex {
+  if (formularySitemapCache) return formularySitemapCache
+  const filepath = path.join(DATA_DIR, 'formulary_sitemap_index.json')
+  if (!fs.existsSync(filepath)) {
+    formularySitemapCache = { metadata: { total_pairs: 0, unique_drugs: 0, unique_states: 0, states: [], generated_at: '' }, pairs: [] }
+    return formularySitemapCache
+  }
+  formularySitemapCache = JSON.parse(fs.readFileSync(filepath, 'utf-8')) as FormularySitemapIndex
+  return formularySitemapCache
+}
+
+// ---------------------------------------------------------------------------
 // Static params helpers (used by generateStaticParams in route pages)
 // ---------------------------------------------------------------------------
 

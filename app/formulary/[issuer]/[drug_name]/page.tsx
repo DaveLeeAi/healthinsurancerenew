@@ -608,6 +608,18 @@ export default async function FormularyDrugPage({ params }: Props) {
     return dominantHumanTier.shortLabel.toLowerCase()
   })()
 
+  // Before-deductible cost range — varies by tier group (NOT the same as copay)
+  const beforeDeductibleRange = (() => {
+    const g = dominantGroup
+    if (g === 'generic') return '$15–$80'
+    if (g === 'preferred-brand') return '$200–$450'
+    if (g === 'non-preferred-brand') return '$400–$650'
+    if (g === 'specialty') return '$800–$2,000+'
+    if (g === 'insulin-ira') return '$35'
+    if (g === 'preventive') return '$0'
+    return '$200–$650'
+  })()
+
   // ── FAQ data ────────────────────────────────────────────────────────────
   const tierSummaryText = summarizeTierPlacement(rawTiers, titleCase(drugDisplay))
   const stateOrIssuerLabel = isState ? `in ${stateName}` : `from ${issuerName}`
@@ -627,7 +639,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible?`,
       answer: humanTiers.length > 0
-        ? `Before your deductible is met, you pay the plan's negotiated rate for ${titleCase(drugDisplay)} — not the listed copay. This can be significantly more than the ${dominantHumanTier.costRange} per month copay that applies after your deductible. For example, on a $1,500 deductible plan, your pre-deductible cost could be $30–$120+ depending on your plan's negotiated rate. A 90-day mail-order supply often costs about 67% of three 30-day fills. Always check your Summary of Benefits and Coverage for exact cost-sharing.`
+        ? `Before your deductible is met, you typically pay the plan's negotiated rate — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills. Always check your Summary of Benefits and Coverage for exact cost-sharing.`
         : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the plan's full negotiated rate. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
     },
     {
@@ -723,7 +735,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     costRows.push({
       name: "Before you've met your deductible",
       desc: 'Estimated from plan filings \u2014 varies by plan and pharmacy',
-      figure: '$400\u2013$650',
+      figure: beforeDeductibleRange,
       unit: 'month',
       hint: 'This is typically the highest out-of-pocket phase \u2014 you pay your plan\u2019s negotiated rate until the deductible is met.',
     })
@@ -828,12 +840,12 @@ export default async function FormularyDrugPage({ params }: Props) {
                 { label: 'Plans covering', value: String(results.length), sub: 'of plans reviewed', highlight: true },
                 {
                   label: 'Typical tier',
-                  value: dominantHumanTier.shortLabel,
-                  sub: dominantGroup === 'generic' ? '(lowest cost) · ' + dominantHumanTier.costRange
-                    : dominantGroup === 'preferred-brand' ? '(moderate copay) · ' + dominantHumanTier.costRange
-                    : dominantGroup === 'non-preferred-brand' ? '(higher copay) · ' + dominantHumanTier.costRange
-                    : dominantGroup === 'specialty' ? '(highest cost tier) · ' + dominantHumanTier.costRange
-                    : dominantHumanTier.costRange,
+                  value: dominantGroup === 'generic' ? 'Lowest cost tier'
+                    : dominantGroup === 'preferred-brand' ? 'Moderate-cost brand tier'
+                    : dominantGroup === 'non-preferred-brand' ? 'Higher-cost brand tier'
+                    : dominantGroup === 'specialty' ? 'Highest cost tier'
+                    : dominantHumanTier.shortLabel,
+                  sub: `Plan term: ${dominantHumanTier.shortLabel} · ${dominantHumanTier.costRange}`,
                 },
                 { label: 'Prior authorization', value: hasPriorAuth ? `${priorAuthCount} plans` : 'Not required', sub: hasPriorAuth ? 'require approval' : 'on plans reviewed' },
               ]}
@@ -916,7 +928,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 6. Cost section ── */}
           {results.length > 0 && humanTiers.length > 0 && (
-            <section aria-labelledby="cost-heading" style={{ marginTop: '36px' }}>
+            <section aria-labelledby="cost-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
               <div
                 id="cost-heading"
                 className="text-faint uppercase font-medium border-b border-rule flex justify-between items-baseline flex-wrap"
@@ -968,7 +980,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 8. Plan rules section ── */}
           {results.length > 0 && (
-            <section aria-labelledby="rules-heading" style={{ marginTop: '36px' }}>
+            <section aria-labelledby="rules-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
               <div
                 id="rules-heading"
                 className="text-faint uppercase font-medium border-b border-rule"
@@ -1019,7 +1031,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 9. Approval timeline (only if hasPriorAuth) ── */}
           {results.length > 0 && hasPriorAuth && (
-            <section aria-labelledby="timeline-heading" style={{ marginTop: '36px' }}>
+            <section aria-labelledby="timeline-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
               <div
                 id="timeline-heading"
                 className="text-faint uppercase font-medium border-b border-rule"
@@ -1044,7 +1056,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 10. How to reduce what you pay ── */}
           {results.length > 0 && (
-            <section aria-labelledby="savings-heading" style={{ marginTop: '36px' }}>
+            <section aria-labelledby="savings-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
               <div
                 id="savings-heading"
                 className="text-faint uppercase font-medium border-b border-rule"
@@ -1082,7 +1094,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 10b. What to do if you run into a problem ── */}
           {results.length > 0 && (
-            <section aria-labelledby="not-covered-heading" style={{ marginTop: '36px' }}>
+            <section aria-labelledby="not-covered-heading" style={{ marginTop: '44px' }}>
               <div
                 id="not-covered-heading"
                 className="text-faint uppercase font-medium border-b border-rule"
@@ -1127,7 +1139,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
           {/* ── 11. LimitsBlock ── */}
           {results.length > 0 && (
-            <div style={{ marginTop: '36px' }}>
+            <div style={{ marginTop: '44px' }}>
               <LimitsBlock
                 title="What we can't confirm from plan documents alone"
                 items={[
@@ -1143,7 +1155,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         </article>
 
         {/* ── FAQ (V19 .faq-wrap) — moved before secondary exploration ── */}
-        <section aria-labelledby="faq-heading" style={{ marginTop: '36px' }}>
+        <section aria-labelledby="faq-heading" style={{ marginTop: '44px' }}>
           <div
             id="faq-heading"
             className="text-faint uppercase font-medium border-b border-rule"
@@ -1178,7 +1190,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         </section>
 
         {/* ── AboutBlock ── */}
-        <div style={{ marginTop: '36px' }}>
+        <div style={{ marginTop: '44px' }}>
           <AboutBlock
             text={`The information here comes from reviewing plan benefit documents for ${results.length} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in those plan filings \u2014 not from live pharmacy transactions or claims data. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
             reviewedLine={`Reviewed using a structured editorial process \u00b7 Data snapshot: January ${PLAN_YEAR} \u00b7 Last updated: March ${PLAN_YEAR}`}
@@ -1191,7 +1203,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         </div>
 
         {/* ── Education links (V19 .edu-list) ── */}
-        <div style={{ marginTop: '36px' }}>
+        <div style={{ marginTop: '44px' }}>
           <div
             className="text-faint uppercase font-medium border-b border-rule"
             style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
@@ -1223,7 +1235,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── Related drugs (V19 .drug-pills) ── */}
         {(relatedDrugs.length > 0 || comparisonLinks.length > 0) && (
-          <section aria-labelledby="related-drugs-heading" style={{ marginTop: '36px' }}>
+          <section aria-labelledby="related-drugs-heading" style={{ marginTop: '44px' }}>
             <div
               id="related-drugs-heading"
               className="text-faint uppercase font-medium border-b border-rule"
@@ -1264,7 +1276,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── Insurer list (V19 .ins-block) ── */}
         {otherIssuers.length > 0 && (
-          <section aria-labelledby="insurers-heading" style={{ marginTop: '36px' }}>
+          <section aria-labelledby="insurers-heading" style={{ marginTop: '44px' }}>
             <div
               className="text-faint uppercase font-medium border-b border-rule flex justify-between items-baseline flex-wrap"
               style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px', gap: '4px' }}
@@ -1276,7 +1288,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
             {/* Insurer table intro */}
             <p className="text-muted" style={{ fontSize: '13px', lineHeight: 1.55, marginBottom: '10px' }}>
-              Tier placement from plan benefit documents reviewed January {PLAN_YEAR}. Costs, approval rules, and deductible impact can vary by plan.
+              Plans from different insurers can place {titleCase(drugDisplay)} on different tiers — meaning your cost for the same drug can vary significantly depending on which plan you choose.
             </p>
             <div className="bg-white border border-rule rounded-[10px] overflow-hidden">
               {otherIssuers.slice(0, 12).map((ins, i) => {
@@ -1320,12 +1332,33 @@ export default async function FormularyDrugPage({ params }: Props) {
                 Click any insurer to see plan-level detail. Confirm current coverage before enrolling.
               </div>
             </div>
+            {(() => {
+              const tierSet = new Set(otherIssuers.slice(0, 12).map(ins => humanizeTierForDrug(ins.tier, drugDisplay).group))
+              if (tierSet.size < 2) return null
+              const tierLabels = [...tierSet].map(g => {
+                const t = humanizeTierForDrug(g, drugDisplay)
+                return t.shortLabel.toLowerCase()
+              })
+              // Estimate savings from cost range differences
+              const ranges = [...tierSet].map(g => {
+                const match = humanizeTierForDrug(g, drugDisplay).costRange.match(/\$(\d+)/)
+                return match ? parseInt(match[1], 10) : 0
+              }).filter(Boolean)
+              const savingsNote = ranges.length >= 2
+                ? ` $${Math.abs(Math.max(...ranges) - Math.min(...ranges))}+`
+                : ''
+              return (
+                <p className="text-muted" style={{ fontSize: '12.5px', lineHeight: 1.55, marginTop: '10px', fontStyle: 'italic' }}>
+                  Notice the tier differences — choosing a plan with a lower tier for {titleCase(drugDisplay)} could save you{savingsNote} per month.
+                </p>
+              )
+            })()}
           </section>
         )}
 
         {/* ── State nav (V19 .state-nav) ── */}
         {isState && (
-          <section style={{ marginTop: '36px' }}>
+          <section style={{ marginTop: '44px' }}>
             <div
               className="bg-white border border-rule rounded-[10px] flex items-center justify-between flex-wrap"
               style={{ padding: '15px 20px', gap: '12px' }}
@@ -1347,7 +1380,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── Bottom CTA (V19 .cta-bottom) ── */}
         <div
           className="flex items-center justify-between flex-wrap"
-          style={{ background: '#0d1b2a', borderRadius: '16px', padding: '28px 32px', gap: '18px', marginTop: '36px' }}
+          style={{ background: '#0d1b2a', borderRadius: '16px', padding: '28px 32px', gap: '18px', marginTop: '44px' }}
         >
           <div>
             <div
@@ -1697,10 +1730,12 @@ function DrugCashPriceComparison({
   drugDisplay,
   dominantHumanTier,
   dominantGroup,
+  beforeDeductibleRange,
 }: {
   drugDisplay: string
   dominantHumanTier: HumanTier
   dominantGroup: string
+  beforeDeductibleRange: string
 }) {
   // Estimate monthly copay midpoint for 90-day math
   const copayRange = dominantHumanTier.costRange
@@ -1750,7 +1785,7 @@ function DrugCashPriceComparison({
       <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
         <p className="text-sm text-amber-800 leading-relaxed">
           <strong>Pre-deductible reality check:</strong> If you have not met your deductible, you pay the plan&apos;s full allowed amount — not the copay.
-          For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be $30–$120+ depending on your plan&apos;s negotiated rate with the pharmacy.
+          For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be {beforeDeductibleRange} depending on your plan&apos;s negotiated rate with the pharmacy.
           In some cases, paying the pharmacy cash price is cheaper than using insurance before your deductible is met.
         </p>
       </div>

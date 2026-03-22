@@ -226,9 +226,11 @@ export function summarizeTierPlacement(
     }
   }
 
-  // Multiple tiers across plans
-  const lowestLabel = primary.shortLabel.toLowerCase()
-  return `Most plans place ${drugName} in a ${lowestLabel} tier (${primary.costRange} per month), though some carriers classify it differently. Your cost depends on your specific plan.`
+  // Multiple tiers across plans — use the DOMINANT (most common) tier, not lowest-cost
+  const dominantGroup = getDominantTierGroupForDrug(rawTiers, drugName)
+  const dominantTier = groups.find(g => g.group === dominantGroup) ?? primary
+  const dominantLabel = dominantTier.shortLabel.toLowerCase()
+  return `Most plans place ${drugName} in a ${dominantLabel} tier (${dominantTier.costRange} per month), though some carriers classify it differently. Your cost depends on your specific plan.`
 }
 
 /**

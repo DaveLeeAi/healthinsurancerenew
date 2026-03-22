@@ -30,11 +30,11 @@ import {
   getAllSubsidyStateCountyCombos,
   getAllStateCountyCombos,
   getAllSbcPlans,
-  getTopIssuerIds,
   getAllLifeEventParams,
   loadFrictionQA,
   loadBillingIntel,
   loadDentalCoverage,
+  loadFormularySitemapIndex,
 } from '@/lib/data-loader'
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 import { generatePlanSlug } from '@/lib/plan-slug'
@@ -109,7 +109,16 @@ export async function GET(_request: Request, { params }: RouteParams) {
 // Entry builders by type
 // ---------------------------------------------------------------------------
 
+const MAX_URLS_PER_SITEMAP = 50_000
+
 function buildEntries(type: string): SitemapEntry[] | null {
+  // Handle formulary-N sub-sitemaps (formulary-1, formulary-2, etc.)
+  const formularyMatch = type.match(/^formulary-(\d+)$/)
+  if (formularyMatch) {
+    const chunkIndex = parseInt(formularyMatch[1], 10)
+    return buildFormularyEntries(chunkIndex)
+  }
+
   switch (type) {
     case 'static':
       return buildStaticEntries()
@@ -123,8 +132,6 @@ function buildEntries(type: string): SitemapEntry[] | null {
       return buildEnhancedCreditEntries()
     case 'sbc':
       return buildSbcEntries()
-    case 'formulary':
-      return buildFormularyEntries()
     case 'dental':
       return buildDentalEntries()
     case 'faq':
@@ -321,20 +328,30 @@ function buildSbcEntries(): SitemapEntry[] {
     }))
 }
 
-// ── Formulary — /formulary/[issuer]/[drug] (static seed only) ───────────────
+// ── Formulary — /formulary/[state-slug]/[drug-slug] (all valid state/drug pairs)
+//
+// Pre-built index from scripts/etl/build_formulary_sitemap_index.py.
+// Split into 50K-URL chunks: formulary-1, formulary-2, etc.
 
-function buildFormularyEntries(): SitemapEntry[] {
-  const topIssuers = getTopIssuerIds(20)
+function buildFormularyEntries(chunkIndex: number): SitemapEntry[] {
+  const index = loadFormularySitemapIndex()
+  const pairs = index.pairs
+
+  // chunkIndex is 1-based: formulary-1 = pairs[0..49999], formulary-2 = pairs[50000..99999], etc.
+  const start = (chunkIndex - 1) * MAX_URLS_PER_SITEMAP
+  const end = Math.min(start + MAX_URLS_PER_SITEMAP, pairs.length)
+
+  if (start >= pairs.length) return []
+
   const entries: SitemapEntry[] = []
-  for (const issuer of topIssuers) {
-    for (const drug of SEED_DRUGS) {
-      entries.push({
-        loc: `${BASE}/formulary/${issuer}/${drug}`,
-        lastmod: DATA_LASTMOD,
-        changefreq: 'yearly' as const,
-        priority: 0.6,
-      })
-    }
+  for (let i = start; i < end; i++) {
+    // Each pair is "state-slug/drug-slug"
+    entries.push({
+      loc: `${BASE}/formulary/${pairs[i]}`,
+      lastmod: DATA_LASTMOD,
+      changefreq: 'yearly' as const,
+      priority: 0.6,
+    })
   }
   return entries
 }
