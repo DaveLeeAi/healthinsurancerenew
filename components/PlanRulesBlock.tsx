@@ -1,4 +1,4 @@
-/** PlanRulesBlock — prior auth / step therapy / supply limit rules (V19 .rules-block) */
+/** PlanRulesBlock — prior authorization / step therapy / supply limit rules (V19 .rules-block) */
 
 import type { ReactNode } from 'react'
 

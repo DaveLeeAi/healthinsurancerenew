@@ -758,7 +758,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
             {hasCoverageData ? (
               <div className="grid sm:grid-cols-2 gap-4">
                 <SummaryItem label="Covered" value={tierGroup && tierGroup !== 'unknown' ? 'Yes — on most plans' : 'Varies by plan'} accent={tierGroup && tierGroup !== 'unknown' ? 'green' : 'neutral'} />
-                <SummaryItem label="Cost range per fill" value={humanTier?.costRange ?? 'See plan details'} />
+                <SummaryItem label="Cost range per month" value={humanTier?.costRange ?? 'See plan details'} />
                 <SummaryItem label="Tier" value={humanTier?.label ?? 'Varies by plan'} />
                 <SummaryItem label="Prior Authorization" value={hasPriorAuth ? 'Required on some plans' : 'Not commonly required'} accent={hasPriorAuth ? 'amber' : 'green'} />
                 {hasStepTherapy && <SummaryItem label="Step Therapy" value="Required on some plans — must try an alternative first" accent="amber" />}
@@ -812,7 +812,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
               <p className={`font-semibold text-sm ${humanTier.color} mb-1`}>{humanTier.label}</p>
               <p className={`text-sm ${humanTier.color} opacity-80 mb-2`}>{humanTier.costHint}</p>
               <p className={`text-sm ${humanTier.color}`}>
-                Estimated cost: <strong>{humanTier.costRange} per fill</strong> after deductible, on plans where this tier applies.
+                Estimated cost: <strong>{humanTier.costRange} per month</strong> after deductible, on plans where this tier applies.
               </p>
             </div>
           </section>
@@ -1036,7 +1036,7 @@ function IssuerCoverageCard({ issuer, stateSlug, countySlug }: { issuer: IssuerC
         <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${issuer.humanTier.bg} ${issuer.humanTier.color} ${issuer.humanTier.border}`}>{issuer.humanTier.shortLabel}</span>
       </div>
       <div className="px-5 py-4 grid sm:grid-cols-3 gap-3 text-sm">
-        <div><p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Cost range</p><p className="font-medium text-navy-800">{issuer.humanTier.costRange} per fill</p></div>
+        <div><p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Cost range</p><p className="font-medium text-navy-800">{issuer.humanTier.costRange} per month</p></div>
         <div><p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Prior Authorization</p><p className={`font-medium ${issuer.priorAuth ? 'text-amber-700' : 'text-green-700'}`}>{issuer.priorAuth ? 'Required' : 'Not required'}</p></div>
         <div><p className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Step Therapy</p><p className={`font-medium ${issuer.stepTherapy ? 'text-amber-700' : 'text-neutral-600'}`}>{issuer.stepTherapy ? 'Required' : 'Not required'}</p></div>
       </div>
@@ -1074,7 +1074,7 @@ function buildDrugFAQContent(drugName: string, countyDisplay: string, stateName:
     },
     {
       question: `How much does ${drugName} cost on a Marketplace plan in ${countyDisplay}?`,
-      answer: `${tierGroup === 'generic' ? `As a generic medication, ${drugName} typically costs $5–$20 per fill after your deductible on plans that cover it.` : tierGroup === 'specialty' ? `${drugName} is classified as a specialty drug on most plans, which can mean significant out-of-pocket costs until your out-of-pocket maximum is reached.` : `Your cost depends on the plan's tier placement, your deductible, and out-of-pocket maximum.`} Compare plans in ${countyDisplay} to find the lowest cost for this medication.`,
+      answer: `${tierGroup === 'generic' ? `As a generic medication, ${drugName} typically costs $5–$20 per month after your deductible on plans that cover it.` : tierGroup === 'specialty' ? `${drugName} is classified as a specialty drug on most plans, which can mean significant out-of-pocket costs until your out-of-pocket maximum is reached.` : `Your cost depends on the plan's tier placement, your deductible, and out-of-pocket maximum.`} Compare plans in ${countyDisplay} to find the lowest cost for this medication.`,
     },
     {
       question: `Does ${drugName} require prior authorization in ${countyDisplay}?`,

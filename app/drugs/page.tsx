@@ -203,7 +203,7 @@ export default function DrugsIndexPage() {
             <p>
               <strong>Tiers</strong> determine your out-of-pocket cost: Tier 1 (generics, $5–$20/fill),
               Tier 2 (preferred brands, $30–$60), Tier 3 (non-preferred brands, $50–$100+), and
-              Tier 4 (specialty drugs, often hundreds per fill).
+              Tier 4 (specialty drugs, often hundreds per month).
             </p>
             <p>
               Some medications require <strong>prior authorization</strong> (insurer approval before

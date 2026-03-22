@@ -475,7 +475,7 @@ function buildComparisonFAQs(
     },
     {
       question: `What is the difference in out-of-pocket cost for ${nameA} vs ${nameB}?`,
-      answer: `Out-of-pocket cost depends on your plan's tier placement, deductible, copay or coinsurance structure, and whether you've met your deductible or out-of-pocket maximum. Generic Tier 1 drugs typically cost $5–$20 per fill after deductible. Brand-name Tier 3–4 drugs can cost $50–$400+ per fill, though specialty drugs may qualify for cost-sharing reductions.`,
+      answer: `Out-of-pocket cost depends on your plan's tier placement, deductible, copay or coinsurance structure, and whether you've met your deductible or out-of-pocket maximum. Generic Tier 1 drugs typically cost $5–$20 per month after deductible. Brand-name Tier 3–4 drugs can cost $50–$400+ per month, though specialty drugs may qualify for cost-sharing reductions.`,
     },
   ]
 }

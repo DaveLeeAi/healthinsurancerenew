@@ -290,7 +290,7 @@ function buildCategoryFAQs(categoryId: string, categoryLabel: string): FAQ[] {
     },
     {
       question: `What does "drug tier" mean for ${categoryLabel.toLowerCase()}?`,
-      answer: `Plans divide medications into tiers that determine your cost. Tier 1 (generics) typically cost $5–$20 per fill. Tier 2 (preferred brands) cost $30–$60. Tier 3 (non-preferred brands) cost $50–$100+. Tier 4 (specialty drugs) can cost hundreds per fill, though cost-sharing reductions may apply. Lower-tier medications significantly reduce your annual prescription costs.`,
+      answer: `Plans divide medications into tiers that determine your cost. Tier 1 (generics) typically cost $5–$20 per month. Tier 2 (preferred brands) cost $30–$60. Tier 3 (non-preferred brands) cost $50–$100+. Tier 4 (specialty drugs) can cost hundreds per month, though cost-sharing reductions may apply. Lower-tier medications significantly reduce your annual prescription costs.`,
     },
     {
       question: `What is prior authorization for ${categoryLabel.toLowerCase()}?`,

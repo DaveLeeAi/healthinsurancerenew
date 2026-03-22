@@ -117,7 +117,7 @@ function buildScenarios(plan: PlanRecord, sbc: SbcRecord | null): Scenario[] {
         {
           service: 'Generic prescription',
           frequency: '~3 fills',
-          cost: `${fmt(genericCopay ?? 15)} per fill`,
+          cost: `${fmt(genericCopay ?? 15)} per month`,
         },
       ],
       annualOOP: `~${fmt(lowOOP)} out-of-pocket`,

@@ -133,7 +133,7 @@ export function buildPlanFAQItems(
     const copay = genericEntry.copay_in_network
     faqs.push({
       question: `How much does a generic prescription cost on this plan?`,
-      answer: `Based on CMS Benefits and Cost Sharing PUF data, this plan charges ${copay === 0 ? '$0 (no cost)' : `$${copay}`} per fill for generic drugs${deductible && deductible > 0 ? ' — confirm whether this copay applies before or after the deductible' : ''}. Preferred brand-name drugs and specialty drugs carry higher cost-sharing as shown in the cost-sharing grid above. Always verify current formulary placement and cost-sharing directly with ${plan.issuer_name}, as carriers can update formularies during the plan year.`,
+      answer: `Based on CMS Benefits and Cost Sharing PUF data, this plan charges ${copay === 0 ? '$0 (no cost)' : `$${copay}`} per month for generic drugs${deductible && deductible > 0 ? ' — confirm whether this copay applies before or after the deductible' : ''}. Preferred brand-name drugs and specialty drugs carry higher cost-sharing as shown in the cost-sharing grid above. Always verify current formulary placement and cost-sharing directly with ${plan.issuer_name}, as carriers can update formularies during the plan year.`,
     })
   }
 
