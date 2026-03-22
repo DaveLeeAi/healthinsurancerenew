@@ -778,18 +778,17 @@ export function buildPolicyScenarioSchema(params: {
   return [datasetSchema, creditCliffSchema]
 }
 
-// ─── MedicalWebPage ──────────────────────────────────────────────────────────
+// ─── WebPage (DESIGN.md Section 7) ──────────────────────────────────────────
 
 /**
- * Builds a schema.org/MedicalWebPage for plan detail pages.
- * Required for YMYL health+financial pages to signal professional review.
+ * Builds a schema.org/WebPage for plan detail pages.
+ * YMYL trust signals via reviewedBy + publisher + dateModified.
  */
-export function buildMedicalWebPageSchema(params: {
+export function buildWebPageSchema(params: {
   name: string
   description: string
   url: string
   dateModified: string
-  medicalAudience?: string
   /**
    * CSS selectors for content sections best suited for AI/voice extraction.
    * Renders a SpeakableSpecification block — signals to Google AI Overviews,
@@ -800,7 +799,7 @@ export function buildMedicalWebPageSchema(params: {
 }): object {
   return {
     '@context': 'https://schema.org',
-    '@type': 'MedicalWebPage',
+    '@type': 'WebPage',
     name: params.name,
     description: params.description,
     url: params.url,
@@ -810,17 +809,8 @@ export function buildMedicalWebPageSchema(params: {
       name: 'Licensed Insurance Professionals',
       url: 'https://healthinsurancerenew.com/about/editorial-policy',
     },
-    publisher: {
-      '@type': 'Organization',
-      name: 'HealthInsuranceRenew',
-      url: 'https://healthinsurancerenew.com',
-    },
-    medicalAudience: params.medicalAudience ?? 'Patient',
+    publisher: PUBLISHER,
     lastReviewed: params.dateModified,
-    about: {
-      '@type': 'MedicalCondition',
-      name: 'Health Insurance Coverage',
-    },
     ...(params.speakableCssSelectors && params.speakableCssSelectors.length > 0
       ? {
           speakable: {
@@ -831,6 +821,7 @@ export function buildMedicalWebPageSchema(params: {
       : {}),
   }
 }
+
 
 // ─── FinancialProduct (plan) ─────────────────────────────────────────────────
 

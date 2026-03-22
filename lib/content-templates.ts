@@ -185,7 +185,7 @@ const CMS_BENCS_SOURCE: DataSourceEntry = {
 }
 
 const CMS_MR_PUF_SOURCE: DataSourceEntry = {
-  name: 'CMS Machine-Readable PUF (MR-PUF)',
+  name: 'CMS Plan Benefit Filings',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: 'Carrier formulary JSON file URLs, mandated by ACA Section 1311(e)(3)',
 }
@@ -824,7 +824,7 @@ export interface FormularyTemplateParams {
 
 /**
  * Generates editorial content for a formulary drug detail page.
- * Explains tier structure, prior auth, step therapy, and exception requests.
+ * Explains tier structure, prior authorization, step therapy, and exception requests.
  */
 export function generateFormularyContent(params: FormularyTemplateParams): PageContent {
   const { drugName, drugs, issuerName, stateCode, planYear = PLAN_YEAR } = params
@@ -849,7 +849,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
     (priorAuthCount > 0
       ? `${priorAuthCount} plan${priorAuthCount !== 1 ? 's' : ''} require prior authorization for this medication. `
       : 'No plans in this dataset require prior authorization for this medication. ') +
-    `Source: CMS Machine-Readable PUF, ${planYear}.`
+    `Source: ${planYear} plan benefit filings.`
 
   const bodyHtml = `<section class="content-formulary">
   <h2>Understanding Formulary Tier Structure</h2>
@@ -906,7 +906,7 @@ ${
     ? `  <h2>Quantity Limits</h2>
   <p>
     ${quantityLimitCount} plan${quantityLimitCount !== 1 ? 's' : ''} in this dataset apply a
-    quantity limit to ${drugName}, restricting the amount dispensed per fill or per month.
+    quantity limit to ${drugName}, restricting the amount dispensed per month.
     If your prescribed quantity exceeds the limit, your doctor can request a quantity limit
     exception.
   </p>`

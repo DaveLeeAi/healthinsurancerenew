@@ -142,7 +142,7 @@ Below-fold order:
 
 ## 5. COMPONENT LIBRARY
 
-### 5a. EvidenceBlock — the V12 core innovation
+### 5a. EvidenceBlock — the V19 core innovation
 Visible proof for all claims. Required on every data page.
 
 ```tsx
@@ -237,7 +237,7 @@ Contains 4–5 dash-prefixed items explaining what the page cannot confirm.
 KEEP AS-IS:
   SchemaScript, LlmComment, DataAttribution, Breadcrumbs,
   LastUpdated (move near H1), YmylDisclaimer, GenericByline,
-  MethodologyBlock (rename AboutBlock + V12 style)
+  MethodologyBlock (rename AboutBlock + V19 style)
 
 REPLACE:
   AnswerBox      → AeoBlock (wrong label, caveat inside)
@@ -794,7 +794,7 @@ and validated against the YMYL checklist.
 ```
 Phase 1 — Foundation (formulary first)
   1. Build Priority 1 components (Section 5g)
-  2. Update formulary/[issuer]/[drug_name]/page.tsx to V12 standard
+  2. Update formulary/[issuer]/[drug_name]/page.tsx to V19 standard
   3. Update lib/schema-markup.ts (remove MedicalWebPage everywhere)
   4. Update lib/content-templates.ts (copy rules throughout)
   5. Validate formulary against full YMYL checklist
@@ -852,7 +852,8 @@ grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
 
 ## 16. REFERENCE FILES
 
-- `formulary-mock-up.html` — V12 approved visual reference
+- `formulary-mock-up.html` — legacy V12 visual reference (superseded by V19)
+- `ozempic_nc_formulary_v19.html` — V19 approved visual reference
 - `CLAUDE.md` — project rules, data pipeline, coding standards
 - `docs/audits/` — previous audit reports (do not regress fixed issues)
 - `skills/` — data pipeline, formulary-aggregator, content-generator
@@ -864,5 +865,5 @@ grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
 ---
 
 *This document supersedes all previous design discussions.
-When in doubt, match the V12 mockup exactly.
+When in doubt, match the V19 mockup exactly.
 Update this file whenever a structural decision changes.*

@@ -32,7 +32,7 @@ import {
   buildBreadcrumbSchema,
   buildFAQSchema,
   buildSbcProductSchema,
-  buildMedicalWebPageSchema,
+  buildWebPageSchema,
   buildFinancialProductSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
@@ -297,7 +297,7 @@ async function CountyPlanDetailPage({ params }: Props) {
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
-  const medicalWebPageSchema = buildMedicalWebPageSchema({
+  const medicalWebPageSchema = buildWebPageSchema({
     name: `${plan.plan_name} Benefits & Coverage ${PLAN_YEAR}`,
     description: `${plan.metal_level} health insurance plan by ${plan.issuer_name} in ${countyDisplay}, ${stateName}. Deductible, out-of-pocket maximum, cost-sharing grid, and exclusions sourced from CMS PUF.`,
     url: canonicalUrl,

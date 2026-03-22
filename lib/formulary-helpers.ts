@@ -184,13 +184,13 @@ export function summarizeTierPlacement(
       case 'preventive':
         return `${drugName} is classified as a preventive drug, meaning it should be covered at $0 cost-sharing on eligible Marketplace plans.`
       case 'generic':
-        return `${drugName} is placed on a generic (lowest-cost) tier across all plans in this dataset — typically $5–$20 per fill.`
+        return `${drugName} is placed on a generic (lowest-cost) tier across all plans in this dataset — typically $5–$20 per month.`
       case 'preferred-brand':
-        return `${drugName} is listed as a preferred brand drug — moderate cost-sharing, typically $30–$60 per fill.`
+        return `${drugName} is listed as a preferred brand drug — moderate cost-sharing, typically $30–$60 per month.`
       case 'non-preferred-brand':
-        return `${drugName} is classified as a non-preferred brand — higher cost-sharing, typically $60–$100+ per fill.`
+        return `${drugName} is classified as a non-preferred brand — higher cost-sharing, typically $60–$100+ per month.`
       case 'specialty':
-        return `${drugName} is classified as a specialty drug — the highest cost tier, often 25–33% coinsurance ($100–$500+ per fill).`
+        return `${drugName} is classified as a specialty drug — the highest cost tier, often 25–33% coinsurance ($100–$500+ per month).`
       default:
         return `Tier details for ${drugName} vary — check your specific plan's formulary document.`
     }
@@ -198,7 +198,7 @@ export function summarizeTierPlacement(
 
   // Multiple tiers across plans
   const lowestLabel = primary.shortLabel.toLowerCase()
-  return `Most plans place ${drugName} in a ${lowestLabel} tier (${primary.costRange} per fill), though some carriers classify it differently. Your cost depends on your specific plan.`
+  return `Most plans place ${drugName} in a ${lowestLabel} tier (${primary.costRange} per month), though some carriers classify it differently. Your cost depends on your specific plan.`
 }
 
 /**
@@ -241,13 +241,13 @@ export function interpretCoverage(opts: {
       result = `${drugName} is covered at no cost on most Marketplace plans as a preventive medication.`
       break
     case 'generic':
-      result = `${drugName} is covered on most Marketplace plans as a low-cost generic, typically $5–$20 per fill.`
+      result = `${drugName} is covered on most Marketplace plans as a low-cost generic, typically $5–$20 per month.`
       break
     case 'preferred-brand':
-      result = `${drugName} is covered on most Marketplace plans as a preferred brand drug, with moderate costs typically $30–$60 per fill.`
+      result = `${drugName} is covered on most Marketplace plans as a preferred brand drug, with moderate costs typically $30–$60 per month.`
       break
     case 'non-preferred-brand':
-      result = `${drugName} is covered on most Marketplace plans but classified as non-preferred, meaning higher out-of-pocket costs ($60–$100+ per fill).`
+      result = `${drugName} is covered on most Marketplace plans but classified as non-preferred, meaning higher out-of-pocket costs ($60–$100+ per month).`
       break
     case 'specialty':
       result = `${drugName} is covered on most Marketplace plans as a specialty drug, the highest cost tier (often 25–33% coinsurance).`

@@ -13,7 +13,7 @@ import type { StateFrontmatter } from '../../../lib/markdown'
 import {
   buildBreadcrumbSchema,
   buildFAQSchema,
-  buildMedicalWebPageSchema,
+  buildWebPageSchema,
 } from '../../../lib/schema-markup'
 import { getAllStateCountyCombos } from '../../../lib/data-loader'
 import {
@@ -210,12 +210,11 @@ export default async function StateDetailPage({ params }: Props) {
     { name: stateName, url: `${SITE_URL}/states/${slug}` },
   ])
 
-  const webPageSchema = buildMedicalWebPageSchema({
+  const webPageSchema = buildWebPageSchema({
     name: `Health Insurance in ${stateName} (${PLAN_YEAR} Guide)`,
     description: `Informational overview of health insurance options, subsidies, and marketplace resources in ${stateName} for ${PLAN_YEAR}.`,
     url: `${SITE_URL}/states/${slug}`,
     dateModified: dateModified ?? new Date().toISOString().slice(0, 10),
-    medicalAudience: 'Patient',
     speakableCssSelectors: ['h1', '#state-snapshot', '#hub-faqs'],
   })
 

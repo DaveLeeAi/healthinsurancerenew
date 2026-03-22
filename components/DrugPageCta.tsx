@@ -14,7 +14,7 @@ interface DrugPageCtaProps {
   drugName: string
   stateCode?: string
   stateName?: string
-  /** e.g. "$5–$20 per fill" — shown in cost hook when available */
+  /** e.g. "$5–$20 per month" — shown in cost hook when available */
   costRange?: string
 }
 
@@ -77,7 +77,7 @@ export default function DrugPageCta({
         {costRange && stateLabel && (
           <p className="text-xs text-primary-600 mb-3">
             Plans covering {drugName}{stateLabel ? ` in ${stateLabel}` : ''} typically
-            cost {costRange} per fill.
+            cost {costRange} per month.
           </p>
         )}
         <Link
