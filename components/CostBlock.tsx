@@ -1,3 +1,5 @@
+import React from 'react'
+
 /** CostBlock — V19 .cost-block style
  *  White card, 1px border, rows with left text + progress bar + right figure.
  *  Cost note at bottom: surface bg, italic. Cost-vary-block below. */
@@ -7,6 +9,7 @@ interface CostRow {
   desc: string
   figure: string
   unit: string
+  hint?: string
   barPercent?: number
   barColor?: 'hi' | 'lo' | 'mid'
 }
@@ -48,8 +51,8 @@ export default function CostBlock({ rows, note, varyRows }: CostBlockProps) {
           const pct = r.barPercent ?? guessBarPercent(r.figure)
           const color = BAR_COLORS[r.barColor ?? (i === 0 ? 'hi' : 'lo')]
           return (
+            <React.Fragment key={i}>
             <div
-              key={i}
               className={`flex items-center ${i > 0 ? 'border-t border-rule' : ''}`}
               style={{ gap: '16px', padding: '14px 20px' }}
             >
@@ -82,6 +85,15 @@ export default function CostBlock({ rows, note, varyRows }: CostBlockProps) {
                 )}
               </div>
             </div>
+            {r.hint && (
+              <div
+                className="text-muted italic"
+                style={{ fontSize: '12px', lineHeight: 1.55, padding: '0 20px 12px', marginTop: '-6px' }}
+              >
+                {r.hint}
+              </div>
+            )}
+            </React.Fragment>
           )
         })}
 
