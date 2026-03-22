@@ -1,6 +1,19 @@
+---
+name: content-generator
+description: Generates programmatic SEO pages from ACA datasets. Triggers on page generation, content templates, H1/meta/AEO formulas, schema markup, or page section order.
+---
+
 # Skill: Content Generator
 
 > Generates programmatic SEO pages from structured ACA datasets. 150,000+ pages across entity types and comparisons.
+
+---
+
+## Step 1: Read DESIGN.md
+
+Before generating or modifying any page content, read `DESIGN.md` in the project root. It is the single source of truth for page structure, component usage, copy rules, and schema.
+
+The **V19 formulary mockup** (`ozempic_nc_formulary_v19.html`) is the approved visual reference. All page types inherit from this standard.
 
 ---
 
@@ -10,248 +23,149 @@ These are **non-negotiable** on every generated page:
 
 1. **No DIY medical instructions** — never tell users to self-diagnose, self-treat, or skip professional care
 2. **No full names/addresses** on public pages — use only carrier names, plan names, and geographic identifiers
-3. **All content saves as draft** — never auto-publish; human review required before go-live
-4. **Medical disclaimer on every page:**
-   > "This information is for educational purposes only and does not constitute medical or insurance advice. Plan details may change. Always verify coverage with your insurance carrier or a licensed agent before making healthcare decisions."
-5. **Source citation** — every cost/premium claim must cite "CMS [PUF file name], Plan Year [year]"
-6. **Agent CTA** — every page includes: "Need help choosing? Talk to a licensed agent" → lead form
+3. **No named author on inner pages** — use GenericByline (process-based). Personal credentials belong ONLY on /about and /editorial-policy
+4. **All content saves as draft** — never auto-publish; human review required before go-live
+5. **Medical disclaimer on every page**
+6. **Source citation** — every cost/premium claim must cite "2026 plan benefit filings" with plan year
+7. **Agent CTA** — every page includes: "Need help choosing? Talk to a licensed agent" → lead form
+8. **2026 subsidy cliff warning** — enhanced credits expired end of 2025; subsidy cliff at 400% FPL is back. All subsidy/enhanced-credits pages must reflect post-enhancement rules.
 
 ---
 
-## Entity Types (12 Total)
+## Page Types (see DESIGN.md Section 12a–12m for full specs)
 
-| Entity | Canonical URL Pattern | Example |
-|--------|----------------------|---------|
-| **Carrier** | `/carriers/{issuer_id}-{slug}` | `/carriers/12345-anthem-blue-cross` |
-| **Plan** | `/plans/{plan_id}` | `/plans/12345VA0010001` |
-| **County** | `/{state}/{county}-county` | `/virginia/fairfax-county` |
-| **State** | `/{state}` | `/virginia` |
-| **Exclusion** | `/exclusions/{category}` | `/exclusions/bariatric-surgery` |
-| **Trigger** | `/triggers/{trigger-type}` | `/triggers/prior-authorization` |
-| **Drug** | `/drugs/{rxnorm_id}-{slug}` | `/drugs/860975-metformin` |
-| **Condition** | `/conditions/{slug}` | `/conditions/type-2-diabetes` |
-| **Life Event** | `/life-events/{slug}` | `/life-events/turning-26` |
-| **Metal Level** | `/metal-levels/{level}` | `/metal-levels/silver` |
-| **Deadline** | `/deadlines/{slug}` | `/deadlines/open-enrollment-2026` |
-| **Penalty** | `/penalties/{slug}` | `/penalties/no-coverage-tax` |
+| Page Type | URL Pattern | DESIGN.md Section |
+|-----------|-------------|-------------------|
+| Formulary drug | `/formulary/{state}/{drug}` | 12a |
+| SBC plan detail | `/{state}/{county}/{plan}-plan` | 12b |
+| County hub | `/{state}/{county}` | 12c |
+| Subsidy | `/subsidies/{state}/{county}` | 12d |
+| Rate volatility | `/rates/{state}/{county}` | 12e |
+| Dental | `/dental/{state}/{plan_variant}` | 12f |
+| Life events | `/life-events/{event_type}` | 12g |
+| Billing/CPT | `/billing/{cpt_code}` | 12h |
+| Enhanced credits | `/enhanced-credits/{state}/{county}` | 12i |
+| State hub | `/states/{state}` | 12j |
+| Guides | `/guides/{slug}` | 12k |
+| Tools | `/tools/{tool-slug}` | 12l |
+| FAQ pages | `/faq/{category}/{slug}` | 12m |
 
 ---
 
-## Entity Page Templates
+## Above-Fold Order (DESIGN.md Section 4 — non-negotiable)
 
-### County Page (`/{state}/{county}-county`)
 ```
-H1: Health Insurance Plans in {County}, {State} ({Year})
-├── Hero: plan count, carrier count, avg premium range
-├── Plans Table: sortable by premium, metal level, carrier
-├── Subsidy Calculator CTA: "See if you qualify for $0 premiums"
-├── Top Carriers in {County}: logos + plan counts
-├── Cost Comparison: Bronze vs Silver vs Gold avg premiums
-├── FAQ (8+ questions): county-specific
-├── Life Events Relevant: turning 26, losing job coverage, etc.
-├── Medical Disclaimer
-└── Agent CTA + Lead Form
-```
-
-### Carrier Page (`/carriers/{issuer_id}-{slug}`)
-```
-H1: {Carrier Name} Health Insurance Plans ({Year})
-├── Carrier Overview: states served, plan count, metal levels offered
-├── Plans by State: grouped tables
-├── Formulary Highlights: drug tier summary for top 10 drugs
-├── Exclusion Profile: what this carrier commonly excludes
-├── Coverage Examples: avg "Having a Baby" / "Diabetes" costs
-├── FAQ (8+ questions): carrier-specific
-├── Compare with Other Carriers CTA
-├── Medical Disclaimer
-└── Agent CTA + Lead Form
-```
-
-### Plan Page (`/plans/{plan_id}`)
-```
-H1: {Plan Name} — {Metal Level} {Plan Type} ({Year})
-├── Plan Summary Card: premium, deductible, OOP max, copays
-├── Cost-Sharing Detail: full grid from SBC
-├── Coverage Examples: Having a Baby, Managing Diabetes
-├── Drug Coverage: tier for top 10 priority drugs
-├── Exclusions: with explanations
-├── Triggers: prior auth, step therapy, etc.
-├── Compare This Plan CTA
-├── Similar Plans in Your Area
-├── Medical Disclaimer
-└── Agent CTA + Lead Form
-```
-
-### Exclusion Page (`/exclusions/{category}`)
-```
-H1: Plans That {Exclude/Cover} {Exclusion Name} ({Year})
-├── What This Exclusion Means: plain-language explanation
-├── Plans That Exclude This: table with carrier, plan, state
-├── Plans That Cover This: table (if any)
-├── States With Mandated Coverage: if applicable
-├── How to Find Coverage: guidance for this specific exclusion
-├── Related Exclusions: links to similar categories
-├── FAQ (5+ questions)
-├── Medical Disclaimer
-└── Agent CTA + Lead Form
-```
-
-### Drug Page (`/drugs/{rxnorm_id}-{slug}`)
-```
-H1: {Drug Name} Coverage by Health Insurance Plan ({Year})
-├── Drug Overview: what it treats, generic vs brand, typical cost
-├── Coverage by Carrier: tier, prior auth, step therapy, quantity limit
-├── Lowest Tier Plans: plans with best coverage for this drug
-├── Plans Requiring Prior Auth: list
-├── Alternative Drugs: same class, potentially lower tier
-├── FAQ (5+ questions)
-├── Medical Disclaimer
-└── Agent CTA + Lead Form
+1.  Breadcrumb nav
+2.  H1          — human, specific, keyword-present, NO <br> tags
+3.  Date line   — visible <time> element, max 2 segments (mobile safe)
+4.  Lede        — 2–3 sentences, answer-first, consumer language
+5.  Evidence block — data proving the lede (pillar-specific)
+6.  AEO block   — single extractable sentence, clean (no caveat inside)
+7.  AEO caveat  — <p> OUTSIDE and AFTER the aeo-block element
+8.  Snapshot grid — 4 cells, numbers only, new info (not lede repeat)
+9.  Primary CTA — green, above fold
 ```
 
 ---
 
-## 8 Comparison Page Types
+## Component Library
 
-| # | Type | URL Pattern | Example |
-|---|------|-------------|---------|
-| 1 | **Plan vs Plan** | `/compare/plans/{id1}-vs-{id2}` | Side-by-side cost-sharing, exclusions, drug tiers |
-| 2 | **County vs County** | `/compare/{state}/{county1}-vs-{county2}` | Avg premiums, carrier availability, plan count |
-| 3 | **Drug Coverage** | `/compare/drug-coverage/{rxnorm_id}` | Which plans cover this drug at each tier |
-| 4 | **Scenario-Based** | `/scenarios/{slug}` | "Best plan for a family of 4 with diabetes" |
-| 5 | **Year-over-Year** | `/trends/{state}/{year1}-vs-{year2}` | Premium changes, carrier exits/entries |
-| 6 | **Metal Level** | `/compare/metal-levels/{state}` | Bronze vs Silver vs Gold cost breakdown |
-| 7 | **Dental Comparison** | `/compare/dental/{state}` | SADP waiting periods, maximums, coverage % |
-| 8 | **Enhanced Credit Impact** | `/subsidy-impact/{state}/{income}` | What happens when enhanced credits expire |
+| Component | Purpose | Notes |
+|-----------|---------|-------|
+| `EvidenceBlock` | Visible proof for claims — 3 stats + 3–5 rows | Required on every data page |
+| `AeoBlock` | AI Overview extraction target | Caveat OUTSIDE the block element |
+| `SnapshotGrid` | 4-cell data summary | $/month not $/fill; no `<br>` tags |
+| `StaticFaq` | Crawlable `<details>/<summary>` FAQ | Replaces JS-rendered FAQSection |
+| `CostBlock` | Cost data with single disclaimer | One disclaimer per block, not per row |
+| `LimitsBlock` | YMYL "Before you decide" section | Required on all data pages |
+| `AboutBlock` | Data source + methodology | Replaces old MethodologyBlock |
+| `ProcessBar` | Trust/process bar | `role="complementary"`, NOT inside `<main>` |
+| `GenericByline` | Process-based attribution | Never named author on inner pages |
+
+---
+
+## Copy Rules (Forbidden Phrases — from DESIGN.md Section 9)
+
+```
+"per pen" / "per fill"          → "per month"
+"prior auth"                    → "prior authorization" (full term)
+"TL;DR"                         → "Quick answer"
+"observed in"                   → "found in {N} of {total} plans"
+"most plans cover"              → "covered by {N} of {total} plans reviewed"
+"based on available data"       → "in our review of {N} plans"
+"Plan benefit documents"        → "2026 plan benefit filings"
+"ACA" in hero/H1                → "health plan" or "Marketplace plan"
+"formulary" in H1               → "drug list" or "drug coverage"
+"patients"                      → "people" or "enrollees"
+"Machine-Readable PUF"          → "plan benefit documents"
+```
+
+---
+
+## Schema Rules (DESIGN.md Section 7)
+
+- **Never** use `MedicalWebPage` on any page
+- **Never** use `medicalAudience` in any schema
+- **Never** expose raw CMS issuer IDs in schema or visible UI
+- Primary schema is `WebPage` for all data pages (except guides = `Article`, FAQ = `FAQPage`)
+- `dateModified` in schema must match the visible `<time>` element
+- Schema `description` must be identical to `<meta name="description">`
+- FAQPage `name` must be identical to visible `<summary>` text
 
 ---
 
 ## Schema Markup (JSON-LD)
 
-### Every Page Gets:
+### Every page gets:
 
-**BreadcrumbList:**
+**WebPage** (primary — not MedicalWebPage):
 ```json
 {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://healthinsurancerenew.com"},
-    {"@type": "ListItem", "position": 2, "name": "{Parent}", "item": "https://healthinsurancerenew.com/{parent}"},
-    {"@type": "ListItem", "position": 3, "name": "{Page Title}"}
-  ]
+  "@type": "WebPage",
+  "@id": "{canonical}#webpage",
+  "name": "{title}",
+  "description": "{meta_description}",
+  "url": "{canonical}",
+  "inLanguage": "en-US",
+  "datePublished": "{ISO_date}",
+  "dateModified": "{ISO_date}",
+  "author": { "@type": "Organization" },
+  "publisher": { "@type": "Organization" }
 }
 ```
 
-**FAQPage** (on every entity page with FAQ section):
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How much does health insurance cost in {County}, {State}?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "In {County}, {State}, individual health insurance premiums range from ${min} to ${max} per month for {Year} plans..."
-      }
-    }
-  ]
-}
-```
+**BreadcrumbList** and **FAQPage** (on pages with FAQ sections).
 
-### Dataset Schema (on data-heavy pages):
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "ACA Health Insurance Plans in {County}, {State} ({Year})",
-  "description": "Complete dataset of {count} Affordable Care Act marketplace plans...",
-  "url": "https://healthinsurancerenew.com/{path}",
-  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "creator": {"@type": "Organization", "name": "HealthInsuranceRenew"},
-  "dateModified": "{date}",
-  "temporalCoverage": "{year}",
-  "spatialCoverage": {"@type": "Place", "name": "{County}, {State}"},
-  "isBasedOn": {"@type": "Dataset", "name": "CMS Public Use Files", "url": "https://data.healthcare.gov"}
-}
-```
-
-### MedicalWebPage (on condition/drug pages):
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "MedicalWebPage",
-  "about": {"@type": "MedicalCondition", "name": "{Condition}"},
-  "lastReviewed": "{date}",
-  "medicalAudience": {"@type": "MedicalAudience", "audienceType": "Patient"}
-}
-```
+### Page-specific supporting schema:
+- Formulary: `Drug` in `about`
+- SBC plan: `HealthInsurancePlan`
+- Rates: `Dataset`
+- Life events: `HowTo`
+- Billing: `MedicalCode`
+- Tools: `WebApplication`
 
 ---
 
 ## Internal Linking Rules
 
-1. **Entity-to-entity only** — every link connects two entities in the graph (plan→carrier, drug→plan, county→state, etc.)
-2. **Bidirectional** — if Plan A links to Carrier B, Carrier B must link back to Plan A
-3. **Max 5-7 internal links per page** — quality over quantity
-4. **Anchor text** — use descriptive entity names, never "click here" or "read more"
+1. **Entity-to-entity only** — every link connects two entities in the graph
+2. **Bidirectional** — if Plan A links to Carrier B, Carrier B must link back
+3. **Max 5–7 internal links per page**
+4. **Anchor text** — use descriptive entity names, never "click here"
 5. **Cross-entity links** — every page links to at least 2 different entity types
-6. **Comparison page links** — entity pages link to relevant comparison pages
-7. **Hierarchy links** — County → State (parent), Plan → Carrier (parent), Drug → Plan (coverage)
-
----
-
-## Entity Graph Relationships
-
-```
-State ──has──→ County ──has──→ Plan
-                                │
-Carrier ──offers──→ Plan ──covers──→ Drug
-                     │                │
-                     ├──excludes──→ Exclusion
-                     ├──requires──→ Trigger
-                     └──relevant──→ Life Event
-                                      │
-Condition ──treated_by──→ Drug        │
-                                      │
-Deadline ──affects──→ Life Event      │
-Penalty ──applies_when──→ Life Event ─┘
-Metal Level ──categorizes──→ Plan
-```
-
----
-
-## Page Generation Pipeline
-
-```
-1. Load processed datasets (plans, carriers, counties, drugs, SBCs)
-2. Build entity graph (relationships between all entities)
-3. For each entity page:
-   a. Query relevant data from processed datasets
-   b. Apply page template
-   c. Generate FAQ section (templated, data-driven)
-   d. Inject schema markup (JSON-LD)
-   e. Add internal links (from entity graph)
-   f. Add medical disclaimer
-   g. Save as draft (never auto-publish)
-4. Generate comparison pages from entity pairs
-5. Generate sitemap.xml
-6. Run QA checks (links valid, schema valid, disclaimer present)
-```
 
 ---
 
 ## Content QA Checklist (per page)
 
 - [ ] Medical disclaimer present
-- [ ] Source citation on all cost/premium data
-- [ ] FAQ section with 5+ questions
-- [ ] Schema markup valid (test via Google Rich Results)
-- [ ] Internal links: 5-7, all bidirectional
-- [ ] No broken links
-- [ ] No PII / personal information
-- [ ] Agent CTA present
+- [ ] Source citation on all cost/premium data ("2026 plan benefit filings")
+- [ ] FAQ section uses static `<details>/<summary>` (not JS-rendered)
+- [ ] Schema uses WebPage (not MedicalWebPage), no medicalAudience
+- [ ] AEO block present, caveat OUTSIDE the block element
+- [ ] No forbidden phrases
+- [ ] No `<br>` in headings
+- [ ] No raw issuer IDs in visible UI
+- [ ] GenericByline (not named author) on inner pages
 - [ ] All data from current plan year
 - [ ] Mobile-readable layout
