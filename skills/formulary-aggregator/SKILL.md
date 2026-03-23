@@ -186,3 +186,21 @@ def normalize_drugs(drugs_data: list[dict], issuer_id: str) -> list[dict]:
 | **Albuterol** | Asthma (generic) | Emergency inhaler |
 | **Humira** (adalimumab) | Autoimmune (specialty) | Expensive, specialty tier test |
 | **Eliquis** (apixaban) | Blood thinner (brand) | High cost, tier placement varies |
+
+---
+
+## Tier Override Rules (implemented in `lib/formulary-helpers.ts`)
+
+The following overrides are applied during tier normalization to correct known CMS data inconsistencies:
+
+### TIER-ONE / TIER-ONE-B → Generic
+Raw CMS labels `TIER-ONE` and `TIER-ONE-B` are mapped to the `generic` group. These are low-cost tiers that CMS data inconsistently labels.
+
+### Insulin + PREVENTIVE → `insulin-ira` ($35 cap)
+When a drug is identified as insulin and the raw tier is `PREVENTIVE`, it is classified as `insulin-ira` with a fixed $35/month cost cap per the Inflation Reduction Act. This overrides the default `preventive` ($0) classification.
+
+### Biologic Blocklist + PREVENTIVE → Specialty
+17 biologic drugs are blocklisted from the `preventive` tier. When any of these drugs appear with a `PREVENTIVE` raw tier, the classification is overridden to `specialty`. The blocklist includes: adalimumab, etanercept, infliximab, rituximab, trastuzumab, bevacizumab, ustekinumab, secukinumab, dupilumab, golimumab, certolizumab, abatacept, tocilizumab, vedolizumab, natalizumab, omalizumab, and denosumab.
+
+### Unknown Tier Logging
+Any raw tier value that does not match a known classification pattern is logged via `console.warn` with the raw tier string for investigation. The drug is classified as `unknown` group.

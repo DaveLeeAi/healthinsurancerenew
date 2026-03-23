@@ -180,6 +180,47 @@ grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 
 ---
 
+## Reference Template: Formulary (locked at 9.5/10)
+
+The formulary template is the locked reference at 9.5/10. All other page types should aim to match this quality. The actual built section order (not the original DESIGN.md 12a spec — the improved version):
+
+```
+1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box
+2. Primary CTA (green)
+3. Cost section with interpretation lines + vary block
+4. Mid CTA (blue accent)
+5. Plan rules with observation counts + cross-links
+6. Prior authorization timeline (conditional)
+7. Savings rows (drug-class-aware)
+8. "What to do if you run into a problem" scenario guidance
+9. Limits block
+10. FAQ (7 items, before related drugs)
+11. About block + education links
+12. Related drugs (pills) — outside article
+13. Insurer table with insight intro — outside article
+14. State nav — outside article
+15. Bottom CTA (navy, specific to cost+access)
+```
+
+### Data Contradiction Checklist (verify before shipping any page)
+- Evidence block tier MUST match FAQ tier
+- FAQ tier MUST match cost section tiers
+- Cost section tiers MUST match insurer table tiers
+- FAQ deductible answer MUST use `beforeDeductibleRange`, not `dominantHumanTier.costRange`
+- No Preventive/$0 for non-preventive drugs (check biologic blocklist)
+
+### Drug-Aware Functions (MUST use instead of base functions)
+- `humanizeTierForDrug()` not `humanizeTier()` — handles insulin IRA, biologic blocklist
+- `getDominantTierGroupForDrug()` not `getDominantTierGroup()`
+- `humanizeTiersForDrug()` not `humanizeTiers()`
+
+### Required Editorial Intelligence Sections
+- **Editorial insight box** — conditional content by tier/PA combination
+- **Scenario guidance** — "What to do if you run into a problem" with conditional steps
+- **Drug-class savings variation** — different savings copy per drug class
+
+---
+
 ## What NOT to Change
 
 - **Data loading logic** — keep existing data file reads and transformations

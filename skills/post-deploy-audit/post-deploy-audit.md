@@ -102,7 +102,34 @@ Sample pages:
 ```
 
 For each, run the full YMYL checklist from DESIGN.md Section 11.
-Check for tier contradictions across evidence/FAQ/cost/insurer table.
+
+#### Tier Contradiction Check (critical — most common data bug)
+For every sampled page, verify these values are consistent:
+- Evidence block tier label
+- FAQ answer tier references (especially Q2 and Q4)
+- Cost section tier labels and ranges
+- Insurer table tier badges
+If any mismatch → data contradiction → must fix before deploy.
+
+#### FAQ Deductible Answer Check
+The FAQ Q2 ("How much will X cost before I meet my deductible?") MUST use the `beforeDeductibleRange` variable, NOT `dominantHumanTier.costRange`. These are different values:
+- `beforeDeductibleRange`: pre-deductible full negotiated rate ($15–$80 for generics, $400–$650 for non-preferred)
+- `dominantHumanTier.costRange`: post-deductible copay ($5–$20 for generics, $60–$100+ for non-preferred)
+
+#### Preventive/$0 Check
+No non-preventive drug should show Preventive/$0 tier. Specifically check:
+- Biologic drugs (adalimumab, etanercept, infliximab, etc.) — blocklist of 17
+- Insulin drugs — should show `insulin-ira` ($35 cap), not Preventive ($0)
+
+#### Drug-Aware Function Check
+Grep the template for base tier functions that should NOT be used:
+```bash
+grep -n "humanizeTier(" app/formulary/\[issuer\]/\[drug_name\]/page.tsx | grep -v "ForDrug"
+grep -n "getDominantTierGroup(" app/formulary/\[issuer\]/\[drug_name\]/page.tsx | grep -v "ForDrug"
+```
+Both should return zero results — only `*ForDrug()` variants are correct.
+
+**Reference:** Formulary template scored 9.5/10 as benchmark for all page types.
 
 ### Phase 5 â Priority Scoring
 

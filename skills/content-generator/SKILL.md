@@ -156,6 +156,54 @@ These are **non-negotiable** on every generated page:
 
 ---
 
+## Formulary Section Order (locked at 9.5/10 — reference template)
+
+The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is the locked reference. Section order:
+
+```
+1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box
+2. Primary CTA (green)
+3. Cost section with interpretation lines + vary block
+4. Mid CTA (blue accent)
+5. Plan rules with observation counts + cross-links
+6. Prior authorization timeline (conditional)
+7. Savings rows (drug-class-aware)
+8. "What to do if you run into a problem" scenario guidance
+9. Limits block
+10. FAQ (7 items, before related drugs)
+11. About block + education links
+12. Related drugs (pills) — outside article
+13. Insurer table with insight intro — outside article
+14. State nav — outside article
+15. Bottom CTA (navy, specific to cost+access)
+```
+
+### Drug-Aware Tier Functions (critical — do not use base functions)
+
+| Use This | NOT This | Why |
+|----------|----------|-----|
+| `humanizeTierForDrug()` | `humanizeTier()` | Drug-aware: handles insulin IRA $35 cap, biologic blocklist |
+| `getDominantTierGroupForDrug()` | `getDominantTierGroup()` | Drug-aware: same overrides |
+| `humanizeTiersForDrug()` | `humanizeTiers()` | Drug-aware: same overrides |
+
+### Key Variables
+- `beforeDeductibleRange` — drives FAQ deductible answer (NOT `dominantHumanTier.costRange`)
+- `drugClass` — `'injectable-glp1' | 'generic' | 'brand-preferred' | 'other'` — drives savings copy variation
+
+### Tier Override Rules
+- Insulin + PREVENTIVE → `insulin-ira` ($35 cap)
+- Biologic blocklist (17 drugs) + PREVENTIVE → Specialty
+- TIER-ONE / TIER-ONE-B → Generic
+- Unknown tiers logged via `console.warn`
+
+### Editorial Intelligence Components
+- **Editorial insight box** — conditional by tier/PA combination (4 variants)
+- **Scenario guidance** — "What to do if you run into a problem" with conditional steps based on PA, step therapy, specialty/non-preferred tier
+- **Drug-class-aware savings copy** — injectable-glp1 gets manufacturer card + oral alt; generic gets "already low cost"; other gets generic alternatives
+- **Coverage-pattern-aware FAQ first answer** — varies by plan count (>50, 15-50, <15)
+
+---
+
 ## Content QA Checklist (per page)
 
 - [ ] Medical disclaimer present
@@ -169,3 +217,7 @@ These are **non-negotiable** on every generated page:
 - [ ] GenericByline (not named author) on inner pages
 - [ ] All data from current plan year
 - [ ] Mobile-readable layout
+- [ ] Drug-aware functions used (not base tier functions)
+- [ ] FAQ deductible answer uses `beforeDeductibleRange`, not `dominantHumanTier.costRange`
+- [ ] No Preventive/$0 for non-preventive drugs (check biologic blocklist)
+- [ ] Tier consistency: evidence block tier = FAQ tier = cost section tier = insurer table tier

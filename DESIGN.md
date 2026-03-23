@@ -6,6 +6,8 @@
 > Do not deviate without a documented reason in the commit message.
 > The V19 formulary mockup (ozempic_nc_formulary_v19.html) is the approved
 > visual reference. All page types inherit from this standard.
+> The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is
+> locked at **9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
 
 ---
 
@@ -245,14 +247,21 @@ REPLACE:
   PageFaq        → StaticFaq (same issue)
   DrugPageCta    → Three-CTA pattern
 
-BUILD NEW (Priority 1 — before formulary goes live):
-  EvidenceBlock, AeoBlock, SnapshotGrid, StaticFaq,
-  LimitsBlock, AboutBlock, ProcessBar, CostBlock,
-  PlanRulesBlock
+BUILT (Priority 1 — used in locked formulary template):
+  EvidenceBlock     → components/EvidenceBlock.tsx
+  AeoBlock          → components/AeoBlock.tsx
+  CostBlock         → components/CostBlock.tsx
+  PlanRulesBlock    → components/PlanRulesBlock.tsx
+  TimelineSteps     → components/TimelineSteps.tsx
+  SavingsRows       → components/SavingsRows.tsx
+  LimitsBlock       → components/LimitsBlock.tsx
+  AboutBlock        → components/AboutBlock.tsx
+  ProcessBar        → components/ProcessBar.tsx
 
 BUILD NEW (Priority 2 — before other page types):
-  TimelineSteps, SavingsRows, InsurerTable,
-  RelatedEntityPills, PageCtas
+  SnapshotGrid (not used in formulary — replaced by EvidenceBlock stats),
+  InsurerTable (inline in formulary, may extract later),
+  RelatedEntityPills (inline in formulary), PageCtas (inline in formulary)
 ```
 
 ---
@@ -564,35 +573,43 @@ Run before every deploy. Every box must be checked.
 ### 12a. Formulary — `/formulary/{state}/{drug}`
 Primary question: Is my drug covered and what does it cost?
 Data: formulary_intelligence.json (20.5M records)
+**Status: LOCKED at 9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
+Template file: `app/formulary/[issuer]/[drug_name]/page.tsx`
 
-Required sections (order fixed):
-1. Hero → evidence block → AEO → snapshot
+Required sections (order fixed — matches built template exactly):
+1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box (conditional by tier/PA)
 2. Primary CTA (green)
-3. Cost section (before/after deductible + vary block)
-4. Mid CTA (blue)
-5. Plan rules (prior auth, step therapy, supply limits — conditional)
-6. Approval timeline (5 steps)
-7. Ways to lower cost (savings card, pharmacy, tier, oral alt)
-8. Limits block
-9. Related drugs (pills) — outside article
-10. Insurer table — outside article
-11. State nav — outside article
-12. FAQ (7 questions, static details)
-13. About block + education links (2 max)
-14. Bottom CTA (navy)
+3. Cost section with interpretation lines + vary block
+4. Mid CTA (blue accent, left border)
+5. Plan rules with observation counts + cross-links (prior auth, step therapy, supply limits)
+6. Prior authorization timeline (conditional — only if hasPriorAuth)
+7. Savings rows (drug-class-aware: injectable-glp1 / generic / brand-preferred / other)
+8. "What to do if you run into a problem" — scenario guidance (conditional steps based on PA, tier, step therapy)
+9. Limits block ("What we can't confirm from plan documents alone")
+10. FAQ (7 items, static `<details>/<summary>`, before related drugs)
+11. About block + education links (2 max)
+12. Related drugs (pills) — outside `<article>`
+13. Insurer table with insight intro line + tier-difference savings note — outside `<article>`
+14. State nav — outside `<article>`
+15. Bottom CTA (navy, specific to cost + access)
+
+Key implementation details:
+- Uses `humanizeTierForDrug()` (not `humanizeTier()`) — drug-aware tier normalization
+- Uses `getDominantTierGroupForDrug()` (not `getDominantTierGroup()`) — drug-aware dominant tier
+- `beforeDeductibleRange` variable drives FAQ deductible answer (not `dominantHumanTier.costRange`)
+- Insulin IRA $35 cap override via tier normalization
+- Biologic preventive blocklist (17 drugs) overrides PREVENTIVE → Specialty
+- Editorial insight box content varies by tier group + PA status combination
+- Scenario guidance steps are conditional on PA, step therapy, tier (specialty/non-preferred)
+- Savings copy varies by `drugClass`: injectable-glp1 | generic | brand-preferred | other
+- FAQ first answer varies by coverage pattern (>50, 15-50, <15 plans)
 
 Conditional rendering:
 ```tsx
-{stepTherapyCount > 0 && <StepTherapyWarning />}
-{stepTherapyCount === 0 && <StepTherapyCleared />}
-{quantityLimitCount > 0 && <SupplyLimitRow />}
+{hasPriorAuth && <ApprovalTimeline />}
+{hasStepTherapy && <StepTherapyRule />}
+{hasQuantityLimit && <SupplyLimitRule />}
 {results.length === 0 && isState && <SBMExplanationPage />}
-{plansWithDrug === 0 && <NotCoveredVariant />}
-```
-
-Snapshot cells (always this order):
-```
-Plans covering {drug} | Typical tier | After deductible/month | Before deductible/month
 ```
 
 ### 12b. SBC Plan Detail — `/{state}/{county}/{plan}-plan`

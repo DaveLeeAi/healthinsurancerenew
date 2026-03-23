@@ -74,10 +74,12 @@
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| 1 | Formulary page redesign to V19 standard | **Current** |
+| 1 | Formulary page redesign to V19 standard | **COMPLETE** — locked at 9.5/10 |
 | 2 | Sitewide component migration (FAQ, AEO, schema fixes) | Pending |
 | 3 | Critical 2026 content updates (subsidy cliff, enhanced credits) | Pending |
 | 4 | Page-type-by-page-type conversion to V19 | Pending |
+
+**Phase 1 details:** Formulary template scored 9.5/10 by external LLM reviewers (ChatGPT, Gemini). Template file: `app/formulary/[issuer]/[drug_name]/page.tsx`. This is the locked reference — all other page types should aim to match this quality.
 
 ---
 

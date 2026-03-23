@@ -1,6 +1,8 @@
 # PHASE 1 — Formulary Page Redesign Prompts
 ## HealthInsuranceRenew · V19 Standard · March 2026
 
+> **PHASE 1 COMPLETE** — Formulary template locked at 9.5/10, scored by external LLM reviewers (ChatGPT, Gemini). This file is now historical reference only. Do not re-run these prompts.
+
 > **How to use this file:**
 > Run each prompt one at a time in Claude Code.
 > Wait for it to finish and confirm the checkpoint before moving to the next.
