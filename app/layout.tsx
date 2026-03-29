@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ChatWidget from '../components/ChatWidget'
+import { getSiteWideSchema, schemaToJsonLd } from '@/lib/schema'
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaToJsonLd(getSiteWideSchema()) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

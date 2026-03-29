@@ -1,133 +1,240 @@
-import type { Metadata } from 'next'
-import Breadcrumbs from '../../components/Breadcrumbs'
-import GenericByline from '../../components/GenericByline'
-import LlmComment from '../../components/LlmComment'
-import { buildBreadcrumbSchema } from '../../lib/schema-markup'
-import config from '../../data/config/config.json'
+import type { Metadata } from 'next';
+import {
+  SITE_URL,
+  AGENCY_NAME,
+  getWebPageSchema,
+  schemaToJsonLd,
+} from '@/lib/schema';
+import {
+  BLUFBox,
+  CMSDisclaimer,
+  SectionHeading,
+  DataSourceAttribution,
+} from '@/components/trust';
+
+// ─── Metadata ────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: 'About HealthInsuranceRenew',
+  title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
   description:
-    `Learn about HealthInsuranceRenew, an educational health insurance resource operated by licensed health insurance professionals serving clients in ${config.licensedStates.length} states.`,
-  alternates: { canonical: 'https://healthinsurancerenew.com/about' },
-  openGraph: {
-    title: 'About HealthInsuranceRenew',
-    description:
-      `Learn about HealthInsuranceRenew, an educational health insurance resource operated by licensed health insurance professionals serving clients in ${config.licensedStates.length} states.`,
-    url: 'https://healthinsurancerenew.com/about',
-    type: 'website',
-    siteName: 'HealthInsuranceRenew',
+    'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+  alternates: {
+    canonical: `${SITE_URL}/about/`,
   },
-}
+};
 
-const breadcrumbs = [
-  { name: 'Home', url: '/' },
-  { name: 'About', url: '/about' },
-]
+// ─── Schema ──────────────────────────────────────────────────────────────────
 
-// NOTE: No name/NPN on this page — generic byline only
+const pageSchema = getWebPageSchema({
+  url: `${SITE_URL}/about/`,
+  name: `About ${AGENCY_NAME}`,
+  description:
+    'About HealthInsuranceRenew.com — mission, data sources, and the licensed ACA agent behind the site.',
+  datePublished: '2026-03-29T00:00:00-04:00',
+  dateModified: '2026-03-29T00:00:00-04:00',
+  breadcrumbs: [
+    { name: 'Home', url: SITE_URL },
+    { name: 'About', url: `${SITE_URL}/about/` },
+  ],
+});
+
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function AboutPage() {
-  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
-
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: schemaToJsonLd(pageSchema) }}
       />
-      <LlmComment pageType="about" year={2026} data="editorial" />
-      <Breadcrumbs items={breadcrumbs} />
-      <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">About HealthInsuranceRenew</h1>
 
-      <div className="prose prose-neutral max-w-none">
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
-          This site is an educational health insurance resource operated by a licensed insurance agent.
-        </h2>
-        <p className="text-slate-700 leading-relaxed mb-4">
-          HealthInsuranceRenew was created to address a common challenge: finding clear, straightforward information
-          about health insurance marketplace options can be difficult to
-          navigate, with complex terminology, shifting enrollment windows, and financial assistance rules that change
-          from year to year. This site exists to make that information more accessible.
-        </p>
-
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
-          Our mission is to provide accurate, unbiased health insurance education at no cost to consumers.
-        </h2>
-        <p className="text-slate-700 leading-relaxed mb-4">
-          Every guide, tool, and state resource on this site is designed to help individuals and families understand
-          how marketplace health coverage works. The content focuses on explaining concepts rather than steering
-          decisions. Topics include how premium tax credits are calculated, what metal tier plans cover, when
-          enrollment periods open, and how state-specific rules may apply. The goal is informed decision-making, not
-          sales pressure.
-        </p>
-
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">
-          Our approach prioritizes clarity, accuracy, and transparency in everything we publish.
-        </h2>
-        <p className="text-slate-700 leading-relaxed mb-4">
-          Content is developed and reviewed by professionals with direct experience in health insurance markets.
-          Guides are updated regularly to reflect current-year rules, federal poverty level guidelines, and marketplace
-          changes. When readers are ready to speak with a licensed agent, that option is available — but the
-          educational content stands on its own regardless.
-        </p>
-        <p className="text-slate-700 leading-relaxed mb-4">
-          Licensed agents associated with this site hold active appointments in {config.licensedStates.length} states.
-          A full list of those states is available on the{' '}
-          <a href="/licensing" className="text-primary-600 hover:text-primary-700 underline">
-            licensing page
+      <article className="mx-auto max-w-[720px] px-4 py-10">
+        {/* ── Breadcrumb ── */}
+        <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
+          <a href="/" className="hover:text-blue-700 hover:underline">
+            Home
           </a>
-          . Information about how this site is funded can be found on the{' '}
-          <a href="/how-we-get-paid" className="text-primary-600 hover:text-primary-700 underline">
-            How We Get Paid
+          <span className="mx-1.5" aria-hidden="true">
+            ›
+          </span>
+          <span className="text-gray-900 font-medium">About</span>
+        </nav>
+
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-6">
+          About HealthInsuranceRenew.com
+        </h1>
+
+        <BLUFBox>
+          HealthInsuranceRenew.com is an independent health insurance guide
+          operated by {AGENCY_NAME}, a licensed ACA agency with CMS Elite Circle
+          of Champions recognition. We help consumers compare marketplace plans,
+          estimate premium tax credits, and understand their coverage options
+          using verified data from CMS and state insurance departments.
+        </BLUFBox>
+
+        {/* ── Mission ── */}
+        <SectionHeading>Our mission</SectionHeading>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          Health insurance decisions affect your family&rsquo;s finances and
+          well-being. Yet the information most people find online is either
+          outdated, oversimplified, or buried behind jargon. We built
+          HealthInsuranceRenew.com to close that gap.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          Every page on this site is reviewed by a licensed ACA health insurance
+          agent — not a content writer guessing at policy details. Our data comes
+          directly from CMS plan benefit filings, state insurance department rate
+          databases, and HHS policy analyses. When regulations change, we update
+          our content within days, not months.
+        </p>
+
+        {/* ── What we cover ── */}
+        <SectionHeading>What we cover</SectionHeading>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          Our content spans ten core areas of ACA health insurance, each built
+          on a distinct data pillar sourced from government records:
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          <strong>Plan intelligence</strong> — side-by-side comparisons of
+          marketplace plans by state, county, and metal tier, drawn from CMS
+          plan benefit data.{' '}
+          <strong>Subsidy estimation</strong> — premium tax credit calculators
+          using current federal poverty level guidelines and benchmark plan
+          premiums.{' '}
+          <strong>Formulary data</strong> — drug coverage lookups across
+          marketplace plans, including tier placement, prior authorization
+          requirements, and cost estimates from plan benefit filings.{' '}
+          <strong>SBC decoded</strong> — plain-language explanations of Summary
+          of Benefits and Coverage documents.{' '}
+          <strong>Provider networks</strong> — carrier network mapping by plan
+          and region.{' '}
+          <strong>Cost transparency</strong> — deductible, copay, and
+          coinsurance comparisons across plans.{' '}
+          <strong>Eligibility pathways</strong> — Medicaid expansion status,
+          special enrollment period qualifying events, and coverage gap
+          analysis.{' '}
+          <strong>Enrollment guidance</strong> — step-by-step walkthroughs for
+          HealthCare.gov and state-based exchange enrollment.{' '}
+          <strong>Regulatory updates</strong> — coverage of ACA rule changes,
+          subsidy extensions, and state-level policy developments.{' '}
+          <strong>Consumer education</strong> — guides on choosing plans,
+          understanding bills, and avoiding common enrollment mistakes.
+        </p>
+
+        {/* ── Who we are ── */}
+        <SectionHeading>Who we are</SectionHeading>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          {AGENCY_NAME} is a licensed health insurance agency. Our founder is a
+          CMS Elite Circle of Champions member — the highest tier of the
+          Marketplace Circle of Champions program, recognizing agents who have
+          enrolled 100 or more consumers through the Health Insurance
+          Marketplace. He is licensed to sell ACA marketplace plans in more than
+          20 states.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          <a
+            href="/about/author/"
+            className="text-blue-700 font-medium hover:underline"
+          >
+            Read the full author profile →
+          </a>
+        </p>
+
+        {/* ── How we're different ── */}
+        <SectionHeading>How we&rsquo;re different</SectionHeading>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          Most health insurance information sites are run by marketing companies
+          or content publishers with no insurance license. We are different in
+          three ways:
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          <strong>Licensed expertise.</strong> Every piece of content is reviewed
+          by a licensed ACA agent who has personally guided consumers through
+          plan selection and enrollment. This is not theoretical knowledge — it
+          comes from direct experience answering real enrollment questions.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          <strong>Government data sources.</strong> Our plan data, cost
+          estimates, and eligibility information come from CMS, HHS, and state
+          insurance departments — not third-party aggregators or outdated
+          databases. We cite our sources on every page.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          <strong>No advertiser influence.</strong> Our editorial content is
+          independent. We may earn commissions when consumers enroll in plans
+          through our licensed agency, but this never influences which plans we
+          recommend or how we present coverage options. Our{' '}
+          <a
+            href="/about/editorial-standards/"
+            className="text-blue-700 font-medium hover:underline"
+          >
+            editorial standards
           </a>{' '}
-          page.
+          explain this in detail.
         </p>
-      </div>
 
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+        <DataSourceAttribution
+          sources={[
+            {
+              name: 'CMS.gov',
+              url: 'https://www.cms.gov',
+              description: 'Plan benefit data, enrollment statistics, marketplace regulations',
+            },
+            {
+              name: 'HealthCare.gov',
+              url: 'https://www.healthcare.gov',
+              description: 'Plan availability, premium data, enrollment information',
+            },
+            {
+              name: 'HHS ASPE',
+              url: 'https://aspe.hhs.gov',
+              description: 'Policy research and health insurance coverage analyses',
+            },
+            {
+              name: 'KFF',
+              url: 'https://www.kff.org',
+              description: 'Health policy research, subsidy calculator methodology',
+            },
+            {
+              name: 'State Insurance Departments',
+              url: 'https://content.naic.org/state-insurance-departments',
+              description: 'Rate filings, carrier approvals, network adequacy data',
+            },
+          ]}
+        />
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 mt-6">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#0B1F3B]/5 text-[#0B1F3B] flex items-center justify-center shrink-0">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-slate-900 mb-1">
-              CMS Marketplace Elite Circle of Champions Recognition
-            </h3>
-            <p className="text-sm text-slate-600 leading-relaxed font-serif mb-3">
-              Recognized by the {config.operator.recognitionBody} (CMS) for outstanding service during the
-              {config.operator.recognitionYear} Marketplace Open Enrollment Period. During the {config.operator.recognitionPeriod.replace(' Open Enrollment Period', '')} enrollment cycle, {config.operator.enrollmentVolume} in annual
-              premium was enrolled through Marketplace coverage.
-            </p>
-            <a
-              href="/circle-of-champions"
-              className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors"
-            >
-              View recognition details
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 mt-8">
-        <p className="text-sm text-slate-600 leading-relaxed">
-          <strong className="text-slate-700">Non-Government Disclaimer:</strong> {config.siteName} is not a government
-          website. This site is not affiliated with the federal Health Insurance Marketplace, HealthCare.gov, or any
-          state-based exchange. It is independently operated by a licensed insurance agent and provides educational
-          information only. Nothing on this site constitutes legal, tax, or benefits advice.
+        {/* ── Related pages ── */}
+        <SectionHeading>Learn more</SectionHeading>
+        <p className="text-gray-700 leading-relaxed mb-2">
+          <a
+            href="/about/author/"
+            className="text-blue-700 font-medium hover:underline"
+          >
+            Author credentials
+          </a>{' '}
+          — Licensing, certifications, and professional background.
         </p>
-      </div>
-    </div>
-  )
+        <p className="text-gray-700 leading-relaxed mb-2">
+          <a
+            href="/about/methodology/"
+            className="text-blue-700 font-medium hover:underline"
+          >
+            Our methodology
+          </a>{' '}
+          — How we source, verify, and maintain data across all ten pillars.
+        </p>
+        <p className="text-gray-700 leading-relaxed mb-2">
+          <a
+            href="/about/editorial-standards/"
+            className="text-blue-700 font-medium hover:underline"
+          >
+            Editorial standards
+          </a>{' '}
+          — Our editorial workflow, fact-checking process, and AI disclosure.
+        </p>
+
+        <CMSDisclaimer />
+      </article>
+    </>
+  );
 }
