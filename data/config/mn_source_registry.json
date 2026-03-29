@@ -1,0 +1,214 @@
+{
+  "state": "MN",
+  "marketplace": "MNsure",
+  "plan_year": 2026,
+  "source_file": "Individual-Provider-Networks-2026_tcm34-708330.xlsx",
+  "total_plans": 270,
+  "total_medical_plans": 243,
+  "carriers": {
+    "blue_plus": {
+      "issuer_name": "Blue Plus (Blue Cross Blue Shield of Minnesota)",
+      "issuer_id": "57129",
+      "plan_count": 95,
+      "networks": [
+        {
+          "name": "Minnesota Value Network",
+          "url": "https://www.bluecrossmn.com/minnesotavaluenetwork"
+        },
+        {
+          "name": "Southeast MN Network",
+          "url": "https://www.bluecrossmn.com/southeastmnnetwork"
+        },
+        {
+          "name": "Metro MN Network",
+          "url": "https://www.bluecrossmn.com/metromnnetwork"
+        }
+      ],
+      "formulary": {
+        "name": "Blue Cross BasicRx Individual, Small Group",
+        "url": "https://www.bluecrossmn.com/individualdruglist2025",
+        "direct_pdf": "https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_MN_4T_BasicRx_Individual_Small_Group.pdf",
+        "format": "PDF",
+        "pbm": "Prime Therapeutics",
+        "tiers": 4,
+        "tier_structure": [
+          "Generic",
+          "Preferred Brand",
+          "Non-Preferred",
+          "Specialty"
+        ],
+        "includes_pa": true,
+        "includes_st": true,
+        "includes_ql": true,
+        "cloud_accessible": true
+      }
+    },
+    "healthpartners": {
+      "issuer_name": "HealthPartners",
+      "plan_count": 33,
+      "networks": [
+        {
+          "name": "Cornerstone Network",
+          "url": "https://www.healthpartners.com/cornerstoneind"
+        },
+        {
+          "name": "Peak Network",
+          "url": "https://www.healthpartners.com/peaknetwork"
+        },
+        {
+          "name": "Select Network",
+          "url": "http://www.healthpartners.com/select"
+        },
+        {
+          "name": "Alpine Network",
+          "url": "https://www.healthpartners.com/alpinenetwork"
+        }
+      ],
+      "formulary": {
+        "name": "HealthPartners 2026 Formulary",
+        "url": "https://www.healthpartners.com/prx26mn",
+        "direct_pdf": null,
+        "format": "PDF (via redirect)",
+        "pbm": "AdaptiveRx",
+        "tiers": "Unknown - need to follow redirect",
+        "cloud_accessible": true,
+        "note": "URL redirects - need browser to find final PDF endpoint"
+      }
+    },
+    "medica": {
+      "issuer_name": "Medica",
+      "plan_count": 84,
+      "networks": [
+        {
+          "name": "Altru Prime by Medica",
+          "url": "https://www.medica.com/SearchAltruNetwork-2026"
+        },
+        {
+          "name": "Bold by M Health Fairview and Medica",
+          "url": "https://www.medica.com/SearchBoldNetwork-2026"
+        },
+        {
+          "name": "Engage by Medica",
+          "url": "https://www.medica.com/SearchEngageNetwork-2026"
+        },
+        {
+          "name": "Essentia Choice Care with Medica",
+          "url": "https://www.medica.com/SearchEssentiaCareNetwork-2026"
+        },
+        {
+          "name": "Medica Applause",
+          "url": "https://www.medica.com/SearchApplauseNetwork-2026"
+        },
+        {
+          "name": "North Memorial Acclaim by Medica",
+          "url": "https://www.medica.com/SearchNorthMemorialNetwork-2026"
+        },
+        {
+          "name": "Ridgeview Distinct by Medica",
+          "url": "https://www.medica.com/SearchRidgeviewDistinctNetwork-2026"
+        }
+      ],
+      "formulary": {
+        "name": "Medica 2026 Drug List",
+        "url": "https://www.medica.com/MNDrugList-2026",
+        "direct_pdf": null,
+        "format": "PDF (via redirect)",
+        "pbm": "Prime Therapeutics",
+        "tiers": "4-tier (per Round 2 research)",
+        "cloud_accessible": true,
+        "note": "URL redirects - need browser to find final PDF endpoint"
+      }
+    },
+    "quartz": {
+      "issuer_name": "Quartz Health Plan MN Corporation",
+      "plan_count": 17,
+      "networks": [
+        {
+          "name": "Quartz Select Network",
+          "url": "https://quartzbenefits.com/join-quartz/individual-and-family-plans/minnesota-individual-plans/"
+        }
+      ],
+      "formularies": [
+        {
+          "name": "2026 Individual and Family Standard ACA Drug Formulary (4-Tier)",
+          "url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-and-Family-Standard-4T-formulary-MN.pdf",
+          "actual_url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf",
+          "format": "PDF - DIRECT DOWNLOAD",
+          "pbm": "Quartz internal (Navitus)",
+          "tiers": 4,
+          "tier_structure": [
+            "$0/Generic (T1)",
+            "Preferred Brand (T2)",
+            "Non-Preferred (T3)",
+            "Specialty (T4)"
+          ],
+          "includes_pa": true,
+          "includes_st": true,
+          "includes_ql": true,
+          "includes_age_limits": true,
+          "cloud_accessible": true,
+          "verified": true,
+          "covers": "MN + WI Individual/Family Standard plans (MNsure + HealthCare.gov)"
+        },
+        {
+          "name": "2026 Individual and Family Standard Choice ACA Drug Formulary (6-Tier)",
+          "url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-and-Family-Standard-6T-formulary-MN.pdf",
+          "format": "PDF - DIRECT DOWNLOAD",
+          "pbm": "Quartz internal (Navitus)",
+          "tiers": 6,
+          "cloud_accessible": true,
+          "verified": false,
+          "note": "Not yet fetched - 6-tier version for non-Standard plans"
+        }
+      ]
+    },
+    "ucare": {
+      "issuer_name": "UCare",
+      "plan_count": 14,
+      "networks": [
+        {
+          "name": "UCare Individual and Family Plans",
+          "url": "https://www.ucare.org/ifpbroad"
+        },
+        {
+          "name": "UCare IFP with M Health Fairview",
+          "url": "https://www.ucare.org/ifpfocused"
+        }
+      ],
+      "formularies": [
+        {
+          "name": "2026 UCare Individual & Family Plans Comprehensive Formulary",
+          "url": "https://ucm-p-001.sitecorecontenthub.cloud/api/public/content/U5434_IFP_Formulary_2026",
+          "format": "PDF - DIRECT DOWNLOAD (Sitecore CDN)",
+          "pbm": "Navitus Health Solutions",
+          "covers": "UCare IFP + UCare IFP with M Health Fairview",
+          "cloud_accessible": true,
+          "verified": true,
+          "includes_pa": true,
+          "includes_st": true,
+          "includes_ql": true
+        },
+        {
+          "name": "2026 UCare Easy Compare Plans Comprehensive Formulary",
+          "url": "https://ucm-p-001.sitecorecontenthub.cloud/api/public/content/U14431_IFP-EasyCompare_Formulary_2026",
+          "format": "PDF - DIRECT DOWNLOAD (Sitecore CDN)",
+          "pbm": "Navitus Health Solutions",
+          "covers": "UCare Easy Compare (standardized) plans",
+          "cloud_accessible": true,
+          "verified": true
+        }
+      ]
+    }
+  },
+  "sbc_source": {
+    "primary": "CMS SBE QHP PUF",
+    "url": "https://www.cms.gov/marketplace/resources/data/state-based-public-use-files",
+    "format": "CSV/ZIP",
+    "status": "SOLVED"
+  },
+  "county_service_area_source": {
+    "primary": "MNsure Excel (this file)",
+    "format": "87-county binary matrix per plan",
+    "status": "SOLVED"
+  }
+}
