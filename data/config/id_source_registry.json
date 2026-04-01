@@ -1,0 +1,95 @@
+{
+  "state": "ID",
+  "marketplace": "Your Health Idaho",
+  "plan_year": 2026,
+  "total_carriers": 4,
+  "carriers": {
+    "selecthealth": {
+      "issuer_name": "SelectHealth (Intermountain Health)",
+      "issuer_id": "26002",
+      "plan_count": null,
+      "networks": [],
+      "formulary": {
+        "name": "SelectHealth Idaho Exchange Formulary",
+        "url": "https://selecthealth.org/disclaimers/machine-readable-data",
+        "direct_drugs_url": "http://ebu.intermountainhealthcare.org/shprovider/ID_exchange_drugs.json",
+        "direct_plans_url": "http://ebu.intermountainhealthcare.org/shprovider/ID_exchange_plans.json",
+        "format": "JSON (CMS schema)",
+        "tiers": "multi-tier",
+        "cloud_accessible": true,
+        "verified": true,
+        "note": "Hosted on Intermountain Healthcare EBU server. State-specific file (ID_exchange_drugs.json). Also publishes UT, NV, CO exchange files at same endpoint."
+      }
+    },
+    "pacificsource": {
+      "issuer_name": "PacificSource Health Plans",
+      "issuer_id": "60597",
+      "plan_count": null,
+      "networks": [],
+      "formulary": {
+        "name": "PacificSource Idaho Formulary",
+        "url": "https://pacificsource.com/resources/json-files",
+        "direct_drugs_url": "https://enroll.pacificsource.com/MRF/ID/drugs.json",
+        "direct_plans_url": "https://enroll.pacificsource.com/MRF/ID/plans.json",
+        "index_url": "https://enroll.pacificsource.com/MRF/ID/cms-data-index.json",
+        "format": "JSON (CMS schema with rxnorm_id)",
+        "tiers": "multi-tier",
+        "cloud_accessible": true,
+        "verified": true,
+        "note": "PacificSource publishes per-state MRF files (ID, MT, OR, WA). Plan IDs use HIOS prefix 60597. Possibly BCI Voyager product line."
+      }
+    },
+    "cambia_regence": {
+      "issuer_name": "Cambia Health / Regence BlueShield of Idaho",
+      "issuer_id": "71281",
+      "plan_count": null,
+      "networks": [],
+      "formulary": {
+        "name": "Cambia Health Formulary (multi-state)",
+        "url": "https://cms-machine-readable.cambiahealth.com/index.json",
+        "direct_drugs_urls": [
+          "https://cms-machine-readable.cambiahealth.com/drugs1.json",
+          "https://cms-machine-readable.cambiahealth.com/drugs2.json"
+        ],
+        "format": "JSON (CMS schema)",
+        "tiers": "multi-tier",
+        "cloud_accessible": true,
+        "verified": true,
+        "note": "Cambia parent of Regence BCBS Idaho. Same index serves WA/OR/ID/UT. drugs1.json + drugs2.json are 112 MB each. HIOS ID 71281 confirmed from drug file plan_id prefixes."
+      }
+    },
+    "blue_cross_of_idaho": {
+      "issuer_name": "Blue Cross of Idaho",
+      "issuer_id": "44648",
+      "plan_count": null,
+      "networks": [],
+      "formulary": {
+        "name": "2026 Qualified Health Plan Formulary",
+        "url": "https://www.bcidaho.com/tabs-for-developers/machine-files",
+        "direct_drugs_url": "https://shoppers.bcidaho.com/resources/static/json/bci-drugs-2026.json",
+        "direct_plans_url": "https://shoppers.bcidaho.com/resources/static/json/bci-plans.json",
+        "index_url": "https://shoppers.bcidaho.com/resources/static/json/index.json",
+        "format": "JSON (custom BCI schema — NDC-based, not CMS plan_id)",
+        "tiers": 7,
+        "tier_structure": [
+          "Preferred Generic Drugs",
+          "Non-Preferred Generic Drugs",
+          "Preferred Brand Drugs",
+          "Non-Preferred Brand Drugs",
+          "Preferred Specialty Drugs",
+          "Non-Preferred Specialty Drugs",
+          "Affordable Care Act Drugs"
+        ],
+        "cloud_accessible": true,
+        "verified": true,
+        "note": "Found 2026-04-02 via bcidaho.com/tabs-for-developers/machine-files. Hosted on shoppers.bcidaho.com. 85,178 NDC entries. Custom schema (ndc_label_name, not rxnorm_id). Also discoverable via bci.sapphiremrfhub.com (Payerset redirect)."
+      }
+    }
+  },
+  "sbc_source": {
+    "primary": "CMS SBE QHP PUF",
+    "url": "https://www.cms.gov/marketplace/resources/data/state-based-public-use-files",
+    "format": "CSV/ZIP",
+    "status": "SOLVED"
+  }
+}

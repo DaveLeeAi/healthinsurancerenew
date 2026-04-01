@@ -1,15 +1,18 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-03-19 (sweep #5 — CT/ID/ME/NM/VA SBM PUF issuer discovery)",
-  "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY — no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
+  "last_updated": "2026-04-01 (ID carrier URL discovery - SelectHealth + PacificSource confirmed live)",
+  "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY â€” no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json â†’ 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json â†’ 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "sbc_bulk_sources": {
     "centene_ambetter": {
       "url": "https://api.centene.com/SBC/2026/",
       "type": "directory_listing",
       "format": "PDF",
       "naming_pattern": "{HIOS_plan_id}-{variant}.pdf",
-      "languages": ["en", "es"],
+      "languages": [
+        "en",
+        "es"
+      ],
       "coverage": "All Centene/Ambetter states (AZ, NE, GA, IL, FL, TX, NC, etc.)",
       "status": "verified",
       "verified_date": "2026-03-22",
@@ -26,23 +29,23 @@
           "issuer_name": "Molina Healthcare (CA)",
           "index_url": "https://www.molinahealthcare.com/machine-readable-files/ca/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 18126. URL updated 2026-03-19 to CA-specific MR path — still returns 403 Forbidden. All Molina MR paths blocked."
+          "notes": "HIOS ID 18126. URL updated 2026-03-19 to CA-specific MR path â€” still returns 403 Forbidden. All Molina MR paths blocked."
         },
         {
           "issuer_id": "40513",
           "issuer_name": "Kaiser Permanente (CA)",
           "index_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/data/ca/cms-data-index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 40513. Re-verified 2026-03-19 — still 403 Forbidden. Bot protection on all KP content/dam paths."
+          "notes": "HIOS ID 40513. Re-verified 2026-03-19 â€” still 403 Forbidden. Bot protection on all KP content/dam paths."
         },
         {
           "issuer_id": "67138",
           "issuer_name": "Ambetter from Health Net (CA)",
           "index_url": "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_healthnet_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only — no formulary/drug data). 58 plans with IDs 67138CA* confirmed in TiC index. FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-CA.json → 404. api.centene.com/ambetter/reference/drugs-HN-CA.json → 404. api.centene.com/healthnet/reference/drugs-HN-CA.json → 404. FormularyNavigator /67138/1-14/drugs.json → 500 HTML error. ifp.healthnetcalifornia.com → 200 HTML (not JSON). 30+ patterns tested 2026-03-19. Health Net CA QHP formulary has no accessible public endpoint.",
+          "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_healthnet_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only â€” no formulary/drug data). 58 plans with IDs 67138CA* confirmed in TiC index. FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-CA.json â†’ 404. api.centene.com/ambetter/reference/drugs-HN-CA.json â†’ 404. api.centene.com/healthnet/reference/drugs-HN-CA.json â†’ 404. FormularyNavigator /67138/1-14/drugs.json â†’ 500 HTML error. ifp.healthnetcalifornia.com â†’ 200 HTML (not JSON). 30+ patterns tested 2026-03-19. Health Net CA QHP formulary has no accessible public endpoint.",
           "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_healthnet_index.json",
-          "centene_tic_index_type": "TiC MRF — in_network_files only, NOT QHP formulary",
+          "centene_tic_index_type": "TiC MRF â€” in_network_files only, NOT QHP formulary",
           "urls_tested": [
             "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
             "https://ifp.healthnetcalifornia.com/api/formulary/index.json",
@@ -65,14 +68,14 @@
           "issuer_name": "Blue Shield of California",
           "index_url": "https://www.blueshieldca.com/content/dam/bsca/en/member/docs/pharmacy/drugs.json",
           "status": "url_dead",
-          "notes": "HIOS ID 70285. URL updated 2026-03-19 — returns 404 Not Found. BSC pharmacy drugs.json path does not exist."
+          "notes": "HIOS ID 70285. URL updated 2026-03-19 â€” returns 404 Not Found. BSC pharmacy drugs.json path does not exist."
         },
         {
           "issuer_id": "92499",
           "issuer_name": "Anthem Blue Cross (CA)",
           "index_url": "https://www.anthem.com/ca/machine-readable-puf/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 92499. URL updated 2026-03-19 — returns 404 Not Found. Anthem CA MR PUF path does not exist."
+          "notes": "HIOS ID 92499. URL updated 2026-03-19 â€” returns 404 Not Found. Anthem CA MR PUF path does not exist."
         },
         {
           "issuer_id": "92815",
@@ -135,9 +138,9 @@
           "issuer_name": "Ambetter from Fidelis Care (NY)",
           "index_url": "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 25303 (corrected from 16842 — Centene TiC index confirms 25303NY* plan IDs). Centene Marketplace product in NY via Fidelis Care subsidiary. CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_fidelis_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only — no formulary/drug data). 88 plans confirmed (2 reporting_structure entries). FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-NY.json → 404. api.centene.com/fideliscare/reference/drugs-FC-NY.json → 404. api.centene.com/fideliscare/reference/drugs-FID-NY.json → 404. api.centene.com/ambetter/reference/drugs-FID-NY.json → 404. FormularyNavigator /25303/1-4/drugs.json → 500 HTML error. Fidelis Care NY QHP formulary has no accessible public endpoint.",
+          "notes": "HIOS ID 25303 (corrected from 16842 â€” Centene TiC index confirms 25303NY* plan IDs). Centene Marketplace product in NY via Fidelis Care subsidiary. CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_fidelis_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only â€” no formulary/drug data). 88 plans confirmed (2 reporting_structure entries). FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FC-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FID-NY.json â†’ 404. api.centene.com/ambetter/reference/drugs-FID-NY.json â†’ 404. FormularyNavigator /25303/1-4/drugs.json â†’ 500 HTML error. Fidelis Care NY QHP formulary has no accessible public endpoint.",
           "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_fidelis_index.json",
-          "centene_tic_index_type": "TiC MRF — in_network_files only, NOT QHP formulary",
+          "centene_tic_index_type": "TiC MRF â€” in_network_files only, NOT QHP formulary",
           "urls_tested": [
             "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
             "https://ambetter.fideliscare.org/machine-readable-files/index.json",
@@ -159,14 +162,14 @@
           "issuer_name": "Oscar Health (NY)",
           "index_url": "https://www.hioscar.com/machine-readable-files/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 48396. URL updated 2026-03-19 — returns 404 Not Found. Oscar MR path does not exist."
+          "notes": "HIOS ID 48396. URL updated 2026-03-19 â€” returns 404 Not Found. Oscar MR path does not exist."
         },
         {
           "issuer_id": "55768",
           "issuer_name": "EmblemHealth",
           "index_url": "https://transparency.emblemhealth.com/mrf/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 55768. URL updated 2026-03-19 — returns 404 Not Found. EmblemHealth transparency MRF path does not exist."
+          "notes": "HIOS ID 55768. URL updated 2026-03-19 â€” returns 404 Not Found. EmblemHealth transparency MRF path does not exist."
         },
         {
           "issuer_id": "29179",
@@ -205,10 +208,10 @@
         },
         {
           "issuer_id": "44113",
-          "issuer_name": "Anthem Insurance Companies Inc. (NY) — medical/dental",
+          "issuer_name": "Anthem Insurance Companies Inc. (NY) â€” medical/dental",
           "index_url": "",
           "status": "url_unknown",
-          "notes": "HIOS 44113. NY statewide. Prime Network. Anthem NY secondary entity with Bronze/Gold/Platinum/Silver metal levels — medical QHP presence confirmed. Dental-bundled medical plans. Elevance Health subsidiary. Identified from 2025 SBM Plan-PUF."
+          "notes": "HIOS 44113. NY statewide. Prime Network. Anthem NY secondary entity with Bronze/Gold/Platinum/Silver metal levels â€” medical QHP presence confirmed. Dental-bundled medical plans. Elevance Health subsidiary. Identified from 2025 SBM Plan-PUF."
         },
         {
           "issuer_id": "54235",
@@ -219,7 +222,7 @@
         },
         {
           "issuer_id": "56184",
-          "issuer_name": "MVP Health Care (NY) — HMO",
+          "issuer_name": "MVP Health Care (NY) â€” HMO",
           "index_url": "",
           "status": "url_unknown",
           "notes": "HIOS 56184. Upstate/statewide NY. NY Small Group HMO network. MVP HMO Bronze plan names. Note: separate HIOS from MVP EPO entity 89846. Identified from 2025 SBM Plan-PUF."
@@ -236,7 +239,7 @@
           "issuer_name": "Excellus BlueCross BlueShield (NY)",
           "index_url": "",
           "status": "url_unknown",
-          "notes": "HIOS 78124. Rochester/Central NY. Excellus BCBS EPO network — confirmed in plan names. Serves Rochester, Syracuse, CNY, Utica, Bassett healthcare region. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "notes": "HIOS 78124. Rochester/Central NY. Excellus BCBS EPO network â€” confirmed in plan names. Serves Rochester, Syracuse, CNY, Utica, Bassett healthcare region. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
         },
         {
           "issuer_id": "85629",
@@ -254,7 +257,7 @@
         },
         {
           "issuer_id": "89846",
-          "issuer_name": "MVP Health Care (NY) — EPO",
+          "issuer_name": "MVP Health Care (NY) â€” EPO",
           "index_url": "",
           "status": "url_unknown",
           "notes": "HIOS 89846. Upstate/statewide NY. NY Small Group EPO network. MVP EPO Bronze plan names. Separate HIOS from HMO entity 56184. Identified from 2025 SBM Plan-PUF."
@@ -264,7 +267,7 @@
           "issuer_name": "CDPHP Universal Benefits Inc. (NY)",
           "index_url": "",
           "status": "url_unknown",
-          "notes": "HIOS 92551. Capital District NY. UBI National Network. EPO Copay First plan names. CDPHP Universal Benefits Inc. — subsidiary of CDPHP. Identified from 2025 SBM Plan-PUF."
+          "notes": "HIOS 92551. Capital District NY. UBI National Network. EPO Copay First plan names. CDPHP Universal Benefits Inc. â€” subsidiary of CDPHP. Identified from 2025 SBM Plan-PUF."
         },
         {
           "issuer_id": "94788",
@@ -290,14 +293,14 @@
         },
         {
           "issuer_id": "71281",
-          "issuer_name": "Regence BlueShield (WA) — via Cambia Health",
+          "issuer_name": "Regence BlueShield (WA) â€” via Cambia Health",
           "index_url": "https://cms-machine-readable.cambiahealth.com/index.json",
           "status": "active",
-          "notes": "CONFIRMED LIVE 2026-03-17. Cambia Health Systems (Regence parent). Index.json -> drugs1.json (112MB) + drugs2.json (112MB). Contains WA plan IDs for issuers 71281 and 87718. Standard CMS QHP schema, 2026 plan year. Also contains OR/ID/UT data. MR-PUF lists Cambia for OR (63474, 77969) and UT (22013, 34541) — WA data is bonus SBM coverage."
+          "notes": "CONFIRMED LIVE 2026-03-17. Cambia Health Systems (Regence parent). Index.json -> drugs1.json (112MB) + drugs2.json (112MB). Contains WA plan IDs for issuers 71281 and 87718. Standard CMS QHP schema, 2026 plan year. Also contains OR/ID/UT data. MR-PUF lists Cambia for OR (63474, 77969) and UT (22013, 34541) â€” WA data is bonus SBM coverage."
         },
         {
           "issuer_id": "87718",
-          "issuer_name": "Asuris Northwest Health (WA) — via Cambia Health",
+          "issuer_name": "Asuris Northwest Health (WA) â€” via Cambia Health",
           "index_url": "https://cms-machine-readable.cambiahealth.com/index.json",
           "status": "active",
           "notes": "CONFIRMED LIVE 2026-03-17. Same Cambia index as issuer 71281. WA plan IDs 87718WA* found in drugs1.json. Asuris is a Cambia Health subsidiary."
@@ -314,7 +317,7 @@
           "issuer_name": "Molina Healthcare (WA)",
           "index_url": "https://www.molinahealthcare.com/cms/json/index.json",
           "status": "url_dead",
-          "notes": "403 Access Denied. Molina MR-PUF URL serves 6 FFM states only — WA not included. Tested 2026-03-17."
+          "notes": "403 Access Denied. Molina MR-PUF URL serves 6 FFM states only â€” WA not included. Tested 2026-03-17."
         },
         {
           "issuer_id": "15690",
@@ -545,7 +548,7 @@
           "issuer_name": "Anthem Health Plans of Connecticut (Elevance Health)",
           "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
           "status": "url_dead",
-          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Pathway Enhanced HMO network. Plan names: 'Catastrophic HMO Pathway Enhanced', 'Bronze HMO Pathway Enhanced with Adult Dental and Vision Benefits'. Elevance Health (formerly Anthem) CT entity. Note: Elevance drugs file OOM risk — CT plan IDs not confirmed in drug file.",
+          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Pathway Enhanced HMO network. Plan names: 'Catastrophic HMO Pathway Enhanced', 'Bronze HMO Pathway Enhanced with Adult Dental and Vision Benefits'. Elevance Health (formerly Anthem) CT entity. Note: Elevance drugs file OOM risk â€” CT plan IDs not confirmed in drug file.",
           "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
@@ -591,18 +594,20 @@
         {
           "issuer_id": "44648",
           "issuer_name": "Blue Cross of Idaho",
-          "index_url": "https://www.bcidaho.com/cms-data-index.json",
-          "status": "url_dead",
-          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Preferred network (IDN001/IDN002). Plan names: 'PREF Bronze HSA 7000'. Blue Cross of Idaho 'Preferred' product line (PREF prefix = Preferred). Primary BCI HIOS ID.",
-          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+          "index_url": "https://shoppers.bcidaho.com/resources/static/json/index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-04-02. Found via bcidaho.com/tabs-for-developers/machine-files. Custom BCI schema (NDC-based, not CMS plan_id schema). 85,178 NDC entries -> 7,695 deduped drug groups. Tier labels: Preferred Generic, Non-Preferred Generic, Preferred Brand, Non-Preferred Brand, Preferred Specialty, Non-Preferred Specialty, ACA Drugs.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID.",
+          "direct_drugs_url": "https://shoppers.bcidaho.com/resources/static/json/bci-drugs-2026.json"
         },
         {
           "issuer_id": "26002",
           "issuer_name": "SelectHealth (ID)",
-          "index_url": "https://selecthealth.org/cms-data-index.json",
-          "status": "url_dead",
-          "notes": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID. Select Health Med SE / IDN005/IDN002 networks. Plan names: 'Select Health SLHP Silver 3000'. SelectHealth (Intermountain Health subsidiary) ID entity.",
-          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
+          "index_url": "https://ebu.intermountainhealthcare.org/shprovider/index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-04-01. SelectHealth (Intermountain Health). Direct drugs URL: ID_exchange_drugs.json (12,506 drugs). CMS schema with plan_id prefix 26002. Hosted on ebu.intermountainhealthcare.org.",
+          "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00000 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID.",
+          "direct_drugs_url": "http://ebu.intermountainhealthcare.org/shprovider/ID_exchange_drugs.json"
         },
         {
           "issuer_id": "38128",
@@ -613,10 +618,11 @@
         },
         {
           "issuer_id": "60597",
-          "issuer_name": "Possibly Blue Cross of Idaho — Voyager product",
-          "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 60597. IDN005/IDN002 networks. Plan names: Voyager Bronze HSA 8050. Identified from 2025 SBM Plan-PUF. 'Voyager' is a BCI product name for HSA plans. May be BCI's secondary HIOS entity (Voyager/HSA line vs Preferred line 44648). No discoverable MR formulary endpoint."
+          "issuer_name": "PacificSource / BCI Voyager (ID)",
+          "index_url": "https://enroll.pacificsource.com/MRF/ID/cms-data-index.json",
+          "status": "active",
+          "notes": "CONFIRMED LIVE 2026-04-01. PacificSource per-state MRF (ID). 8,492 drugs. CMS schema with rxnorm_id. Plan IDs use HIOS prefix 60597. Direct URL bypasses index.json.",
+          "direct_drugs_url": "https://enroll.pacificsource.com/MRF/ID/drugs.json"
         },
         {
           "issuer_id": "61589",
@@ -657,7 +663,7 @@
           "issuer_name": "CareFirst BCBS (MD)",
           "index_url": "https://member.carefirst.com/carefirst-resources/machine-readable/Index.json",
           "status": "confirmed_va_only",
-          "notes": "Index.json returns 200 OK. 5 drug files accessible. All plan IDs are VA-only — no MD SBM plan IDs found. Same finding as DC. Tested 2026-03-17."
+          "notes": "Index.json returns 200 OK. 5 drug files accessible. All plan IDs are VA-only â€” no MD SBM plan IDs found. Same finding as DC. Tested 2026-03-17."
         },
         {
           "issuer_id": "00543",
@@ -797,14 +803,14 @@
       "exchange_name": "Massachusetts Health Connector",
       "exchange_url": "https://www.mahealthconnector.org",
       "centene_status": "no_centene_marketplace",
-      "centene_notes": "Centene only has Wellcare Medicare PDP in MA — not a Marketplace/QHP product. MA cannot be fetched via Centene API. Requires local VPN fetch for BCBS MA / Harvard Pilgrim / Tufts.",
+      "centene_notes": "Centene only has Wellcare Medicare PDP in MA â€” not a Marketplace/QHP product. MA cannot be fetched via Centene API. Requires local VPN fetch for BCBS MA / Harvard Pilgrim / Tufts.",
       "issuers": [
         {
           "issuer_id": "42690",
           "issuer_name": "Blue Cross Blue Shield of Massachusetts",
           "index_url": "https://transparency-in-coverage.bluecrossma.com/2026-03-01_index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 00028. URL updated 2026-03-19 — returns 404 Not Found. BCBS MA TiC transparency path does not exist.",
+          "notes": "HIOS ID 00028. URL updated 2026-03-19 â€” returns 404 Not Found. BCBS MA TiC transparency path does not exist.",
           "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00028 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
@@ -819,7 +825,7 @@
           "issuer_name": "Harvard Pilgrim Health Care (Point32Health)",
           "index_url": "https://www.point32health.org/machine-readable-files/hphc/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 77432. URL updated 2026-03-19 — returns 404 Not Found. Point32Health HPHC MR path does not exist.",
+          "notes": "HIOS ID 77432. URL updated 2026-03-19 â€” returns 404 Not Found. Point32Health HPHC MR path does not exist.",
           "issuer_id_note": "HIOS ID corrected 2026-03-19: was 77432 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
@@ -827,7 +833,7 @@
           "issuer_name": "Tufts Health Plan (Point32Health)",
           "index_url": "https://www.point32health.org/machine-readable-files/tufts/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 00095. URL updated 2026-03-19 — returns 404 Not Found. Point32Health Tufts MR path does not exist.",
+          "notes": "HIOS ID 00095. URL updated 2026-03-19 â€” returns 404 Not Found. Point32Health Tufts MR path does not exist.",
           "issuer_id_note": "HIOS ID corrected 2026-03-19: was 00095 (wrong/placeholder). 2025 SBM Plan-PUF confirms current HIOS ID."
         },
         {
@@ -912,7 +918,7 @@
         },
         {
           "issuer_id": "48396",
-          "issuer_name": "Anthem Blue Cross (ME) — via Elevance Health",
+          "issuer_name": "Anthem Blue Cross (ME) â€” via Elevance Health",
           "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
           "direct_drugs_url": "https://fm.formularynavigator.com/jsonFiles/publish/143/35/drugs.json",
           "status": "active",
@@ -1006,7 +1012,7 @@
         },
         {
           "issuer_id": "93187",
-          "issuer_name": "Aetna Health Inc. (VA) — HMO",
+          "issuer_name": "Aetna Health Inc. (VA) â€” HMO",
           "index_url": "",
           "status": "url_unknown",
           "notes": "HIOS 93187. HMO_Virginia (Aetna HMO network). Plan names: Gold S: HMO Aetna network of doctors & hospitals, Bronze S: HMO Aetna network of doctors & hospitals. Identified from 2025 SBM Plan-PUF. Aetna VA HMO entity (distinct from Innovation Health 86443). Standard Aetna HMO plans. CVS Health subsidiary. No discoverable MR formulary endpoint."
