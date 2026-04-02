@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 3 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184) parsed from QHP PDFs. 11,096 drugs. Remaining 9 issuers need PDF parsing.",
+  "formulary_status": "PARTIAL — 4 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235) parsed from PDFs. 13,738 drugs. Remaining 8 issuers need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -120,12 +120,14 @@
       "variant_count": 73,
       "networks": [],
       "formulary": {
-        "name": "UHC NY Formulary",
-        "url": "https://transparency-in-coverage.uhc.com/",
-        "format": "TiC MRF only — no formulary data",
+        "name": "2026 NY Individual & Family Prescription Drug List",
+        "url": "https://www.uhc.com/content/dam/uhcdotcom/en/Pharmacy/PDFs/IFP_M58643_UHC_NY-PDL-12312025.pdf",
+        "format": "PDF (4-tier: $0=Preventive, 1=Generic, 2=Preferred Brand, 3=Non-Preferred)",
+        "pbm": "OptumRx",
         "cloud_accessible": true,
-        "status": "tic_only",
-        "note": "UHC transparency portal is live but contains TiC negotiated rates, not QHP formulary data. NY plans may be included in TiC data but this does not provide drug tier/PA/ST/QL information."
+        "status": "parsed",
+        "parsed_records": 3373,
+        "note": "Full NY Individual PDL (174 pages, 7.5 MB). 3,373 drugs parsed. Tiers: Generic=1,278, Preferred Brand=742, Non-Preferred=978, ACA Preventive=375. PA=642, ST=52, QL=1,632, SP=430. Found via uhc.com/member-resources/pharmacy-benefits/prescription-drug-lists/individual-exchange."
       }
     },
     "mvp_health_care_hmo": {
@@ -236,15 +238,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 3,
+    "parsed": 4,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
-    "tic_only": 2,
+    "tic_only": 1,
     "url_dead": 2,
     "blocked": 0,
     "url_unknown": 3,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "3 issuers parsed (Fidelis 25303 + Anthem 41046 + MVP 56184) covering 77 of 319 plans — 11,096 merged drugs. Remaining 9 issuers (242 plans) need PDF sources. Excellus BCBS (78124, 60 plans) and CDPHP (94788, 30 plans) are highest-value targets."
+    "recommendation": "4 issuers parsed (Fidelis + Anthem + MVP + UHC) covering 96 of 319 plans — 13,738 merged drugs. Remaining 8 issuers (223 plans) need PDF sources. Excellus BCBS (78124, 60 plans) and CDPHP (94788, 30 plans) are highest-value targets."
   }
 }
