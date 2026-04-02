@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "NO_JSON_ENDPOINTS — all carriers SBE-only, no CMS-schema JSON published. PDF parsing required (Phase 2).",
+  "formulary_status": "PARTIAL — 1 issuer (Fidelis Care/Centene, 25303) parsed from QHP PDF. 2,591 drugs. Remaining 11 issuers need PDF parsing (Phase 2).",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -49,13 +49,14 @@
       "variant_count": 88,
       "networks": [],
       "formulary": {
-        "name": "Fidelis Care Marketplace Formulary",
-        "url": null,
-        "format": "No JSON endpoint",
-        "pbm": "Unknown (Centene subsidiary)",
-        "cloud_accessible": false,
-        "status": "url_dead",
-        "note": "Centene TiC index (2026-03-04_fidelis_index.json) is live but contains only TiC in_network_files — no formulary data. 30+ URL patterns tested and exhausted (see sbm-source-registry.json). api.centene.com/ambetter/reference/drugs-*-NY.json all return 404. FormularyNavigator /25303/*/drugs.json all return 500.",
+        "name": "Ambetter from Fidelis Care QHP Formulary",
+        "url": "https://www.fideliscare.org/Portals/0/Formularies/QHP-2026-formulary-Fidelis-Care.pdf",
+        "format": "PDF (4-tier: 0=Preventive, 1=Generic, 2=Preferred Brand, 3=Non-Preferred)",
+        "pbm": "Centene P&T Committee",
+        "cloud_accessible": true,
+        "status": "parsed",
+        "parsed_records": 2591,
+        "note": "QHP formulary PDF found at fideliscare.org/Portals/0/Formularies/. Parsed 2,591 drugs (245 preventive, 1,524 generic, 307 preferred brand, 515 non-preferred). PA=622, ST=29, QL=1,194. No JSON endpoint exists — Centene TiC index is TiC-only.",
         "urls_tested": [
           "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
           "https://api.centene.com/ambetter/reference/drugs-AMB-NY.json",
@@ -232,14 +233,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
+    "parsed": 1,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 2,
     "url_dead": 2,
     "blocked": 1,
-    "url_unknown": 5,
+    "url_unknown": 4,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "NY is a Phase 2 PDF-parsing state. No carrier publishes CMS-schema formulary JSON for NY QHP plans. Healthfirst publishes JSON but only for FL plans. Anthem/Elevance publishes FormularyNavigator JSON but only for FFE states. MetroPlus and MVP (CVS Caremark PBM) are the most promising PDF parsing targets."
+    "recommendation": "Fidelis Care (25303, 23 plans) parsed from QHP PDF — 2,591 drugs. Remaining 11 issuers need PDF parsing. MetroPlus (11177, 16 plans) and MVP (56184, 28 plans / CVS Caremark PBM) are next-priority PDF targets."
   }
 }
