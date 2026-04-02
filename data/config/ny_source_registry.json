@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 1 issuer (Fidelis Care/Centene, 25303) parsed from QHP PDF. 2,591 drugs. Remaining 11 issuers need PDF parsing (Phase 2).",
+  "formulary_status": "PARTIAL — 2 issuers (Fidelis Care 25303 + Anthem 41046) parsed from QHP PDFs. 4,933 drugs. Remaining 10 issuers need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -88,12 +88,14 @@
       "variant_count": 92,
       "networks": [],
       "formulary": {
-        "name": "Anthem NY Formulary",
-        "url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
-        "format": "FormularyNavigator JSON (multi-state)",
+        "name": "2026 New York Select Drug List — Three Tier",
+        "url": "https://fm.formularynavigator.com/FBO/143/2026_Select_3_Tier_NY_ABS_IND.pdf",
+        "format": "PDF (3-tier: Tier 1=Generic, Tier 2=Preferred Brand, Tier 3=Non-Preferred/Specialty)",
+        "pbm": "Elevance Health / IngenioRx",
         "cloud_accessible": true,
-        "status": "no_ny_data",
-        "note": "Elevance Health Data Index is live (200 OK) with 11 formulary_urls via FormularyNavigator. However, all formulary files contain FFE state plans only (IN, ME, MO, NH, OH, WI, FL, TX, GA). No NY plan IDs found in any FormularyNavigator file. NY is SBE — Anthem NY likely publishes formulary separately, not through the Elevance multi-state index."
+        "status": "parsed",
+        "parsed_records": 2343,
+        "note": "Full Select Drug List PDF hosted on FormularyNavigator (FBO/143). 2,343 drugs parsed. Tiers: Generic=901, Preferred Brand=561, Non-Preferred=499, ACA Preventive=382. PA=415, ST=70, QL=1,367, SP=184. Elevance multi-state JSON index has no NY data (FFE only)."
       }
     },
     "anthem_insurance_ny": {
@@ -233,15 +235,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 1,
+    "parsed": 2,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 2,
     "url_dead": 2,
     "blocked": 1,
-    "url_unknown": 4,
+    "url_unknown": 3,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "Fidelis Care (25303, 23 plans) parsed from QHP PDF — 2,591 drugs. Remaining 11 issuers need PDF parsing. MetroPlus (11177, 16 plans) and MVP (56184, 28 plans / CVS Caremark PBM) are next-priority PDF targets."
+    "recommendation": "Fidelis Care (25303, 23 plans) + Anthem (41046, 26 plans) parsed — 4,933 merged drugs. Remaining 10 issuers need PDF sources. MetroPlus (11177, 16 plans) and MVP (56184, 28 plans / CVS Caremark PBM) are next-priority targets."
   }
 }
