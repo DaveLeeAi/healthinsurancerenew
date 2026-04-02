@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 2 issuers (Fidelis Care 25303 + Anthem 41046) parsed from QHP PDFs. 4,933 drugs. Remaining 10 issuers need PDF parsing.",
+  "formulary_status": "PARTIAL — 3 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184) parsed from QHP PDFs. 11,096 drugs. Remaining 9 issuers need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -135,13 +135,14 @@
       "variant_count": 103,
       "networks": [],
       "formulary": {
-        "name": "MVP Health Care Formulary",
-        "url": "https://www.mvphealthcare.com/developers/machine-readable-files",
-        "format": "HTML page → HealthSparq portal (no direct JSON)",
+        "name": "2026 MVP Marketplace Pharmacy Formulary",
+        "url": "https://www.mvphealthcare.com/-/media/project/mvp/healthcare/documents/formularies/2026/marketplace-pharmacy-formulary-2026.pdf",
+        "format": "PDF (3-tier: 1=Generic, 2=Preferred Brand, 3=Non-Preferred/Specialty)",
         "pbm": "CVS Caremark",
-        "cloud_accessible": false,
-        "status": "blocked",
-        "note": "MRF page is HTML, links to HealthSparq portal (mvp.healthsparq.com) which returns 403 Forbidden from cloud. FormularyNavigator /56184/*/drugs.json all return 500 Server Error. Per SBM-DATA-SOURCES.md: PDF formularies via CVS Caremark. Phase 2 PDF parsing required.",
+        "cloud_accessible": true,
+        "status": "parsed",
+        "parsed_records": 6163,
+        "note": "Full Marketplace formulary PDF (284 pages, 1.9 MB). 6,163 drugs parsed. Tiers: Generic=2,011, Preferred Brand=1,706, Non-Preferred=2,446. PA=701, ST=89, QL=684, SP=470.",
         "urls_tested": [
           "https://www.mvphealthcare.com/cms-data-index.json",
           "https://www.mvphealthcare.com/machine-readable-files/index.json",
@@ -235,15 +236,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 2,
+    "parsed": 3,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 2,
     "url_dead": 2,
-    "blocked": 1,
+    "blocked": 0,
     "url_unknown": 3,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "Fidelis Care (25303, 23 plans) + Anthem (41046, 26 plans) parsed — 4,933 merged drugs. Remaining 10 issuers need PDF sources. MetroPlus (11177, 16 plans) and MVP (56184, 28 plans / CVS Caremark PBM) are next-priority targets."
+    "recommendation": "3 issuers parsed (Fidelis 25303 + Anthem 41046 + MVP 56184) covering 77 of 319 plans — 11,096 merged drugs. Remaining 9 issuers (242 plans) need PDF sources. Excellus BCBS (78124, 60 plans) and CDPHP (94788, 30 plans) are highest-value targets."
   }
 }
