@@ -138,7 +138,7 @@
           "issuer_name": "Ambetter from Fidelis Care (NY)",
           "index_url": "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
           "status": "url_dead",
-          "notes": "HIOS ID 25303 (corrected from 16842 â€” Centene TiC index confirms 25303NY* plan IDs). Centene Marketplace product in NY via Fidelis Care subsidiary. CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_fidelis_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only â€” no formulary/drug data). 88 plans confirmed (2 reporting_structure entries). FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FC-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FID-NY.json â†’ 404. api.centene.com/ambetter/reference/drugs-FID-NY.json â†’ 404. FormularyNavigator /25303/1-4/drugs.json â†’ 500 HTML error. Fidelis Care NY QHP formulary has no accessible public endpoint.",
+          "notes": "HIOS ID 25303 (corrected from 16842 â€” Centene TiC index confirms 25303NY* plan IDs). Centene Marketplace product in NY via Fidelis Care subsidiary. CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_fidelis_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only â€” no formulary/drug data). 88 plans confirmed (2 reporting_structure entries). FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FC-NY.json â†’ 404. api.centene.com/fideliscare/reference/drugs-FID-NY.json â†’ 404. api.centene.com/ambetter/reference/drugs-FID-NY.json â†’ 404. FormularyNavigator /25303/1-4/drugs.json â†’ 500 HTML error. Fidelis Care NY QHP formulary has no accessible public endpoint. Verified 2026-04-02: all Centene API patterns exhausted (drugs-AMB-NY, drugs-FID-NY, drugs-FC-NY all 404). FormularyNavigator 500.",
           "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_fidelis_index.json",
           "centene_tic_index_type": "TiC MRF â€” in_network_files only, NOT QHP formulary",
           "urls_tested": [
@@ -175,15 +175,15 @@
           "issuer_id": "29179",
           "issuer_name": "Healthfirst (NY)",
           "index_url": "https://apps.hf.org/applications/dn/cms_json/files/tic/index.json",
-          "status": "url_dead",
-          "notes": "Index.json is LIVE but is TIC pricing MRF for Health First FLORIDA (plan IDs 36194FL*), not Healthfirst NY. drugs.json also contains FL-only data. No NY formulary data. Re-verified 2026-03-19."
+          "status": "fl_only",
+          "notes": "Index.json is LIVE but is TIC pricing MRF for Health First FLORIDA (plan IDs 36194FL*), not Healthfirst NY. drugs.json also contains FL-only data. No NY formulary data. Re-verified 2026-03-19. DUPLICATE: HIOS 29179 is Healthfirst FL subsidiary. See 91237 for NY Healthfirst. drugs.json at apps.hf.org contains only FL data."
         },
         {
           "issuer_id": "11177",
           "issuer_name": "MetroPlus Health Plan (NY)",
-          "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 11177. NYC HMO. MetroPlus-MP network. Affiliated with NYC Health+Hospitals. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "index_url": "https://www.metroplus.org/members/pharmacy/",
+          "status": "pdf_only",
+          "notes": "HIOS 11177. NYC HMO. MetroPlus-MP network. Affiliated with NYC Health+Hospitals. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: pharmacy page live (HTML). Actual PDF URLs need manual extraction. 3-tier formulary with PA/ST/QL/SGM flags."
         },
         {
           "issuer_id": "18029",
@@ -196,15 +196,15 @@
           "issuer_id": "40064",
           "issuer_name": "HealthNow New York / BlueCross BlueShield of WNY",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 40064. Western NY. Blue Marketplace network. myBlue Access EX plan branding. BlueCross BlueShield of Western New York. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "status": "url_dead",
+          "notes": "HIOS 40064. Western NY. Blue Marketplace network. myBlue Access EX plan branding. BlueCross BlueShield of Western New York. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: excellusbcbs.sapphiremrfhub.com does not resolve. excellusbcbs.com/cms-data-index.json returns 404."
         },
         {
           "issuer_id": "41046",
           "issuer_name": "Anthem Health Plans of New York (Elevance Health)",
-          "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 41046. NY statewide. Individual Network. Anthem Gatekeeper HMO product. Elevance Health (formerly Anthem) NY medical entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "index_url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
+          "status": "no_ny_data",
+          "notes": "HIOS 41046. NY statewide. Individual Network. Anthem Gatekeeper HMO product. Elevance Health (formerly Anthem) NY medical entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: Elevance index live (200 OK, 11 FormularyNavigator URLs) but all contain FFE state plans only (IN,ME,MO,NH,OH,WI,FL,TX,GA). No NY plan IDs found."
         },
         {
           "issuer_id": "44113",
@@ -216,16 +216,16 @@
         {
           "issuer_id": "54235",
           "issuer_name": "UnitedHealthcare of New York",
-          "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 54235. NY statewide. UHC Compass network. UHC Compass Bronze/Gold/Silver plan names. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "index_url": "https://transparency-in-coverage.uhc.com/",
+          "status": "tic_only",
+          "notes": "HIOS 54235. NY statewide. UHC Compass network. UHC Compass Bronze/Gold/Silver plan names. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: TiC portal live but contains negotiated rates, not formulary data."
         },
         {
           "issuer_id": "56184",
           "issuer_name": "MVP Health Care (NY) â€” HMO",
-          "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 56184. Upstate/statewide NY. NY Small Group HMO network. MVP HMO Bronze plan names. Note: separate HIOS from MVP EPO entity 89846. Identified from 2025 SBM Plan-PUF."
+          "index_url": "https://www.mvphealthcare.com/developers/machine-readable-files",
+          "status": "blocked",
+          "notes": "HIOS 56184. Upstate/statewide NY. NY Small Group HMO network. MVP HMO Bronze plan names. Note: separate HIOS from MVP EPO entity 89846. Identified from 2025 SBM Plan-PUF. Verified 2026-04-02: MRF page HTML, links to HealthSparq portal (403). FormularyNavigator /56184/*/drugs.json all 500. PDF parsing (CVS Caremark PBM) required."
         },
         {
           "issuer_id": "74289",
@@ -238,8 +238,8 @@
           "issuer_id": "78124",
           "issuer_name": "Excellus BlueCross BlueShield (NY)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 78124. Rochester/Central NY. Excellus BCBS EPO network â€” confirmed in plan names. Serves Rochester, Syracuse, CNY, Utica, Bassett healthcare region. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "status": "url_dead",
+          "notes": "HIOS 78124. Rochester/Central NY. Excellus BCBS EPO network â€” confirmed in plan names. Serves Rochester, Syracuse, CNY, Utica, Bassett healthcare region. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: healthnowny.com MRF endpoint failed (SSL handshake failure). No JSON endpoint found."
         },
         {
           "issuer_id": "85629",
@@ -252,8 +252,8 @@
           "issuer_id": "88582",
           "issuer_name": "EmblemHealth (NY)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 88582. NYC area. EmblemHealth Millennium Individual / Select Care Individual networks. EmblemHealth (merger of GHI and HIP of Greater NY). Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "status": "url_dead",
+          "notes": "HIOS 88582. NYC area. EmblemHealth Millennium Individual / Select Care Individual networks. EmblemHealth (merger of GHI and HIP of Greater NY). Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: emblemhealth.com/cms-data-index.json returns 404."
         },
         {
           "issuer_id": "89846",
@@ -273,8 +273,8 @@
           "issuer_id": "94788",
           "issuer_name": "Capital District Physicians' Health Plan (CDPHP)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 94788. Capital District NY. CDPHP HMO network. HDHMO plan names. Primary CDPHP entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "status": "url_dead",
+          "notes": "HIOS 94788. Capital District NY. CDPHP HMO network. HDHMO plan names. Primary CDPHP entity. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint. Verified 2026-04-02: cdphp.com/cms-data-index.json and cdphp.com/machine-readable-files/cms-data-index.json both return 404."
         }
       ]
     },

@@ -1,0 +1,245 @@
+{
+  "state": "NY",
+  "marketplace": "NY State of Health",
+  "marketplace_url": "https://nystateofhealth.ny.gov",
+  "plan_year": 2026,
+  "total_medical_issuers": 12,
+  "sbc_status": "COMPLETE",
+  "sbc_variants": 1246,
+  "formulary_status": "NO_JSON_ENDPOINTS — all carriers SBE-only, no CMS-schema JSON published. PDF parsing required (Phase 2).",
+  "carriers": {
+    "metroplus": {
+      "issuer_name": "MetroPlus Health Plan",
+      "issuer_id": "11177",
+      "plan_count": 16,
+      "variant_count": 57,
+      "networks": [],
+      "formulary": {
+        "name": "MetroPlus Marketplace Formulary",
+        "url": "https://www.metroplus.org/members/pharmacy/",
+        "format": "PDF (3-tier with PA/ST/QL/SGM flags)",
+        "pbm": "Unknown",
+        "cloud_accessible": true,
+        "verified": false,
+        "status": "pdf_only",
+        "note": "Web page at metroplus.org/members/pharmacy/ confirmed live (HTML). Actual PDF URLs need manual extraction from page. Per SBM-DATA-SOURCES.md: 3-tier formulary with PA/ST/QL/SGM flags."
+      }
+    },
+    "independent_health": {
+      "issuer_name": "Independent Health",
+      "issuer_id": "18029",
+      "issuer_id_note": "SBC PUF labels this issuer as 'AmeriHealth' but SBM registry identifies as Independent Health (NY). Verify correct carrier mapping.",
+      "plan_count": 13,
+      "variant_count": 46,
+      "networks": [],
+      "formulary": {
+        "name": "Independent Health Formulary",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "No MRF endpoint found. independenthealth.com/machine-readable-files returns 404."
+      }
+    },
+    "fidelis_care": {
+      "issuer_name": "Ambetter from Fidelis Care (Centene)",
+      "issuer_id": "25303",
+      "issuer_id_note": "HIOS ID confirmed from Centene TiC index (88 plans with 25303NY* plan IDs). Previously listed as 16842 in some sources.",
+      "plan_count": 23,
+      "variant_count": 88,
+      "networks": [],
+      "formulary": {
+        "name": "Fidelis Care Marketplace Formulary",
+        "url": null,
+        "format": "No JSON endpoint",
+        "pbm": "Unknown (Centene subsidiary)",
+        "cloud_accessible": false,
+        "status": "url_dead",
+        "note": "Centene TiC index (2026-03-04_fidelis_index.json) is live but contains only TiC in_network_files — no formulary data. 30+ URL patterns tested and exhausted (see sbm-source-registry.json). api.centene.com/ambetter/reference/drugs-*-NY.json all return 404. FormularyNavigator /25303/*/drugs.json all return 500.",
+        "urls_tested": [
+          "https://www.fideliscare.org/Portals/0/MachineReadableFiles/index.json",
+          "https://api.centene.com/ambetter/reference/drugs-AMB-NY.json",
+          "https://api.centene.com/ambetter/reference/drugs-FID-NY.json",
+          "https://api.centene.com/fideliscare/reference/drugs-FC-NY.json",
+          "https://fm.formularynavigator.com/jsonFiles/publish/25303/1/drugs.json"
+        ]
+      }
+    },
+    "excellus_bcbs": {
+      "issuer_name": "Excellus BlueCross BlueShield",
+      "issuer_id": "40064",
+      "plan_count": 56,
+      "variant_count": 210,
+      "networks": [],
+      "formulary": {
+        "name": "Excellus BCBS Formulary",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "Largest NY carrier by plan count (56 plans). No MRF JSON endpoint found. excellusbcbs.sapphiremrfhub.com does not resolve. excellusbcbs.com/cms-data-index.json returns 404."
+      }
+    },
+    "anthem_ny": {
+      "issuer_name": "Anthem Health Plans of New York (Elevance Health)",
+      "issuer_id": "41046",
+      "plan_count": 26,
+      "variant_count": 92,
+      "networks": [],
+      "formulary": {
+        "name": "Anthem NY Formulary",
+        "url": "https://www22.elevancehealth.com/cms-data-index-json/Elevance-Health-Data-Index.json",
+        "format": "FormularyNavigator JSON (multi-state)",
+        "cloud_accessible": true,
+        "status": "no_ny_data",
+        "note": "Elevance Health Data Index is live (200 OK) with 11 formulary_urls via FormularyNavigator. However, all formulary files contain FFE state plans only (IN, ME, MO, NH, OH, WI, FL, TX, GA). No NY plan IDs found in any FormularyNavigator file. NY is SBE — Anthem NY likely publishes formulary separately, not through the Elevance multi-state index."
+      }
+    },
+    "anthem_insurance_ny": {
+      "issuer_name": "Anthem Insurance Companies Inc. (NY) — medical/dental",
+      "issuer_id": "44113",
+      "plan_count": 0,
+      "variant_count": 0,
+      "networks": [],
+      "formulary": {
+        "name": "Anthem Insurance NY Formulary",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "Separate HIOS ID from 41046. No plans found in SBC PUF data — may be dental-only or inactive for individual market. No MRF endpoint found."
+      }
+    },
+    "unitedealthcare_ny": {
+      "issuer_name": "UnitedHealthcare of New York",
+      "issuer_id": "54235",
+      "plan_count": 19,
+      "variant_count": 73,
+      "networks": [],
+      "formulary": {
+        "name": "UHC NY Formulary",
+        "url": "https://transparency-in-coverage.uhc.com/",
+        "format": "TiC MRF only — no formulary data",
+        "cloud_accessible": true,
+        "status": "tic_only",
+        "note": "UHC transparency portal is live but contains TiC negotiated rates, not QHP formulary data. NY plans may be included in TiC data but this does not provide drug tier/PA/ST/QL information."
+      }
+    },
+    "mvp_health_care_hmo": {
+      "issuer_name": "MVP Health Care (NY) — HMO",
+      "issuer_id": "56184",
+      "plan_count": 28,
+      "variant_count": 103,
+      "networks": [],
+      "formulary": {
+        "name": "MVP Health Care Formulary",
+        "url": "https://www.mvphealthcare.com/developers/machine-readable-files",
+        "format": "HTML page → HealthSparq portal (no direct JSON)",
+        "pbm": "CVS Caremark",
+        "cloud_accessible": false,
+        "status": "blocked",
+        "note": "MRF page is HTML, links to HealthSparq portal (mvp.healthsparq.com) which returns 403 Forbidden from cloud. FormularyNavigator /56184/*/drugs.json all return 500 Server Error. Per SBM-DATA-SOURCES.md: PDF formularies via CVS Caremark. Phase 2 PDF parsing required.",
+        "urls_tested": [
+          "https://www.mvphealthcare.com/cms-data-index.json",
+          "https://www.mvphealthcare.com/machine-readable-files/index.json",
+          "https://mvp.healthsparq.com/healthsparq/public/one/insurerCode=MVP_I/machine-readable/index.json",
+          "https://mrf.healthsparq.com/mvphealthcare.com/machine-readable/index.json",
+          "https://fm.formularynavigator.com/jsonFiles/publish/56184/1/drugs.json"
+        ]
+      }
+    },
+    "issuer_74289": {
+      "issuer_name": "Unknown NY issuer (HIOS 74289, Circle network)",
+      "issuer_id": "74289",
+      "plan_count": 17,
+      "variant_count": 64,
+      "networks": [],
+      "formulary": {
+        "name": "Unknown",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "HIOS ID 74289 not matched to a named carrier in SBM-DATA-SOURCES.md or SBC PUF data. May be a subsidiary or new entrant. Needs manual identification."
+      }
+    },
+    "bcbs_ny": {
+      "issuer_name": "Blue Cross Blue Shield (NY — likely HealthNow / BCBS of WNY)",
+      "issuer_id": "78124",
+      "plan_count": 60,
+      "variant_count": 218,
+      "networks": [],
+      "formulary": {
+        "name": "BCBS NY Formulary",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "Second largest NY carrier by plan count (60 plans). HIOS 78124 likely corresponds to HealthNow New York / BCBS of WNY. healthnowny.com MRF endpoint failed (SSL handshake failure). No JSON endpoint found."
+      }
+    },
+    "emblemhealth": {
+      "issuer_name": "EmblemHealth",
+      "issuer_id": "88582",
+      "plan_count": 26,
+      "variant_count": 92,
+      "networks": [],
+      "formulary": {
+        "name": "EmblemHealth Formulary",
+        "url": "https://transparency.emblemhealth.com/mrf/index.json",
+        "format": "TiC MRF only",
+        "cloud_accessible": false,
+        "status": "url_dead",
+        "note": "MRF index URL returns error. EmblemHealth publishes TiC MRF only. No QHP formulary JSON endpoint found. emblemhealth.com/cms-data-index.json returns 404."
+      }
+    },
+    "healthfirst": {
+      "issuer_name": "Healthfirst",
+      "issuer_id": "91237",
+      "plan_count": 25,
+      "variant_count": 94,
+      "networks": [],
+      "formulary": {
+        "name": "Healthfirst Formulary",
+        "url": "https://apps.hf.org/applications/dn/cms_json/files/drugs.json",
+        "format": "JSON (CMS schema)",
+        "cloud_accessible": true,
+        "status": "fl_only",
+        "note": "drugs.json is live and accessible (12 MB, 3,972 drugs). However, all plan IDs are 36194FL* (Healthfirst Florida). NY QHP plans (HIOS 91237NY*) are NOT included. Healthfirst publishes JSON for their FL FFE business only, not NY SBE."
+      }
+    },
+    "cdphp": {
+      "issuer_name": "Capital District Physicians' Health Plan (CDPHP)",
+      "issuer_id": "94788",
+      "plan_count": 30,
+      "variant_count": 109,
+      "networks": [],
+      "formulary": {
+        "name": "CDPHP Formulary",
+        "url": null,
+        "format": "Unknown",
+        "cloud_accessible": false,
+        "status": "url_unknown",
+        "note": "No MRF endpoint found. cdphp.com/machine-readable-files/cms-data-index.json returns 404. cdphp.com/cms-data-index.json returns 404."
+      }
+    }
+  },
+  "sbc_source": {
+    "primary": "CMS SBE QHP PUF",
+    "url": "https://www.cms.gov/marketplace/resources/data/state-based-public-use-files",
+    "download": "https://www.cms.gov/files/zip/newyorksbepuf2025.zip",
+    "format": "CSV/ZIP",
+    "status": "SOLVED"
+  },
+  "formulary_summary": {
+    "json_accessible": 0,
+    "json_but_wrong_state": 1,
+    "tic_only": 2,
+    "url_dead": 2,
+    "blocked": 1,
+    "url_unknown": 5,
+    "pdf_only": 1,
+    "total": 12,
+    "recommendation": "NY is a Phase 2 PDF-parsing state. No carrier publishes CMS-schema formulary JSON for NY QHP plans. Healthfirst publishes JSON but only for FL plans. Anthem/Elevance publishes FormularyNavigator JSON but only for FFE states. MetroPlus and MVP (CVS Caremark PBM) are the most promising PDF parsing targets."
+  }
+}
