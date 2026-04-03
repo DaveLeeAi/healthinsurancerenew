@@ -9,16 +9,49 @@
 
 | Metric | Value |
 |--------|-------|
-| FFE formulary (30 states) | 196,303 drugs (formulary_intelligence.json, 49 MB) |
+| **SBC coverage** | **50 states + DC — 27,588 plan variants (100%)** |
+| FFE formulary (32 states) | 196,303 drugs (formulary_intelligence.json, 49 MB) |
 | SBM + supplemental files | 20 per-state files |
 | Total SBM/supplemental drugs | 197,124 |
-| SBC (SBM states) | 18/18 complete (7,234 plan variants) |
-| States COMPLETE | NY, CO, GA |
-| States MISSING formulary | RI, VT |
+| Formulary states COMPLETE | NY, CO, GA |
+| Formulary states MISSING | RI, VT |
 
 ---
 
-## All SBM States + GA — Carrier-Level Status
+## SBC Data — All 50 States + DC (COMPLETE)
+
+| Source | States | Plan Variants |
+|--------|--------|--------------|
+| sbc_decoded.json | 32 FFE states (AL, AK, AR, AZ, DE, FL, GA, HI, IA, IL, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, NH, OH, OK, OR, SC, SD, TN, TX, UT, VA, WI, WY) | 20,354 |
+| 18 sbc_sbm_XX.json files | 18 SBM states + DC (CA, CO, CT, DC, ID, KY, MA, MD, ME, MN, NJ, NM, NV, NY, PA, RI, VT, WA) | 7,234 |
+| **Total** | **50 states + DC** | **27,588** |
+
+### SBM State SBC Breakdown
+
+| State | Plan Variants |
+|-------|--------------|
+| CA | 124 |
+| CO | 589 |
+| CT | 71 |
+| DC | 92 |
+| ID | 597 |
+| KY | 386 |
+| MA | 167 |
+| MD | 195 |
+| ME | 317 |
+| MN | 964 |
+| NJ | 192 |
+| NM | 105 |
+| NV | 600 |
+| NY | 1,246 |
+| PA | 1,121 |
+| RI | 81 |
+| VT | 104 |
+| WA | 283 |
+
+---
+
+## All SBM States + GA — Carrier-Level Formulary Status
 
 ### CA — 2,244 drugs | 1 of 3 issuers | PARTIAL
 
