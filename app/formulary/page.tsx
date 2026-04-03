@@ -16,20 +16,25 @@ const allStates = (allStatesData.states as StateEntry[]).sort(
   (a, b) => a.name.localeCompare(b.name)
 )
 
-const FFM_STATES_WITH_DATA = new Set([
-  'AK','AL','AZ','FL','IA','IN','KS','LA','MI','MO','MS','MT',
-  'NC','ND','NE','NH','OH','OK','OR','SC','SD','TN','TX','UT','WI','WY'
+// FFM states: plan data from Healthcare.gov PUF (includes SBM-FP states GA, IL that use federal platform)
+const FFM_STATES = new Set([
+  'AK','AL','AR','AZ','DE','FL','GA','HI','IA','IL','IN','KS','LA',
+  'MI','MO','MS','MT','NC','ND','NE','NH','OH','OK','SC','SD','TN',
+  'TX','UT','WI','WV','WY'
 ])
 
-const SBM_STATES_WITH_DATA = new Set([
-  'GA','ID','IL','KY','ME','NJ','NV','PA','VA','WA'
+// SBM states: formulary data from carrier PDF parsing (State-Based Marketplaces)
+const SBM_STATES = new Set([
+  'CA','CO','CT','DC','ID','KY','MA','MD','ME','MN',
+  'NJ','NM','NV','NY','OR','PA','RI','VA','VT','WA'
 ])
 
 const STATES_WITH_DATA = new Set(
-  Array.from(FFM_STATES_WITH_DATA).concat(Array.from(SBM_STATES_WITH_DATA))
+  Array.from(FFM_STATES).concat(Array.from(SBM_STATES))
 )
 
-const dataStates = allStates.filter(s => STATES_WITH_DATA.has(s.abbr))
+const ffmStates = allStates.filter(s => FFM_STATES.has(s.abbr))
+const sbmStates = allStates.filter(s => SBM_STATES.has(s.abbr))
 const noDataStates = allStates.filter(s => !STATES_WITH_DATA.has(s.abbr))
 
 // ── Counts from formulary build metadata ─────────────────────────────────────
@@ -203,7 +208,7 @@ export default function FormularyIndexPage() {
         </div>
 
         {/* ── SEARCH BOX (client component) ─────────────────────── */}
-        <FormularySearch dataStates={dataStates} noDataStates={noDataStates} />
+        <FormularySearch ffmStates={ffmStates} sbmStates={sbmStates} />
 
         {/* ── WHAT YOU'LL SEE ──────────────────────────────────── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">

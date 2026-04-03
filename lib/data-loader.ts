@@ -278,7 +278,7 @@ export function getIssuerStateMap(): Map<string, Set<string>> {
   }
 
   // 2. SBM states from per-state formulary files (formulary_sbm_NJ.json, etc.)
-  const sbmStates = ['NJ', 'PA', 'WA', 'IL', 'KY', 'NV', 'OR', 'ID', 'GA', 'VA', 'ME', 'CA', 'CO', 'CT', 'DC', 'MD', 'NM']
+  const sbmStates = ['CA', 'CO', 'CT', 'DC', 'GA', 'ID', 'IL', 'KY', 'MA', 'MD', 'ME', 'MN', 'NJ', 'NM', 'NV', 'NY', 'OR', 'PA', 'VA', 'VT', 'WA']
   for (const state of sbmStates) {
     const sbmPath = path.join(DATA_DIR, `formulary_sbm_${state}.json`)
     if (!fs.existsSync(sbmPath)) continue

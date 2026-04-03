@@ -16,11 +16,11 @@ interface StateEntry {
 }
 
 interface FormularySearchProps {
-  dataStates: StateEntry[]
-  noDataStates: StateEntry[]
+  ffmStates: StateEntry[]
+  sbmStates: StateEntry[]
 }
 
-export default function FormularySearch({ dataStates, noDataStates }: FormularySearchProps) {
+export default function FormularySearch({ ffmStates, sbmStates }: FormularySearchProps) {
   const router = useRouter()
   const [drug, setDrug] = useState('')
   const [selectedState, setSelectedState] = useState('')
@@ -47,17 +47,17 @@ export default function FormularySearch({ dataStates, noDataStates }: FormularyS
           className="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
         >
           <option value="">All states (nationwide search)</option>
-          <optgroup label="States with Formulary Data">
-            {dataStates.map((s) => (
+          <optgroup label="Healthcare.gov States (FFM)">
+            {ffmStates.map((s) => (
               <option key={s.abbr} value={stateNameToSlug(s.name)}>
                 {s.name}
               </option>
             ))}
           </optgroup>
-          <optgroup label="State-Based Exchanges (linked to state tools)">
-            {noDataStates.map((s) => (
+          <optgroup label="State-Based Marketplace (SBM)">
+            {sbmStates.map((s) => (
               <option key={s.abbr} value={stateNameToSlug(s.name)}>
-                {s.name} — {s.exchange}
+                {s.name}
               </option>
             ))}
           </optgroup>
