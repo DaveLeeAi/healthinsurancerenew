@@ -54,7 +54,9 @@
           "issuer_id": "67138",
           "issuer_name": "Ambetter from Health Net (CA)",
           "index_url": "https://ifp.healthnetcalifornia.com/machine-readable-files/index.json",
-          "status": "url_dead",
+          "direct_pdf_url": "http://healthnet.com/content/dam/centene/healthnet/pdfs/general/ca/pharmacy/hn-ambetter-essential-drug-list-2026.pdf",
+          "status": "pdf_live",
+          "parsed_drug_count": 1422,
           "notes": "HIOS ID 67138. Centene Marketplace product in CA via Health Net subsidiary (ifp.healthnetcalifornia.com). CONFIRMED IN CENTENE TIC INDEX 2026-03-19: centene.com .../2026-03-04_healthnet_index.json is LIVE (200 OK) but is a Transparency-in-Coverage MRF (in_network_files + allowed_amounts only â€” no formulary/drug data). 58 plans with IDs 67138CA* confirmed in TiC index. FORMULARY ENDPOINTS EXHAUSTED: api.centene.com/ambetter/reference/drugs-AMB-CA.json â†’ 404. api.centene.com/ambetter/reference/drugs-HN-CA.json â†’ 404. api.centene.com/healthnet/reference/drugs-HN-CA.json â†’ 404. FormularyNavigator /67138/1-14/drugs.json â†’ 500 HTML error. ifp.healthnetcalifornia.com â†’ 200 HTML (not JSON). 30+ patterns tested 2026-03-19. Health Net CA QHP formulary has no accessible public endpoint.",
           "centene_tic_index_url": "https://www.centene.com/content/dam/centene/Centene%20Corporate/json/DOCUMENT/2026-03-04_healthnet_index.json",
           "centene_tic_index_type": "TiC MRF â€” in_network_files only, NOT QHP formulary",
@@ -140,8 +142,13 @@
           "issuer_id": "27603",
           "issuer_name": "Chinese Community Health Plan (CA)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 27603. Bay Area EPO/HMO. Pathway EPO network. Serves Alameda, Contra Costa, and broader Bay Area/Central CA counties. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "direct_pdf_url": "https://balancebycchp.com/wp-content/uploads/2026/03/2026_CCHP_March_Commercial_Exchange_Formulary_26.03.01.pdf",
+          "status": "pdf_live",
+          "format": "pdf",
+          "pdf_pages": 431,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 5471,
+          "notes": "HIOS 27603. Bay Area EPO/HMO. PDF formulary downloaded from balancebycchp.com (431 pages, ~4.8 MB, March 2026). Parsed 5,471 drugs with pdfplumber."
         },
         {
           "issuer_id": "47579",
@@ -154,15 +161,25 @@
           "issuer_id": "84014",
           "issuer_name": "Valley Health Plan (CA)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 84014. Santa Clara County only. Narrow-network HMO. Valley Health Plan is the Santa Clara County employee/individual health plan on Covered California. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "direct_pdf_url": "https://files.santaclaracounty.gov/exjcpb1461/2025-11/covered-california-and-individual-and-family-plan-formulary-2026-110525.pdf",
+          "status": "pdf_local",
+          "format": "pdf",
+          "pdf_pages": 250,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 2028,
+          "notes": "HIOS 84014. Santa Clara County only. PDF formulary from files.santaclaracounty.gov (403 on automated download, manually saved). 250 pages, CC & IFP Formulary 2026. Parsed 2,028 drugs with pdfplumber."
         },
         {
           "issuer_id": "93689",
           "issuer_name": "Western Health Advantage (CA)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS 93689. Sacramento/Northern CA regional HMO. WHA Network. Serves El Dorado, Marin, Napa, Placer, Sacramento, Solano, Sonoma, Yolo counties. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+          "direct_pdf_url": "https://contenthub-aem.optumrx.com/content/dam/contenthub/rx-assets/en/documents/clients/western-health/Premium-Prescription-Drug-Plan-Infertility.pdf",
+          "status": "pdf_live",
+          "format": "pdf",
+          "pdf_pages": 546,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 5577,
+          "notes": "HIOS 93689. Sacramento/Northern CA regional HMO. PDF formulary from OptumRx/contenthub (546 pages, ~11.6 MB, April 2026). 4-Tier Premium Standard Formulary + Infertility. Parsed 5,577 drugs with pdfplumber."
         },
         {
           "issuer_id": "unknown_aetna_ca",

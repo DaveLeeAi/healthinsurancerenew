@@ -102,6 +102,34 @@ CARRIERS = {
         "req_x_min": 430.0,
         "name_x_max": 350.0,
     },
+    "healthnet": {
+        "issuer_id": "67138",
+        "issuer_name": "Ambetter from Health Net (CA)",
+        "pdf_path": RAW_DIR / "healthnet_ambetter_ca_2026.pdf",
+        "start_page": 15,
+        "end_page": 160,
+        "tier_x_min": 180.0,
+        "tier_x_max": 210.0,
+        "req_x_min": 215.0,
+        "name_x_max": 175.0,
+        "two_column": True,
+        "col_split": 300.0,
+        "right_tier_x_min": 460.0,
+        "right_tier_x_max": 490.0,
+        "right_req_x_min": 495.0,
+        "right_name_x_max": 455.0,
+    },
+    "cchp": {
+        "issuer_id": "27603",
+        "issuer_name": "Chinese Community Health Plan (CA)",
+        "pdf_path": RAW_DIR / "cchp_ca_2026_formulary.pdf",
+        "start_page": 14,
+        "end_page": 425,
+        "tier_x_min": 355.0,
+        "tier_x_max": 430.0,
+        "req_x_min": 430.0,
+        "name_x_max": 350.0,
+    },
     "lacare": {
         "issuer_id": "92815",
         "issuer_name": "L.A. Care Health Plan",
@@ -115,6 +143,31 @@ CARRIERS = {
         "tier_x_max": 380.0,
         "req_x_min": 385.0,
         "name_x_max": 295.0,
+    },
+    "valleyhealth": {
+        "issuer_id": "84014",
+        "issuer_name": "Valley Health Plan (CA)",
+        "pdf_path": Path(
+            r"C:\Users\Stuart\Downloads\Claude Code\Health Insurance Renew Website Resources"
+            r"\SEO EEAT\Covered CA\Valley Health\covered-california-and-individual-and-family-plan-formulary-2026-110525.pdf"
+        ),
+        "start_page": 30,
+        "end_page": 238,
+        "tier_x_min": 300.0,
+        "tier_x_max": 380.0,
+        "req_x_min": 385.0,
+        "name_x_max": 295.0,
+    },
+    "wha": {
+        "issuer_id": "93689",
+        "issuer_name": "Western Health Advantage (CA)",
+        "pdf_path": RAW_DIR / "wha_ca_2026_formulary.pdf",
+        "start_page": 12,
+        "end_page": 535,
+        "tier_x_min": 355.0,
+        "tier_x_max": 430.0,
+        "req_x_min": 430.0,
+        "name_x_max": 350.0,
     },
     "anthem": {
         "issuer_id": "92499",
@@ -162,6 +215,7 @@ TIER_MAP: dict[str, str] = {
     "PREV": "ACA-PREVENTIVE-DRUGS",
     "$0": "ACA-PREVENTIVE-DRUGS",
     "0": "ACA-PREVENTIVE-DRUGS",
+    "OA": "SPECIALTY",             # WHA: "Other Authorization" / specialty
     "NF": "NON-FORMULARY",
     "NOT COVERED": "NON-FORMULARY",
 }
@@ -312,7 +366,7 @@ def parse_page_words(page, cfg: dict) -> list[dict]:
             name_words.append(w)
         else:
             # Gap between name and tier — classify by content
-            if text.lower() in ("tier", "nf", "pv", "prev", "or") or (
+            if text.lower() in ("tier", "nf", "pv", "prev", "or", "oa") or (
                 text.isdigit() and len(text) == 1
             ) or re.match(r"^[1-5][ab]\*;?$", text, re.IGNORECASE):
                 tier_words.append(w)
@@ -375,6 +429,62 @@ def parse_page_words(page, cfg: dict) -> list[dict]:
                 "reqs": " ".join(entry_req_parts).strip(),
             })
 
+    return entries
+
+
+def _parse_words_list(words: list[dict], cfg: dict) -> list[dict]:
+    """Parse a pre-filtered list of words (for 2-column split) using the same
+    tier-anchored logic as parse_page_words."""
+    if not words:
+        return []
+
+    name_x_max = cfg["name_x_max"]
+    tier_x_min = cfg["tier_x_min"]
+    tier_x_max = cfg["tier_x_max"]
+    req_x_min = cfg["req_x_min"]
+
+    name_words: list[dict] = []
+    tier_words: list[dict] = []
+    req_words: list[dict] = []
+
+    for w in words:
+        x0 = w["x0"]
+        text = w["text"]
+        if x0 >= req_x_min:
+            req_words.append(w)
+        elif tier_x_min <= x0 <= tier_x_max and text.strip().isdigit() and len(text.strip()) == 1:
+            tier_words.append(w)
+        elif x0 < name_x_max:
+            name_words.append(w)
+        else:
+            if text.lower() in ("tier", "nf", "pv") or (text.isdigit() and len(text) == 1):
+                tier_words.append(w)
+            else:
+                name_words.append(w)
+
+    name_words.sort(key=lambda w: (w["top"], w["x0"]))
+    tier_words.sort(key=lambda w: w["top"])
+    req_words.sort(key=lambda w: (w["top"], w["x0"]))
+
+    if not tier_words:
+        return []
+
+    entries = []
+    Y_TOL = 10.0
+    for idx, tw in enumerate(tier_words):
+        tier_y = tw["top"]
+        tier_val = TIER_MAP.get(tw["text"].strip(), "")
+        if not tier_val:
+            continue
+        y_start = tier_y - Y_TOL
+        if idx + 1 < len(tier_words):
+            y_end = (tier_y + tier_words[idx + 1]["top"]) / 2
+        else:
+            y_end = tier_y + 40
+        entry_name = " ".join(w["text"] for w in name_words if y_start <= w["top"] <= y_end).strip()
+        entry_req = " ".join(w["text"] for w in req_words if y_start <= w["top"] <= y_end).strip()
+        if entry_name and len(entry_name) >= 3:
+            entries.append({"name": entry_name, "tier": tier_val, "reqs": entry_req})
     return entries
 
 
@@ -555,10 +665,34 @@ def parse_carrier(carrier_key: str) -> dict | None:
         log.info("  PDF has %d pages. Scanning pages %d-%d", total_pages, start + 1, end)
 
         raw_entries: list[dict] = []
+        is_two_col = cfg.get("two_column", False)
+
         for i in range(start, end):
             page = pdf.pages[i]
-            entries = parse_page_words(page, cfg)
-            raw_entries.extend(entries)
+
+            if is_two_col:
+                # Two-column layout: split words and parse each column separately
+                all_words = page.extract_words(x_tolerance=3, y_tolerance=3)
+                col_split = cfg["col_split"]
+                y_min = cfg.get("y_min", 55.0)
+                y_max = cfg.get("y_max", 690.0)
+                all_words = [w for w in all_words if y_min <= w["top"] <= y_max]
+
+                left_words = [w for w in all_words if w["x0"] < col_split]
+                right_words = [w for w in all_words if w["x0"] >= col_split]
+
+                # Left column config
+                left_cfg = {**cfg, "tier_x_min": cfg["tier_x_min"], "tier_x_max": cfg["tier_x_max"],
+                            "req_x_min": cfg["req_x_min"], "name_x_max": cfg["name_x_max"]}
+                # Right column config
+                right_cfg = {**cfg, "tier_x_min": cfg["right_tier_x_min"], "tier_x_max": cfg["right_tier_x_max"],
+                             "req_x_min": cfg["right_req_x_min"], "name_x_max": cfg["right_name_x_max"]}
+
+                raw_entries.extend(_parse_words_list(left_words, left_cfg))
+                raw_entries.extend(_parse_words_list(right_words, right_cfg))
+            else:
+                entries = parse_page_words(page, cfg)
+                raw_entries.extend(entries)
 
             if (i - start) % 50 == 0 and i > start:
                 log.info("    Page %d/%d — %d entries so far", i + 1, total_pages, len(raw_entries))

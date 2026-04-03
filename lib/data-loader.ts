@@ -330,38 +330,80 @@ export async function searchFormulary(params: FormularySearchParams): Promise<Fo
   const searchLower = params.drug_name.toLowerCase().trim()
   const matchingKeys = Object.keys(index).filter((k) => k.includes(searchLower))
 
-  if (matchingKeys.length === 0) return []
-
   // Build issuer→state map if filtering by state
   const issuerStateMap = params.state_code ? getIssuerStateMap() : undefined
 
-  // On Vercel: use HTTP Range requests against Blob-hosted formulary
-  const blobUrl = getBlobUrl('formulary_intelligence.json')
-  if (blobUrl) {
-    return searchFormularyFromBlob(params, matchingKeys, index, blobUrl, issuerStateMap)
+  let results: FormularyDrug[] = []
+
+  if (matchingKeys.length > 0) {
+    // On Vercel: use HTTP Range requests against Blob-hosted formulary
+    const blobUrl = getBlobUrl('formulary_intelligence.json')
+    if (blobUrl) {
+      results = await searchFormularyFromBlob(params, matchingKeys, index, blobUrl, issuerStateMap)
+    } else {
+      // Local: random-access file read
+      const filepath = path.join(DATA_DIR, 'formulary_intelligence.json')
+      if (fs.existsSync(filepath)) {
+        const fd = await fs.promises.open(filepath, 'r')
+        try {
+          for (const key of matchingKeys.slice(0, 10)) {
+            if (results.length >= 200) break
+            const entry = index[key]
+            const buf = Buffer.alloc(entry.length)
+            await fd.read(buf, 0, entry.length, entry.offset)
+            const block = buf.toString('utf8')
+            parseFormularyBlock(block, params, results, issuerStateMap)
+          }
+        } finally {
+          await fd.close()
+        }
+      }
+    }
   }
 
-  // Local: random-access file read
-  const filepath = path.join(DATA_DIR, 'formulary_intelligence.json')
-  if (!fs.existsSync(filepath)) return searchFormularySample(params)
-
-  const results: FormularyDrug[] = []
-  const fd = await fs.promises.open(filepath, 'r')
-
-  try {
-    for (const key of matchingKeys.slice(0, 10)) {
-      if (results.length >= 200) break
-      const entry = index[key]
-      const buf = Buffer.alloc(entry.length)
-      await fd.read(buf, 0, entry.length, entry.offset)
-      const block = buf.toString('utf8')
-      parseFormularyBlock(block, params, results, issuerStateMap)
+  // SBM state fallback: if filtering by state and few/no FFM results,
+  // also search the per-state SBM formulary file (formulary_sbm_XX.json)
+  if (params.state_code && results.length < 5) {
+    const sbmResults = searchSbmFormulary(params)
+    if (sbmResults.length > 0) {
+      // Merge, dedup by drug_name + drug_tier + issuer
+      const existingKeys = new Set(
+        results.map(r => `${r.drug_name}|${r.drug_tier}|${(r.issuer_ids ?? []).join(',')}`)
+      )
+      for (const r of sbmResults) {
+        const key = `${r.drug_name}|${r.drug_tier}|${(r.issuer_ids ?? []).join(',')}`
+        if (!existingKeys.has(key)) {
+          results.push(r)
+          existingKeys.add(key)
+        }
+      }
     }
-  } finally {
-    await fd.close()
   }
 
   return results
+}
+
+/** Search per-state SBM formulary file for a drug. */
+function searchSbmFormulary(params: FormularySearchParams): FormularyDrug[] {
+  if (!params.state_code) return []
+  const state = params.state_code.toUpperCase()
+  const sbmPath = path.join(DATA_DIR, `formulary_sbm_${state}.json`)
+  if (!fs.existsSync(sbmPath)) return []
+
+  try {
+    const sbmData = JSON.parse(
+      fs.readFileSync(sbmPath, 'utf-8')
+    ) as { data?: FormularyDrug[] }
+    const records = sbmData.data ?? []
+    const searchLower = params.drug_name.toLowerCase().trim()
+
+    return records.filter(r => {
+      if (!r.drug_name) return false
+      return r.drug_name.toLowerCase().includes(searchLower)
+    }).slice(0, 200)
+  } catch {
+    return []
+  }
 }
 
 /**
