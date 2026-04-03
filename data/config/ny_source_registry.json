@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 9 issuers parsed from PDFs. 25,938 drugs. Remaining 3 issuers (54 plans) need PDF parsing.",
+  "formulary_status": "PARTIAL — 10 issuers parsed from PDFs. 27,522 drugs. Remaining 2 issuers (41 plans) need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -33,12 +33,14 @@
       "variant_count": 46,
       "networks": [],
       "formulary": {
-        "name": "Independent Health Formulary",
-        "url": null,
-        "format": "Unknown",
-        "cloud_accessible": false,
-        "status": "url_unknown",
-        "note": "No MRF endpoint found. independenthealth.com/machine-readable-files returns 404."
+        "name": "Independent Health 2026 Drug Formulary I",
+        "url": "https://fm.formularynavigator.com/FBO/43/2026DrugFormulary1.pdf",
+        "format": "PDF (3-tier, two-column text layout)",
+        "pbm": "FormularyNavigator publisher 43",
+        "cloud_accessible": true,
+        "status": "parsed",
+        "parsed_records": 1715,
+        "note": "46-page Drug Formulary I (labeled large group but best available). 1,715 drugs. Tiers: Generic=996, Preferred Brand=270, Non-Preferred=449. PA=543, ST=68, QL=118, SP=232."
       }
     },
     "fidelis_care": {
@@ -244,15 +246,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 9,
+    "parsed": 10,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 0,
     "url_dead": 0,
     "blocked": 0,
-    "url_unknown": 1,
+    "url_unknown": 0,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "9 issuers parsed covering 298 of 319 plans (93%) — 25,938 merged drugs. Remaining 3 issuers (54 plans): Healthfirst (91237, 25), MetroPlus (11177, 16), Independent Health (18029, 13)."
+    "recommendation": "10 issuers parsed covering 311 of 319 plans (97%) — 27,522 merged drugs. Remaining 2 issuers (41 plans): Healthfirst (91237, 25), MetroPlus (11177, 16)."
   }
 }
