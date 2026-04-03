@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 6 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235 + Excellus 40064+78124) parsed from PDFs. 17,140 drugs. Remaining 6 issuers need PDF parsing.",
+  "formulary_status": "PARTIAL — 8 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235 + Excellus 40064+78124 + CDPHP 92551+94788) parsed from PDFs. 23,444 drugs. Remaining 4 issuers need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -224,12 +224,13 @@
       "variant_count": 109,
       "networks": [],
       "formulary": {
-        "name": "CDPHP Formulary",
-        "url": null,
-        "format": "Unknown",
-        "cloud_accessible": false,
-        "status": "url_unknown",
-        "note": "No MRF endpoint found. cdphp.com/machine-readable-files/cms-data-index.json returns 404. cdphp.com/cms-data-index.json returns 404."
+        "name": "CDPHP Commercial Clinical Formulary-1 2026",
+        "url": "https://www.cdphp.com/-/media/files/pharmacy/formulary-1.pdf",
+        "format": "PDF (3-tier closed formulary, text layout)",
+        "cloud_accessible": true,
+        "status": "parsed",
+        "parsed_records": 6554,
+        "note": "372-page closed formulary. 6,554 drugs. Tiers: Generic=2,907, Preferred Brand=2,651, Non-Preferred=996. PA=344, ST=53, QL=786, SP=129. Shared with HIOS 92551 (CDPHP Universal Benefits)."
       }
     }
   },
@@ -241,15 +242,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 6,
+    "parsed": 8,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 0,
     "url_dead": 1,
     "blocked": 0,
-    "url_unknown": 3,
+    "url_unknown": 1,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "6 issuers parsed (Fidelis + Anthem + MVP + UHC + Excellus 40064+78124) covering 212 of 319 plans (66%) — 19,399 merged drugs. Remaining 6 issuers (107 plans): EmblemHealth (88582, 26), Healthfirst (91237, 25), CDPHP (94788, 30), MetroPlus (11177, 16), Independent Health (18029, 13)."
+    "recommendation": "8 issuers parsed covering 272 of 319 plans (85%) — 23,444 merged drugs. Remaining 4 issuers (47 plans): EmblemHealth (88582, 26), Healthfirst (91237, 25), MetroPlus (11177, 16), Independent Health (18029, 13)."
   }
 }
