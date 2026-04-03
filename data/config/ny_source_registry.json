@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 8 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235 + Excellus 40064+78124 + CDPHP 92551+94788) parsed from PDFs. 23,444 drugs. Remaining 4 issuers need PDF parsing.",
+  "formulary_status": "PARTIAL — 9 issuers parsed from PDFs. 25,938 drugs. Remaining 3 issuers (54 plans) need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -194,12 +194,14 @@
       "variant_count": 92,
       "networks": [],
       "formulary": {
-        "name": "EmblemHealth Formulary",
-        "url": "https://transparency.emblemhealth.com/mrf/index.json",
-        "format": "TiC MRF only",
-        "cloud_accessible": false,
-        "status": "url_dead",
-        "note": "MRF index URL returns error. EmblemHealth publishes TiC MRF only. No QHP formulary JSON endpoint found. emblemhealth.com/cms-data-index.json returns 404."
+        "name": "EmblemHealth Essential Plan, Individual & Family, Small Group Formulary (XCHG)",
+        "url": "https://www.emblemhealth.com/content/dam/emblemhealth/pdfs/resources/formularies/2026/essential-plan-individual-family-plans-small-group-formulary-2026-emblemhealth.pdf",
+        "format": "PDF (3-tier + AC preventive: 1=Generic, 2=Preferred Brand, 3=Non-Preferred, AC=$0 Preventive)",
+        "pbm": "Prime Therapeutics",
+        "cloud_accessible": true,
+        "status": "parsed",
+        "parsed_records": 2684,
+        "note": "118-page IFP formulary. 2,684 drugs. Tiers: Generic=1,236, Preferred Brand=700, Non-Preferred=622, ACA Preventive=126. PA=685, ST=32, QL=1,146, SP=691. Found via emblemhealth.com/resources/pharmacy/drugs-covered."
       }
     },
     "healthfirst": {
@@ -242,15 +244,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 8,
+    "parsed": 9,
     "json_accessible": 0,
     "json_but_wrong_state": 1,
     "tic_only": 0,
-    "url_dead": 1,
+    "url_dead": 0,
     "blocked": 0,
     "url_unknown": 1,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "8 issuers parsed covering 272 of 319 plans (85%) — 23,444 merged drugs. Remaining 4 issuers (47 plans): EmblemHealth (88582, 26), Healthfirst (91237, 25), MetroPlus (11177, 16), Independent Health (18029, 13)."
+    "recommendation": "9 issuers parsed covering 298 of 319 plans (93%) — 25,938 merged drugs. Remaining 3 issuers (54 plans): Healthfirst (91237, 25), MetroPlus (11177, 16), Independent Health (18029, 13)."
   }
 }
