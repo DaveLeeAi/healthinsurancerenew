@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 10 issuers parsed from PDFs. 27,522 drugs. Remaining 2 issuers (41 plans) need PDF parsing.",
+  "formulary_status": "PARTIAL — 11 issuers parsed from PDFs. 29,772 drugs. Remaining 1 issuer (MetroPlus 11177, 16 plans) needs QHP formulary PDF.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -213,12 +213,13 @@
       "variant_count": 94,
       "networks": [],
       "formulary": {
-        "name": "Healthfirst Formulary",
-        "url": "https://apps.hf.org/applications/dn/cms_json/files/drugs.json",
-        "format": "JSON (CMS schema)",
+        "name": "Healthfirst NYSOH Comprehensive Drug List 2026",
+        "url": "https://assets.healthfirst.org/pdf_wKm3xvi0oXWk/2026-leaf-leaf-premier-ep-hmo-nysoh-formulary-english",
+        "format": "PDF (4-tier: 0=Preventive, 1=Generic, 2=Preferred Brand, 3=Non-Preferred)",
         "cloud_accessible": true,
-        "status": "fl_only",
-        "note": "drugs.json is live and accessible (12 MB, 3,972 drugs). However, all plan IDs are 36194FL* (Healthfirst Florida). NY QHP plans (HIOS 91237NY*) are NOT included. Healthfirst publishes JSON for their FL FFE business only, not NY SBE."
+        "status": "parsed",
+        "parsed_records": 3631,
+        "note": "167-page NYSOH formulary covering Leaf, Leaf Premier, HMO, and Essential Plans. 3,631 drugs. Tiers: Generic=2,344, Preferred Brand=363, Non-Preferred=741, ACA Preventive=183. PA=779, ST=231, QL=988. Note: drugs.json at apps.hf.org contains FL-only data (HIOS 36194), not NY."
       }
     },
     "cdphp": {
@@ -246,15 +247,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 10,
+    "parsed": 11,
     "json_accessible": 0,
-    "json_but_wrong_state": 1,
+    "json_but_wrong_state": 0,
     "tic_only": 0,
     "url_dead": 0,
     "blocked": 0,
     "url_unknown": 0,
     "pdf_only": 1,
     "total": 12,
-    "recommendation": "10 issuers parsed covering 311 of 319 plans (97%) — 27,522 merged drugs. Remaining 2 issuers (41 plans): Healthfirst (91237, 25), MetroPlus (11177, 16)."
+    "recommendation": "11 issuers parsed covering 303 of 319 plans (95%) — 29,772 merged drugs. Only MetroPlus (11177, 16 plans) remains — needs QHP formulary PDF (Medicare PDF was wrong product)."
   }
 }
