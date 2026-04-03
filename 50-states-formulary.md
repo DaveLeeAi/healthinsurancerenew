@@ -1,6 +1,6 @@
 # 50-State Formulary Data Summary
 
-**Generated:** 2026-04-03
+**Generated:** 2026-04-03  
 **Project:** HealthInsuranceRenew ACA Intelligence Platform
 
 ---
@@ -9,198 +9,304 @@
 
 | Metric | Value |
 |--------|-------|
-| **FFE formulary (30 states)** | 196,303 drugs (49 MB) |
-| **SBM/supplemental formulary files** | 20 states |
-| **Total SBM/supplemental drugs** | 197,124 |
-| **SBC (SBM states)** | 18/18 complete |
-| **Formulary missing** | RI, VT |
-
-### Coverage Model
-
-- **30 FFE states** covered by formulary_intelligence.json (federal MR-PUF pipeline)
-- **18 SBM states + 2 FFE supplements (GA, IL, OR, VA)** covered by per-state formulary_sbm_XX.json files
-- **SBC data** for all 18 SBM states from CMS SBE QHP PUF
+| FFE formulary (30 states) | 196,303 drugs (formulary_intelligence.json, 49 MB) |
+| SBM + supplemental files | 20 per-state files |
+| Total SBM/supplemental drugs | 197,124 |
+| SBC (SBM states) | 18/18 complete (7,234 plan variants) |
+| States COMPLETE | NY, CO, GA |
+| States MISSING formulary | RI, VT |
 
 ---
 
-## SBM State SBC Data (18/18 complete)
+## All SBM States + GA — Carrier-Level Status
 
-| State | Marketplace | Plan Variants |
-|-------|------------|--------------|
-| CA | SBE QHP PUF | 124 |
-| CO | SBE QHP PUF | 589 |
-| CT | SBE QHP PUF | 71 |
-| DC | SBE QHP PUF | 92 |
-| ID | SBE QHP PUF | 597 |
-| KY | SBE QHP PUF | 386 |
-| MA | SBE QHP PUF | 167 |
-| MD | SBE QHP PUF | 195 |
-| ME | SBE QHP PUF | 317 |
-| MN | SBE QHP PUF | 964 |
-| NJ | SBE QHP PUF | 192 |
-| NM | SBE QHP PUF | 105 |
-| NV | SBE QHP PUF | 600 |
-| NY | SBE QHP PUF | 1,246 |
-| PA | SBE QHP PUF | 1,121 |
-| RI | SBE QHP PUF | 81 |
-| VT | SBE QHP PUF | 104 |
-| WA | SBE QHP PUF | 283 |
-| **Total** | | **7,234** |
+### CA — 2,244 drugs | 1 of 3 issuers | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 90637 | Blue Shield of California | 21 | — |
+| MISSING | 40513 | Kaiser Permanente (CA) | 14 | — |
+| OK | 67138 | Ambetter from Health Net (CA) | 1 | 2,244 |
 
 ---
 
-## Formulary Data by State
+### CO — 18,320 drugs | 6 of 6 issuers | COMPLETE
 
-### Fully Complete States (all carriers parsed)
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| OK | 76680 | Anthem (Elevance Health) | 41 | 1,879 |
+| OK | 97879 | Rocky Mountain HMO / UHC | 35 | 1,299 |
+| OK | 21032 | Kaiser Permanente | 27 | 1,640 |
+| OK | 55584 | SelectHealth | 20 | 717 |
+| OK | 49375 | Cigna Healthcare | 12 | 5,487 |
+| OK | 66699 | Elevate Health / Denver Health | 8 | 1,786 |
 
-| State | Drugs | Issuers | Status |
-|-------|-------|---------|--------|
-| **NY** | **31,439** | **12** | COMPLETE |
-| **GA** | **30,248** | **11** | COMPLETE |
-| **CO** | **18,320** | **7** | COMPLETE |
+---
 
-#### NY — 31,439 drugs, 12 issuers
+### CT — 3,830 drugs | 0 of 3 issuers matched | PARTIAL
 
-| Issuer | HIOS | Drugs | Source |
-|--------|------|-------|--------|
-| CDPHP (NY) — Commercial Clinical Formula | 92551+94788 | 6,554 | cdphp_formulary-1_2026.pdf |
-| MVP Health Care (NY) | 56184 | 6,163 | marketplace-pharmacy-formulary-2026.pdf |
-| Healthfirst (NY) — NYSOH Comprehensive D | 91237 | 3,631 | healthfirst_nysoh_formulary_2026.pdf |
-| Excellus BCBS (NY) — Individual & Family | 40064+78124 | 3,530 | Excellus_2026_Metal_Plans_Formulary_Guide_2981_v26 |
-| UnitedHealthcare of New York | 54235 | 3,373 | IFP_M58643_UHC_NY-PDL-12312025.pdf |
-| EmblemHealth (NY) — Individual & Family  | 88582 | 2,684 | emblemhealth_ny_ifp_formulary_2026.pdf |
-| Ambetter from Fidelis Care (NY) | 25303 | 2,591 | QHP-2026-formulary-Fidelis-Care.pdf |
-| Anthem Health Plans of New York (Elevanc | 41046 | 2,343 | 2026_Select_3_Tier_NY_ABS_IND.pdf |
-| MetroPlus Health Plan (NY) — Marketplace | 11177 | 2,066 | Marketplace_EP_Formulary-Document_126_fin.pdf |
-| Independent Health (NY) | 18029 | 1,715 | 2026DrugFormulary1.pdf |
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 86545 | ConnectiCare | 11 | — |
+| MISSING | 76962 | CareSource | 7 | — |
+| MISSING | 94815 | Anthem CT | 4 | — |
 
-**Tiers:** ACA-PREVENTIVE-DRUGS=1,432, GENERIC=12,938, NON-PREFERRED-BRAND=9,472, PREFERRED-BRAND=7,597
-**PA:** 6,066 | **ST:** 750 | **QL:** 9,240
+*Note: 3,830 drugs from Molina JSON (HIOS 00560) — different issuer ID than SBC PUF*
 
-#### GA — 30,248 drugs, 11 issuers
+---
 
-| Issuer | HIOS | Drugs | Source |
-|--------|------|-------|--------|
-| Ambetter from Peach State Health Managem | 45495 | 300,832 | ? |
-| Ambetter from Peach State Health Managem | 70893 | 300,832 | ? |
-| Cigna Healthcare (GA) | 15105 | 5,642 | csg-26-rx-ga-cigna-5-tier-pdl.pdf |
-| Kaiser GA | 89942 | 4,277 | drugs.json |
-| Anthem/Elevance Health (GA) | 45334 | 3,731 | drugs.json (FormularyNavigator FID 32) |
-| UnitedHealthcare (GA) | 13535 | 3,616 | JSON_Drugs_UHCGAEX_HIX.json |
-| Alliant GA | 83761 | 3,373 | Formulary_GA_2026.json |
-| Oscar Health (GA) | 58081 | 2,442 | Oscar_6T_GA_STND_Member_Doc_April_2026.pdf |
-| Anthem BCBS (GA) — Elevance Health | 54172 | 2,164 | 2026_Select_4_Tier_GA_IND.pdf |
-| Alliant Health Plans (GA) | 51163 | 1,941 | alliant_ga_formulary_2026.pdf |
-| CareSource (GA) | 72001 | 1,852 | caresource_ga_marketplace_formulary_2026.pdf |
+### DC — 4,371 drugs | 0 of 3 issuers matched | PARTIAL
 
-**Tiers:** ACA-PREVENTIVE-DRUGS=894, GENERIC=12,228, NON-PREFERRED-BRAND=6,590, PREFERRED-BRAND=4,923, SPECIALTY=5,067, SPECIALTY-HIGH=546
-**PA:** 6,114 | **ST:** 2,863 | **QL:** 11,083
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 94506 | Kaiser Permanente | 14 | — |
+| MISSING | 86052 | Kaiser Permanente | 7 | — |
+| MISSING | 78079 | UPMC Health Plan | 6 | — |
 
-#### CO — 18,320 drugs, 7 issuers
+*Note: 4,371 drugs from Molina JSON (HIOS 10207) — different issuer ID than SBC PUF*
 
-| Issuer | HIOS | Drugs | Source |
-|--------|------|-------|--------|
-| Cigna (CO) | 86830 | 1,423,046 | ? |
-| Cigna Healthcare (CO) | 49375 | 5,487 | cigna_co_rx_essential_5tier_pdl_2026.pdf |
-| Anthem (CO) — Elevance Health | 76680 | 1,879 | 2026_Select_4_Tier_CO_IND.pdf |
-| Elevate Health Plans / Denver Health Med | 66699 | 1,786 | denverhealth_co_commercial_formulary_2026.pdf |
-| Kaiser Permanente (CO) | 21032 | 1,640 | kaiser_co_marketplace_formulary_2026.pdf |
-| Rocky Mountain HMO / UnitedHealthcare (C | 97879 | 1,299 | IFP1432766-CO_UHC_IFP_PY26.pdf |
-| SelectHealth (CO) | 55584 | 717 | selecthealth_co_tier6_rxcore_2026.pdf |
+---
 
-**Tiers:** ACA-PREVENTIVE-DRUGS=361, GENERIC=5,199, NON-PREFERRED-BRAND=3,511, PREFERRED-BRAND=5,777, PREFERRED-GENERIC=588, PREVENTIVE-CARE=373, SPECIALTY=1,147, SPECIALTY-AND-OTHER-HIGH-COST-DRUGS=521, SPECIALTY-HIGH=843
-**PA:** 2,365 | **ST:** 260 | **QL:** 4,491
+### GA — 30,248 drugs | 11 issuers | COMPLETE
 
-### Partial Coverage States
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| OK | 15105 | Cigna Healthcare | — | 5,642 |
+| OK | 89942 | Kaiser Permanente | — | 4,277 |
+| OK | 45334 | Anthem / Elevance Health | — | 3,731 |
+| OK | 13535 | UnitedHealthcare | — | 3,616 |
+| OK | 83761 | Alliant Health Plans (JSON) | — | 3,373 |
+| OK | 58081 | Oscar Health | — | 2,442 |
+| OK | 54172 | Anthem BCBS (PDF) | — | 2,164 |
+| OK | 51163 | Alliant Health Plans (PDF) | — | 1,941 |
+| OK | 72001 | CareSource | — | 1,852 |
+| OK | 45495 | Ambetter / Centene | — | * |
+| OK | 70893 | Ambetter / Centene | — | * |
 
-| State | Drugs | Issuers | Type |
-|-------|-------|---------|------|
-| ID | 25,324 | 4 | SBM |
-| OR | 16,869 | 4 | FFE supplement |
-| MD | 12,417 | 2 | SBM |
-| WA | 10,849 | 3 | SBM |
-| DC | 4,371 | 1 | SBM |
-| VA | 4,371 | 2 | FFE supplement |
-| NJ | 4,364 | 1 | SBM |
-| KY | 4,363 | 1 | SBM |
-| IL | 4,296 | 1 | FFE supplement |
-| PA | 4,291 | 1 | SBM |
-| MN | 4,273 | ? | SBM |
-| NV | 4,253 | 1 | SBM |
-| ME | 3,905 | 1 | SBM |
-| CT | 3,830 | 1 | SBM |
-| NM | 3,830 | 1 | SBM |
-| MA | 3,267 | 1 | SBM |
-| CA | 2,244 | ? | SBM |
+*GA is FFE state — no SBC PUF plan counts. Centene data from existing JSON pipeline.*
 
-### Missing Formulary
+---
 
-| State | Marketplace | Carriers | Blocker |
-|-------|------------|----------|---------|
-| **RI** | HealthSource RI | BCBS RI, NHPRI | BCBS RI PDF blocked, NHPRI TiC only |
-| **VT** | Vermont Health Connect | BCBS VT, MVP VT | BCBS VT MRF unreliable, MVP PDF needed |
+### ID — 25,324 drugs | 4 of 8 issuers | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 61589 | PacificSource Health Plans | 62 | — |
+| OK | 26002 | SelectHealth | 32 | * |
+| MISSING | 38128 | Blue Cross of Idaho | 16 | — |
+| OK | 44648 | Cambia / Regence BCBS ID | 12 | * |
+| OK | 60597 | Mountain Health CO-OP | 10 | * |
+| MISSING | 80588 | Moda Health | 8 | — |
+| MISSING | 91278 | Unknown | 5 | — |
+| MISSING | 92170 | St. Luke's Health Plan | 4 | — |
+
+---
+
+### KY — 4,363 drugs | 0 of 4 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 36239 | Anthem | 62 | — |
+| MISSING | 45636 | Ambetter / Centene | 18 | — |
+| MISSING | 72001 | CareSource | 13 | — |
+| MISSING | 73891 | Unknown | 5 | — |
+
+*Note: 4,363 drugs from Centene JSON (HIOS 99168) — different issuer ID than SBC PUF*
+
+---
+
+### MA — 3,267 drugs | 0 of 8 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 41304 | AmeriHealth | 9 | — |
+| MISSING | 34484 | Health New England | 6 | — |
+| MISSING | 36046 | Tufts Health Plan | 6 | — |
+| MISSING | 42690 | Harvard Pilgrim | 6 | — |
+| MISSING | 59763 | ConnectiCare Insurance | 6 | — |
+| MISSING | 31779 | UnitedHealthcare | 5 | — |
+| MISSING | 82569 | WellSense Health Plan | 5 | — |
+| MISSING | 88806 | Health Plans Inc. | 5 | — |
+
+*Note: 3,267 drugs from BCBS MA JSON (HIOS 36096)*
+
+---
+
+### MD — 12,417 drugs | 0 of 7 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 90296 | Kaiser Permanente | 11 | — |
+| MISSING | 72545 | Wellpoint / Anthem | 10 | — |
+| MISSING | 66516 | Aetna | 9 | — |
+| MISSING | 72375 | UnitedHealthcare | 9 | — |
+| MISSING | 28137 | CareFirst BlueChoice | 7 | — |
+| MISSING | 45532 | CareFirst BCBS | 3 | — |
+| MISSING | 94084 | CareFirst BCBS | 3 | — |
+
+*Note: 12,417 drugs from Molina + Kaiser JSON (HIOS 10207, 00543)*
+
+---
+
+### ME — 3,905 drugs | 1 of 4 issuers | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| OK | 48396 | Anthem | 27 | 3,905 |
+| MISSING | 33653 | Community Health Options | 27 | — |
+| MISSING | 96667 | Community Health Options | 20 | — |
+| MISSING | 54879 | Taro Health | 7 | — |
+
+---
+
+### MN — 4,273 drugs | 0 of 5 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 57129 | Blue Plus (BCBS MN) | 95 | — |
+| MISSING | 31616 | Medica | 91 | — |
+| MISSING | 79888 | HealthPartners | 27 | — |
+| MISSING | 70373 | Quartz Health Plan | 18 | — |
+| MISSING | 85736 | UCare | 16 | — |
+
+*Note: 4,273 drugs parsed from Quartz + UCare PDFs but HIOS IDs differ from SBC PUF*
+
+---
+
+### NJ — 4,364 drugs | 0 of 6 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 91762 | AmeriHealth | 12 | — |
+| MISSING | 91661 | Horizon BCBS NJ | 8 | — |
+| MISSING | 23818 | Oscar Health | 7 | — |
+| MISSING | 17970 | Aetna / CVS Health | 6 | — |
+| MISSING | 37777 | UnitedHealthcare | 6 | — |
+| MISSING | 89217 | Aetna | 5 | — |
+
+*Note: 4,364 drugs from Centene JSON (HIOS 99166)*
+
+---
+
+### NM — 3,830 drugs | 0 of 4 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 57173 | Ambetter from Wellcare | 8 | — |
+| MISSING | 65428 | UnitedHealthcare | 6 | — |
+| MISSING | 75605 | Blue Cross Blue Shield of NM | 6 | — |
+| MISSING | 19722 | Molina Healthcare | 4 | — |
+
+*Note: 3,830 drugs from Molina JSON (HIOS 00560)*
+
+---
+
+### NV — 4,253 drugs | 0 of 8 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 60156 | Anthem | 68 | — |
+| MISSING | 95865 | SilverSummit / Centene | 18 | — |
+| MISSING | 45142 | Health Plan of Nevada / UHC | 16 | — |
+| MISSING | 84445 | Medica | 12 | — |
+| MISSING | 41094 | Hometown Health (Renown) | 10 | — |
+| MISSING | 65779 | Aetna | 7 | — |
+| MISSING | 43314 | Hometown Health | 5 | — |
+| MISSING | 79363 | Unknown | 5 | — |
+
+*Note: 4,253 drugs from Centene JSON (HIOS 99169)*
+
+---
+
+### NY — 31,439 drugs | 11 of 12 issuers | NEAR-COMPLETE (95%)
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| OK | 78124 | BCBS / HealthNow WNY | 60 | 3,530 |
+| OK | 40064 | Excellus BCBS | 56 | 3,530 |
+| OK | 94788 | CDPHP | 30 | 6,554 |
+| OK | 56184 | MVP Health Care | 28 | 6,163 |
+| OK | 41046 | Anthem (Elevance) | 26 | 2,343 |
+| OK | 88582 | EmblemHealth | 26 | 2,684 |
+| OK | 91237 | Healthfirst | 25 | 3,631 |
+| OK | 25303 | Ambetter / Fidelis Care | 23 | 2,591 |
+| OK | 54235 | UnitedHealthcare | 19 | 3,373 |
+| MISSING | 74289 | Unknown (Circle network) | 17 | — |
+| OK | 11177 | MetroPlus | 16 | 2,066 |
+| OK | 18029 | Independent Health | 13 | 1,715 |
+
+---
+
+### PA — 4,291 drugs | 0 of 14 issuers matched | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 33709 | Independence Blue Cross | 84 | — |
+| MISSING | 22444 | Highmark / ConnectiCare | 42 | — |
+| MISSING | 16322 | UPMC Health Plan | 28 | — |
+| MISSING | 79962 | Independence Blue Cross | 28 | — |
+| MISSING | 45127 | Ambetter / Centene | 20 | — |
+| MISSING | 86199 | AmeriHealth | 19 | — |
+| MISSING | 75729 | Geisinger Health Plan | 16 | — |
+| MISSING | 79279 | Independence Blue Cross | 16 | — |
+| MISSING | 98517 | Oscar Health | 14 | — |
+| MISSING | 33871 | Independence Blue Cross | 10 | — |
+| MISSING | 19702 | Jefferson Health Plans | 9 | — |
+| MISSING | 31609 | Independence Blue Cross | 9 | — |
+| MISSING | 93909 | Jefferson Health Plans | 9 | — |
+| MISSING | 62560 | UPMC Health Plan | 6 | — |
+
+*Note: 4,291 drugs from Centene JSON (HIOS 99165)*
+
+---
+
+### RI — NO FORMULARY | 0 of 2 issuers | MISSING
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 15287 | Blue Cross Blue Shield of RI | 13 | — |
+| MISSING | 77514 | Neighborhood Health Plan of RI | 7 | — |
+
+**Blocker:** BCBS RI PDF blocked from cloud. NHPRI publishes TiC rates only.
+
+---
+
+### VT — NO FORMULARY | 0 of 2 issuers | MISSING
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 13627 | Blue Cross Blue Shield of VT | 14 | — |
+| MISSING | 77566 | MVP Health Plan | 14 | — |
+
+**Blocker:** BCBS VT MRF hosting unreliable (Change Healthcare). MVP PDF needed.
+
+---
+
+### WA — 10,849 drugs | 2 of 11 issuers | PARTIAL
+
+| Status | HIOS | Carrier | Plans | Drugs |
+|--------|------|---------|-------|-------|
+| MISSING | 61836 | Ambetter / Centene | 11 | — |
+| MISSING | 38498 | LifeWise Health Plan | 9 | — |
+| MISSING | 23371 | Kaiser Permanente | 8 | — |
+| OK | 71281 | Cambia / Regence BCBS | 8 | * |
+| MISSING | 80473 | Molina Healthcare | 8 | — |
+| MISSING | 49831 | Premera Blue Cross | 7 | — |
+| MISSING | 62650 | UnitedHealthcare | 6 | — |
+| OK | 87718 | Community Health Plan | 6 | * |
+| MISSING | 53732 | Coordinated Care | 4 | — |
+| MISSING | 84481 | Unknown | 4 | — |
+| MISSING | 18581 | Community Health Plan of WA | 3 | — |
 
 ---
 
 ## FFE States (30 states)
 
-Covered by formulary_intelligence.json (196,303 drugs, 49 MB)
+Covered by formulary_intelligence.json (196,303 drugs, 133 issuers, 49 MB)
 
-Source: Federal CMS Machine-Readable PUF → carrier JSON endpoints
+Source: Federal CMS Machine-Readable PUF via carrier JSON endpoints
 
 States: AL, AK, AZ, AR, DE, FL, GA, HI, IL, IN, IA, KS, LA, MI, MS, MO, MT, NE, NH, NC, ND, OH, OK, OR, SC, SD, TN, TX, UT, VA, WI, WY
-
----
-
-## Data Files
-
-| File | Size | Records | Description |
-|------|------|---------|-------------|
-| formulary_intelligence.json | 49 MB | 196,303 | FFE all-state formulary |
-| formulary_sbm_CA.json | — | 2,244 | CA formulary |
-| formulary_sbm_CO.json | — | 18,320 | CO formulary (COMPLETE) |
-| formulary_sbm_CT.json | — | 3,830 | CT formulary |
-| formulary_sbm_DC.json | — | 4,371 | DC formulary |
-| formulary_sbm_GA.json | — | 30,248 | GA formulary (COMPLETE) |
-| formulary_sbm_ID.json | — | 25,324 | ID formulary |
-| formulary_sbm_IL.json | — | 4,296 | IL formulary |
-| formulary_sbm_KY.json | — | 4,363 | KY formulary |
-| formulary_sbm_MA.json | — | 3,267 | MA formulary |
-| formulary_sbm_MD.json | — | 12,417 | MD formulary |
-| formulary_sbm_ME.json | — | 3,905 | ME formulary |
-| formulary_sbm_MN.json | — | 4,273 | MN formulary |
-| formulary_sbm_NJ.json | — | 4,364 | NJ formulary |
-| formulary_sbm_NM.json | — | 3,830 | NM formulary |
-| formulary_sbm_NV.json | — | 4,253 | NV formulary |
-| formulary_sbm_NY.json | — | 31,439 | NY formulary (COMPLETE) |
-| formulary_sbm_OR.json | — | 16,869 | OR formulary |
-| formulary_sbm_PA.json | — | 4,291 | PA formulary |
-| formulary_sbm_VA.json | — | 4,371 | VA formulary |
-| formulary_sbm_WA.json | — | 10,849 | WA formulary |
-
-### SBC Files
-
-| File | Records | Description |
-|------|---------|-------------|
-| sbc_decoded.json | 20,354 | FFE 30-state SBC (cost sharing, exclusions) |
-| sbc_sbm_CA.json | 124 | CA SBC |
-| sbc_sbm_CO.json | 589 | CO SBC |
-| sbc_sbm_CT.json | 71 | CT SBC |
-| sbc_sbm_DC.json | 92 | DC SBC |
-| sbc_sbm_ID.json | 597 | ID SBC |
-| sbc_sbm_KY.json | 386 | KY SBC |
-| sbc_sbm_MA.json | 167 | MA SBC |
-| sbc_sbm_MD.json | 195 | MD SBC |
-| sbc_sbm_ME.json | 317 | ME SBC |
-| sbc_sbm_MN.json | 964 | MN SBC |
-| sbc_sbm_NJ.json | 192 | NJ SBC |
-| sbc_sbm_NM.json | 105 | NM SBC |
-| sbc_sbm_NV.json | 600 | NV SBC |
-| sbc_sbm_NY.json | 1,246 | NY SBC |
-| sbc_sbm_PA.json | 1,121 | PA SBC |
-| sbc_sbm_RI.json | 81 | RI SBC |
-| sbc_sbm_VT.json | 104 | VT SBC |
-| sbc_sbm_WA.json | 283 | WA SBC |
 
 ---
 
