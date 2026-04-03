@@ -14,6 +14,7 @@
 | SBM + supplemental files | 20 per-state files |
 | Total SBM/supplemental drugs | 197,124 |
 | Formulary states COMPLETE | NY, CO, GA |
+| Formulary states MAJOR PROGRESS | CA (7/12 issuers, 24,910 drugs) |
 | Formulary states MISSING | RI, VT |
 
 ---
@@ -53,13 +54,22 @@
 
 ## All SBM States + GA — Carrier-Level Formulary Status
 
-### CA — 2,244 drugs | 1 of 3 issuers | PARTIAL
+### CA — 24,910 drugs | 7 of 12 issuers | MAJOR PROGRESS
 
 | Status | HIOS | Carrier | Plans | Drugs |
 |--------|------|---------|-------|-------|
-| MISSING | 90637 | Blue Shield of California | 21 | — |
-| MISSING | 40513 | Kaiser Permanente (CA) | 14 | — |
-| OK | 67138 | Ambetter from Health Net (CA) | 1 | 2,244 |
+| OK | 70285 | Blue Shield of California | 21 | 6,889 |
+| OK | 51396 | IEHP (Inland Empire Health Plan) | — | 5,939 |
+| OK | 40513 | Kaiser Permanente (CA) | 14 | 3,175 |
+| OK | 92815 | L.A. Care Health Plan | — | 3,128 |
+| OK | aetna_ca | Aetna (CA) — new issuer | — | 2,580 |
+| OK | 92499 | Anthem Blue Cross (CA) | — | 2,074 |
+| OK | 18126 | Molina Healthcare (CA) | — | 1,125 |
+| MISSING | 67138 | Ambetter from Health Net (CA) | 1 | — |
+| MISSING | 20523 | Oscar Health Plan of California | — | — |
+| MISSING | 27603 | Chinese Community Health Plan | — | — |
+| MISSING | 84014 | Valley Health Plan (CA) | — | — |
+| MISSING | 93689 | Western Health Advantage (CA) | — | — |
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "description": "State-Based Marketplace issuer formulary source registry. Each entry provides the machine-readable index.json URL for a QHP issuer in an SBM state. Used by scripts/fetch/fetch_formulary_sbm.py. Entries with direct_drugs_url bypass index.json discovery and fetch drugs directly.",
-  "last_updated": "2026-04-01 (ID carrier URL discovery - SelectHealth + PacificSource confirmed live)",
+  "last_updated": "2026-04-03 (CA breakthrough: Kaiser PDF + Molina PDF + Aetna PDF confirmed live; Blue Shield dead; Anthem needs manual scrape)",
   "research_notes": "2026-03-19 sweep #2 (Centene TiC investigation): Fetched all 4 official Centene index.json files (ambetter, healthnet, fidelis, wellcarenc) from centene.com/content/dam/. ALL FOUR ARE LIVE (200 OK, application/json). However they are Transparency-in-Coverage MRFs (reporting_structure contains in_network_files + allowed_amount_file ONLY â€” no formulary/drug data). The Ambetter TiC index covers 28 states (AL AR AZ CA DE FL GA IA IL IN KS KY LA MI MO MS NC NE NH NJ NV OH OK PA SC TN TX WA) but these are network/pricing files, not QHP formulary. Health Net CA (HIOS 67138) FormularyNavigator /67138/1-14/drugs.json â†’ 500 HTML error. Fidelis NY (HIOS 25303, corrected from 16842 in registry) FormularyNavigator /25303/1-4/drugs.json â†’ 500 HTML error. Confirmed: no accessible QHP formulary endpoint for CA or NY via any Centene/FormularyNavigator pattern tested. Prior 2026-03-19 sweep: Molina redirects to cmsjson/378245. Kaiser MD live. Healthfirst NY FL-only. Cigna CO 5,699 records. CareFirst DC/MD VA-only.",
   "sbc_bulk_sources": {
     "centene_ambetter": {
@@ -25,18 +25,30 @@
       "exchange_url": "https://www.coveredca.com",
       "issuers": [
         {
-          "issuer_id": "18126",
-          "issuer_name": "Molina Healthcare (CA)",
-          "index_url": "https://www.molinahealthcare.com/machine-readable-files/ca/index.json",
-          "status": "url_dead",
-          "notes": "HIOS ID 18126. URL updated 2026-03-19 to CA-specific MR path â€” still returns 403 Forbidden. All Molina MR paths blocked."
+          “issuer_id”: “18126”,
+          “issuer_name”: “Molina Healthcare (CA)”,
+          “index_url”: “https://www.molinahealthcare.com/machine-readable-files/ca/index.json”,
+          “direct_pdf_url”: “https://www.molinamarketplace.com/Marketplace/CA/en-us/MemberForms.aspx/-/media/Molina/PublicWebsite/PDF/members/ca/en-us/Marketplace/2026/CAFormulary2026.pdf”,
+          “status”: “pdf_live”,
+          “format”: “pdf”,
+          “pdf_size_bytes”: 2656769,
+          “pdf_last_modified”: “2026-03-25”,
+          “verified_date”: “2026-04-03”,
+          “parsed_drug_count”: 1125,
+          “notes”: “HIOS ID 18126. MR index.json still 403 Forbidden. BUT direct PDF formulary found: 2026 CA formulary PDF (~2.5 MB, 200 OK). Hosted on Akamai CDN. Parsed 1,125 drugs with pdfplumber. JSON MR path blocked but PDF is public.”
         },
         {
-          "issuer_id": "40513",
-          "issuer_name": "Kaiser Permanente (CA)",
-          "index_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/data/ca/cms-data-index.json",
-          "status": "url_dead",
-          "notes": "HIOS ID 40513. Re-verified 2026-03-19 â€” still 403 Forbidden. Bot protection on all KP content/dam paths."
+          “issuer_id”: “40513”,
+          “issuer_name”: “Kaiser Permanente (CA)”,
+          “index_url”: “https://healthy.kaiserpermanente.org/content/dam/kporg/data/ca/cms-data-index.json”,
+          “direct_pdf_url”: “https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/ca/commercial-marketplace-formulary-ca-en-2026-drug-formulary.pdf”,
+          “status”: “pdf_live”,
+          “format”: “pdf”,
+          “pdf_size_bytes”: 2804474,
+          “pdf_last_modified”: “2026-04-03”,
+          “verified_date”: “2026-04-03”,
+          “parsed_drug_count”: 3175,
+          “notes”: “HIOS ID 40513. MR index.json still 403 (bot protection). BUT direct PDF formulary found: 2026 commercial marketplace formulary (~2.7 MB, 200 OK, updated today). Different content/dam path bypasses bot protection. Parsed 3,175 drugs with pdfplumber.”
         },
         {
           "issuer_id": "67138",
@@ -64,32 +76,58 @@
           ]
         },
         {
-          "issuer_id": "70285",
-          "issuer_name": "Blue Shield of California",
-          "index_url": "https://www.blueshieldca.com/content/dam/bsca/en/member/docs/pharmacy/drugs.json",
-          "status": "url_dead",
-          "notes": "HIOS ID 70285. URL updated 2026-03-19 â€” returns 404 Not Found. BSC pharmacy drugs.json path does not exist."
+          “issuer_id”: “70285”,
+          “issuer_name”: “Blue Shield of California”,
+          “index_url”: “https://www.blueshieldca.com/content/dam/bsca/en/member/docs/pharmacy/drugs.json”,
+          “direct_pdf_url_dead”: “https://blueshieldca.adaptiverx.com/web/pdf?key=8F02B26A288102C27BAC82D14C006C6FC54D480F80409B6859E59FD67B258E57”,
+          “local_pdf_path”: “C:\\Users\\Stuart\\Downloads\\Claude Code\\Health Insurance Renew Website Resources\\SEO EEAT\\Covered CA\\RXFLEX-PRINTABLE-FORMULARY-(PDF)-PLUS-GF_CDI-2026-V2.PDF”,
+          “status”: “pdf_local”,
+          “format”: “pdf”,
+          “pdf_size_bytes”: 3585353,
+          “pdf_pages”: 471,
+          “pdf_last_updated”: “2026-04-01”,
+          “verified_date”: “2026-04-03”,
+          “parsed_drug_count”: 6889,
+          “notes”: “HIOS ID 70285. MR drugs.json returns 404. AdaptiveRx URL expired but PDF already downloaded locally. 471-page Plus Drug Formulary dated April 2026. Parsed 6,889 drugs with pdfplumber. Covers: Active Start Plan 35-G, Balance Plan 2500-G, Shield Savings 1800/3600-G, Shield Spectrum PPO Plan 5000-G, Vital Shield 900-G, Vital Shield Plus 900.”,
+          “plans_covered”: [“Active Start Plan 35-G”, “Balance Plan 2500-G”, “Shield Savings 1800/3600-G”, “Shield Spectrum PPO Plan 5000-G”, “Vital Shield 900-G”, “Vital Shield Plus 900”]
         },
         {
-          "issuer_id": "92499",
-          "issuer_name": "Anthem Blue Cross (CA)",
-          "index_url": "https://www.anthem.com/ca/machine-readable-puf/index.json",
-          "status": "url_dead",
-          "notes": "HIOS ID 92499. URL updated 2026-03-19 â€” returns 404 Not Found. Anthem CA MR PUF path does not exist."
+          “issuer_id”: “92499”,
+          “issuer_name”: “Anthem Blue Cross (CA)”,
+          “index_url”: “https://www.anthem.com/ca/machine-readable-puf/index.json”,
+          “formulary_landing_page”: “https://www.anthem.com/ca/ms/home.html#formulary”,
+          “local_pdf_path”: “C:\\Users\\Stuart\\Downloads\\Claude Code\\Health Insurance Renew Website Resources\\SEO EEAT\\Covered CA\\Anthem\\Essential_5_Tier_ABC.pdf”,
+          “status”: “pdf_local”,
+          “format”: “pdf”,
+          “pdf_pages”: 157,
+          “verified_date”: “2026-04-03”,
+          “parsed_drug_count”: 2074,
+          “notes”: “HIOS ID 92499. MR index.json returns 404. Landing page bot-protected. PDFs manually downloaded from anthem.com/ca/ms/home.html#formulary. Essential Drug List 5-Tier version (157 pages, ~5 MB). Also have 3-Tier and 4-Tier versions. Parsed 2,074 drugs with pdfplumber. Tiers use '1 or 1b*' Anthem format.”
         },
         {
           "issuer_id": "92815",
           "issuer_name": "L.A. Care Health Plan",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS ID 92815. No discoverable MR endpoint. Covered California does not publish MR URLs."
+          "local_pdf_path": "C:\\Users\\Stuart\\Downloads\\Claude Code\\Health Insurance Renew Website Resources\\SEO EEAT\\Covered CA\\LA Care\\la2133_lacc_formulary_202603rev.pdf",
+          "status": "pdf_local",
+          "format": "pdf",
+          "pdf_pages": 364,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 3128,
+          "notes": "HIOS ID 92815. PDF formulary manually downloaded from lacare.org. L.A. Care Covered Formulary 2026, last updated 3/4/2026. 364 pages (drug tables pp 16-340, Home Infusion List pp 341-363). Parsed 3,128 drugs with pdfplumber."
         },
         {
           "issuer_id": "51396",
           "issuer_name": "IEHP (Inland Empire Health Plan)",
           "index_url": "",
-          "status": "url_unknown",
-          "notes": "HIOS ID 51396. No discoverable MR endpoint. Covered California does not publish MR URLs."
+          "direct_pdf_url": "https://www.iehp.org/content/dam/iehp-org/en/documents/coveredcalifornia/Formulary.pdf",
+          "status": "pdf_live",
+          "format": "pdf",
+          "pdf_size_bytes": 4400000,
+          "pdf_pages": 445,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 5939,
+          "notes": "HIOS ID 51396. PDF formulary found at iehp.org/content/dam (445 pages, ~4.4 MB, April 2026). Covers: IEHP Minimum Coverage HMO, Bronze 60, Silver 70/73/87/94, Gold 80, Platinum 90, AIAN plans. Parsed with pdfplumber."
         },
         {
           "issuer_id": "20523",
@@ -125,6 +163,19 @@
           "index_url": "",
           "status": "url_unknown",
           "notes": "HIOS 93689. Sacramento/Northern CA regional HMO. WHA Network. Serves El Dorado, Marin, Napa, Placer, Sacramento, Solano, Sonoma, Yolo counties. Identified from 2025 SBM Plan-PUF. No discoverable MR formulary endpoint."
+        },
+        {
+          "issuer_id": "unknown_aetna_ca",
+          "issuer_name": "Aetna (CA)",
+          "index_url": "",
+          "direct_pdf_url": "https://fm.formularynavigator.com/FBO/41/2026_Advanced_Control_Plan_Aetna_CA.pdf",
+          "status": "pdf_live",
+          "format": "pdf",
+          "pdf_size_bytes": 8100000,
+          "pdf_pages": 302,
+          "verified_date": "2026-04-03",
+          "parsed_drug_count": 2580,
+          "notes": "NEW ISSUER DISCOVERY 2026-04-03. Aetna CA found via FormularyNavigator FBO/41 path. 302-page PDF (~8.1 MB), titled '2026 Aetna Pharmacy Drug Guide — FI Advanced Control Plan'. Parsed 2,580 drugs with pdfplumber. HIOS ID not yet confirmed — need to cross-reference with SBM Plan-PUF."
         }
       ]
     },
