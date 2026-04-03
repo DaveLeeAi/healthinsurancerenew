@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 6 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235 + Excellus 40064+78124) parsed from PDFs. 19,399 drugs. Remaining 6 issuers need PDF parsing.",
+  "formulary_status": "PARTIAL — 6 issuers (Fidelis 25303 + Anthem 41046 + MVP 56184 + UHC 54235 + Excellus 40064+78124) parsed from PDFs. 17,140 drugs. Remaining 6 issuers need PDF parsing.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -73,14 +73,14 @@
       "variant_count": 210,
       "networks": [],
       "formulary": {
-        "name": "Excellus 3-Tier Open Formulary (2950)",
-        "url": "https://fm.formularynavigator.com/FBO/251/Excellus_3_Tier_Open_Formulary_2950_v26.pdf",
+        "name": "2026 Individual & Family Metal Plans Formulary Guide (2981)",
+        "url": "https://fm.formularynavigator.com/FBO/251/Excellus_2026_Metal_Plans_Base___Simply_Blue_Plus___College_Blue_Plans_Formulary_Guide_2981_v26.pdf",
         "format": "PDF (3-tier: 1=Generic, 2=Preferred Brand, 3=Non-Preferred)",
         "pbm": "FormularyNavigator publisher 251",
         "cloud_accessible": true,
         "status": "parsed",
-        "parsed_records": 5789,
-        "note": "Found via excellusbcbs.com/plans/individual/drug-list FormularyNavigator links. 5,789 drugs. Tiers: Generic=1,384, Preferred Brand=332, Non-Preferred=4,073. PA=1,629, ST=440, QL=1,881. Shared with HIOS 78124 (HealthNow BCBS WNY)."
+        "parsed_records": 3530,
+        "note": "Correct Individual/Exchange formulary (2981). 3,530 drugs. Tiers: Generic=1,190, Preferred Brand=332, Non-Preferred=2,008. PA=1,036, ST=16, QL=1,005. Covers Metal Plans, Simply Blue Plus, College Blue. Shared with HIOS 78124."
       }
     },
     "anthem_ny": {
@@ -178,13 +178,13 @@
       "variant_count": 218,
       "networks": [],
       "formulary": {
-        "name": "Excellus 3-Tier Open Formulary (2950) — shared with 40064",
-        "url": "https://fm.formularynavigator.com/FBO/251/Excellus_3_Tier_Open_Formulary_2950_v26.pdf",
+        "name": "2026 Individual & Family Metal Plans Formulary Guide (2981) — shared with 40064",
+        "url": "https://fm.formularynavigator.com/FBO/251/Excellus_2026_Metal_Plans_Base___Simply_Blue_Plus___College_Blue_Plans_Formulary_Guide_2981_v26.pdf",
         "format": "PDF (3-tier, same formulary as Excellus 40064)",
         "cloud_accessible": true,
         "status": "parsed",
-        "parsed_records": 5789,
-        "note": "Shares formulary with Excellus BCBS (40064). Both are Excellus affiliates using the same 3-Tier Open Formulary via FormularyNavigator publisher 251."
+        "parsed_records": 3530,
+        "note": "Shares formulary with Excellus BCBS (40064). Correct Individual/Exchange formulary (2981), not 2950 (Large Group)."
       }
     },
     "emblemhealth": {

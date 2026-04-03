@@ -1,6 +1,6 @@
-"""Parse Excellus BCBS NY 3-Tier Open Formulary PDF and merge into formulary_sbm_NY.json.
+"""Parse Excellus BCBS NY Individual & Family Metal Plans Formulary (2981) and merge into formulary_sbm_NY.json.
 
-Source: fm.formularynavigator.com/FBO/251/Excellus_3_Tier_Open_Formulary_2950_v26.pdf
+Source: fm.formularynavigator.com/FBO/251/Excellus_2026_Metal_Plans_..._2981_v26.pdf
 Issuers: Excellus BCBS (HIOS 40064 + 78124, combined 116 plans)
 Format: 3-column (Product Description | Tier 1/2/3 | Limits/Restrictions/Notes)
 
@@ -17,7 +17,7 @@ from pathlib import Path
 import pdfplumber
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-PDF_PATH = PROJECT_ROOT / "data" / "raw" / "formulary_pdf" / "Excellus_3_Tier_Open_Formulary_2950_v26.pdf"
+PDF_PATH = PROJECT_ROOT / "data" / "raw" / "formulary_pdf" / "Excellus_Metal_Plans_2026_2981_v26.pdf"
 OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "formulary_sbm_NY.json"
 
 TIER_MAP = {
@@ -83,7 +83,7 @@ def parse_excellus_pdf() -> list[dict]:
                     "rxnorm_id": None,
                     "is_priority_drug": False,
                     "source": "PDF Drug List",
-                    "source_file": "Excellus_3_Tier_Open_Formulary_2950_v26.pdf",
+                    "source_file": "Excellus_2026_Metal_Plans_Formulary_Guide_2981_v26.pdf",
                     "state_code": "NY",
                     "plan_year": 2026,
                 }
@@ -181,10 +181,10 @@ def merge_and_save(excellus_records: list[dict]) -> None:
 
     excellus_result = {
         "issuer_id": "40064+78124",
-        "issuer_name": "Excellus BlueCross BlueShield (NY) + HealthNow BCBS WNY",
+        "issuer_name": "Excellus BCBS (NY) — Individual & Family Metal Plans",
         "state_code": "NY",
-        "source": "Excellus_3_Tier_Open_Formulary_2950_v26.pdf",
-        "source_url": "https://fm.formularynavigator.com/FBO/251/Excellus_3_Tier_Open_Formulary_2950_v26.pdf",
+        "source": "Excellus_2026_Metal_Plans_Formulary_Guide_2981_v26.pdf",
+        "source_url": "https://fm.formularynavigator.com/FBO/251/Excellus_2026_Metal_Plans_Base___Simply_Blue_Plus___College_Blue_Plans_Formulary_Guide_2981_v26.pdf",
         "status": "success",
         "drug_records": len(excellus_records),
     }
