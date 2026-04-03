@@ -158,6 +158,17 @@ CARRIERS = {
         "req_x_min": 385.0,
         "name_x_max": 295.0,
     },
+    "oscar": {
+        "issuer_id": "20523",
+        "issuer_name": "Oscar Health Plan of California",
+        "pdf_path": RAW_DIR / "oscar_fl_2026_formulary.pdf",
+        "start_page": 7,
+        "end_page": 129,
+        "tier_x_min": 335.0,
+        "tier_x_max": 410.0,
+        "req_x_min": 409.0,
+        "name_x_max": 330.0,
+    },
     "wha": {
         "issuer_id": "93689",
         "issuer_name": "Western Health Advantage (CA)",
@@ -192,8 +203,10 @@ TIER_MAP: dict[str, str] = {
     "TIER 1": "PREFERRED-GENERICS",
     "TIER 1 (G)": "PREFERRED-GENERICS",
     "1 (G)": "PREFERRED-GENERICS",
-    "1A*": "PREFERRED-GENERICS",       # Anthem: generic
-    "1B*": "PREFERRED-GENERICS",       # Anthem: preferred generic
+    "1A": "PREFERRED-GENERICS",         # Oscar: preferred generic ($3)
+    "1B": "PREFERRED-GENERICS",         # Oscar: non-preferred generic
+    "1A*": "PREFERRED-GENERICS",        # Anthem: generic
+    "1B*": "PREFERRED-GENERICS",        # Anthem: preferred generic
     "1 OR 1A*": "PREFERRED-GENERICS",
     "1 OR 1B*": "PREFERRED-GENERICS",
     "2": "PREFERRED-BRANDS",
@@ -222,8 +235,8 @@ TIER_MAP: dict[str, str] = {
 
 # Tier patterns in text (regex)
 TIER_RE = re.compile(
-    r"^(?:Tier\s*)?([1-5])\s*(?:[ab]\*)?(?:\s*(?:\([A-Z]+\)))?$"
-    r"|^(NF|PV|PREV|PREVENTIVE|\$0)$"
+    r"^(?:Tier\s*)?([1-5])\s*(?:[ab]\*?)?(?:\s*(?:\([A-Z]+\)))?$"
+    r"|^(NF|PV|PREV|PREVENTIVE|\$0|OA)$"
     r"|^([1-5])\s*or\s*[1-5][ab]\*$",  # Anthem "1 or 1b*" format
     re.IGNORECASE,
 )
@@ -308,8 +321,8 @@ def extract_tier_from_words(tier_words: list[str]) -> str:
     if m2:
         return TIER_MAP.get(m2.group(1), "")
 
-    # Handle bare "1a*", "1b*" etc.
-    m3 = re.match(r"^([1-5])[ab]\*$", raw, re.IGNORECASE)
+    # Handle bare "1a", "1b", "1a*", "1b*" etc.
+    m3 = re.match(r"^([1-5])[ab]\*?$", raw, re.IGNORECASE)
     if m3:
         return TIER_MAP.get(m3.group(1), "")
 
@@ -368,7 +381,7 @@ def parse_page_words(page, cfg: dict) -> list[dict]:
             # Gap between name and tier — classify by content
             if text.lower() in ("tier", "nf", "pv", "prev", "or", "oa") or (
                 text.isdigit() and len(text) == 1
-            ) or re.match(r"^[1-5][ab]\*;?$", text, re.IGNORECASE):
+            ) or re.match(r"^[1-5][ab]\*?;?$", text, re.IGNORECASE):
                 tier_words.append(w)
             else:
                 name_words.append(w)
