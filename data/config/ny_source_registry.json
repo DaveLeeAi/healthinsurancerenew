@@ -6,7 +6,7 @@
   "total_medical_issuers": 12,
   "sbc_status": "COMPLETE",
   "sbc_variants": 1246,
-  "formulary_status": "PARTIAL — 11 issuers parsed from PDFs. 29,772 drugs. Remaining 1 issuer (MetroPlus 11177, 16 plans) needs QHP formulary PDF.",
+  "formulary_status": "COMPLETE — all 12 issuers parsed from PDFs. 31,439 drugs across 12 HIOS IDs. 100% plan coverage.",
   "carriers": {
     "metroplus": {
       "issuer_name": "MetroPlus Health Plan",
@@ -15,14 +15,14 @@
       "variant_count": 57,
       "networks": [],
       "formulary": {
-        "name": "MetroPlus Marketplace Formulary",
-        "url": "https://www.metroplus.org/members/pharmacy/",
-        "format": "PDF (3-tier with PA/ST/QL/SGM flags)",
-        "pbm": "Unknown",
+        "name": "MetroPlus Marketplace / Essential Plan Formulary 2026",
+        "url": "https://metroplus.org/wp-content/uploads/2026/01/Marketplace_EP_Formulary-Document_126_fin.pdf",
+        "format": "PDF (3-tier + preventive: 1=Generic, 2=Preferred Brand, 3=Non-Preferred, 0=ACA Preventive)",
+        "pbm": "CVS Caremark",
         "cloud_accessible": true,
-        "verified": false,
-        "status": "pdf_only",
-        "note": "Web page at metroplus.org/members/pharmacy/ confirmed live (HTML). Actual PDF URLs need manual extraction from page. Per SBM-DATA-SOURCES.md: 3-tier formulary with PA/ST/QL/SGM flags."
+        "status": "parsed",
+        "parsed_records": 2066,
+        "note": "94-page Marketplace/Essential Plan formulary (EXCH_CVSC 3T NY STND). 2,066 drugs. Tiers: Generic=1,123, Preferred Brand=248, Non-Preferred=491, ACA Preventive=204. PA=459, ST=150, QL=762."
       }
     },
     "independent_health": {
@@ -247,15 +247,15 @@
     "status": "SOLVED"
   },
   "formulary_summary": {
-    "parsed": 11,
+    "parsed": 12,
     "json_accessible": 0,
     "json_but_wrong_state": 0,
     "tic_only": 0,
     "url_dead": 0,
     "blocked": 0,
     "url_unknown": 0,
-    "pdf_only": 1,
+    "pdf_only": 0,
     "total": 12,
-    "recommendation": "11 issuers parsed covering 303 of 319 plans (95%) — 29,772 merged drugs. Only MetroPlus (11177, 16 plans) remains — needs QHP formulary PDF (Medicare PDF was wrong product)."
+    "recommendation": "COMPLETE. All 12 issuers parsed — 319 of 319 plans (100%), 31,439 merged drugs."
   }
 }
