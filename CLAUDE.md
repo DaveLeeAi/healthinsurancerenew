@@ -55,9 +55,18 @@
 
 ## Data Coverage
 
-- **48 states + DC** covered via FFM PUF + SBM formulary sources
-- **CA, NY, MA** geo-blocked — State-Based Marketplaces with no accessible public formulary endpoints
-- SBM source registry: `data/config/sbm-source-registry.json`
+- **50 states + DC** covered (RI formulary blocked — SBC data complete)
+- **518,614 total drug records** (196,303 FFE + 322,311 SBM)
+- **20,354+ SBC plan variants** (FFE + SBM)
+- Formulary URL registry: `data/config/formulary-url-registry-2026.json` (primary source of truth)
+- SBM source registry: `data/config/sbm-source-registry.json` (legacy — registry is primary)
+- Annual refresh scripts: `scripts/refresh/annual-formulary-refresh.py` and `scripts/refresh/annual-sbc-refresh.py`
+- Refresh calendar: `docs/annual-refresh-calendar.md`
+
+### SBM State List (21 + DC for PY2026)
+Full SBM (21): CA, CO, CT, DC, GA, ID, IL, KY, MA, MD, ME, MN, NJ, NM, NV, NY, PA, RI, VA, VT, WA
+SBM-FP (2): AR, OR
+Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
 ---
 

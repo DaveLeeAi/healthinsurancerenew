@@ -166,10 +166,13 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
   return (
     <div className="flex gap-4 items-start border border-gray-200 rounded-lg p-5 mt-10 mb-6 bg-gray-50">
       <div className="shrink-0">
-        {/* Placeholder for real headshot */}
-        <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold text-lg">
-          {showFullName ? 'DL' : 'LA'}
-        </div>
+        <img
+          src="/images/dave-lee-headshot.jpg"
+          alt={showFullName ? 'Dave Lee — Licensed ACA Health Insurance Agent' : 'Licensed ACA Agent'}
+          width={56}
+          height={56}
+          className="w-14 h-14 rounded-full object-cover"
+        />
       </div>
       <div className="min-w-0">
         <p className="font-semibold text-gray-900">

@@ -375,6 +375,79 @@ function getLicensedStates(): string[] {
   ];
 }
 
+// ─── Drug Schema ────────────────────────────────────────────────────────────
+
+export interface DrugSchemaOptions {
+  name: string;
+  genericName: string;
+  drugClass: string;
+  manufacturer: string;
+  administrationRoute: string;
+  fdaApprovedIndications: string[];
+  prescriptionStatus?: 'PrescriptionOnly';
+  url?: string;
+  warning?: string;
+}
+
+export function generateDrugSchema(opts: DrugSchemaOptions): Record<string, unknown> {
+  const normalizedSlug = opts.name.toLowerCase().replace(/\s+/g, '-');
+  return {
+    '@type': 'Drug',
+    '@id': `${SITE_URL}/guides/${normalizedSlug}#drug-${normalizedSlug}`,
+    name: opts.name,
+    nonProprietaryName: opts.genericName,
+    drugClass: { '@type': 'DrugClass', name: opts.drugClass },
+    manufacturer: { '@type': 'Organization', name: opts.manufacturer },
+    administrationRoute: opts.administrationRoute,
+    recognizingAuthority: {
+      '@type': 'Organization',
+      name: 'U.S. Food and Drug Administration',
+      url: 'https://www.fda.gov',
+    },
+    prescriptionStatus: 'https://schema.org/PrescriptionOnly',
+    legalStatus: 'https://schema.org/PrescriptionOnly',
+    medicineSystem: 'https://schema.org/WesternConventional',
+    ...(opts.url && { url: opts.url }),
+    warning:
+      opts.warning ??
+      'This page provides general information about insurance coverage. It is not medical advice. Consult your healthcare provider and check your specific plan formulary.',
+  };
+}
+
+// ─── WebApplication Schema ──────────────────────────────────────────────────
+
+export interface WebApplicationSchemaOptions {
+  name: string;
+  description: string;
+  url: string;
+  applicationCategory?: string;
+  operatingSystem?: string;
+  offers?: { price: string; priceCurrency: string };
+}
+
+export function generateWebApplicationSchema(
+  opts: WebApplicationSchemaOptions
+): Record<string, unknown> {
+  return {
+    '@type': 'WebApplication',
+    '@id': `${opts.url}#webapp`,
+    name: opts.name,
+    description: opts.description,
+    url: opts.url,
+    applicationCategory: opts.applicationCategory ?? 'HealthApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: {
+      '@type': 'Offer',
+      price: opts.offers?.price ?? '0',
+      priceCurrency: opts.offers?.priceCurrency ?? 'USD',
+    },
+    provider: { '@type': 'InsuranceAgency', '@id': IDS.organization },
+  };
+}
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
 /**
  * Render a schema object as a <script type="application/ld+json"> string.
  * Use in Next.js metadata or dangerouslySetInnerHTML.

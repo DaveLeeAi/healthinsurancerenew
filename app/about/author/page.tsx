@@ -68,10 +68,13 @@ export default function AuthorPage() {
 
         {/* ── Author Header ── */}
         <div className="flex flex-col sm:flex-row gap-6 items-start mb-8">
-          {/* Headshot placeholder — replace with real photo */}
-          <div className="shrink-0 w-28 h-28 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-3xl border-2 border-blue-200">
-            DL
-          </div>
+          <img
+            src="/images/dave-lee-headshot.jpg"
+            alt="Dave Lee — Licensed ACA Health Insurance Agent"
+            width={112}
+            height={112}
+            className="shrink-0 w-28 h-28 rounded-xl object-cover border-2 border-blue-200"
+          />
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
               Dave Lee
