@@ -2367,18 +2367,18 @@
         {
           "carrier_name": "Highmark (PA)",
           "hios_prefix": "22444",
-          "formulary_url": null,
+          "formulary_url": "https://client.formularynavigator.com/Search.aspx?siteCode=4906449921",
           "formulary_type": "online_only",
           "source_type": "online_only",
           "pbm": "IngenioRx",
           "tiers": null,
-          "status": "blocked",
+          "status": "confirmed_online_only",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "FormularyNavigator tool only — no static PDF",
-          "notes": "All MR paths return 404. highmark.mrf.bcbs.com does not resolve.",
-          "fetch_method": "manual_download",
-          "fetch_notes": "FormularyNavigator tool only — no static PDF"
+          "year_pattern": "Formulary Navigator — site codes sourced from providers.highmark.com/policies-and-programs/formulary.html",
+          "notes": "HCR (ACA) site codes: comprehensive PA/WV=4906449921, essential PA/WV/DE=6571849149, comprehensive DE=7597050967, comprehensive WNY/NENY=7049127892, essential WNY/NENY=0692840549. Commercial (non-ACA): WPA/NEPA/CPA/SEPA=client.formularynavigator.com/clients/highmark/commercial.html, DE=1546534148, WV=1158840676. Formulary Navigator is JS-rendered — no bulk export available.",
+          "fetch_method": "online_only",
+          "fetch_notes": "providers.highmark.com/policies-and-programs/formulary.html → Formulary Navigator HCR site codes"
         },
         {
           "carrier_name": "Oscar Health (PA)",
