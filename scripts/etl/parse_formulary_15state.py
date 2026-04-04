@@ -720,14 +720,23 @@ def parse_uhc_pdl_booklet(pdf_path: Path, issuer_ids: list, state: str,
                     if tier in ("Drug Tier", "Tier\nvalue", "Tier value", "Generic name",
                                 "Drug name", "Cost-share", "Includes"):
                         continue
-                    # Skip if tier is unrecognized (long descriptive strings from J-code sections)
+                    # Skip if tier is unrecognized (long strings or dosage descriptions from J-code sections)
                     KNOWN_TIERS = {
                         "GENERIC", "PREFERRED-GENERIC", "PREFERRED-BRAND",
                         "NON-PREFERRED-BRAND", "SPECIALTY", "SPECIALTY-HIGH",
                         "ACA-PREVENTIVE", "NON-FORMULARY", "LOW-COST-GENERIC",
                     }
-                    if tier not in KNOWN_TIERS and len(tier) > 25:
-                        continue
+                    if tier not in KNOWN_TIERS:
+                        # Reject dosage unit patterns (J-code billing section artifacts)
+                        if re.search(
+                            r'(\d+\s*(mg|mcg|ml|g\b|units?|cc\b|IU\b)'
+                            r'|per\s+(IU|g\b|\d)'
+                            r'|Unclassified)',
+                            tier, re.IGNORECASE
+                        ):
+                            continue
+                        if len(tier) > 25:
+                            continue
                     # Build synthetic notes string for parse_flags
                     flag_parts = []
                     if pa:

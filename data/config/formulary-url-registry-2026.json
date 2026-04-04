@@ -2007,7 +2007,7 @@
       "exchange_name": "beWellnm",
       "exchange_type": "SBM",
       "exchange_url": "https://www.bewellnm.com",
-      "state_drugs_total": 4927,
+      "state_drugs_total": 8071,
       "carriers": [
         {
           "carrier_name": "Molina Healthcare of NM",
@@ -2044,18 +2044,18 @@
         {
           "carrier_name": "UnitedHealthcare (NM)",
           "hios_prefix": "65428",
-          "formulary_url": "https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-NM_UHC_IFP_PY26.pdf",
+          "formulary_url": "https://www.uhc.com/content/dam/uhcdotcom/en/general/nm-2026-ifp-pdl-booklet.pdf",
           "formulary_type": "pdf",
-          "source_type": "direct_download",
+          "source_type": "auto_download",
           "pbm": "OptumRx",
           "tiers": 4,
-          "status": "pattern",
-          "last_fetched": "2026-04-03",
-          "drugs_parsed": null,
+          "status": "verified",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 3218,
           "year_pattern": "Replace 'PY26' with 'PY27' and 'NM' state code",
           "notes": "PATTERN â€” IFP PDL.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly â€” no auth needed"
+          "fetch_notes": "Requires Referer: https://www.uhc.com/ header to bypass 403"
         },
         {
           "carrier_name": "BCBS New Mexico",
@@ -2067,7 +2067,7 @@
           "tiers": 4,
           "status": "verified",
           "last_fetched": "2026-04-04",
-          "drugs_parsed": 2670,
+          "drugs_parsed": 2596,
           "year_pattern": "Check bcbsnm.com pharmacy page annually",
           "notes": "Blue Community product line. No discoverable MR endpoint.",
           "fetch_method": "manual_download",
