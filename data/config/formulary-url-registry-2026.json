@@ -1217,18 +1217,18 @@
         {
           "carrier_name": "Fallon Health (MA)",
           "hios_prefix": "41304",
-          "formulary_url": null,
-          "formulary_type": null,
-          "source_type": "not_found",
-          "pbm": "Unknown",
-          "tiers": null,
-          "status": "not_found",
+          "formulary_url": "https://client.formularynavigator.com/Search.aspx?siteCode=8156893033",
+          "formulary_type": "online_only",
+          "source_type": "online_only",
+          "pbm": "Formulary Navigator (Managed Markets Insight & Technology)",
+          "tiers": 3,
+          "status": "confirmed_online_only",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "Check fallonhealth.org pharmacy page annually",
-          "notes": "Central/Western MA HMO. No discoverable MR formulary endpoint.",
-          "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered — check carrier website"
+          "year_pattern": "siteCode 8156893033 = Commercial 3-Tier ACA plans. Also: siteCode 5561983224 = Medical benefit commercial, 3699835565 = NaviCare SNP (Medicare).",
+          "notes": "Verified 2026-04-04. No downloadable PDF for ACA/individual plans. Formulary Navigator search-only — no bulk export endpoint. 2026 policy: GLP-1s for weight loss no longer covered on ACA plans. Plans: Connector Platinum/Gold/Silver/Bronze + ConnectorCare II/III.",
+          "fetch_method": "online_only",
+          "fetch_notes": "fallonhealth.org/members/commercial/Pharmacy/online-drug-formulary.aspx → dropdown → siteCode 8156893033"
         },
         {
           "carrier_name": "Health Plans Inc. / Community Care (MA)",
