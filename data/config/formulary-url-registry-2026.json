@@ -1394,6 +1394,15 @@
           "last_fetched": null,
           "formulary_url": null,
           "notes": "Listed in 2026 IFP fact-check. New carrier on MA Health Connector. Formulary URL not yet sourced."
+        },
+        {
+          "carrier_name": "Blue Cross Blue Shield of Massachusetts",
+          "hios_prefix": "unknown_bcbsma",
+          "status": "confirmed_online_only",
+          "drugs_parsed": 0,
+          "last_fetched": null,
+          "formulary_url": "https://www.bluecrossma.org/medication/all-covered-med-search",
+          "notes": "BCBS MA does not publish a downloadable full formulary PDF. Uses interactive medication lookup tool only. ACA preventive med list (19 pages) available but not full formulary."
         }
       ]
     },
