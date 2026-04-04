@@ -80,6 +80,9 @@ TIER_MAP = {
     # Molina NM
     "PREV": "ACA-PREVENTIVE",
     "DME": "NON-FORMULARY",  # Durable Medical Equipment — skip/non-drug
+    # BCBS NM (2-tier: Preferred / Non-Preferred)
+    "P": "PREFERRED-BRAND", "P+": "SPECIALTY",
+    "NP+": "SPECIALTY-HIGH",
 }
 
 
@@ -931,6 +934,17 @@ CARRIER_DEFS = {
         "parser": "standard_3col", "start_page": 85, "end_page": -1,
         "tier_col": 1,  # col[1] = "Formulary Status"
     },
+    "bcbsnm": {
+        # HIOS 75605. 2-tier formulary: P=Preferred, NP=Non-Preferred, P+=Specialty, NP+=Specialty-High.
+        # Notes flags: AC=ACA-preventive, SP=specialty, PA=prior-auth, QL=qty-limit, BH=behavioral-health.
+        # Drug table starts page 11 (index 10). 3-col: Drug Name | Drug Tier | Requirements/Limits.
+        "state": "NM", "issuer_ids": ["75605"],
+        "issuer_name": "BCBS New Mexico",
+        "pdf": "bcbsnm_2026.pdf",
+        "url": "https://www.bcbsnm.com/nm/documents/rx-drugs/drug-lists/performance-nm-2026.pdf",
+        "parser": "standard_3col", "start_page": 10, "end_page": -1,
+        "min_cols": 2,
+    },
     # NM Ambetter (57173, Western Sky): ambetterhealth.com PDF redirects to HTML; Centene API 404
     # NM UHC (65428): uhc.com PDF returns 403. Both blocked as of 2026-04-04.
     # ── NV ──
@@ -1244,6 +1258,18 @@ CARRIER_DEFS = {
         "pdf": None,
         "url": "https://api.centene.com/ambetter/reference/drugs-AMB-NJ.json",
         "parser": "centene_json",
+    },
+
+    # ── NJ gap carriers ────────────────────────────────────────────────────────
+    "oscar_nj": {
+        # HIOS 47163. 5-tier NJ individual plan. Same 4-col format as oscar_il/oscar_ny.
+        "state": "NJ", "issuer_ids": ["47163"],
+        "issuer_name": "Oscar Health (NJ)",
+        "pdf": "oscar_nj_5t_formulary_2026.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/5XDRKjZ9RywAxaGeHDyWeA/3afb2d356d5a1648af48f653353989b0/Oscar_5T_NJ_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        # 4-col: col[0]=blank/category, col[1]=Drug Name, col[2]=Drug Tier, col[3]=Notes
+        "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
+        "min_cols": 4, "start_page": 7, "end_page": -1,
     },
 
     # ── NY gap carriers ────────────────────────────────────────────────────────
