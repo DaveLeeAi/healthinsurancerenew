@@ -670,6 +670,84 @@ def parse_ibx_amerihealth(pdf_path: Path, issuer_ids: list, state: str,
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# PARSER: UHC IFP PDL booklet (NM/generic format)
+# Table layout (most pages): col[0]=Brand Name (often None) | col[1]=Generic Name |
+#   col[2]=Tier value | col[3]=PA ("X"/empty) | col[4]=QL ("X"/empty) |
+#   col[5]=ST ("X"/empty) | col[6]=Notes | col[7]=empty
+# Some pages use 5-col: col[0]=Drug Name | col[1]=Tier | col[2]=PA | col[3]=QL | col[4]=ST
+# ══════════════════════════════════════════════════════════════════════════════
+
+def parse_uhc_pdl_booklet(pdf_path: Path, issuer_ids: list, state: str,
+                          start_page: int = 9, end_page: int = -1) -> list[dict]:
+    """Parse UHC IFP PDL booklet format (NM and similar states).
+    Handles both 5-col and 8-col table layouts within the same PDF.
+    """
+    records = []
+    with pdfplumber.open(str(pdf_path)) as pdf:
+        ep = end_page if end_page > 0 else len(pdf.pages)
+        ep = min(ep, len(pdf.pages))
+        log.info("  UHC PDL booklet: pages %d-%d of %d", start_page + 1, ep, len(pdf.pages))
+        for i in range(start_page, ep):
+            tables = pdf.pages[i].extract_tables()
+            for table in tables:
+                if not table or len(table) < 2:
+                    continue
+                for row in table:
+                    ncols = len(row)
+                    if ncols >= 7:
+                        # 8-col format: col[1]=generic name, col[2]=tier
+                        drug = clean_name(str(row[1] or ""))
+                        tier_raw = str(row[2] or "").strip().replace("\n", " ")
+                        pa = str(row[3] or "").strip().upper() == "X"
+                        ql = str(row[4] or "").strip().upper() == "X"
+                        st = str(row[5] or "").strip().upper() == "X"
+                        notes = str(row[6] or "").strip().replace("\n", " ")
+                    elif ncols >= 2:
+                        # 5-col format: col[0]=drug name, col[1]=tier
+                        drug = clean_name(str(row[0] or ""))
+                        tier_raw = str(row[1] or "").strip().replace("\n", " ")
+                        pa = ncols > 2 and str(row[2] or "").strip().upper() == "X"
+                        ql = ncols > 3 and str(row[3] or "").strip().upper() == "X"
+                        st = ncols > 4 and str(row[4] or "").strip().upper() == "X"
+                        notes = ""
+                    else:
+                        continue
+
+                    if not drug or not tier_raw:
+                        continue
+                    tier = normalize_tier(tier_raw)
+                    # Skip header rows and garbage values (long strings, unknown codes)
+                    if tier in ("Drug Tier", "Tier\nvalue", "Tier value", "Generic name",
+                                "Drug name", "Cost-share", "Includes"):
+                        continue
+                    # Skip if tier is unrecognized (long descriptive strings from J-code sections)
+                    KNOWN_TIERS = {
+                        "GENERIC", "PREFERRED-GENERIC", "PREFERRED-BRAND",
+                        "NON-PREFERRED-BRAND", "SPECIALTY", "SPECIALTY-HIGH",
+                        "ACA-PREVENTIVE", "NON-FORMULARY", "LOW-COST-GENERIC",
+                    }
+                    if tier not in KNOWN_TIERS and len(tier) > 25:
+                        continue
+                    # Build synthetic notes string for parse_flags
+                    flag_parts = []
+                    if pa:
+                        flag_parts.append("PA")
+                    if ql:
+                        flag_parts.append("QL")
+                    if st:
+                        flag_parts.append("ST")
+                    if notes:
+                        flag_parts.append(notes)
+                    flags = parse_flags(" ".join(flag_parts))
+                    flags["prior_authorization"] = pa or flags["prior_authorization"]
+                    flags["quantity_limit"] = ql or flags["quantity_limit"]
+                    flags["step_therapy"] = st or flags["step_therapy"]
+                    records.append(make_record(drug, tier, flags, issuer_ids,
+                                               pdf_path.name, state))
+    return records
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # PARSER: Centene/Ambetter API JSON — https://api.centene.com/ambetter/reference/drugs-AMB-XX.json
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -945,8 +1023,17 @@ CARRIER_DEFS = {
         "parser": "standard_3col", "start_page": 10, "end_page": -1,
         "min_cols": 2,
     },
+    "uhc_nm": {
+        # HIOS 65428. UHC IFP PDL Booklet format: 190 pages, drugs start page 10 (index 9).
+        # Dual layout: page 10 = 5-col (name|tier|PA|QL|ST), pages 11+ = 8-col (brand|generic|tier|PA|QL|ST|notes|).
+        # Tiers: Tier 1-6. URL requires Referer: https://www.uhc.com/ to bypass 403.
+        "state": "NM", "issuer_ids": ["65428"],
+        "issuer_name": "UnitedHealthcare (NM)",
+        "pdf": "uhc_nm_ifp_2026.pdf",
+        "url": "https://www.uhc.com/content/dam/uhcdotcom/en/general/nm-2026-ifp-pdl-booklet.pdf",
+        "parser": "uhc_pdl_booklet", "start_page": 9, "end_page": -1,
+    },
     # NM Ambetter (57173, Western Sky): ambetterhealth.com PDF redirects to HTML; Centene API 404
-    # NM UHC (65428): uhc.com PDF returns 403. Both blocked as of 2026-04-04.
     # ── NV ──
     "anthem_nv": {
         "state": "NV", "issuer_ids": ["60156"],
@@ -1338,6 +1425,8 @@ def parse_carrier(key: str, cdef: dict) -> list[dict]:
         return parse_optumrx_words(pdf_path, ids, state, sp, ep)
     elif parser == "ibx_amerihealth":
         return parse_ibx_amerihealth(pdf_path, ids, state, sp, ep)
+    elif parser == "uhc_pdl_booklet":
+        return parse_uhc_pdl_booklet(pdf_path, ids, state, sp, ep)
     else:
         log.error("  Unknown parser: %s", parser)
         return []

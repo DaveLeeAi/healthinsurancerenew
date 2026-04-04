@@ -536,7 +536,7 @@
       "exchange_name": "DC Health Link",
       "exchange_type": "SBM",
       "exchange_url": "https://dchealthlink.com",
-      "state_drugs_total": 10729,
+      "state_drugs_total": 15394,
       "carriers": [
         {
           "carrier_name": "Kaiser Permanente (DC - MAS region)",
@@ -547,7 +547,7 @@
           "pbm": "Self-integrated",
           "tiers": 4,
           "status": "verified",
-          "last_fetched": "2026-04-03",
+          "last_fetched": "2026-04-04",
           "drugs_parsed": 1081,
           "year_pattern": "MAS region PDF â€” check for year in filename or updated URL annually. Also covers HIOS 86052.",
           "notes": "MAS region covers DC+MD+VA. Updated 02/03/2026. Shared across DC/MD/VA Kaiser entries.",
@@ -563,7 +563,7 @@
           "pbm": "CareFirst Pharmacy",
           "tiers": 5,
           "status": "verified",
-          "last_fetched": "2026-04-03",
+          "last_fetched": "2026-04-04",
           "drugs_parsed": 3584,
           "year_pattern": "URL contains 'sum7277-2026' â€” document ID may change. Check member.carefirst.com pharmacy page. Covers HIOS 28137, 45532, 94084.",
           "notes": "Single Exchange Formulary PDF covers 3 CareFirst entities. 4 tiers + ACA-Preventive.",
@@ -1010,6 +1010,20 @@
       "state_drugs_total": 6742,
       "carriers": [
         {
+          "carrier_name": "Centene/Ambetter (IL) — JSON API",
+          "hios_prefix": "99167",
+          "formulary_url": "https://api.centene.com/ambetter/reference/drugs-AMB-IL.json",
+          "formulary_type": "json",
+          "source_type": "centene_api",
+          "pbm": "Centene/IngenioRx",
+          "tiers": 4,
+          "status": "verified",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 4293,
+          "notes": "Centene JSON API — same drug list as 27833 PDF but via API.",
+          "fetch_method": "json_api"
+        },
+        {
           "carrier_name": "Centene/Ambetter (IL)",
           "hios_prefix": "27833",
           "formulary_url": "https://api.centene.com/ambetter/reference/drugs-AMB-IL.json",
@@ -1036,10 +1050,7 @@
           "tiers": "4T/6T",
           "status": "verified",
           "last_fetched": "2026-04-04",
-          "drugs_parsed": {
-            "4t": 2388,
-            "6t": 1148
-          },
+          "drugs_parsed": 2449,
           "parsed_file": {
             "4t": "data/processed/formulary_oscar_il_4t_2026.json",
             "6t": "data/processed/formulary_oscar_il_6t_2026.json"
@@ -1907,7 +1918,7 @@
       "exchange_name": "Get Covered New Jersey",
       "exchange_type": "SBM",
       "exchange_url": "https://www.getcovered.nj.gov",
-      "state_drugs_total": 10376,
+      "state_drugs_total": 12741,
       "carriers": [
         {
           "carrier_name": "Centene/Ambetter (NJ)",
@@ -1983,7 +1994,7 @@
           "tiers": 5,
           "status": "verified",
           "last_fetched": "2026-04-04",
-          "drugs_parsed": 2160,
+          "drugs_parsed": 2385,
           "parsed_file": "data/processed/formulary_oscar_nj_5t_2026.json",
           "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/nj",
           "notes": "5-tier individual plan (single formulary, no 4T/6T split). Parsed 2026-04-04.",
@@ -1996,7 +2007,7 @@
       "exchange_name": "beWellnm",
       "exchange_type": "SBM",
       "exchange_url": "https://www.bewellnm.com",
-      "state_drugs_total": 2257,
+      "state_drugs_total": 4927,
       "carriers": [
         {
           "carrier_name": "Molina Healthcare of NM",
@@ -2056,7 +2067,7 @@
           "tiers": 4,
           "status": "verified",
           "last_fetched": "2026-04-04",
-          "drugs_parsed": null,
+          "drugs_parsed": 2670,
           "year_pattern": "Check bcbsnm.com pharmacy page annually",
           "notes": "Blue Community product line. No discoverable MR endpoint.",
           "fetch_method": "manual_download",
@@ -2447,7 +2458,7 @@
       "exchange_name": "Oregon Health Insurance Marketplace",
       "exchange_type": "SBM-FP",
       "exchange_url": "https://healthcare.oregon.gov",
-      "state_drugs_total": 16869,
+      "state_drugs_total": 24616,
       "carriers": [
         {
           "carrier_name": "Moda Health (OR)",
@@ -2493,7 +2504,7 @@
           "last_fetched": "2026-03-17",
           "drugs_parsed": 6425,
           "year_pattern": "Cambia index.json â€” same URL, content updates. Also covers HIOS 77969.",
-          "notes": "drugs1.json (112 MB) + drugs2.json (112 MB). Also contains WA/ID/UT data.",
+          "notes": "drugs1.json (112 MB) + drugs2.json (112 MB). Also contains WA/ID/UT data. Also covers HIOS 77969 (Regence OR #2).",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
         },
@@ -2528,6 +2539,16 @@
           "notes": "All KP URLs blocked by bot protection.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
+        },
+        {
+          "carrier_name": "Cambia Health / Regence BCBS (OR) #2",
+          "hios_prefix": "77969",
+          "formulary_url": null,
+          "source_type": "shared_with_63474",
+          "status": "verified",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": null,
+          "notes": "Second HIOS for Cambia/Regence OR — same JSON formulary as 63474."
         }
       ]
     },
@@ -2900,7 +2921,7 @@
       "exchange_name": "Virginia Insurance Marketplace",
       "exchange_type": "SBM",
       "exchange_url": "https://marketplace.virginia.gov",
-      "state_drugs_total": 14174,
+      "state_drugs_total": 14209,
       "carriers": [
         {
           "carrier_name": "CareFirst BCBS (VA)",
@@ -3000,7 +3021,7 @@
         },
         {
           "carrier_name": "Oscar Health (VA)",
-          "hios_prefix": "unknown",
+          "hios_prefix": "25922",
           "formulary_url": "https://assets.ctfassets.net/plyq12u1bv8a/31SHD9kMQqcXQjBa3Kja4R/094cd572318caa382cf01e323ababed6/Oscar_4T_VA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
           "formulary_url_6t": "https://assets.ctfassets.net/plyq12u1bv8a/56F755tLVk1dO2A5Ln04SW/c95b658c087e9f3669305734a3531506/Oscar_6T_VA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
           "formulary_type": "pdf",
@@ -3009,10 +3030,7 @@
           "tiers": "4T/6T",
           "status": "verified",
           "last_fetched": "2026-04-04",
-          "drugs_parsed": {
-            "4t": 2368,
-            "6t": 1131
-          },
+          "drugs_parsed": 2417,
           "parsed_file": {
             "4t": "data/processed/formulary_oscar_va_4t_2026.json",
             "6t": "data/processed/formulary_oscar_va_6t_2026.json"

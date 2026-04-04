@@ -96,14 +96,15 @@
 
 ---
 
-### DC — 8,965 drugs | 3/4 carriers | NEAR COMPLETE
+### DC — 15,394 drugs | 5/5 carriers | COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
-| 🔌 | 10207 | Molina Healthcare (DC) | 4,300 |
-| ✅ | 28137 | CareFirst BCBS (DC/MD) | 3,584 |
-| ✅ | 94506 | Kaiser Permanente (DC - MAS region) | 1,081 |
-| ✅ | 78079 | UPMC Health Plan (DC) | 0 |
+| 🔌 | 10207 | CareFirst BCBS (DC) | 4,300 |
+| 🔌 | 97928 | Molina Healthcare of DC | 3,801 |
+| ✅ | 28137/45532/94084 | CareFirst BCBS (DC/MD — PDF) | 3,584 |
+| ✅ | 94506/86052 | Kaiser Permanente (DC - MAS region) | 1,081 |
+| ✅ | 78079 | UPMC Health Plan (DC) | 2,628 |
 
 ---
 
@@ -213,29 +214,28 @@
 
 ---
 
-### NJ — 11,442 drugs | 5 carriers | COMPLETE
+### NJ — 12,741 drugs | 6 carriers | COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
-| 🔌 | 17970 | Centene/Ambetter (NJ) | 4,364 |
+| 🔌 | 17970/99166 | Centene/Ambetter (NJ) | 4,360 |
 | ✅ | 91661 | Horizon BCBS NJ | 2,858 |
 | ✅ | 37777 | UnitedHealthcare (NJ) | 2,054 |
-| ✅ | 47163 | Oscar Health (NJ) | 2,160 |
+| ✅ | 47163 | Oscar Health (NJ) | 2,385 |
 | ✅ | 91762 | AmeriHealth NJ | 6 |
 
 ---
 
-### NM — 0 drugs | 0/4 carriers | EMPTY ❌
+### NM — 4,927 drugs | 2/4 carriers | PARTIAL
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
-| 🔌 | 00560 | Molina Healthcare (NM) | 0 |
-| ✅ | 19722 | Molina Healthcare of NM (PDF) | 0 |
-| ✅ | 57173 | Ambetter / Western Sky (NM) | 0 |
-| ✅ | 65428 | UnitedHealthcare (NM) | 0 |
-| ⚠️ | 75605 | BCBS New Mexico | 0 |
+| ✅ | 19722 | Molina Healthcare of NM (PDF) | 2,257 |
+| ✅ | 75605 | BCBS New Mexico (PDF) | 2,670 |
+| ❌ | 57173 | Ambetter / Western Sky (NM) | 0 |
+| ❌ | 65428 | UnitedHealthcare (NM) | 0 |
 
-*All carriers have URL patterns identified but drug fetch returned 0 records. MR-PUF URLs ready — needs streaming re-fetch.*
+*Ambetter NM PDF URL returns HTML redirect; UHC NM 403. 2 carriers remain blocked.*
 
 ---
 
@@ -395,16 +395,16 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 | NV | Nevada Health Link | 13,865 | 4 | Complete |
 | MN | MNsure | 13,500 | 5 | Complete |
 | KY | kynect | 13,569 | 4 | Complete |
-| NJ | GetCoveredNJ | 11,442 | 5 | Complete |
-| CT | AccessHealthCT | 10,837 | 3/4 | Near Complete |
+| NJ | GetCoveredNJ | 12,741 | 6 | Complete |
+| CT | AccessHealthCT | 8,417 | 4 | Complete |
 | VT | Vermont Health Connect | 8,970 | 2 | Complete |
-| DC | DC Health Link | 8,965 | 3/4 | Near Complete |
-| VA | (SBM-FP) | 8,951 | 3/7 | Partial |
-| IL | GetCoveredIllinois | 7,832 | 2 | Partial |
+| DC | DC Health Link | 15,394 | 5 | Complete |
+| VA | (SBM-FP) | 14,209 | 7 | Complete |
+| IL | GetCoveredIllinois | 6,742 | 3 | Partial |
 | RI | HealthSource RI | 7,283 | 2 | Complete |
-| ME | CoverME.gov | 3,905 | 1/3 | Partial |
-| NM | beWellnm | 0 | 0/5 | Empty |
-| **Total SBM** | | **332,096** | | |
+| ME | CoverME.gov | 6,202 | 2 | Partial |
+| NM | beWellnm | 4,927 | 2/4 | Partial |
+| **Total SBM** | | **370,864** | | |
 
 ---
 
@@ -414,16 +414,16 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 |--------|---------|-------|
 | FFE formulary records | ≥ 12,955,136 plan-level | 4.0 GB file, 186 issuers |
 | FFE unique deduped drugs | ≥ 196,303 | Pre-plan-expansion baseline |
-| SBM formulary total | ≥ 332,096 drug-level | 22 SBM states + DC |
-| Total records (FFE + SBM) | ≥ 13,287,232 | Plan-level + drug-level combined |
+| SBM formulary total | ≥ 370,864 drug-level | 22 SBM states + DC |
+| Total records (FFE + SBM) | ≥ 13,326,000 | Plan-level + drug-level combined |
 | SBC plan variants (total) | ≥ 27,588 | 50 states + DC |
 | SBC FFE plan variants | ≥ 20,354 | `sbc_decoded.json` |
 | SBC SBM plan variants | ≥ 7,234 | Per-state `sbc_sbm_XX.json` |
 | FFE issuers covered | 186 / 214 | 28 still missing (403/OOM/no-drug-URL) |
-| SBM states complete | 12 / 22 | NM=0, 9 partial, RI now complete |
-| States with any formulary data | 50 / 51 | NM = 0 drugs |
+| SBM states complete | 16 / 22 | NM/IL/ME partial; 16 fully covered |
+| States with any formulary data | 51 / 51 | NM now has 4,927 drugs |
 
 ---
 
 *Generated 2026-04-04 by Claude Code from `data/config/formulary-url-registry-2026.json` (schema v2.0)*
-*Last updated: 2026-04-04 — FFE expanded to 12.9M plan-level records; RI unblocked (7,283 drugs); NM corrected to 0; Oscar added in CA/IL/NJ/NY/PA/VA; ID and OR PacificSource unblocked*
+*Last updated: 2026-04-04 — NJ Oscar 47163 added (2,385 drugs); DC completed w/ Kaiser MAS + CareFirst (15,394 total); NM unblocked: Molina 19722 + BCBS 75605 (4,927 drugs); VA complete (7 issuers, 14,209 drugs); CT complete (4 issuers); SBM total: 370,864 drugs*
