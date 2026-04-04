@@ -1,5 +1,5 @@
 """
-Parse Moda Health IFP (Individual & Family Plan) formulary proxy PDF.
+Parse Moda Health Large Group Commercial Formulary PDF.
 Updated 3/1/2026 — 679 pages, alphabetical index.
 
 Column layout (text-based, not tabular):
@@ -9,10 +9,10 @@ Tier values span two lines due to PDF layout:
   "Preferre\nd Brands", "Non-Pref\nerred\nBrands", "Select", "Value", "Specialty"
 
 Note: Moda does not publish a separate individual/ACA formulary PDF; individual
-plans use the Navitus online tool. This large group PDF is used as a proxy —
-same PBM (Navitus), same drug coverage basis as IFP plans.
+plans use the Navitus online tool. This large group PDF is the closest available
+proxy — same PBM (Navitus), same drug coverage basis as IFP plans.
 
-Output: data/processed/formulary_modahealth_ifp_2026.json
+Output: data/processed/formulary_modahealth_largegroup_2026.json
 """
 
 import json
@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
 PDF_PATH = Path("data/raw/formulary_pdfs/modahealth/moda_largegroup.pdf")
-OUT_FILE = Path("data/processed/formulary_modahealth_ifp_2026.json")
+OUT_FILE = Path("data/processed/formulary_modahealth_largegroup_2026.json")
 
 # Tier normalization — PDF splits tier names across lines
 TIER_MAP = {
@@ -154,7 +154,7 @@ def main() -> None:
         log.error(f"PDF not found: {PDF_PATH}")
         return
 
-    log.info("Parsing Moda Health IFP formulary proxy...")
+    log.info("Parsing Moda Health Large Group Commercial Formulary...")
     drugs = parse_pdf(PDF_PATH)
 
     from collections import Counter
@@ -162,14 +162,14 @@ def main() -> None:
     log.info(f"Tier distribution: {tier_dist}")
 
     output = {
-        "source": "Moda Health IFP Formulary (large group proxy — no separate IFP PDF published)",
+        "source": "Moda Health Large Group Commercial Formulary",
         "source_url": "https://www.modahealth.com/-/media/modahealth/shared/formulary/largegroup/Prescription-drug-list-large-group.pdf",
         "plan_year": 2026,
         "updated": "2026-03-01",
         "carrier_name": "Moda Health Plan",
         "hios_prefix": "80588",
         "states": ["ID", "OR"],
-        "formulary_type": "ifp_proxy",
+        "formulary_type": "large_group_commercial",
         "note": (
             "Large group commercial formulary — closest available proxy for Moda individual/ACA "
             "plans (same PBM: Navitus). No separate individual/ACA formulary PDF is published."
