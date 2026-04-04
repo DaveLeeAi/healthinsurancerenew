@@ -77,6 +77,9 @@ TIER_MAP = {
     "TIER 01": "GENERIC", "TIER 02": "PREFERRED-BRAND",
     "TIER 03": "NON-PREFERRED-BRAND", "TIER 04": "SPECIALTY",
     "TIER 05": "SPECIALTY-HIGH",
+    # Molina NM
+    "PREV": "ACA-PREVENTIVE",
+    "DME": "NON-FORMULARY",  # Durable Medical Equipment — skip/non-drug
 }
 
 
@@ -548,13 +551,13 @@ def parse_optumrx_words(pdf_path: Path, issuer_ids: list, state: str,
         for w in page0_words:
             text = w["text"].lower()
             if "tier" in text and "drug" not in text:
-                tier_x_min = w["x0"] - 5
+                tier_x_min = w["x0"] - 10  # 10px tolerance handles slight column drift
                 tier_x_max = w["x0"] + 60
                 name_x_max = w["x0"] - 10
             if text in ("requirements", "restrictions", "notes", "limits"):
                 req_x_min = w["x0"] - 5
 
-        tier_re = re.compile(r"^[1-6]$")
+        tier_re = re.compile(r"^([1-6]|\$0)$")  # $0 = ACA-preventive tier
 
         for i in range(start_page, ep):
             words = pdf.pages[i].extract_words(x_tolerance=3, y_tolerance=3)
@@ -917,8 +920,19 @@ CARRIER_DEFS = {
         "min_cols": 2,
     },
     # ── NM ──
-    # NM Molina skipped — uses 7-11 col therapeutic category mapping, not standard drug list
-    # Would need a custom parser; existing NM data from MR-PUF is available
+    "molina_nm": {
+        # HIOS 19722. Bilingual PDF: pages 1-85 = therapeutic category index + intro;
+        # pages 86+ = standard 3-col drug table (Drug Name | Formulary Status | Requirements/Limits).
+        # Tier values: Tier 1/2/3/4/5, PREV (preventive), DME (non-drug, skip).
+        "state": "NM", "issuer_ids": ["19722"],
+        "issuer_name": "Molina Healthcare of NM",
+        "pdf": "molina_nm_formulary_2026.pdf",
+        "url": "https://www.molinamarketplace.com/marketplace/nm/en-us/-/media/Molina/PublicWebsite/PDF/members/nm/en-us/Marketplace/2026/NMFormulary2026.pdf",
+        "parser": "standard_3col", "start_page": 85, "end_page": -1,
+        "tier_col": 1,  # col[1] = "Formulary Status"
+    },
+    # NM Ambetter (57173, Western Sky): ambetterhealth.com PDF redirects to HTML; Centene API 404
+    # NM UHC (65428): uhc.com PDF returns 403. Both blocked as of 2026-04-04.
     # ── NV ──
     "anthem_nv": {
         "state": "NV", "issuer_ids": ["60156"],
@@ -1190,6 +1204,16 @@ CARRIER_DEFS = {
         "url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf",
         # 3-col: Drug Name | Drug Tier | Notes. Drug table starts page 20 (index 19).
         "parser": "standard_3col", "start_page": 19, "end_page": 101,
+    },
+    "ucare_mn": {
+        # HIOS 85736. UCare IFP 2026 formulary — word-position PDF (no table lines).
+        # Format: DRUG NAME (x0~44) | DRUG TIER (x0~325, bare digit 1-4) | REQUIREMENTS/LIMITS (x0~396)
+        # Drug table starts page 9 (index 8). URL confirmed live 2026-04-04.
+        "state": "MN", "issuer_ids": ["85736"],
+        "issuer_name": "UCare (MN)",
+        "pdf": "ucare_mn_ifp_2026.pdf",
+        "url": "https://ucm-p-001.sitecorecontenthub.cloud/api/public/content/U5434_IFP_Formulary_2026",
+        "parser": "optumrx_words", "start_page": 8, "end_page": -1,
     },
 
     # ── IL gap carriers ────────────────────────────────────────────────────────
