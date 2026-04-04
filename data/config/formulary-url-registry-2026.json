@@ -925,18 +925,18 @@
         {
           "carrier_name": "Moda Health (ID)",
           "hios_prefix": "80588",
-          "formulary_url": "https://memberportal.navitus.com/micro-sites/pharmacy-pricing?entrypoint=drug&type=standard&id=PUBLIC90901*XNVMIDX",
-          "formulary_type": "online_only",
-          "source_type": "online_only",
+          "formulary_url": "https://www.modahealth.com/-/media/modahealth/shared/formulary/largegroup/Prescription-drug-list-large-group.pdf",
+          "formulary_type": "pdf",
+          "source_type": "pdf_download",
           "pbm": "Navitus",
-          "tiers": null,
-          "status": "confirmed_online_only",
-          "last_fetched": null,
-          "drugs_parsed": null,
-          "year_pattern": "Navitus interactive tool — no PDF download available for individual/ACA plans",
-          "notes": "Verified 2026-04-04: modahealth.com/shop/idaho-plans and modahealth.com/pdl confirmed no downloadable individual/ACA formulary PDF. Large group and Medicare PDFs exist but not exchange. Navitus tool is the only access point.",
-          "fetch_method": "online_only",
-          "fetch_notes": "Navitus tool: memberportal.navitus.com — drug-by-drug lookup only, no bulk export"
+          "tiers": 5,
+          "status": "verified_proxy",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 5322,
+          "year_pattern": "Large group PDF updated periodically — check modahealth.com/medical/formularies.shtml",
+          "notes": "No individual/ACA formulary PDF published. Large group commercial formulary (updated 2026-03-01, 679 pages) used as proxy — same PBM (Navitus), same drug coverage basis. Parsed via parse_modahealth_formulary.py → formulary_modahealth_largegroup_2026.json. Tier dist: Excluded 2405, Select 1219, Specialty 918, High Cost Generics 629, Non-Preferred 70, Value 54, Preventive 15, Preferred 12.",
+          "fetch_method": "pdf_download",
+          "fetch_notes": "Direct PDF download — no auth needed"
         }
       ]
     },
