@@ -3,12 +3,12 @@
   "plan_year": 2026,
   "generated": "2026-04-03",
   "last_updated": "2026-04-04",
-  "description": "Master formulary URL registry \u00e2\u20ac\u201d single source of truth for all formulary data sources across 50 states + DC. Used for annual refresh: copy file, increment year, HEAD-check URLs, re-fetch, re-parse.",
+  "description": "Master formulary URL registry â€” single source of truth for all formulary data sources across 50 states + DC. Used for annual refresh: copy file, increment year, HEAD-check URLs, re-fetch, re-parse.",
   "annual_refresh_process": [
-    "1. Copy formulary-url-registry-2026.json \u00e2\u2020\u2019 formulary-url-registry-2027.json",
+    "1. Copy formulary-url-registry-2026.json â†’ formulary-url-registry-2027.json",
     "2. Replace '2026' with '2027' in all formulary_url fields (crude first pass)",
     "3. Run HEAD requests on every URL to check for 404s",
-    "4. Fix broken URLs \u00e2\u20ac\u201d check carrier websites for updated paths",
+    "4. Fix broken URLs â€” check carrier websites for updated paths",
     "5. Check CMS QHP PUF for new market entrants per state",
     "6. Compare carrier lists year-over-year for market exits",
     "7. Re-fetch and re-parse all PDFs and JSON endpoints",
@@ -21,10 +21,10 @@
     "ffe_states": 29,
     "sbm_states": 22,
     "ffe_drugs_total": 196303,
-    "sbm_drugs_total": 322311,
+    "sbm_drugs_total": 332096,
     "ffe_source": "formulary_intelligence.json (49 MB, 133 issuers)",
     "sbm_source": "Per-state formulary_sbm_XX.json files",
-    "total_drugs": 518614
+    "total_drugs": 528399
   },
   "states": {
     "AL": {
@@ -35,7 +35,7 @@
         {
           "carrier_name": "FFE PUF Bundle",
           "hios_prefix": "ALL",
-          "formulary_url": "CMS Machine-Readable PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json",
+          "formulary_url": "CMS Machine-Readable PUF â†’ carrier index.json â†’ drugs.json",
           "formulary_type": "json",
           "source_type": "cms_puf",
           "pbm": "Various",
@@ -44,9 +44,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year. Carrier index.json URLs embedded in PUF xlsx.",
-          "notes": "All FFE state carriers come from the single federal MR-PUF file. Per-carrier drugs fetched via index.json \u00e2\u2020\u2019 drugs.json chain.",
+          "notes": "All FFE state carriers come from the single federal MR-PUF file. Per-carrier drugs fetched via index.json â†’ drugs.json chain.",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -67,9 +67,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -90,9 +90,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "AR is SBM-FP \u00e2\u20ac\u201d uses healthcare.gov platform, carriers appear in federal MR-PUF",
+          "notes": "AR is SBM-FP â€” uses healthcare.gov platform, carriers appear in federal MR-PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -113,9 +113,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "exchange_type": "FFE",
@@ -137,7 +137,7 @@
             "4t": "data/processed/formulary_oscar_az_4t_2026.json",
             "6t": "data/processed/formulary_oscar_az_6t_2026.json"
           },
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/az",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/az",
           "notes": "Two formularies: 4T standard plans + 6T all other plans. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -161,10 +161,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3175,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year",
+          "year_pattern": "URL contains '2026' â€” replace with new year",
           "notes": "Single statewide marketplace formulary (NorCal + SoCal share). MR index.json blocked (bot protection), but direct PDF path works.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Blue Shield of California",
@@ -177,10 +177,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 6889,
-          "year_pattern": "AdaptiveRx URL contains dynamic key \u00e2\u20ac\u201d must re-discover via blueshieldca.com pharmacy page each year",
+          "year_pattern": "AdaptiveRx URL contains dynamic key â€” must re-discover via blueshieldca.com pharmacy page each year",
           "notes": "471-page Plus Drug Formulary. AdaptiveRx key expires periodically. Backup: local PDF downloaded. Covers Active Start, Balance, Shield Savings, Shield Spectrum, Vital Shield plans.",
           "fetch_method": "manual_download",
-          "fetch_notes": "AdaptiveRx web viewer \u00e2\u20ac\u201d save PDF manually"
+          "fetch_notes": "AdaptiveRx web viewer â€” save PDF manually"
         },
         {
           "carrier_name": "Molina Healthcare (CA)",
@@ -193,10 +193,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1125,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year. Path pattern: /PDF/members/ca/en-us/Marketplace/{YEAR}/CAFormulary{YEAR}.pdf",
+          "year_pattern": "URL contains '2026' â€” replace with new year. Path pattern: /PDF/members/ca/en-us/Marketplace/{YEAR}/CAFormulary{YEAR}.pdf",
           "notes": "MR index.json returns 403 but direct PDF works. ~2.5 MB on Akamai CDN.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Ambetter from Health Net (CA)",
@@ -209,10 +209,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1422,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year",
+          "year_pattern": "URL contains '2026' â€” replace with new year",
           "notes": "Centene subsidiary in CA. All JSON/API endpoints exhausted (30+ patterns tested). Only PDF works. Centene TiC index is live but contains only in_network_files, not formulary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem Blue Cross (CA)",
@@ -228,7 +228,7 @@
           "year_pattern": "Landing page bot-protected. Navigate manually to anthem.com/ca/ms/home.html#formulary each year. 3-tier, 4-tier, 5-tier versions available.",
           "notes": "Essential Drug List 5-Tier version (157 pages). MR index.json returns 404. Landing page requires manual navigation.",
           "fetch_method": "manual_download",
-          "fetch_notes": "Bot-protected landing page \u00e2\u20ac\u201d navigate anthem.com/ca manually"
+          "fetch_notes": "Bot-protected landing page â€” navigate anthem.com/ca manually"
         },
         {
           "carrier_name": "L.A. Care Health Plan",
@@ -244,7 +244,7 @@
           "year_pattern": "PDF URL changes each revision. Check lacare.org/members/pharmacy for current year link.",
           "notes": "L.A. Care Covered Formulary 2026. 364 pages. Drug tables pp 16-340, Home Infusion List pp 341-363.",
           "fetch_method": "manual_download",
-          "fetch_notes": "PDF URL changes each revision \u00e2\u20ac\u201d check lacare.org/members/pharmacy"
+          "fetch_notes": "PDF URL changes each revision â€” check lacare.org/members/pharmacy"
         },
         {
           "carrier_name": "IEHP (Inland Empire Health Plan)",
@@ -257,10 +257,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 5939,
-          "year_pattern": "URL may not contain year \u00e2\u20ac\u201d check annually. Path: /content/dam/iehp-org/en/documents/coveredcalifornia/Formulary.pdf",
+          "year_pattern": "URL may not contain year â€” check annually. Path: /content/dam/iehp-org/en/documents/coveredcalifornia/Formulary.pdf",
           "notes": "445 pages. Covers Minimum Coverage, Bronze 60, Silver 70/73/87/94, Gold 80, Platinum 90, AIAN plans.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Chinese Community Health Plan (CCHP)",
@@ -273,10 +273,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 5471,
-          "year_pattern": "URL contains '2026' and date stamp \u00e2\u20ac\u201d replace year and check for updated filename",
+          "year_pattern": "URL contains '2026' and date stamp â€” replace year and check for updated filename",
           "notes": "Bay Area EPO/HMO. 431 pages.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Valley Health Plan (CA)",
@@ -289,10 +289,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2028,
-          "year_pattern": "Santa Clara County file server \u00e2\u20ac\u201d URL contains date stamps. Returns 403 on automated download. Must save manually.",
+          "year_pattern": "Santa Clara County file server â€” URL contains date stamps. Returns 403 on automated download. Must save manually.",
           "notes": "Santa Clara County only. 250 pages. CC & IFP Formulary 2026.",
           "fetch_method": "manual_download",
-          "fetch_notes": "Santa Clara County file server \u00e2\u20ac\u201d returns 403 on automated download"
+          "fetch_notes": "Santa Clara County file server â€” returns 403 on automated download"
         },
         {
           "carrier_name": "Western Health Advantage (CA)",
@@ -305,10 +305,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 5577,
-          "year_pattern": "OptumRx contenthub path \u00e2\u20ac\u201d may change asset path each year. Check wha.org pharmacy page.",
+          "year_pattern": "OptumRx contenthub path â€” may change asset path each year. Check wha.org pharmacy page.",
           "notes": "Sacramento/Northern CA regional HMO. 546 pages (~11.6 MB). 4-Tier Premium Standard + Infertility.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Aetna (CA)",
@@ -321,10 +321,33 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2580,
-          "year_pattern": "FormularyNavigator FBO/41 path \u00e2\u20ac\u201d replace '2026' with new year. Note: Aetna exited ALL ACA markets for 2026 nationally, but this CA-specific product may be a new/different entity.",
+          "year_pattern": "FormularyNavigator FBO/41 path â€” replace '2026' with new year. Note: Aetna exited ALL ACA markets for 2026 nationally, but this CA-specific product may be a new/different entity.",
           "notes": "NEW ISSUER DISCOVERY 2026-04-03. 302 pages. HIOS ID not yet confirmed.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
+        },
+        {
+          "carrier_name": "Oscar Health Plan of California",
+          "hios_prefix": "20523",
+          "formulary_url": "https://oscar-formulary.s3.amazonaws.com/2026/CA/formulary.pdf",
+          "formulary_type": "pdf",
+          "source_type": "local_pdf",
+          "pbm": "Oscar PBM",
+          "tiers": {
+            "1": "Preferred Generic",
+            "2": "Non-Preferred Brand",
+            "3": "Preferred Brand",
+            "4": "ACA Preventive",
+            "5": "Specialty",
+            "6": "Specialty High"
+          },
+          "status": "verified",
+          "last_fetched": "2026-04-03",
+          "drugs_parsed": 2502,
+          "year_pattern": null,
+          "notes": "Parsed from oscar_fl_2026_formulary.pdf. Output: formulary_sbm_CA_oscar.json. 2502 drugs, 6-tier breakdown.",
+          "fetch_method": "pdf_parse",
+          "fetch_notes": "Locally parsed PDF. issuer_id=20523"
         }
       ]
     },
@@ -345,7 +368,7 @@
           "status": "blocked",
           "last_fetched": "2026-03-17",
           "drugs_parsed": null,
-          "year_pattern": "KP content/dam paths \u00e2\u20ac\u201d 403 Forbidden. All KP URLs blocked by bot protection.",
+          "year_pattern": "KP content/dam paths â€” 403 Forbidden. All KP URLs blocked by bot protection.",
           "notes": "MR index.json returns 403. Data obtained via CO state aggregate file instead.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -361,7 +384,7 @@
           "status": "verified",
           "last_fetched": "2026-03-19",
           "drugs_parsed": 5699,
-          "year_pattern": "Cigna national index.json \u00e2\u20ac\u201d same URL works year to year, content updates",
+          "year_pattern": "Cigna national index.json â€” same URL works year to year, content updates",
           "notes": "National drugs.json contains FFM plan IDs (AZ/FL/IN/MS/NC/TN) but drug coverage data applicable to CO. 5,699 deduped records.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -380,7 +403,7 @@
           "year_pattern": "Replace '2026' with new year in FBO/143 path",
           "notes": "Elevance 4-tier Select Drug List. Same FBO/143 pattern as other Anthem states.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Rocky Mountain HMO / UHC (CO)",
@@ -394,9 +417,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1299,
           "year_pattern": "Replace 'PY26' with 'PY27'. DOC_ID 1432766 for CO.",
-          "notes": "UHC IFP PDL \u00e2\u20ac\u201d CO-specific. DOC_ID differs from MD/NJ (2895550).",
+          "notes": "UHC IFP PDL â€” CO-specific. DOC_ID differs from MD/NJ (2895550).",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "SelectHealth (CO)",
@@ -409,10 +432,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 717,
-          "year_pattern": "Data from FFE PUF pipeline \u00e2\u20ac\u201d SelectHealth appears in federal MR-PUF",
+          "year_pattern": "Data from FFE PUF pipeline â€” SelectHealth appears in federal MR-PUF",
           "notes": "Intermountain Health subsidiary. Data via FFE pipeline even though CO is SBM. Direct PDF from SelectHealth",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Elevate Health / Denver Health (CO)",
@@ -428,7 +451,7 @@
           "year_pattern": "Data from FFE PUF pipeline",
           "notes": "Denver Health regional plan. Data via FFE pipeline. Denver Health direct PDF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -449,7 +472,7 @@
           "status": "verified",
           "last_fetched": "2026-03-19",
           "drugs_parsed": 3812,
-          "year_pattern": "National Molina endpoint \u00e2\u20ac\u201d same URL, content updates annually",
+          "year_pattern": "National Molina endpoint â€” same URL, content updates annually",
           "notes": "National Molina endpoint (cmsjson/378245). HIOS 00560 in data but SBC PUF uses different issuer IDs for CT.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -465,10 +488,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2420,
-          "year_pattern": "URL contains 'CTFormulary2026' \u00e2\u20ac\u201d replace year",
+          "year_pattern": "URL contains 'CTFormulary2026' â€” replace year",
           "notes": "Molina-based formulary, 4 tiers including Specialty.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "CareSource (CT)",
@@ -482,9 +505,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "Replace '2026' with new year in URL. Pattern: marketplace-{YEAR}-{st}-formulary.pdf",
-          "notes": "PATTERN URL \u00e2\u20ac\u201d may 404. CareSource standard naming convention.",
+          "notes": "PATTERN URL â€” may 404. CareSource standard naming convention.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem (CT) - Elevance Health",
@@ -500,7 +523,7 @@
           "year_pattern": "Replace '2026' in FBO/143 path",
           "notes": "Elevance 4-tier Select Drug List.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -521,10 +544,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1081,
-          "year_pattern": "MAS region PDF \u00e2\u20ac\u201d check for year in filename or updated URL annually. Also covers HIOS 86052.",
+          "year_pattern": "MAS region PDF â€” check for year in filename or updated URL annually. Also covers HIOS 86052.",
           "notes": "MAS region covers DC+MD+VA. Updated 02/03/2026. Shared across DC/MD/VA Kaiser entries.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "CareFirst BCBS (DC/MD)",
@@ -537,10 +560,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3584,
-          "year_pattern": "URL contains 'sum7277-2026' \u00e2\u20ac\u201d document ID may change. Check member.carefirst.com pharmacy page. Covers HIOS 28137, 45532, 94084.",
+          "year_pattern": "URL contains 'sum7277-2026' â€” document ID may change. Check member.carefirst.com pharmacy page. Covers HIOS 28137, 45532, 94084.",
           "notes": "Single Exchange Formulary PDF covers 3 CareFirst entities. 4 tiers + ACA-Preventive.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UPMC Health Plan (DC)",
@@ -553,10 +576,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
-          "year_pattern": "UPMC Widen DAM \u00e2\u20ac\u201d asset ID changes per year. Check upmchealthplan.com pharmacy page.",
+          "year_pattern": "UPMC Widen DAM â€” asset ID changes per year. Check upmchealthplan.com pharmacy page.",
           "notes": "7-tier Advantage Choice. Same PDF may serve PA UPMC plans.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Molina Healthcare (DC)",
@@ -569,7 +592,7 @@
           "status": "verified",
           "last_fetched": "2026-03-19",
           "drugs_parsed": 4300,
-          "year_pattern": "National Molina endpoint \u00e2\u20ac\u201d content updates annually",
+          "year_pattern": "National Molina endpoint â€” content updates annually",
           "notes": "National Molina JSON endpoint. Contains DC plan IDs.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -593,9 +616,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -616,9 +639,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "exchange_type": "FFE",
@@ -640,7 +663,7 @@
             "4t": "data/processed/formulary_oscar_fl_4t_2026.json",
             "6t": "data/processed/formulary_oscar_fl_6t_2026.json"
           },
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/fl",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/fl",
           "notes": "Two formularies: 4T standard plans + 6T all other plans. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -664,7 +687,7 @@
           "status": "verified",
           "last_fetched": "2026-03-18",
           "drugs_parsed": 4424,
-          "year_pattern": "Centene API \u00e2\u20ac\u201d same URL, content updates. Also covers HIOS 70893.",
+          "year_pattern": "Centene API â€” same URL, content updates. Also covers HIOS 70893.",
           "notes": "52.8 MB drug file. Plan IDs 45495GA* and 70893GA*. GA launched as SBM (Georgia Access) for PY2025.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -683,7 +706,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Discovered in parse scripts, backfilled to registry",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem BCBS (GA)",
@@ -699,7 +722,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Discovered in parse scripts, backfilled to registry",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "CareSource (GA)",
@@ -715,7 +738,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Discovered in parse scripts, backfilled to registry",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Oscar Health (GA)",
@@ -729,10 +752,10 @@
           "last_fetched": "2026-04-04",
           "drugs_parsed": 1107,
           "parsed_file": "data/processed/formulary_oscar_ga_6t_2026.json",
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/ga",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/ga",
           "notes": "6-tier individual plan. Effective April 2026 (updated from Jan). Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
-          "fetch_notes": "Contentful CDN \u2014 hioscar.com/forms/{YEAR}, select GA"
+          "fetch_notes": "Contentful CDN — hioscar.com/forms/{YEAR}, select GA"
         },
         {
           "carrier_name": "Cigna Healthcare (GA)",
@@ -746,7 +769,7 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": 5642,
           "year_pattern": "See url_patterns section",
-          "notes": "URL pattern: cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-ga-[CODE]-cigna-rx-plus-5-tier-pdl.pdf \u00e2\u20ac\u201d exact doc code needs discovery",
+          "notes": "URL pattern: cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-ga-[CODE]-cigna-rx-plus-5-tier-pdl.pdf â€” exact doc code needs discovery",
           "fetch_method": "auto_download",
           "fetch_notes": "Direct download"
         },
@@ -764,7 +787,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Discovered in parse scripts, backfilled to registry",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem / Elevance Health (GA)",
@@ -778,9 +801,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3690,
           "year_pattern": "See url_patterns section",
-          "notes": "Same PDF as Anthem BCBS (54172) \u00e2\u20ac\u201d shared Elevance formulary",
+          "notes": "Same PDF as Anthem BCBS (54172) â€” shared Elevance formulary",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (GA)",
@@ -796,7 +819,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Discovered in parse scripts, backfilled to registry",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Alliant Health Plans (GA) - JSON",
@@ -812,7 +835,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "Via FFE PUF pipeline. HIOS 83761 is the Alliant JSON entry.",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -833,9 +856,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -856,8 +879,8 @@
           "status": "verified",
           "last_fetched": "2026-04-02",
           "drugs_parsed": 5052,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year",
-          "notes": "Custom BCI schema (NDC-based). 85,178 NDC entries \u00e2\u2020\u2019 7,695 deduped drug groups. Tiers: Preferred Generic, Non-Preferred Generic, Preferred Brand, Non-Preferred Brand, Preferred Specialty, Non-Preferred Specialty, ACA Drugs.",
+          "year_pattern": "URL contains '2026' â€” replace with new year",
+          "notes": "Custom BCI schema (NDC-based). 85,178 NDC entries â†’ 7,695 deduped drug groups. Tiers: Preferred Generic, Non-Preferred Generic, Preferred Brand, Non-Preferred Brand, Preferred Specialty, Non-Preferred Specialty, ACA Drugs.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
         },
@@ -872,10 +895,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1986,
-          "year_pattern": "URL contains '2026' twice \u00e2\u20ac\u201d replace both. Cloudinary CDN path.",
-          "notes": "6-tier QHP. Low parse count \u00e2\u20ac\u201d needs format-specific parser for complex layout.",
+          "year_pattern": "URL contains '2026' twice â€” replace both. Cloudinary CDN path.",
+          "notes": "6-tier QHP. Low parse count â€” needs format-specific parser for complex layout.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Cambia / Regence BCBS (ID)",
@@ -888,7 +911,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 6432,
-          "year_pattern": "Cambia index.json \u00e2\u20ac\u201d same URL, content updates. drugs1.json (112MB) + drugs2.json (112MB).",
+          "year_pattern": "Cambia index.json â€” same URL, content updates. drugs1.json (112MB) + drugs2.json (112MB).",
           "notes": "Cambia parent of Regence BCBS Idaho. Same index serves WA/OR/ID/UT. ID plan IDs in drug files.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -904,7 +927,7 @@
           "status": "verified",
           "last_fetched": "2026-04-01",
           "drugs_parsed": 4122,
-          "year_pattern": "Intermountain Health endpoint \u00e2\u20ac\u201d same URL, content updates",
+          "year_pattern": "Intermountain Health endpoint â€” same URL, content updates",
           "notes": "CMS schema with plan_id prefix 26002. 12,506 drugs.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -920,7 +943,7 @@
           "status": "verified",
           "last_fetched": "2026-04-01",
           "drugs_parsed": 8249,
-          "year_pattern": "PacificSource per-state MRF \u00e2\u20ac\u201d same URL, content updates",
+          "year_pattern": "PacificSource per-state MRF â€” same URL, content updates",
           "notes": "CMS schema with rxnorm_id. Plan IDs use HIOS prefix 60597.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -936,10 +959,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 10,
-          "year_pattern": "Contentstack asset ID \u00e2\u20ac\u201d may change annually. Check stlukeshealthplan.org pharmacy page.",
+          "year_pattern": "Contentstack asset ID â€” may change annually. Check stlukeshealthplan.org pharmacy page.",
           "notes": "5 tiers, Capital Rx PBM.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "PacificSource Health Plans (ID) - Choice",
@@ -953,9 +976,9 @@
           "last_fetched": "2026-04-04",
           "drugs_parsed": 5554,
           "year_pattern": "Annual PDF at pacificsource.com/ps_find_drug/pdf/ID/{year}",
-          "notes": "ID drug list PDF shared with main PacificSource ID plan. Parsed via parse_pacificsource_pdfs.py \u00e2\u2020\u2019 formulary_pacificsource_2026.json",
+          "notes": "ID drug list PDF shared with main PacificSource ID plan. Parsed via parse_pacificsource_pdfs.py â†’ formulary_pacificsource_2026.json",
           "fetch_method": "pdf_download",
-          "fetch_notes": "Direct PDF download \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "Direct PDF download â€” no auth needed"
         },
         {
           "carrier_name": "Moda Health (ID)",
@@ -968,10 +991,10 @@
           "status": "verified_proxy",
           "last_fetched": "2026-04-04",
           "drugs_parsed": 5322,
-          "year_pattern": "Large group PDF updated periodically \u00e2\u20ac\u201d check modahealth.com/medical/formularies.shtml",
-          "notes": "No individual/ACA formulary PDF published. Large group commercial formulary (updated 2026-03-01, 679 pages) used as proxy \u00e2\u20ac\u201d same PBM (Navitus), same drug coverage basis. Parsed via parse_modahealth_formulary.py \u00e2\u2020\u2019 formulary_modahealth_largegroup_2026.json. Tier dist: Excluded 2405, Select 1219, Specialty 918, High Cost Generics 629, Non-Preferred 70, Value 54, Preventive 15, Preferred 12.",
+          "year_pattern": "Large group PDF updated periodically â€” check modahealth.com/medical/formularies.shtml",
+          "notes": "No individual/ACA formulary PDF published. Large group commercial formulary (updated 2026-03-01, 679 pages) used as proxy â€” same PBM (Navitus), same drug coverage basis. Parsed via parse_modahealth_formulary.py â†’ formulary_modahealth_largegroup_2026.json. Tier dist: Excluded 2405, Select 1219, Specialty 918, High Cost Generics 629, Non-Preferred 70, Value 54, Preventive 15, Preferred 12.",
           "fetch_method": "pdf_download",
-          "fetch_notes": "Direct PDF download \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "Direct PDF download â€” no auth needed"
         }
       ]
     },
@@ -992,8 +1015,8 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 4296,
-          "year_pattern": "Centene API \u00e2\u20ac\u201d same URL, content updates annually",
-          "notes": "IL transitioned from SBM-FP to full SBM for 2026. Centene API pattern same as NJ/PA/WA. Other IL carriers may still appear in FFE PUF \u00e2\u20ac\u201d verify annually.",
+          "year_pattern": "Centene API â€” same URL, content updates annually",
+          "notes": "IL transitioned from SBM-FP to full SBM for 2026. Centene API pattern same as NJ/PA/WA. Other IL carriers may still appear in FFE PUF â€” verify annually.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
         },
@@ -1038,9 +1061,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -1061,9 +1084,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (IA)",
@@ -1106,9 +1129,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (KS)",
@@ -1151,7 +1174,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 4363,
-          "year_pattern": "Centene API \u00e2\u20ac\u201d same URL, content updates annually",
+          "year_pattern": "Centene API â€” same URL, content updates annually",
           "notes": "Same Centene API pattern as NJ/PA/WA.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -1170,7 +1193,7 @@
           "year_pattern": "Replace '2026' with new year. Centene standard path: /content/dam/centene/{state}/ambetter/pdf/{YEAR}-{st}-formulary.pdf",
           "notes": "Centene standard format with 1A/1B/2/3/4 tiers.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem (KY) - Elevance Health",
@@ -1186,7 +1209,7 @@
           "year_pattern": "Replace '2026' in FBO/143 path",
           "notes": "Elevance 4-tier Select Drug List.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Molina Healthcare of KY (Passport)",
@@ -1202,7 +1225,7 @@
           "year_pattern": "Replace '2026' and 'KY' with new year/state. Molina pattern: /PDF/members/{st}/en-us/Marketplace/{YEAR}/{ST}Formulary{YEAR}.pdf",
           "notes": "Molina Marketplace format. 5 counties only (Clark, Fayette, Jessamine, Scott, Woodford).",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -1223,9 +1246,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -1246,10 +1269,10 @@
           "status": "verified",
           "last_fetched": "2026-04-04",
           "drugs_parsed": 7741,
-          "year_pattern": "OptumRx contenthub \u00e2\u20ac\u201d path contains '2026-oe'. Replace year portion.",
+          "year_pattern": "OptumRx contenthub â€” path contains '2026-oe'. Replace year portion.",
           "notes": "5-tier Core MA. Point32Health subsidiary. Additional formulary variants also parsed (see formulary_harvardpilgrim_variants_2026.json): ConnectorCare-3T (2,309), Premium-3T (2,632), Premium-4T (2,652), Value-5T (2,459). All use same OptumRx contenthub path pattern.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed. All variant URLs: HPHC-Value-ConnectorCare-3T-Comprehensive.pdf, HPHC-Premium-3T-Comprehensive.pdf, HPHC-Premium-4T-Comprehensive.pdf, HPHC-Value-5T-Comprehensive.pdf"
+          "fetch_notes": "PDF downloads directly â€” no auth needed. All variant URLs: HPHC-Value-ConnectorCare-3T-Comprehensive.pdf, HPHC-Premium-3T-Comprehensive.pdf, HPHC-Premium-4T-Comprehensive.pdf, HPHC-Value-5T-Comprehensive.pdf"
         },
         {
           "carrier_name": "Tufts Health Direct (MA)",
@@ -1262,10 +1285,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 5437,
-          "year_pattern": "OptumRx contenthub \u00e2\u20ac\u201d path contains '2026'. Replace year.",
+          "year_pattern": "OptumRx contenthub â€” path contains '2026'. Replace year.",
           "notes": "3-tier Value Direct. Point32Health subsidiary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Health New England (MA)",
@@ -1278,10 +1301,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3240,
-          "year_pattern": "URL contains '2026' directory \u00e2\u20ac\u201d replace with new year",
+          "year_pattern": "URL contains '2026' directory â€” replace with new year",
           "notes": "3-tier formulary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (MA)",
@@ -1294,10 +1317,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1554,
-          "year_pattern": "URL contains 'jan-2026' \u00e2\u20ac\u201d replace with new year. May also change 'jan' to another month.",
-          "notes": "3-tier Advantage list. Non-standard table layout \u00e2\u20ac\u201d needs custom parser.",
+          "year_pattern": "URL contains 'jan-2026' â€” replace with new year. May also change 'jan' to another month.",
+          "notes": "3-tier Advantage list. Non-standard table layout â€” needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "WellSense Health Plan (MA)",
@@ -1310,10 +1333,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3319,
-          "year_pattern": "HubSpot file server \u00e2\u20ac\u201d URL contains '2026'. Replace year.",
-          "notes": "5-tier Clarity formulary. Low parse count \u00e2\u20ac\u201d needs parser tuning for complex layout.",
+          "year_pattern": "HubSpot file server â€” URL contains '2026'. Replace year.",
+          "notes": "5-tier Clarity formulary. Low parse count â€” needs parser tuning for complex layout.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Fallon Health (MA)",
@@ -1327,9 +1350,9 @@
           "last_fetched": null,
           "drugs_parsed": null,
           "year_pattern": "siteCode 8156893033 = Commercial 3-Tier ACA plans. Also: siteCode 5561983224 = Medical benefit commercial, 3699835565 = NaviCare SNP (Medicare).",
-          "notes": "Verified 2026-04-04. No downloadable PDF for ACA/individual plans. Formulary Navigator search-only \u00e2\u20ac\u201d no bulk export endpoint. 2026 policy: GLP-1s for weight loss no longer covered on ACA plans. Plans: Connector Platinum/Gold/Silver/Bronze + ConnectorCare II/III.",
+          "notes": "Verified 2026-04-04. No downloadable PDF for ACA/individual plans. Formulary Navigator search-only â€” no bulk export endpoint. 2026 policy: GLP-1s for weight loss no longer covered on ACA plans. Plans: Connector Platinum/Gold/Silver/Bronze + ConnectorCare II/III.",
           "fetch_method": "online_only",
-          "fetch_notes": "fallonhealth.org/members/commercial/Pharmacy/online-drug-formulary.aspx \u00e2\u2020\u2019 dropdown \u00e2\u2020\u2019 siteCode 8156893033"
+          "fetch_notes": "fallonhealth.org/members/commercial/Pharmacy/online-drug-formulary.aspx â†’ dropdown â†’ siteCode 8156893033"
         },
         {
           "carrier_name": "Health Plans Inc. / Community Care (MA)",
@@ -1343,9 +1366,9 @@
           "last_fetched": null,
           "drugs_parsed": null,
           "year_pattern": "Check hpitpa.com and bmc.healthplansinc.com annually",
-          "notes": "HPI is a TPA subsidiary of Harvard Pilgrim. Self-funded employer plans, not ACA exchange. PBM is Express Scripts. Only a 1-page Preferred Drug List flyer published (bmc.healthplansinc.com/media/695891/preferred-drug-list_member_flyer.pdf) \u00e2\u20ac\u201d not a full formulary. No bulk data available.",
+          "notes": "HPI is a TPA subsidiary of Harvard Pilgrim. Self-funded employer plans, not ACA exchange. PBM is Express Scripts. Only a 1-page Preferred Drug List flyer published (bmc.healthplansinc.com/media/695891/preferred-drug-list_member_flyer.pdf) â€” not a full formulary. No bulk data available.",
           "fetch_method": "online_only",
-          "fetch_notes": "bmc.healthplansinc.com member portal \u00e2\u20ac\u201d drug-by-drug only"
+          "fetch_notes": "bmc.healthplansinc.com member portal â€” drug-by-drug only"
         }
       ]
     },
@@ -1366,7 +1389,7 @@
           "status": "verified",
           "last_fetched": "2026-03-19",
           "drugs_parsed": 8045,
-          "year_pattern": "KP content/dam path \u00e2\u20ac\u201d intermittently accessible (was 403 on 3/17, 200 on 3/19)",
+          "year_pattern": "KP content/dam path â€” intermittently accessible (was 403 on 3/17, 200 on 3/19)",
           "notes": "MR index.json intermittently live.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -1385,7 +1408,7 @@
           "year_pattern": "Same MAS PDF as DC entry",
           "notes": "MAS region PDF shared with DC. Backup for JSON endpoint.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Wellpoint/Anthem (MD) - Elevance",
@@ -1401,7 +1424,7 @@
           "year_pattern": "Replace '2026' in FBO/143 path",
           "notes": "4-tier Select Drug List.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (MD)",
@@ -1417,7 +1440,7 @@
           "year_pattern": "Replace 'PY26' with 'PY27'. DOC_ID 2895550 for MD/NJ.",
           "notes": "State-specific IFP PDL. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "CareFirst BCBS (MD)",
@@ -1433,7 +1456,7 @@
           "year_pattern": "Same PDF as DC CareFirst entry. Covers HIOS 28137, 45532, 94084.",
           "notes": "Shared Exchange Formulary with DC.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -1454,10 +1477,10 @@
           "status": "verified",
           "last_fetched": "2026-03-18",
           "drugs_parsed": 3905,
-          "year_pattern": "FormularyNavigator drugs/35 endpoint \u00e2\u20ac\u201d content updates annually. Verify ME plan IDs (48396ME*) still present.",
-          "notes": "Elevance index \u00e2\u2020\u2019 FormularyNavigator drugs/35. Standard CMS QHP schema.",
+          "year_pattern": "FormularyNavigator drugs/35 endpoint â€” content updates annually. Verify ME plan IDs (48396ME*) still present.",
+          "notes": "Elevance index â†’ FormularyNavigator drugs/35. Standard CMS QHP schema.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Community Health Options (ME)",
@@ -1470,7 +1493,7 @@
           "status": "blocked",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "Express Scripts embedded JS widget only \u00e2\u20ac\u201d no static PDF or JSON",
+          "year_pattern": "Express Scripts embedded JS widget only â€” no static PDF or JSON",
           "notes": "Maine CO-OP insurer. No discoverable MR endpoint.",
           "fetch_method": "online_only",
           "fetch_notes": "Express Scripts embedded JS widget only"
@@ -1486,7 +1509,7 @@
           "status": "not_found",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "New market entrant \u00e2\u20ac\u201d check tarohealth.com annually",
+          "year_pattern": "New market entrant â€” check tarohealth.com annually",
           "notes": "Direct Primary Care (DPC) integrated insurer. New entrant to ME exchange.",
           "fetch_method": "online_only",
           "fetch_notes": "No 2026 formulary PDF published"
@@ -1510,9 +1533,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (MI)",
@@ -1555,10 +1578,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2316,
-          "year_pattern": "URL contains '2026' twice \u00e2\u20ac\u201d replace both. Path: /Documents/Pharmacy/Individual/{YEAR}/{YEAR}-IFB-Formulary-MN.pdf",
+          "year_pattern": "URL contains '2026' twice â€” replace both. Path: /Documents/Pharmacy/Individual/{YEAR}/{YEAR}-IFB-Formulary-MN.pdf",
           "notes": "4-tier IFB formulary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Blue Plus / BCBS MN",
@@ -1571,10 +1594,10 @@
           "status": "pattern",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3085,
-          "year_pattern": "MyPrime path \u00e2\u20ac\u201d replace '2026' with new year. PATTERN \u00e2\u20ac\u201d may 404.",
+          "year_pattern": "MyPrime path â€” replace '2026' with new year. PATTERN â€” may 404.",
           "notes": "BasicRx 4-tier. Already downloaded locally as bcbsmn_basicrx_4tier_2026.pdf.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Quartz Health Plan (MN)",
@@ -1643,9 +1666,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
-          "notes": "FFE state \u00e2\u20ac\u201d all carriers via federal PUF",
+          "notes": "FFE state â€” all carriers via federal PUF",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (MO)",
@@ -1690,7 +1713,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (MS)",
@@ -1735,7 +1758,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -1758,7 +1781,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (NC)",
@@ -1803,7 +1826,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -1826,7 +1849,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (NE)",
@@ -1871,7 +1894,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -1892,7 +1915,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 4364,
-          "year_pattern": "Centene API \u00e2\u20ac\u201d same URL, content updates annually",
+          "year_pattern": "Centene API â€” same URL, content updates annually",
           "notes": "Direct drugs URL bypasses index.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -1908,10 +1931,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 6,
-          "year_pattern": "URL may not contain year \u00e2\u20ac\u201d check annually for updated filename",
-          "notes": "5-tier Value Formulary. Low parse count \u00e2\u20ac\u201d needs custom parser for non-standard layout.",
+          "year_pattern": "URL may not contain year â€” check annually for updated filename",
+          "notes": "5-tier Value Formulary. Low parse count â€” needs custom parser for non-standard layout.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Horizon BCBS NJ",
@@ -1924,10 +1947,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2858,
-          "year_pattern": "MyPrime path \u00e2\u20ac\u201d replace '2026' with new year",
+          "year_pattern": "MyPrime path â€” replace '2026' with new year",
           "notes": "3-tier Marketplace. Prime Therapeutics dual-column format.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (NJ)",
@@ -1943,7 +1966,7 @@
           "year_pattern": "Replace 'PY26' with 'PY27'. DOC_ID 2895550 shared with MD.",
           "notes": "IFP PDL. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Oscar Health (NJ)",
@@ -1957,7 +1980,7 @@
           "last_fetched": "2026-04-04",
           "drugs_parsed": 2160,
           "parsed_file": "data/processed/formulary_oscar_nj_5t_2026.json",
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/nj",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/nj",
           "notes": "5-tier individual plan (single formulary, no 4T/6T split). Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -1984,7 +2007,7 @@
           "year_pattern": "Molina pattern: replace '2026' and state code",
           "notes": "Also available via national Molina JSON endpoint (cmsjson/378245). 3,830 drugs in state file.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Ambetter / Western Sky (NM)",
@@ -1997,10 +2020,10 @@
           "status": "pattern",
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
-          "year_pattern": "Centene path \u00e2\u20ac\u201d replace '2026' with new year. Subsidiary name: 'ambetter-from-western-sky-community-care'",
-          "notes": "PATTERN \u00e2\u20ac\u201d may 404. Western Sky Community Care is Centene NM subsidiary.",
+          "year_pattern": "Centene path â€” replace '2026' with new year. Subsidiary name: 'ambetter-from-western-sky-community-care'",
+          "notes": "PATTERN â€” may 404. Western Sky Community Care is Centene NM subsidiary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (NM)",
@@ -2014,9 +2037,9 @@
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
           "year_pattern": "Replace 'PY26' with 'PY27' and 'NM' state code",
-          "notes": "PATTERN \u00e2\u20ac\u201d IFP PDL.",
+          "notes": "PATTERN â€” IFP PDL.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "BCBS New Mexico",
@@ -2032,7 +2055,7 @@
           "year_pattern": "Check bcbsnm.com pharmacy page annually",
           "notes": "Blue Community product line. No discoverable MR endpoint.",
           "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered \u00e2\u20ac\u201d check carrier website"
+          "fetch_notes": "URL not yet discovered â€” check carrier website"
         }
       ]
     },
@@ -2056,7 +2079,7 @@
           "year_pattern": "Replace '2026' in FBO/143 path",
           "notes": "Elevance 4-tier Select Drug List.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "SilverSummit/Ambetter (NV) - Centene",
@@ -2069,10 +2092,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2173,
-          "year_pattern": "Centene path \u00e2\u20ac\u201d replace '2026'. Subsidiary: 'Nevada'.",
+          "year_pattern": "Centene path â€” replace '2026'. Subsidiary: 'Nevada'.",
           "notes": "Centene standard format.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Health Plan of Nevada (UHC)",
@@ -2085,10 +2108,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2954,
-          "year_pattern": "URL contains '2026' directory and 'JAN26' \u00e2\u20ac\u201d replace year portions",
+          "year_pattern": "URL contains '2026' directory and 'JAN26' â€” replace year portions",
           "notes": "4-tier Essential Individual PDL. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Hometown Health (NV)",
@@ -2101,10 +2124,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 6426,
-          "year_pattern": "URL contains '2025/12' upload date and '01.01.2026' effective date \u00e2\u20ac\u201d check for new upload annually. Also covers HIOS 43314.",
+          "year_pattern": "URL contains '2025/12' upload date and '01.01.2026' effective date â€” check for new upload annually. Also covers HIOS 43314.",
           "notes": "Hometown Health/Renown. 4-tier IFP Exchange.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -2142,7 +2165,7 @@
           "last_fetched": "2026-04-04",
           "drugs_parsed": 2389,
           "parsed_file": "data/processed/formulary_oscar_ny_2026.json",
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/ny",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/ny",
           "notes": "3-tier individual plan. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required (not parentheses)"
@@ -2177,7 +2200,7 @@
           "year_pattern": "Manual PDF extraction from pharmacy page",
           "notes": "NYC HMO. NYC Health+Hospitals affiliated. 3-tier with PA/ST/QL/SGM flags.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "CDPHP (NY)",
@@ -2193,7 +2216,7 @@
           "year_pattern": "cdphp.com MR paths return 404",
           "notes": "Capital District NY. Data obtained via alternative source. Also covers HIOS 92551.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "MVP Health Care (NY)",
@@ -2209,7 +2232,7 @@
           "year_pattern": "MRF page links to HealthSparq portal (403). FormularyNavigator returns 500.",
           "notes": "HMO entity. Also covers EPO entity 89846. Data obtained via alternative source.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Anthem / Elevance (NY)",
@@ -2222,10 +2245,10 @@
           "status": "verified",
           "last_fetched": "2026-04-02",
           "drugs_parsed": 2300,
-          "year_pattern": "Elevance index \u00e2\u2020\u2019 FormularyNavigator drugs files. Verify NY plan IDs present (they may only have FFE states).",
+          "year_pattern": "Elevance index â†’ FormularyNavigator drugs files. Verify NY plan IDs present (they may only have FFE states).",
           "notes": "Elevance index has 11 FormularyNavigator URLs but all contain FFE state plans. Also covers HIOS 44113.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (NY)",
@@ -2241,7 +2264,7 @@
           "year_pattern": "TiC portal live but contains negotiated rates only, not formulary",
           "notes": "UHC Compass network. Data obtained via alternative source.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Healthfirst (NY)",
@@ -2257,7 +2280,7 @@
           "year_pattern": "apps.hf.org endpoint contains FL-only data, not NY",
           "notes": "Data obtained via alternative source.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Excellus BCBS (NY)",
@@ -2289,7 +2312,7 @@
           "year_pattern": "Check independenthealth.com pharmacy page annually",
           "notes": "Western NY. Data obtained via alternative source.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Excellus BCBS (NY)",
@@ -2305,7 +2328,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "URL discovered in parse scripts",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "EmblemHealth (NY)",
@@ -2321,7 +2344,7 @@
           "year_pattern": "See url_patterns section",
           "notes": "URL discovered in parse scripts",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -2344,7 +2367,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (OH)",
@@ -2389,7 +2412,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "carrier_name": "Oscar Health (OK)",
@@ -2432,7 +2455,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 5476,
-          "year_pattern": "Direct drugs URL \u00e2\u20ac\u201d same URL, content updates",
+          "year_pattern": "Direct drugs URL â€” same URL, content updates",
           "notes": "14.3 MB. OR plan IDs 39424OR*. Also has AK/TX drug files at same domain.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -2448,7 +2471,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 5522,
-          "year_pattern": "Index.json \u00e2\u2020\u2019 FormularyNavigator drugs files",
+          "year_pattern": "Index.json â†’ FormularyNavigator drugs files",
           "notes": "drugs/267 (24.9 MB) + drugs/268 (4.1 MB). OR plan IDs 56707OR*.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -2464,7 +2487,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 6425,
-          "year_pattern": "Cambia index.json \u00e2\u20ac\u201d same URL, content updates. Also covers HIOS 77969.",
+          "year_pattern": "Cambia index.json â€” same URL, content updates. Also covers HIOS 77969.",
           "notes": "drugs1.json (112 MB) + drugs2.json (112 MB). Also contains WA/ID/UT data.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -2483,7 +2506,7 @@
           "year_pattern": "Annual PDF at pacificsource.com/ps_find_drug/pdf/OR/{year}",
           "notes": "MR-PUF endpoint (403) bypassed via direct PDF download. Also parsed MT, WA, COMPDL PDFs from same site.",
           "fetch_method": "pdf_download",
-          "fetch_notes": "Direct PDF download \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "Direct PDF download â€” no auth needed"
         },
         {
           "carrier_name": "Kaiser Permanente (OR)",
@@ -2496,7 +2519,7 @@
           "status": "blocked",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "KP content/dam paths \u00e2\u20ac\u201d 403 Forbidden",
+          "year_pattern": "KP content/dam paths â€” 403 Forbidden",
           "notes": "All KP URLs blocked by bot protection.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -2520,7 +2543,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 4291,
-          "year_pattern": "Centene API \u00e2\u20ac\u201d same URL, content updates annually",
+          "year_pattern": "Centene API â€” same URL, content updates annually",
           "notes": "Direct drugs URL bypasses index.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -2536,10 +2559,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2198,
-          "year_pattern": "Centene path \u00e2\u20ac\u201d replace '2026'. Subsidiary: 'Pennsylvania'.",
+          "year_pattern": "Centene path â€” replace '2026'. Subsidiary: 'Pennsylvania'.",
           "notes": "Centene standard format.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Independence Blue Cross (PA) - Value",
@@ -2552,10 +2575,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 8,
-          "year_pattern": "URL does not contain year \u00e2\u20ac\u201d check annually for updated document. Covers 5 IBX HIOS entities: 33709, 79962, 79279, 33871, 31609.",
+          "year_pattern": "URL does not contain year â€” check annually for updated document. Covers 5 IBX HIOS entities: 33709, 79962, 79279, 33871, 31609.",
           "notes": "Needs custom parser for non-standard IBX layout.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "AmeriHealth (PA)",
@@ -2568,10 +2591,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 8,
-          "year_pattern": "URL does not contain year \u00e2\u20ac\u201d check annually",
+          "year_pattern": "URL does not contain year â€” check annually",
           "notes": "5-tier Select Drug. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Geisinger Health Plan (PA)",
@@ -2584,10 +2607,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 6018,
-          "year_pattern": "URL contains 'Formulary-2026' \u00e2\u20ac\u201d replace year",
+          "year_pattern": "URL contains 'Formulary-2026' â€” replace year",
           "notes": "Marketplace 2026. 5 tiers (T1-T5).",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Jefferson Health Plans (PA)",
@@ -2603,7 +2626,7 @@
           "year_pattern": "URL contains '2026-11012025' (year + effective date). Replace accordingly. Also covers HIOS 93909.",
           "notes": "RxFlex Formulary IFP. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UPMC Health Plan (PA)",
@@ -2616,7 +2639,7 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": null,
-          "year_pattern": "UPMC Widen DAM \u00e2\u20ac\u201d asset ID changes per year. Also covers HIOS 62560.",
+          "year_pattern": "UPMC Widen DAM â€” asset ID changes per year. Also covers HIOS 62560.",
           "notes": "7-tier Advantage Choice. Same PDF as DC UPMC entry. JS auth wall on some download paths.",
           "fetch_method": "manual_download",
           "fetch_notes": "JS auth wall on download"
@@ -2632,10 +2655,10 @@
           "status": "confirmed_online_only",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "Formulary Navigator \u00e2\u20ac\u201d site codes sourced from providers.highmark.com/policies-and-programs/formulary.html",
-          "notes": "HCR (ACA) site codes: comprehensive PA/WV=4906449921, essential PA/WV/DE=6571849149, comprehensive DE=7597050967, comprehensive WNY/NENY=7049127892, essential WNY/NENY=0692840549. Commercial (non-ACA): WPA/NEPA/CPA/SEPA=client.formularynavigator.com/clients/highmark/commercial.html, DE=1546534148, WV=1158840676. Formulary Navigator is JS-rendered \u00e2\u20ac\u201d no bulk export available.",
+          "year_pattern": "Formulary Navigator â€” site codes sourced from providers.highmark.com/policies-and-programs/formulary.html",
+          "notes": "HCR (ACA) site codes: comprehensive PA/WV=4906449921, essential PA/WV/DE=6571849149, comprehensive DE=7597050967, comprehensive WNY/NENY=7049127892, essential WNY/NENY=0692840549. Commercial (non-ACA): WPA/NEPA/CPA/SEPA=client.formularynavigator.com/clients/highmark/commercial.html, DE=1546534148, WV=1158840676. Formulary Navigator is JS-rendered â€” no bulk export available.",
           "fetch_method": "online_only",
-          "fetch_notes": "providers.highmark.com/policies-and-programs/formulary.html \u00e2\u2020\u2019 Formulary Navigator HCR site codes"
+          "fetch_notes": "providers.highmark.com/policies-and-programs/formulary.html â†’ Formulary Navigator HCR site codes"
         },
         {
           "carrier_name": "Oscar Health (PA)",
@@ -2656,7 +2679,7 @@
             "4t": "data/processed/formulary_oscar_pa_4t_2026.json",
             "6t": "data/processed/formulary_oscar_pa_6t_2026.json"
           },
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/pa",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/pa",
           "notes": "Two formularies: 4T standard plans + 6T all other plans. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -2673,33 +2696,33 @@
           "carrier_name": "BlueCross BlueShield of RI",
           "hios_prefix": "15287",
           "formulary_url": null,
-          "formulary_type": null,
-          "source_type": "blocked",
+          "formulary_type": "pdf",
+          "source_type": "local_pdf",
           "pbm": "Prime Therapeutics",
           "tiers": null,
-          "status": "blocked",
-          "last_fetched": null,
-          "drugs_parsed": null,
-          "year_pattern": "Cloud-IP blocked \u00e2\u20ac\u201d Prime Therapeutics interactive tool only",
-          "notes": "PDF blocked from cloud. No static download available.",
-          "fetch_method": "vpn_required",
-          "fetch_notes": "Cloud-IP blocked \u00e2\u20ac\u201d needs US residential VPN from Providence RI area"
+          "status": "verified_local_pdf",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 3046,
+          "year_pattern": "Cloud-IP blocked â€” Prime Therapeutics interactive tool only",
+          "notes": "Previously blocked via web. Parsed locally from downloaded PDF. Output: formulary_sbm_RI_bcbsri_2026.json",
+          "fetch_method": "pdf_parse",
+          "fetch_notes": "Parsed locally from 2026_RI_5T_Direct_HIM.pdf — 5-tier formulary, effective April 2026"
         },
         {
           "carrier_name": "Neighborhood Health Plan of RI",
           "hios_prefix": "77514",
           "formulary_url": null,
-          "formulary_type": "online_only",
-          "source_type": "online_only",
-          "pbm": "Unknown",
+          "formulary_type": "pdf",
+          "source_type": "local_pdf",
+          "pbm": "CVS Caremark",
           "tiers": null,
-          "status": "blocked",
-          "last_fetched": null,
-          "drugs_parsed": null,
+          "status": "verified_local_pdf",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 4237,
           "year_pattern": "FormularyNavigator searchable only, no static PDF",
-          "notes": "TiC rates only published. No formulary endpoint.",
-          "fetch_method": "online_only",
-          "fetch_notes": "FormularyNavigator searchable only \u00e2\u20ac\u201d no static PDF"
+          "notes": "Previously blocked via web. Parsed locally from downloaded PDF. Output: formulary_sbm_RI_nhpri_2026.json",
+          "fetch_method": "pdf_parse",
+          "fetch_notes": "Parsed locally from NHPRI_6T_Formulary.pdf — 6-tier formulary, effective 04/01/2026"
         }
       ]
     },
@@ -2722,7 +2745,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -2745,7 +2768,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -2768,7 +2791,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "exchange_type": "FFE",
@@ -2790,7 +2813,7 @@
             "4t": "data/processed/formulary_oscar_tn_4t_2026.json",
             "6t": "data/processed/formulary_oscar_tn_6t_2026.json"
           },
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/tn",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/tn",
           "notes": "Two formularies: 4T standard plans + 6T all other plans. TN is Oscar national reference formulary. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -2816,7 +2839,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         },
         {
           "exchange_type": "FFE",
@@ -2838,7 +2861,7 @@
             "4t": "data/processed/formulary_oscar_tx_4t_2026.json",
             "6t": "data/processed/formulary_oscar_tx_6t_2026.json"
           },
-          "year_pattern": "Contentful CDN \u2014 rediscover via hioscar.com/forms/{YEAR}/tx",
+          "year_pattern": "Contentful CDN — rediscover via hioscar.com/forms/{YEAR}/tx",
           "notes": "Two formularies: 4T standard plans + 6T all other plans. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
@@ -2864,7 +2887,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -2885,8 +2908,8 @@
           "status": "verified",
           "last_fetched": "2026-03-18",
           "drugs_parsed": 4371,
-          "year_pattern": "CareFirst index.json \u00e2\u20ac\u201d same URL, content updates. Drugs_1.json through Drugs_5.json. Also covers HIOS 40308.",
-          "notes": "All plan IDs are VA (10207VA*, 40308VA*). CareFirst publishes MR data ONLY for VA plans \u00e2\u20ac\u201d DC/MD entries in same index return VA data only.",
+          "year_pattern": "CareFirst index.json â€” same URL, content updates. Drugs_1.json through Drugs_5.json. Also covers HIOS 40308.",
+          "notes": "All plan IDs are VA (10207VA*, 40308VA*). CareFirst publishes MR data ONLY for VA plans â€” DC/MD entries in same index return VA data only.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
         },
@@ -2904,7 +2927,7 @@
           "year_pattern": "Same MAS PDF as DC/MD Kaiser entries",
           "notes": "KP Mid-Atlantic. VA-specific HIOS is 95185 (not 00543).",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Sentara Health Plans (VA)",
@@ -2920,7 +2943,7 @@
           "year_pattern": "Check sentara.com/optimahealth pharmacy page annually. Rebranded from Optima Health.",
           "notes": "Norfolk VA-based. No discoverable MR formulary endpoint.",
           "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered \u00e2\u20ac\u201d check carrier website"
+          "fetch_notes": "URL not yet discovered â€” check carrier website"
         },
         {
           "carrier_name": "UnitedHealthcare (VA)",
@@ -2933,10 +2956,10 @@
           "status": "not_found",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "May share national UHC IFP PDL pattern \u00e2\u20ac\u201d try IFP2895550-VA path",
+          "year_pattern": "May share national UHC IFP PDL pattern â€” try IFP2895550-VA path",
           "notes": "Standard-tier plans. No discoverable MR formulary endpoint.",
           "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered \u00e2\u20ac\u201d check carrier website"
+          "fetch_notes": "URL not yet discovered â€” check carrier website"
         },
         {
           "carrier_name": "Anthem HealthKeepers (VA)",
@@ -2949,10 +2972,10 @@
           "status": "not_found",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "May use FBO/143 Elevance pattern \u00e2\u20ac\u201d try 2026_Select_4_Tier_VA_IND.pdf",
+          "year_pattern": "May use FBO/143 Elevance pattern â€” try 2026_Select_4_Tier_VA_IND.pdf",
           "notes": "Elevance Health VA QHP entity. Pathway X Tiered PCP product.",
           "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered \u00e2\u20ac\u201d check carrier website"
+          "fetch_notes": "URL not yet discovered â€” check carrier website"
         },
         {
           "carrier_name": "Innovation Health / Aetna (VA)",
@@ -2965,10 +2988,10 @@
           "status": "not_found",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "Aetna exited ACA nationally but Innovation Health is Inova JV \u00e2\u20ac\u201d may persist",
+          "year_pattern": "Aetna exited ACA nationally but Innovation Health is Inova JV â€” may persist",
           "notes": "Northern VA HMO. Aetna/Inova joint venture. Also HIOS 93187 (Aetna HMO VA).",
           "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered \u00e2\u20ac\u201d check carrier website"
+          "fetch_notes": "URL not yet discovered â€” check carrier website"
         },
         {
           "carrier_name": "Oscar Health (VA)",
@@ -3011,10 +3034,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2807,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year",
+          "year_pattern": "URL contains '2026' â€” replace with new year",
           "notes": "Multi-tier (TIER 01-05).",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "MVP Health Plan (VT)",
@@ -3027,10 +3050,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 6163,
-          "year_pattern": "URL contains '2026' twice \u00e2\u20ac\u201d replace both",
+          "year_pattern": "URL contains '2026' twice â€” replace both",
           "notes": "3-tier marketplace formulary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -3051,10 +3074,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2212,
-          "year_pattern": "Centene path \u00e2\u20ac\u201d replace '2026'. Subsidiary: 'Coordinated Care'. Also has JSON at api.centene.com/ambetter/reference/drugs-AMB-WA.json (4,424 records).",
+          "year_pattern": "Centene path â€” replace '2026'. Subsidiary: 'Coordinated Care'. Also has JSON at api.centene.com/ambetter/reference/drugs-AMB-WA.json (4,424 records).",
           "notes": "Cascade version. Both PDF and JSON available.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Cambia / Regence BlueShield (WA)",
@@ -3067,7 +3090,7 @@
           "status": "verified",
           "last_fetched": "2026-03-17",
           "drugs_parsed": 6421,
-          "year_pattern": "Cambia index.json \u00e2\u20ac\u201d same URL, content updates. Also covers Asuris (87718).",
+          "year_pattern": "Cambia index.json â€” same URL, content updates. Also covers Asuris (87718).",
           "notes": "drugs1.json (112MB) + drugs2.json (112MB). Contains WA/OR/ID/UT data.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
@@ -3083,10 +3106,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2470,
-          "year_pattern": "Molina pattern \u00e2\u20ac\u201d replace '2026' and state code",
+          "year_pattern": "Molina pattern â€” replace '2026' and state code",
           "notes": "Molina WA Marketplace format.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "BridgeSpan Health (WA)",
@@ -3099,10 +3122,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 4598,
-          "year_pattern": "FormularyNavigator path with internal IDs \u00e2\u20ac\u201d may change annually",
+          "year_pattern": "FormularyNavigator path with internal IDs â€” may change annually",
           "notes": "Cambia subsidiary.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Premera Blue Cross (WA)",
@@ -3115,10 +3138,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 3847,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year. Doc ID 052146.",
-          "notes": "4-tier Metallic M4. Low parse count \u00e2\u20ac\u201d needs custom parser for multi-column layout.",
+          "year_pattern": "URL contains '2026' â€” replace with new year. Doc ID 052146.",
+          "notes": "4-tier Metallic M4. Low parse count â€” needs custom parser for multi-column layout.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "LifeWise Health Plan (WA)",
@@ -3131,10 +3154,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 4076,
-          "year_pattern": "wahealthplan.org upload \u00e2\u20ac\u201d may change upload date directory. Contains '2026' in filename.",
-          "notes": "Cambia subsidiary. Low parse count \u00e2\u20ac\u201d needs custom parser.",
+          "year_pattern": "wahealthplan.org upload â€” may change upload date directory. Contains '2026' in filename.",
+          "notes": "Cambia subsidiary. Low parse count â€” needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Kaiser Permanente (WA - NW)",
@@ -3147,10 +3170,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2388,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace. NW region PDF.",
-          "notes": "NW region. Low count \u00e2\u20ac\u201d multi-column layout needs custom parser.",
+          "year_pattern": "URL contains '2026' â€” replace. NW region PDF.",
+          "notes": "NW region. Low count â€” multi-column layout needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "Community Health Plan of WA (CHPW)",
@@ -3163,10 +3186,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1504,
-          "year_pattern": "URL contains '2026' \u00e2\u20ac\u201d replace with new year",
-          "notes": "Cascade Select. Low parse count \u00e2\u20ac\u201d needs custom parser.",
+          "year_pattern": "URL contains '2026' â€” replace with new year",
+          "notes": "Cascade Select. Low parse count â€” needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
         {
           "carrier_name": "UnitedHealthcare (WA)",
@@ -3179,10 +3202,10 @@
           "status": "verified",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 1910,
-          "year_pattern": "wahealthplan.org upload \u00e2\u20ac\u201d contains '2026' in filename",
+          "year_pattern": "wahealthplan.org upload â€” contains '2026' in filename",
           "notes": "WA-specific via broker portal. Needs custom parser.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly \u00e2\u20ac\u201d no auth needed"
+          "fetch_notes": "PDF downloads directly â€” no auth needed"
         }
       ]
     },
@@ -3205,7 +3228,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -3228,7 +3251,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state. Note: Medica WI supplemental data in formulary_sbm_WI_medica.json (2,290 drugs).",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     },
@@ -3251,7 +3274,7 @@
           "year_pattern": "CMS publishes new MR-PUF October-November each year",
           "notes": "FFE state",
           "fetch_method": "json_api",
-          "fetch_notes": "Fetched via CMS MR-PUF \u00e2\u2020\u2019 carrier index.json \u00e2\u2020\u2019 drugs.json chain"
+          "fetch_notes": "Fetched via CMS MR-PUF â†’ carrier index.json â†’ drugs.json chain"
         }
       ]
     }
@@ -3306,7 +3329,7 @@
         "WA"
       ],
       "pbm": "Centene Pharmacy Services",
-      "refresh_method": "Same URL \u00e2\u20ac\u201d content updates annually"
+      "refresh_method": "Same URL â€” content updates annually"
     },
     "molina_marketplace_pdf": {
       "pattern": "https://www.molinamarketplace.com/marketplace/{st}/en-us/-/media/Molina/PublicWebsite/PDF/members/{st}/en-us/Marketplace/{YEAR}/{ST}Formulary{YEAR}.pdf",
@@ -3411,7 +3434,7 @@
         "VA"
       ],
       "pbm": "Oscar (in-house)",
-      "refresh_method": "CANNOT increment year \u00e2\u20ac\u201d asset ID and hash change every year. Must re-discover via hioscar.com/forms/{YEAR} or hioscar.com/search-documents/drug-formularies/",
+      "refresh_method": "CANNOT increment year â€” asset ID and hash change every year. Must re-discover via hioscar.com/forms/{YEAR} or hioscar.com/search-documents/drug-formularies/",
       "notes": "Oscar uses Contentful CDN with unique asset IDs per document. JS-rendered page requires browser.",
       "parsed_states_2026": [
         "AZ",
@@ -3433,7 +3456,7 @@
         "MA (Harvard Pilgrim, Tufts)"
       ],
       "pbm": "OptumRx",
-      "refresh_method": "Path includes year subfolder \u00e2\u20ac\u201d replace year. Carrier path is stable."
+      "refresh_method": "Path includes year subfolder â€” replace year. Carrier path is stable."
     },
     "cambia_json": {
       "pattern": "https://cms-machine-readable.cambiahealth.com/index.json",
@@ -3443,7 +3466,7 @@
         "WA"
       ],
       "pbm": "Cambia Pharmacy",
-      "refresh_method": "Same URL \u00e2\u20ac\u201d content updates. drugs1.json + drugs2.json (each ~112MB)."
+      "refresh_method": "Same URL â€” content updates. drugs1.json + drugs2.json (each ~112MB)."
     }
   },
   "market_exits_2026": [
@@ -3452,7 +3475,7 @@
       "states": [
         "ALL"
       ],
-      "notes": "Complete ACA individual market withdrawal for 2026 nationally (but CA Aetna entity found \u00e2\u20ac\u201d may be new/different)"
+      "notes": "Complete ACA individual market withdrawal for 2026 nationally (but CA Aetna entity found â€” may be new/different)"
     },
     {
       "carrier": "CareSource",
@@ -3466,14 +3489,14 @@
       "states": [
         "CO"
       ],
-      "notes": "Liquidated 2023 \u00e2\u20ac\u201d permanently exited"
+      "notes": "Liquidated 2023 â€” permanently exited"
     },
     {
       "carrier": "Bright Health",
       "states": [
         "CO"
       ],
-      "notes": "Exited 2023 \u00e2\u20ac\u201d permanently exited"
+      "notes": "Exited 2023 â€” permanently exited"
     },
     {
       "carrier": "Oscar Health",
@@ -3504,7 +3527,7 @@
       "hios": "10091",
       "state": "OR",
       "reason": "MR-PUF URL returns 403 Forbidden",
-      "workaround": "ID PacificSource works \u00e2\u20ac\u201d OR endpoint specifically blocked"
+      "workaround": "ID PacificSource works â€” OR endpoint specifically blocked"
     },
     {
       "carrier": "Moda Health (ID)",
@@ -3524,7 +3547,7 @@
       "carrier": "UPMC (download)",
       "hios": "16322",
       "state": "PA",
-      "reason": "JS auth wall on download \u00e2\u20ac\u201d but Widen DAM direct link works",
+      "reason": "JS auth wall on download â€” but Widen DAM direct link works",
       "workaround": "Use upmc.widen.net direct link"
     },
     {
@@ -3546,11 +3569,11 @@
       "hios": "various",
       "state": "NY",
       "reason": "NY SBM carriers generally do not publish accessible MR formulary files",
-      "workaround": "Alternative data sources used for 11/12 NY carriers \u00e2\u20ac\u201d 31,439 drugs obtained"
+      "workaround": "Alternative data sources used for 11/12 NY carriers â€” 31,439 drugs obtained"
     }
   ],
   "ffm_data_source": {
-    "description": "Federal Facilitated Exchange \u00e2\u20ac\u201d all 28 FFE states use a single pipeline",
+    "description": "Federal Facilitated Exchange â€” all 28 FFE states use a single pipeline",
     "mr_puf_url": "https://www.cms.gov/marketplace/resources/data/public-use-files",
     "mr_puf_file": "data/raw/puf/machine-readable-url-puf.xlsx",
     "pipeline_script": "scripts/fetch/fetch_formulary_full.py",
@@ -3636,10 +3659,10 @@
         "states": [
           "CA"
         ],
-        "notes": "New to Covered California \u00e2\u20ac\u201d FormularyNavigator FBO/41"
+        "notes": "New to Covered California â€” FormularyNavigator FBO/41"
       },
       {
-        "carrier": "Illinois transitioned FFE\u00e2\u2020\u2019SBM",
+        "carrier": "Illinois transitioned FFEâ†’SBM",
         "states": [
           "IL"
         ],
@@ -3714,8 +3737,8 @@
         "OR"
       ],
       "transitioning_2027": [
-        "OR (\u00e2\u2020\u2019 full SBM)",
-        "OK (\u00e2\u2020\u2019 SBM-FP)"
+        "OR (â†’ full SBM)",
+        "OK (â†’ SBM-FP)"
       ],
       "notes": "IL was new SBM for 2026. OR transitions to full SBM for PY2027. OK transitions to SBM-FP May 2026."
     }
