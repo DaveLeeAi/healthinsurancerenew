@@ -11,7 +11,7 @@
 | Metric | Value |
 |--------|-------|
 | **FFE formulary (29 FFE states)** | **14,635,973 plan-level records** — `formulary_intelligence.json` (4.44 GB, 211 issuers) |
-| **SBM formulary (22 SBM states + DC)** | **374,008 drug-level records** — per-state `formulary_sbm_XX.json` files |
+| **SBM formulary (22 SBM states + DC)** | **379,323 drug-level records** — per-state `formulary_sbm_XX.json` files |
 | **Total records** | **14,968,069** |
 | **SBC plan variants** | **27,588 total (50 states + DC — 100% coverage)** |
 | FFE SBC plan variants | 20,354 — `sbc_decoded.json` |
@@ -126,28 +126,28 @@
 
 ---
 
-### ID — 36,727 drugs | 8 carriers | COMPLETE
+### ID — 29,743 drugs | 7 carriers | COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
 | 🔌 | 60597 | PacificSource (ID) | 8,249 |
 | 🔌 | 71281 | Cambia / Regence BCBS (ID) | 6,432 |
+| ✅ | 80588 | Moda Health (ID) — proxy | 5,322 |
 | 🔌 | 44648 | Blue Cross of Idaho (JSON) | 5,052 |
-| ✅ | 61589 | PacificSource Health Plans (ID) - Choice | 5,554 |
 | 🔌 | 26002 | SelectHealth (ID) | 4,122 |
 | ✅ | 38128 | Blue Cross of Idaho (PDF) | 1,986 |
-| ✅ | 80588 | Moda Health (ID) | 5,322 |
 | ✅ | 92170 | St. Luke's Health Plan (ID) | 10 |
 
 ---
 
-### IL — 7,832 drugs | 2 carriers | PARTIAL
-*Centene/Ambetter and Oscar captured. Other FFE carriers (BCBS IL, Cigna, Molina, UHC) not in SBM registry — covered via FFE PUF instead.*
+### IL — 6,742 drugs | 3 carriers | NEAR COMPLETE
+*Centene/Ambetter (2 HIOS IDs) and Oscar captured. BCBS IL, Cigna, Molina, UHC not in SBM registry — covered via FFE PUF instead.*
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
-| 🔌 | 27833 | Centene/Ambetter (IL) | 4,296 |
-| ⚠️ | — | Oscar Health (IL) | 3,536 |
+| 🔌 | 99167 | Centene / Ambetter (IL) | — |
+| ✅ | 27833 | Ambetter / Centene (IL) | 4,293 |
+| ✅ | 11574 | Oscar Health (IL) | 2,449 |
 
 ---
 
@@ -190,11 +190,12 @@
 
 ---
 
-### ME — 3,905 drugs | 1/3 carriers | PARTIAL
+### ME — 6,202 drugs | 2/4 carriers | NEAR COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
-| ✅ | 48396 | Anthem Blue Cross (ME) | 3,905 |
+| ✅ | 48396 | Anthem Blue Cross (ME) | 3,805 |
+| ✅ | 77432 | Harvard Pilgrim Health Care of New England | 2,397 |
 | 🚫 | 33653 | Community Health Options (ME) | 0 |
 | 🚫 | 54879 | TARO Health (ME) | 0 |
 
@@ -316,19 +317,22 @@
 
 ---
 
-### VA — 8,951 drugs | 3/7 carriers | PARTIAL
+### VA — 14,209 drugs | 8 issuers | NEAR COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
 | 🔌 | 10207 | CareFirst BCBS (VA) | 4,371 |
-| ✅ | 95185 | Kaiser Permanente (VA - MAS) | 1,081 |
-| ⚠️ | — | Oscar Health (VA) | 3,499 |
-| ⚠️ | 20507 | Sentara Health Plans (VA) | 0 |
-| ⚠️ | 24251 | UnitedHealthcare (VA) | 0 |
-| ⚠️ | 88380 | Anthem HealthKeepers (VA) | 0 |
-| ⚠️ | 86443 | Innovation Health / Aetna (VA) | 0 |
+| 🔌 | 40308 | CareFirst BlueChoice (VA) | — |
+| ✅ | 88380 | Anthem HealthKeepers (VA) | 2,351 |
+| ✅ | 25922 | Oscar Health (VA) | 2,417 |
+| ✅ | — | Oscar Health (VA — alt issuer) | 2,383 |
+| ✅ | 95185 | Kaiser Permanente (VA — MAS) | 1,081 |
+| ✅ | 24251 | UnitedHealthcare (VA) | 2,010 |
+| ✅ | 20507 | Sentara Health Plans (VA) | 2,446 |
+| 🚫 | — | Optima Health / Sentara (VA) | 0 |
+| 🚫 | 00543 | Kaiser Permanente (VA — standard) | 0 |
 
-*Sentara, UHC, Anthem, Aetna: URL not_found — need manual lookup on carrier sites.*
+*CareFirst BCBS and BlueChoice share the same formulary index (143K plan-level records → 4,371 deduped). Optima/Sentara and Kaiser standard index URLs dead — skipped. Innovation Health / Aetna (86443) not confirmed in SBM registry.*
 
 ---
 
@@ -386,7 +390,7 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 | NY | NY State of Health | 43,125 | 10/13 | Near Complete |
 | WA | WA Healthplanfinder | 29,426 | 9 | Complete |
 | GA | (FFE enrollment / SBM formulary) | 31,975 | 10 | Complete |
-| ID | Your Health Idaho | 36,727 | 8 | Complete |
+| ID | Your Health Idaho | 29,743 | 7 | Complete |
 | MD | Maryland Health Connection | 17,048 | 5 | Complete |
 | OR | OR SBM-FP | 22,977 | 4/5 | Near Complete |
 | MA | MA Health Connector | 21,291 | 5/7 | Near Complete |
@@ -399,12 +403,12 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 | CT | AccessHealthCT | 8,417 | 4 | Complete |
 | VT | Vermont Health Connect | 8,970 | 2 | Complete |
 | DC | DC Health Link | 15,394 | 5 | Complete |
-| VA | (SBM-FP) | 14,209 | 7 | Complete |
-| IL | GetCoveredIllinois | 6,742 | 3 | Partial |
+| VA | (SBM-FP) | 14,209 | 8 | Near Complete |
+| IL | GetCoveredIllinois | 6,742 | 3 | Near Complete |
 | RI | HealthSource RI | 7,283 | 2 | Complete |
-| ME | CoverME.gov | 6,202 | 2 | Partial |
+| ME | CoverME.gov | 6,202 | 2 | Near Complete |
 | NM | beWellnm | 8,071 | 3/4 | Near Complete |
-| **Total SBM** | | **374,008** | | |
+| **Total SBM** | | **379,323** | | |
 
 ---
 
@@ -414,7 +418,7 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 |--------|---------|-------|
 | FFE formulary records | ≥ 14,635,973 plan-level | 4.44 GB file, 211 issuers |
 | FFE unique deduped drugs | ≥ 196,303 | Pre-plan-expansion baseline |
-| SBM formulary total | ≥ 374,008 drug-level | 22 SBM states + DC |
+| SBM formulary total | ≥ 379,323 drug-level | 22 SBM states + DC |
 | Total records (FFE + SBM) | ≥ 15,010,279 | Plan-level + drug-level combined |
 | SBC plan variants (total) | ≥ 27,588 | 50 states + DC |
 | SBC FFE plan variants | ≥ 20,354 | `sbc_decoded.json` |

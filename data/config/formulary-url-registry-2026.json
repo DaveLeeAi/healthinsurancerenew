@@ -871,7 +871,7 @@
       "exchange_name": "Your Health Idaho",
       "exchange_type": "SBM",
       "exchange_url": "https://www.yourhealthidaho.org",
-      "state_drugs_total": 24421,
+      "state_drugs_total": 29743,
       "carriers": [
         {
           "carrier_name": "Blue Cross of Idaho (JSON)",
@@ -977,11 +977,11 @@
           "source_type": "pdf_download",
           "pbm": "CVS Caremark",
           "tiers": 5,
-          "status": "verified",
+          "status": "shared_with_60597",
           "last_fetched": "2026-04-04",
           "drugs_parsed": 5554,
           "year_pattern": "Annual PDF at pacificsource.com/ps_find_drug/pdf/ID/{year}",
-          "notes": "ID drug list PDF shared with main PacificSource ID plan. Parsed via parse_pacificsource_pdfs.py â†’ formulary_pacificsource_2026.json",
+          "notes": "ID drug list PDF shared with main PacificSource ID plan. Parsed via parse_pacificsource_pdfs.py â†’ formulary_pacificsource_2026.json HIOS 61589 shares formulary with 60597 (same PDF source). Data merged under 60597.",
           "fetch_method": "pdf_download",
           "fetch_notes": "Direct PDF download â€” no auth needed"
         },
@@ -993,7 +993,7 @@
           "source_type": "pdf_download",
           "pbm": "Navitus",
           "tiers": 5,
-          "status": "verified_proxy",
+          "status": "verified",
           "last_fetched": "2026-04-04",
           "drugs_parsed": 5322,
           "year_pattern": "Large group PDF updated periodically â€” check modahealth.com/medical/formularies.shtml",
