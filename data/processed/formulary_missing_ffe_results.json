@@ -1,0 +1,693 @@
+{
+  "metadata": {
+    "run_date": "2026-04-04T04:07:17.113305",
+    "issuers_attempted": 40,
+    "issuers_successful": 32,
+    "issuers_failed": 8,
+    "new_drug_records": 12761426,
+    "elapsed_seconds": 597.8,
+    "dry_run": false
+  },
+  "results": [
+    {
+      "index_url": "https://www.cigna.com/sites/json/cms-data-index.json",
+      "issuer_ids": [
+        "48121",
+        "56766",
+        "73943",
+        "76589",
+        "79850",
+        "94419",
+        "97667",
+        "99248"
+      ],
+      "states": [
+        "AZ",
+        "FL",
+        "IN",
+        "MS",
+        "NC",
+        "TN",
+        "TX"
+      ],
+      "carrier_hint": "Cigna Healthcare",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 1423172,
+      "error": null
+    },
+    {
+      "index_url": "https://www.molinahealthcare.com/cms/json/index.json",
+      "issuer_ids": [
+        "18167",
+        "42326",
+        "45786",
+        "54172",
+        "64353",
+        "79975"
+      ],
+      "states": [
+        "FL",
+        "MS",
+        "OH",
+        "SC",
+        "TX",
+        "UT"
+      ],
+      "carrier_hint": "Molina Healthcare",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 377773,
+      "error": null
+    },
+    {
+      "index_url": "https://www.amerihealthcaritasnext.com/cms-data-index.json",
+      "issuer_ids": [
+        "17414",
+        "38246",
+        "67926",
+        "72760"
+      ],
+      "states": [
+        "DE",
+        "FL",
+        "LA",
+        "NC"
+      ],
+      "carrier_hint": "AmeriHealth Caritas Next",
+      "status": "success",
+      "formulary_urls_found": 130,
+      "drugs_urls_attempted": 130,
+      "drugs_urls_successful": 130,
+      "drug_records": 3883244,
+      "error": null
+    },
+    {
+      "index_url": "https://www.modahealth.com/cms-data-index.json",
+      "issuer_ids": [
+        "73836",
+        "17933"
+      ],
+      "states": [
+        "AK",
+        "TX"
+      ],
+      "carrier_hint": "Moda Health",
+      "status": "success",
+      "formulary_urls_found": 3,
+      "drugs_urls_attempted": 3,
+      "drugs_urls_successful": 3,
+      "drug_records": 173468,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/IA/93078/cms-data-index.json",
+      "issuer_ids": [
+        "93078"
+      ],
+      "states": [
+        "IA"
+      ],
+      "carrier_hint": "Elevate by Medica (IA)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 163710,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/KS/39520/cms-data-index.json",
+      "issuer_ids": [
+        "39520"
+      ],
+      "states": [
+        "KS"
+      ],
+      "carrier_hint": "Select by Medica (KS)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 31833,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/MO/53461/cms-data-index.json",
+      "issuer_ids": [
+        "53461"
+      ],
+      "states": [
+        "MO"
+      ],
+      "carrier_hint": "Select by Medica (MO)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 98334,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/ND/73751/cms-data-index.json",
+      "issuer_ids": [
+        "73751"
+      ],
+      "states": [
+        "ND"
+      ],
+      "carrier_hint": "Altru by Medica (ND)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 95742,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/NE/20305/cms-data-index.json",
+      "issuer_ids": [
+        "20305"
+      ],
+      "states": [
+        "NE"
+      ],
+      "carrier_hint": "Elevate by Medica (NE)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 127116,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/OK/21333/cms-data-index.json",
+      "issuer_ids": [
+        "21333"
+      ],
+      "states": [
+        "OK"
+      ],
+      "carrier_hint": "Harmony by Medica (OK)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 95364,
+      "error": null
+    },
+    {
+      "index_url": "https://esbgatewaypub.medica.com/rest/QHP/WI/57845/cms-data-index.json",
+      "issuer_ids": [
+        "57845"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Medica Individual Choice (WI)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 100170,
+      "error": null
+    },
+    {
+      "index_url": "https://app.mo-central.medica.com/MachineReadable/Medica-MO-cms-data-index.json",
+      "issuer_ids": [
+        "47840"
+      ],
+      "states": [
+        "MO"
+      ],
+      "carrier_hint": "Medica with SSM Health (MO)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.bcbsal.org/cms/cms-data-index.json",
+      "issuer_ids": [
+        "46944"
+      ],
+      "states": [
+        "AL"
+      ],
+      "carrier_hint": "Blue Cross Blue Shield of Alabama",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 95148,
+      "error": null
+    },
+    {
+      "index_url": "https://www.bcbsfl.com/DocumentLibrary/Providers/cms/index.json",
+      "issuer_ids": [
+        "16842",
+        "30252"
+      ],
+      "states": [
+        "FL"
+      ],
+      "carrier_hint": "Florida Blue / BCBS FL",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 862232,
+      "error": null
+    },
+    {
+      "index_url": "https://secure.healthadvantage-hmo.com/doclib/QHP/HA/index.json",
+      "issuer_ids": [
+        "13262"
+      ],
+      "states": [
+        "AR"
+      ],
+      "carrier_hint": "Health Advantage (AR)",
+      "status": "success",
+      "formulary_urls_found": 2,
+      "drugs_urls_attempted": 2,
+      "drugs_urls_successful": 2,
+      "drug_records": 29416,
+      "error": null
+    },
+    {
+      "index_url": "https://secure.arkansasoctave.com/doclib/QHP/Octave/index.json",
+      "issuer_ids": [
+        "48772"
+      ],
+      "states": [
+        "AR"
+      ],
+      "carrier_hint": "Octave Health (AR)",
+      "status": "success",
+      "formulary_urls_found": 2,
+      "drugs_urls_attempted": 2,
+      "drugs_urls_successful": 2,
+      "drug_records": 22062,
+      "error": null
+    },
+    {
+      "index_url": "https://secure.arkansasbluecross.com/doclib/QHP/index.json",
+      "issuer_ids": [
+        "75293"
+      ],
+      "states": [
+        "AR"
+      ],
+      "carrier_hint": "Arkansas Blue Cross",
+      "status": "success",
+      "formulary_urls_found": 2,
+      "drugs_urls_attempted": 2,
+      "drugs_urls_successful": 2,
+      "drug_records": 25738,
+      "error": null
+    },
+    {
+      "index_url": "https://tools.sanfordhealthplan.com/json/index.json",
+      "issuer_ids": [
+        "31195",
+        "89364"
+      ],
+      "states": [
+        "ND",
+        "SD"
+      ],
+      "carrier_hint": "Sanford Health Plan",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 1029248,
+      "error": null
+    },
+    {
+      "index_url": "https://www.ahsecure.net/CMS/index.json",
+      "issuer_ids": [
+        "60536",
+        "74980"
+      ],
+      "states": [
+        "IA",
+        "SD"
+      ],
+      "carrier_hint": "ConnectPlus / AHS",
+      "status": "success",
+      "formulary_urls_found": 4,
+      "drugs_urls_attempted": 4,
+      "drugs_urls_successful": 4,
+      "drug_records": 272720,
+      "error": null
+    },
+    {
+      "index_url": "https://azblue.com/JSON/Index.JSON",
+      "issuer_ids": [
+        "53901"
+      ],
+      "states": [
+        "AZ"
+      ],
+      "carrier_hint": "Arizona Blue Cross Blue Shield",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.lablue.com/acadirectory/19636/19636Index.json",
+      "issuer_ids": [
+        "19636"
+      ],
+      "states": [
+        "LA"
+      ],
+      "carrier_hint": "Blue Cross Blue Shield of Louisiana (19636)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 189149,
+      "error": null
+    },
+    {
+      "index_url": "https://www.lablue.com/acadirectory/97176/97176Index.json",
+      "issuer_ids": [
+        "97176"
+      ],
+      "states": [
+        "LA"
+      ],
+      "carrier_hint": "Blue Cross Blue Shield of Louisiana (97176)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 37815,
+      "error": null
+    },
+    {
+      "index_url": "https://chppayment.christushealth.org/workfiles/json/index.json",
+      "issuer_ids": [
+        "66252",
+        "98780"
+      ],
+      "states": [
+        "LA",
+        "TX"
+      ],
+      "carrier_hint": "CHRISTUS Health Plan",
+      "status": "success",
+      "formulary_urls_found": 2,
+      "drugs_urls_attempted": 2,
+      "drugs_urls_successful": 2,
+      "drug_records": 1251356,
+      "error": null
+    },
+    {
+      "index_url": "https://apps.hf.org/applications/dn/cms_json/index.json",
+      "issuer_ids": [
+        "36194"
+      ],
+      "states": [
+        "FL"
+      ],
+      "carrier_hint": "Bright Health / BCBS FL (36194)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 111216,
+      "error": null
+    },
+    {
+      "index_url": "https://capitalhealth.com/cms-data-index.json",
+      "issuer_ids": [
+        "66966"
+      ],
+      "states": [
+        "FL"
+      ],
+      "carrier_hint": "Capital Health Plan (FL)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://providerdirectory.communityhealthchoice.org/him/index.json",
+      "issuer_ids": [
+        "11718",
+        "27248"
+      ],
+      "states": [
+        "TX"
+      ],
+      "carrier_hint": "Community Health Choice (TX)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 83862,
+      "error": null
+    },
+    {
+      "index_url": "https://exchange.communityfirsthealthplans.com/cms-data-index.json",
+      "issuer_ids": [
+        "63251"
+      ],
+      "states": [
+        "TX"
+      ],
+      "carrier_hint": "Community First Health Plans (TX)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.mclaren.org/Uploads/Public/Documents/HealthPlan/documents/CMSUploads/cms-data-index.json",
+      "issuer_ids": [
+        "74917"
+      ],
+      "states": [
+        "MI"
+      ],
+      "carrier_hint": "McLaren Health Plan (MI)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 135324,
+      "error": null
+    },
+    {
+      "index_url": "https://www.thinkinghealthforward.com/Index.json",
+      "issuer_ids": [
+        "96384"
+      ],
+      "states": [
+        "MO"
+      ],
+      "carrier_hint": "Cox HealthPlans (MO)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 46368,
+      "error": null
+    },
+    {
+      "index_url": "https://enroll.pacificsource.com/MRF/MT/cms-data-index.json",
+      "issuer_ids": [
+        "23603"
+      ],
+      "states": [
+        "MT"
+      ],
+      "carrier_hint": "PacificSource (MT)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 93412,
+      "error": null
+    },
+    {
+      "index_url": "https://connect.wellsense.org:8443/NHACA_MRF/data/cms-data-index.json",
+      "issuer_ids": [
+        "13219"
+      ],
+      "states": [
+        "NH"
+      ],
+      "carrier_hint": "WellSense Health Plan (NH)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 21896,
+      "error": null
+    },
+    {
+      "index_url": "https://www.myparamount.org/machinereadablefiles/cms-data-index.json",
+      "issuer_ids": [
+        "74313"
+      ],
+      "states": [
+        "OH"
+      ],
+      "carrier_hint": "Paramount Health Care (OH)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 96982,
+      "error": null
+    },
+    {
+      "index_url": "https://providersearch.medmutual.com/cms-data-index.json",
+      "issuer_ids": [
+        "99969"
+      ],
+      "states": [
+        "OH"
+      ],
+      "carrier_hint": "Medical Mutual of Ohio",
+      "status": "success",
+      "formulary_urls_found": 5,
+      "drugs_urls_attempted": 5,
+      "drugs_urls_successful": 3,
+      "drug_records": 261886,
+      "error": null
+    },
+    {
+      "index_url": "https://www.firstchoicenext.com/cms-data-index.json",
+      "issuer_ids": [
+        "73107"
+      ],
+      "states": [
+        "SC"
+      ],
+      "carrier_hint": "First Choice Next (SC)",
+      "status": "success",
+      "formulary_urls_found": 41,
+      "drugs_urls_attempted": 41,
+      "drugs_urls_successful": 41,
+      "drug_records": 1179490,
+      "error": null
+    },
+    {
+      "index_url": "https://cms-machine-readable.cambiahealth.com/index.json",
+      "issuer_ids": [
+        "22013",
+        "34541"
+      ],
+      "states": [
+        "UT"
+      ],
+      "carrier_hint": "Cambia Health / BridgeSpan (UT)",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
+    },
+    {
+      "index_url": "https://apps.quartzbenefits.com/cmsfiles/CMS-INDEX-JSON.json",
+      "issuer_ids": [
+        "37833"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Quartz / UW Health (WI)",
+      "status": "success",
+      "formulary_urls_found": 1,
+      "drugs_urls_attempted": 1,
+      "drugs_urls_successful": 1,
+      "drug_records": 290550,
+      "error": null
+    },
+    {
+      "index_url": "https://app.deancare.com/MachineReadable/deanhealthplan-cms-data-index.json",
+      "issuer_ids": [
+        "38345"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Dean Health Plan (WI)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://www.mercycarehealthplans.com/wp-content/uploads/JSON/cms-data-index.json",
+      "issuer_ids": [
+        "58326"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "MercyCare Health Plans (WI)",
+      "status": "success",
+      "formulary_urls_found": 2,
+      "drugs_urls_attempted": 2,
+      "drugs_urls_successful": 2,
+      "drug_records": 55630,
+      "error": null
+    },
+    {
+      "index_url": "https://data.networkhealth.com/hix/index.json",
+      "issuer_ids": [
+        "81413"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Network Health (WI)",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
+    },
+    {
+      "index_url": "https://planfinder.ghcscw.com/cms/index.json",
+      "issuer_ids": [
+        "94529"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Group Health Cooperative of South Central WI",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
+    }
+  ]
+}

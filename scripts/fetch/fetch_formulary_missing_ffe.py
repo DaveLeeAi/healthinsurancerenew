@@ -606,28 +606,36 @@ def append_records_to_formulary_intelligence(new_records: list[dict[str, Any]]) 
     with open(path, "rb") as f:
         f.seek(0, 2)
         file_size = f.tell()
-        # The file ends with `\n  ]\n}\n` — scan back to find it
         tail_size = min(512, file_size)
         f.seek(file_size - tail_size)
-        tail = f.read().decode("utf-8")
+        tail_bytes = f.read()
+
+    # Normalise to LF for searching regardless of platform line endings
+    tail = tail_bytes.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
 
     # Find the last `]` before the closing `}`
-    close_bracket_pos = tail.rfind("\n  ]")
+    close_bracket_pos = tail.rfind("\n]")
+    if close_bracket_pos == -1:
+        close_bracket_pos = tail.rfind("]")
     if close_bracket_pos == -1:
         raise ValueError("Could not find closing array bracket in formulary_intelligence.json")
 
-    # Absolute byte position to truncate at
-    truncate_at = file_size - tail_size + close_bracket_pos
+    # Map normalised position back to raw byte offset
+    # Count how many raw bytes correspond to the normalised prefix
+    prefix_normalised = tail[:close_bracket_pos]
+    prefix_raw = tail_bytes.decode("utf-8")[:len(prefix_normalised)]
+    raw_prefix_bytes = prefix_raw.encode("utf-8")
+    truncate_at = file_size - tail_size + len(raw_prefix_bytes)
 
-    with open(path, "r+", encoding="utf-8") as f:
+    with open(path, "r+", encoding="utf-8", newline="") as f:
         f.seek(truncate_at)
         f.truncate()
         # Append comma + new records
-        for i, rec in enumerate(new_records):
+        for rec in new_records:
             f.write(",\n")
             json.dump(rec, f, default=str)
         # Re-close the array and object
-        f.write("\n  ]\n}\n")
+        f.write("\n]\n}\n")
 
     logger.info(f"Appended {len(new_records):,} records to {path}")
     return len(new_records)
@@ -719,11 +727,27 @@ def update_errors_file(new_errors: list[dict[str, Any]]) -> None:
 # Main pipeline
 # -----------------------------------------------------------------------
 
-async def run(concurrency: int, dry_run: bool) -> None:
+async def run(concurrency: int, dry_run: bool, skip_failed: bool = False) -> None:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-    total = len(MISSING_ISSUERS)
-    logger.info(f"Processing {total} missing issuer groups (concurrency={concurrency}, dry_run={dry_run})")
+    issuers = MISSING_ISSUERS
+
+    # Skip issuers that previously failed with non-retriable errors
+    if skip_failed and RESULTS_PATH.exists():
+        with open(RESULTS_PATH, encoding="utf-8") as f:
+            prev = json.load(f)
+        non_retriable = {"no_formulary_url", "index_parse_failed"}
+        failed_ids: set[str] = set()
+        for r in prev.get("results", []):
+            if r.get("status") in non_retriable:
+                for iid in r.get("issuer_ids", []):
+                    failed_ids.add(iid)
+        if failed_ids:
+            issuers = [i for i in issuers if not any(iid in failed_ids for iid in i["issuer_ids"])]
+            logger.info(f"Skipping {len(MISSING_ISSUERS) - len(issuers)} non-retriable issuers from previous run")
+
+    total = len(issuers)
+    logger.info(f"Processing {total} issuer groups (concurrency={concurrency}, dry_run={dry_run})")
 
     results: list[dict[str, Any]] = []
     all_new_records: list[dict[str, Any]] = []
@@ -732,7 +756,7 @@ async def run(concurrency: int, dry_run: bool) -> None:
 
     connector = aiohttp.TCPConnector(limit=concurrency, limit_per_host=2)
     async with aiohttp.ClientSession(connector=connector) as session:
-        for i, issuer in enumerate(MISSING_ISSUERS):
+        for i, issuer in enumerate(issuers):
             async with semaphore:
                 ids_str = ",".join(issuer["issuer_ids"])
                 logger.info(
@@ -818,6 +842,8 @@ def main() -> None:
                         help="Concurrent HTTP connections (default: 3)")
     parser.add_argument("--dry-run", action="store_true",
                         help="Test URL reachability without writing any output files")
+    parser.add_argument("--skip-failed", action="store_true",
+                        help="Skip issuers that had non-retriable errors in the previous run")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -825,7 +851,7 @@ def main() -> None:
         format="%(asctime)s %(levelname)s %(message)s",
     )
 
-    asyncio.run(run(concurrency=args.concurrency, dry_run=args.dry_run))
+    asyncio.run(run(concurrency=args.concurrency, dry_run=args.dry_run, skip_failed=args.skip_failed))
 
 
 if __name__ == "__main__":
