@@ -115,9 +115,12 @@ CARRIERS = [
 
     # ── MN ──────────────────────────────────────────────────────────────────
     # Blue Plus — already have bcbsmn_basicrx_4tier_2026.pdf in sbc_pdfs/mn/formulary/
-    # Quartz — already have quartz_4tier_2026.pdf
     # UCare — already have ucare_ifp_2026.pdf
     # HealthPartners — already have healthpartners_formulary_2026.pdf
+    ("MN", "quartz_mn", ["30242", "70373"],
+     "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf",
+     "quartz_mn_individual_formulary_2026.pdf",
+     "VERIFIED — Quartz Health Plan MN Individual & Family Standard Formulary 2026. 3-col, 117 pages."),
     ("MN", "medica_mn", ["31616"],
      "https://www.medica.com/-/media/Documents/Pharmacy/Individual/2026/2026-IFB-Formulary-MN.pdf",
      "medica_mn_ifb_formulary_2026.pdf",

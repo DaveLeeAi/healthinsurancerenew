@@ -19,8 +19,10 @@ import argparse
 import json
 import logging
 import re
+import ssl
 import sys
 import time
+import urllib.request
 from collections import Counter
 from pathlib import Path
 
@@ -67,6 +69,10 @@ TIER_MAP = {
     "T1": "GENERIC", "T2": "PREFERRED-BRAND",
     "T3": "NON-PREFERRED-BRAND", "T4": "SPECIALTY",
     "T5": "NON-FORMULARY",
+    # Quartz MN (parenthetical form)
+    "T1 (G)": "GENERIC", "T2 (PB)": "PREFERRED-BRAND",
+    "T3 (NP)": "NON-PREFERRED-BRAND", "T4 (SP)": "SPECIALTY",
+    "T1 PV": "ACA-PREVENTIVE", "T2 PV": "ACA-PREVENTIVE", "T3 PV": "ACA-PREVENTIVE",
     # BCBS VT
     "TIER 01": "GENERIC", "TIER 02": "PREFERRED-BRAND",
     "TIER 03": "NON-PREFERRED-BRAND", "TIER 04": "SPECIALTY",
@@ -658,6 +664,96 @@ def parse_ibx_amerihealth(pdf_path: Path, issuer_ids: list, state: str,
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# PARSER: Centene/Ambetter API JSON — https://api.centene.com/ambetter/reference/drugs-AMB-XX.json
+# ══════════════════════════════════════════════════════════════════════════════
+
+_CENTENE_JSON_TIER_MAP = {
+    "GENERIC": "GENERIC",
+    "PREFERREDGENERIC": "PREFERRED-GENERIC",
+    "PREFERREDBRAND": "PREFERRED-BRAND",
+    "NON-PREFERREDBRAND": "NON-PREFERRED-BRAND",
+    "NON-PREFERREDGENERIC-NON-PREFERREDBRAND": "NON-PREFERRED-BRAND",
+    "SPECIALTY": "SPECIALTY",
+    "SPECIALTYGENERIC": "SPECIALTY-GENERIC",
+    "SPECIALTYDRUGS": "SPECIALTY",
+    "ZEROCOSTSHAREPREVENTIVEDRUGS": "ACA-PREVENTIVE",     # IL spelling (no "ative")
+    "ZEROCOSTSHAREPREVENTATIVEDRUGS": "ACA-PREVENTIVE",   # NJ/other spelling
+    "PREVENTIVE": "ACA-PREVENTIVE",
+    "NONFORMULARY": "NON-FORMULARY",
+}
+
+_SSL_CTX = ssl.create_default_context()
+_SSL_CTX.check_hostname = False
+_SSL_CTX.verify_mode = ssl.CERT_NONE
+
+
+def parse_centene_json(url: str, issuer_ids: list, state: str) -> list[dict]:
+    """Parse Centene/Ambetter API JSON drug list.
+
+    URL format: https://api.centene.com/ambetter/reference/drugs-AMB-XX.json
+    Returns one record per unique drug_name (deduped across plans).
+    """
+    log.info("  Centene JSON: fetching %s", url)
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
+    try:
+        with urllib.request.urlopen(req, context=_SSL_CTX, timeout=60) as r:
+            raw = json.loads(r.read())
+    except Exception as e:
+        log.error("  Centene JSON fetch failed: %s", e)
+        return []
+
+    if not isinstance(raw, list):
+        log.error("  Centene JSON: unexpected format (expected list)")
+        return []
+
+    log.info("  Centene JSON: %d raw records", len(raw))
+    seen: set[str] = set()
+    records: list[dict] = []
+    for item in raw:
+        drug_name = clean_name(str(item.get("drug_name", "")))
+        if not drug_name or drug_name in seen:
+            continue
+        seen.add(drug_name)
+
+        plans = item.get("plans", [])
+        if not plans:
+            continue
+
+        # Use first plan's tier/flags (same drug, same tier across plans for same issuer)
+        p = plans[0]
+        tier_raw = str(p.get("drug_tier", "")).strip().upper().replace(" ", "")
+        tier = _CENTENE_JSON_TIER_MAP.get(tier_raw, tier_raw) if tier_raw else ""
+        if not tier:
+            continue
+
+        rxnorm = str(item.get("rxnorm_id", "")) or None
+        flags = {
+            "prior_authorization": any(pl.get("prior_authorization") for pl in plans),
+            "step_therapy": any(pl.get("step_therapy") for pl in plans),
+            "quantity_limit": any(pl.get("quantity_limit") for pl in plans),
+        }
+
+        records.append({
+            "drug_name": drug_name,
+            "drug_tier": tier,
+            "prior_authorization": flags["prior_authorization"],
+            "step_therapy": flags["step_therapy"],
+            "quantity_limit": flags["quantity_limit"],
+            "quantity_limit_detail": None,
+            "specialty": "SPECIALTY" in tier.upper(),
+            "issuer_ids": issuer_ids,
+            "rxnorm_id": rxnorm,
+            "source_pdf": f"centene_api_{state.lower()}.json",
+            "state_code": state,
+            "plan_year": PLAN_YEAR,
+            "is_priority_drug": is_priority(drug_name),
+        })
+
+    log.info("  → %d unique drugs from Centene JSON", len(records))
+    return records
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # CARRIER DEFINITIONS — all 41 downloadable carriers
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -1083,6 +1179,61 @@ CARRIER_DEFS = {
         "parser": "standard_3col", "start_page": 13, "end_page": -1,
     },
 
+    # ── MN gap carriers ────────────────────────────────────────────────────────
+    "quartz_mn": {
+        # HIOS 30242 = Quartz Health Plan MN Corporation (existing MN data)
+        # HIOS 70373 = Quartz Health Plan, Inc. (WI parent — also offers in MN)
+        # Both share the same quartzbenefits.com formulary PDF.
+        "state": "MN", "issuer_ids": ["30242", "70373"],
+        "issuer_name": "Quartz Health Plan (MN)",
+        "pdf": "quartz_mn_individual_formulary_2026.pdf",
+        "url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf",
+        # 3-col: Drug Name | Drug Tier | Notes. Drug table starts page 20 (index 19).
+        "parser": "standard_3col", "start_page": 19, "end_page": 101,
+    },
+
+    # ── IL gap carriers ────────────────────────────────────────────────────────
+    "ambetter_il": {
+        # HIOS 27833. Centene API JSON — replaces old 99167 placeholder.
+        "state": "IL", "issuer_ids": ["27833", "99167"],
+        "issuer_name": "Ambetter (IL) — Centene",
+        "pdf": None,  # JSON source — no PDF
+        "url": "https://api.centene.com/ambetter/reference/drugs-AMB-IL.json",
+        "parser": "centene_json",
+    },
+    "oscar_il": {
+        # HIOS 11574 = Oscar Health Plan of Illinois, Inc. Confirmed from plan ID 11574IL0010053.
+        "state": "IL", "issuer_ids": ["11574"],
+        "issuer_name": "Oscar Health (IL)",
+        "pdf": "oscar_il_4t_formulary_2026.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/2Hw9ni8AT8gZNlWzniNeNR/b74be679716ee5423e64457ac79a944a/Oscar_4T_IL_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        # 4-col: col[0]=blank/category, col[1]=Drug Name, col[2]=Drug Tier, col[3]=Notes
+        "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
+        "min_cols": 4, "start_page": 7, "end_page": -1,
+    },
+
+    # ── NJ gap carriers ────────────────────────────────────────────────────────
+    "ambetter_nj": {
+        # HIOS 17970. Centene API JSON. Confirmed from plan ID 17970NJ0010003.
+        "state": "NJ", "issuer_ids": ["17970"],
+        "issuer_name": "Ambetter (NJ) — Centene",
+        "pdf": None,
+        "url": "https://api.centene.com/ambetter/reference/drugs-AMB-NJ.json",
+        "parser": "centene_json",
+    },
+
+    # ── NY gap carriers ────────────────────────────────────────────────────────
+    "oscar_ny": {
+        # HIOS 48396. 3-tier NY individual plan.
+        "state": "NY", "issuer_ids": ["48396"],
+        "issuer_name": "Oscar Health (NY)",
+        "pdf": "oscar_ny_3t_formulary_2026.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/5V5W0bduhehLDqK6CNPl4Z/1583de01d37024720ea42cc196a99197/Oscar_3T_NY_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        # 4-col: col[0]=blank/category, col[1]=Drug Name, col[2]=Drug Tier, col[3]=Notes
+        "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
+        "min_cols": 4, "start_page": 7, "end_page": -1,
+    },
+
     # ── ME gap carriers ────────────────────────────────────────────────────────
     "hphc_ne_me": {
         # Harvard Pilgrim Health Care of New England — ME issuer, likely same formulary
@@ -1102,16 +1253,21 @@ CARRIER_DEFS = {
 
 def parse_carrier(key: str, cdef: dict) -> list[dict]:
     """Dispatch to the right parser for a carrier."""
+    parser = cdef["parser"]
+    state = cdef["state"]
+    ids = cdef["issuer_ids"]
+
+    # JSON-based parsers (no PDF needed)
+    if parser == "centene_json":
+        return parse_centene_json(cdef["url"], ids, state)
+
     pdf_path = RAW_DIR / cdef["pdf"]
     if not pdf_path.exists():
         log.warning("  PDF not found: %s", pdf_path)
         return []
 
-    parser = cdef["parser"]
     sp = cdef.get("start_page", 0)
     ep = cdef.get("end_page", -1)
-    state = cdef["state"]
-    ids = cdef["issuer_ids"]
 
     if parser == "standard_3col":
         return parse_standard_3col(pdf_path, ids, state, sp, ep,
@@ -1162,7 +1318,7 @@ def merge_state_output(state: str, carrier_results: dict[str, dict]) -> None:
             "issuer_id": result["issuer_ids"][0],
             "issuer_name": result["issuer_name"],
             "state_code": state,
-            "source": result["pdf"],
+            "source": result["pdf"] or result.get("url", ""),
             "source_url": result.get("url", ""),
             "status": "success" if result["count"] > 0 else "empty",
             "drug_records": result["count"],

@@ -1007,7 +1007,7 @@
       "exchange_name": "Get Covered Illinois",
       "exchange_type": "SBM",
       "exchange_url": "https://getcovered.illinois.gov",
-      "state_drugs_total": 4296,
+      "state_drugs_total": 6742,
       "carriers": [
         {
           "carrier_name": "Centene/Ambetter (IL)",
@@ -1019,7 +1019,7 @@
           "tiers": 4,
           "status": "verified",
           "last_fetched": "2026-03-17",
-          "drugs_parsed": 4296,
+          "drugs_parsed": 4293,
           "year_pattern": "Centene API â€” same URL, content updates annually",
           "notes": "IL transitioned from SBM-FP to full SBM for 2026. Centene API pattern same as NJ/PA/WA. Other IL carriers may still appear in FFE PUF â€” verify annually.",
           "fetch_method": "json_api",
@@ -1027,7 +1027,7 @@
         },
         {
           "carrier_name": "Oscar Health (IL)",
-          "hios_prefix": "unknown",
+          "hios_prefix": "11574",
           "formulary_url": "https://assets.ctfassets.net/plyq12u1bv8a/2Hw9ni8AT8gZNlWzniNeNR/b74be679716ee5423e64457ac79a944a/Oscar_4T_IL_STND_Member_Doc__January_2026__as_of_09162025.pdf",
           "formulary_url_6t": "https://assets.ctfassets.net/plyq12u1bv8a/5A5XzJmEP8a51qQnbEo1DY/bb71f5ca061e0a2aeeee1617559d3672/Oscar_6T_IL_STND_Member_Doc__January_2026__as_of_09162025__2_.pdf",
           "formulary_type": "pdf",
@@ -1044,7 +1044,7 @@
             "4t": "data/processed/formulary_oscar_il_4t_2026.json",
             "6t": "data/processed/formulary_oscar_il_6t_2026.json"
           },
-          "notes": "6T filename has __2_ suffix (duplicate revision). Parsed 2026-04-04.",
+          "notes": "6T filename has __2_ suffix (duplicate revision). Parsed 2026-04-04. HIOS 11574 confirmed from plan ID 11574IL0010053.",
           "fetch_method": "webfetch_pdf"
         }
       ]
@@ -1907,7 +1907,7 @@
       "exchange_name": "Get Covered New Jersey",
       "exchange_type": "SBM",
       "exchange_url": "https://www.getcovered.nj.gov",
-      "state_drugs_total": 9282,
+      "state_drugs_total": 10376,
       "carriers": [
         {
           "carrier_name": "Centene/Ambetter (NJ)",
@@ -1919,7 +1919,7 @@
           "tiers": 4,
           "status": "verified",
           "last_fetched": "2026-03-17",
-          "drugs_parsed": 4364,
+          "drugs_parsed": 4360,
           "year_pattern": "Centene API â€” same URL, content updates annually",
           "notes": "Direct drugs URL bypasses index.",
           "fetch_method": "json_api",
@@ -2140,7 +2140,7 @@
       "exchange_name": "NY State of Health",
       "exchange_type": "SBM",
       "exchange_url": "https://nystateofhealth.ny.gov",
-      "state_drugs_total": 31439,
+      "state_drugs_total": 31126,
       "carriers": [
         {
           "carrier_name": "Ambetter / Fidelis Care (NY)",
@@ -2695,7 +2695,7 @@
       "exchange_name": "HealthSource RI",
       "exchange_type": "SBM",
       "exchange_url": "https://healthsourceri.com",
-      "state_drugs_total": 0,
+      "state_drugs_total": 7283,
       "carriers": [
         {
           "carrier_name": "BlueCross BlueShield of RI",
