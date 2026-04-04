@@ -1143,12 +1143,12 @@
           "pbm": "OptumRx",
           "tiers": 5,
           "status": "verified",
-          "last_fetched": "2026-04-03",
+          "last_fetched": "2026-04-04",
           "drugs_parsed": 7741,
           "year_pattern": "OptumRx contenthub — path contains '2026-oe'. Replace year portion.",
-          "notes": "5-tier Core MA. Point32Health subsidiary.",
+          "notes": "5-tier Core MA. Point32Health subsidiary. Additional formulary variants also parsed (see formulary_harvardpilgrim_variants_2026.json): ConnectorCare-3T (2,309), Premium-3T (2,632), Premium-4T (2,652), Value-5T (2,459). All use same OptumRx contenthub path pattern.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly — no auth needed"
+          "fetch_notes": "PDF downloads directly — no auth needed. All variant URLs: HPHC-Value-ConnectorCare-3T-Comprehensive.pdf, HPHC-Premium-3T-Comprehensive.pdf, HPHC-Premium-4T-Comprehensive.pdf, HPHC-Value-5T-Comprehensive.pdf"
         },
         {
           "carrier_name": "Tufts Health Direct (MA)",
@@ -1234,17 +1234,17 @@
           "carrier_name": "Health Plans Inc. / Community Care (MA)",
           "hios_prefix": "88806",
           "formulary_url": null,
-          "formulary_type": null,
-          "source_type": "not_found",
-          "pbm": "Unknown",
+          "formulary_type": "online_only",
+          "source_type": "online_only",
+          "pbm": "Express Scripts",
           "tiers": null,
-          "status": "not_found",
+          "status": "confirmed_online_only",
           "last_fetched": null,
           "drugs_parsed": null,
-          "year_pattern": "Unknown carrier identity — may be AllWays Health Partners or Fallon TPA entity",
-          "notes": "Community Care network. No discoverable MR formulary endpoint.",
-          "fetch_method": "manual_download",
-          "fetch_notes": "URL not yet discovered — check carrier website"
+          "year_pattern": "Check hpitpa.com and bmc.healthplansinc.com annually",
+          "notes": "HPI is a TPA subsidiary of Harvard Pilgrim. Self-funded employer plans, not ACA exchange. PBM is Express Scripts. Only a 1-page Preferred Drug List flyer published (bmc.healthplansinc.com/media/695891/preferred-drug-list_member_flyer.pdf) — not a full formulary. No bulk data available.",
+          "fetch_method": "online_only",
+          "fetch_notes": "bmc.healthplansinc.com member portal — drug-by-drug only"
         }
       ]
     },
