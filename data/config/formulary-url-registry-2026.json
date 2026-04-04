@@ -20,11 +20,12 @@
     "total_states": 51,
     "ffe_states": 29,
     "sbm_states": 22,
-    "ffe_drugs_total": 196303,
+    "ffe_drugs_total": 12955136,
     "sbm_drugs_total": 332096,
-    "ffe_source": "formulary_intelligence.json (49 MB, 133 issuers)",
+    "ffe_source": "formulary_intelligence.json (4.0 GB, 12,955,136 plan-level records — 196,303 original deduped + 12,758,833 from 32 additional issuers fetched 2026-04-04)",
     "sbm_source": "Per-state formulary_sbm_XX.json files",
-    "total_drugs": 528399
+    "total_drugs": 13287232,
+    "notes": "FFE records are plan-level (one record per drug x plan). SBM records are drug-level per-carrier formulary files. Not directly comparable."
   },
   "states": {
     "AL": {
