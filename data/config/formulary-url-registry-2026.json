@@ -934,7 +934,7 @@
           "last_fetched": "2026-04-04",
           "drugs_parsed": 5322,
           "year_pattern": "Large group PDF updated periodically — check modahealth.com/medical/formularies.shtml",
-          "notes": "No individual/ACA formulary PDF published. Large group commercial formulary (updated 2026-03-01, 679 pages) used as proxy — same PBM (Navitus), same drug coverage basis. Parsed via parse_modahealth_formulary.py → formulary_modahealth_largegroup_2026.json. Tier dist: Excluded 2405, Select 1219, Specialty 918, High Cost Generics 629, Non-Preferred 70, Value 54, Preventive 15, Preferred 12.",
+          "notes": "No IFP formulary PDF published. Large group PDF used as IFP proxy — same PBM (Navitus), same drug coverage basis. Parsed via parse_modahealth_formulary.py → formulary_modahealth_ifp_2026.json. Tier dist: Excluded 2405, Select 1219, Specialty 918, High Cost Generics 629, Non-Preferred 70, Value 54, Preventive 15, Preferred 12.",
           "fetch_method": "pdf_download",
           "fetch_notes": "Direct PDF download — no auth needed"
         }
