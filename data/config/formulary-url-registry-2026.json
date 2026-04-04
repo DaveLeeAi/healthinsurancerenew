@@ -25,7 +25,11 @@
     "ffe_source": "formulary_intelligence.json (4.0 GB, 12,955,136 plan-level records — 196,303 original deduped + 12,758,833 from 32 additional issuers fetched 2026-04-04)",
     "sbm_source": "Per-state formulary_sbm_XX.json files",
     "total_drugs": 13287232,
-    "notes": "FFE records are plan-level (one record per drug x plan). SBM records are drug-level per-carrier formulary files. Not directly comparable."
+    "notes": "FFE records are plan-level (one record per drug x plan). SBM records are drug-level per-carrier formulary files. Not directly comparable. | +6 FN issuers appended 2026-04-04: CareSource MI/NC/NV, Anthem GA/NV/KY",
+    "ffe_total_records": 12981215,
+    "ffe_issuers_covered": 205,
+    "total_records": 13313311,
+    "last_updated": "2026-04-04"
   },
   "states": {
     "AL": {
