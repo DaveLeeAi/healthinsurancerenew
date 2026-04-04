@@ -1035,11 +1035,12 @@ CARRIER_DEFS = {
         "parser": "standard_3col", "start_page": 6, "end_page": -1, "min_cols": 2,
     },
     "oscar_va": {
-        # NOTE: Oscar VA HIOS prefix TBD — update issuer_ids once confirmed
-        "state": "VA", "issuer_ids": ["VA_OSCAR_TBD"],
+        # HIOS prefix 25922 confirmed via HealthSherpa VA plan URLs (25922VA001xxxxx)
+        "state": "VA", "issuer_ids": ["25922"],
         "issuer_name": "Oscar Health (VA)",
-        "pdf": "oscar_va_4t_formulary_2026.pdf",
-        "url": "https://assets.ctfassets.net/plyq12u1bv8a/31SHD9kMQqcXQjBa3Kja4R/094cd572318caa382cf01e323ababed6/Oscar_4T_VA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        # April 2026 update (as of 03/25/2026) — newer than January version
+        "pdf": "oscar_va_4t_formulary_2026_apr.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/2MZUcXQmrJ9F5OY99YNSmt/51c9c67ab20b524f6135b88946b53d11/Oscar_4T_VA_STND_Member_Doc__April_2026__as_of_03252026.pdf",
         # Oscar PDFs: col[0]=blank/category, col[1]=drug name, col[2]=tier, col[3]=notes
         "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
         "min_cols": 4, "start_page": 8, "end_page": -1,
