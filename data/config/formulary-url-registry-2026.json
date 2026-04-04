@@ -323,11 +323,11 @@
           "source_type": "formulary_navigator",
           "pbm": "CVS Caremark",
           "tiers": 4,
-          "status": "verified",
+          "status": "exited_2026",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2580,
           "year_pattern": "FormularyNavigator FBO/41 path â€” replace '2026' with new year. Note: Aetna exited ALL ACA markets for 2026 nationally, but this CA-specific product may be a new/different entity.",
-          "notes": "NEW ISSUER DISCOVERY 2026-04-03. 302 pages. HIOS ID not yet confirmed.",
+          "notes": "Aetna CVS Health exited Covered California IFP at end of 2025. Data may be from 2025 plan year.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly â€” no auth needed"
         },
@@ -346,11 +346,11 @@
             "5": "Specialty",
             "6": "Specialty High"
           },
-          "status": "verified",
+          "status": "exited_2024",
           "last_fetched": "2026-04-03",
           "drugs_parsed": 2502,
           "year_pattern": null,
-          "notes": "Parsed from oscar_fl_2026_formulary.pdf. Output: formulary_sbm_CA_oscar.json. 2502 drugs, 6-tier breakdown.",
+          "notes": "Oscar Health exited CA individual ACA market after 2023. Not on Covered California for 2024-2026.",
           "fetch_method": "pdf_parse",
           "fetch_notes": "Locally parsed PDF. issuer_id=20523"
         }
@@ -1385,6 +1385,15 @@
           "notes": "HPI is a TPA subsidiary of Harvard Pilgrim. Self-funded employer plans, not ACA exchange. PBM is Express Scripts. Only a 1-page Preferred Drug List flyer published (bmc.healthplansinc.com/media/695891/preferred-drug-list_member_flyer.pdf) â€” not a full formulary. No bulk data available.",
           "fetch_method": "online_only",
           "fetch_notes": "bmc.healthplansinc.com member portal â€” drug-by-drug only"
+        },
+        {
+          "carrier_name": "Mass General Brigham Health Plan (MA)",
+          "hios_prefix": "unknown_mgb_ma",
+          "status": "missing_no_url",
+          "drugs_parsed": 0,
+          "last_fetched": null,
+          "formulary_url": null,
+          "notes": "Listed in 2026 IFP fact-check. New carrier on MA Health Connector. Formulary URL not yet sourced."
         }
       ]
     },
@@ -1530,18 +1539,18 @@
           "fetch_notes": "Express Scripts embedded JS widget only"
         },
         {
-          "carrier_name": "TARO Health (ME)",
+          "carrier_name": "Mending (formerly TARO Health) (ME)",
           "hios_prefix": "54879",
           "formulary_url": null,
           "formulary_type": null,
           "source_type": "not_found",
           "pbm": "Unknown",
           "tiers": null,
-          "status": "not_found",
+          "status": "not_found_renamed",
           "last_fetched": null,
           "drugs_parsed": null,
           "year_pattern": "New market entrant â€” check tarohealth.com annually",
-          "notes": "Direct Primary Care (DPC) integrated insurer. New entrant to ME exchange.",
+          "notes": "Renamed from TARO Health to Mending for 2026. DPC-integrated insurer, new ME exchange entrant. No static formulary file found yet. Check mending.com or FormularyNavigator near OEP.",
           "fetch_method": "online_only",
           "fetch_notes": "No 2026 formulary PDF published"
         }
@@ -1677,6 +1686,15 @@
           "notes": "Already have healthpartners_formulary_2026.pdf locally.",
           "fetch_method": "auto_download",
           "fetch_notes": "Direct download"
+        },
+        {
+          "carrier_name": "HealthPartners Insurance Company (MN) — new for 2026",
+          "hios_prefix": "unknown_hpic_mn",
+          "status": "missing_new_entrant",
+          "drugs_parsed": 0,
+          "last_fetched": null,
+          "formulary_url": null,
+          "notes": "New to MNsure for 2026 per fact-check. Separate legal entity from HealthPartners Inc (79888). Formulary likely shared."
         }
       ]
     },
@@ -2081,6 +2099,15 @@
           "notes": "Blue Community product line. No discoverable MR endpoint.",
           "fetch_method": "manual_download",
           "fetch_notes": "URL not yet discovered â€” check carrier website"
+        },
+        {
+          "carrier_name": "Presbyterian Health Plan (NM)",
+          "hios_prefix": "unknown_presbyterian_nm",
+          "status": "missing_no_url",
+          "drugs_parsed": 0,
+          "last_fetched": null,
+          "formulary_url": null,
+          "notes": "Listed in 2026 IFP fact-check. Presbyterian is a major NM carrier. Formulary URL not yet sourced."
         }
       ]
     },
@@ -3534,9 +3561,10 @@
     {
       "carrier": "CareSource",
       "states": [
-        "KY"
+        "KY",
+        "NC"
       ],
-      "notes": "Exited KY marketplace for 2026"
+      "notes": "Exited KY and NC marketplace for 2026"
     },
     {
       "carrier": "Friday Health Plans",
@@ -3559,6 +3587,34 @@
         "CA"
       ],
       "notes": "Exited CO 2023, CA after 2023. Not in Covered California 2026."
+    },
+    {
+      "carrier": "Molina",
+      "states": [
+        "MI"
+      ],
+      "notes": "Exited MI marketplace after 2025"
+    },
+    {
+      "carrier": "Mountain Health CO-OP",
+      "states": [
+        "WY"
+      ],
+      "notes": "Exited WY marketplace after 2025"
+    },
+    {
+      "carrier": "Primewell Health Services",
+      "states": [
+        "MS"
+      ],
+      "notes": "Exited MS marketplace for 2026"
+    },
+    {
+      "carrier": "Chorus Community Health Plan",
+      "states": [
+        "WI"
+      ],
+      "notes": "Exited WI marketplace after 2025"
     }
   ],
   "blocked_carriers": [
