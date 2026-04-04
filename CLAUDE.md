@@ -55,16 +55,18 @@
 
 ## Data Coverage
 
-- **50 states + DC** covered (RI formulary blocked — SBC data complete)
-- **518,614 total drug records** (196,303 FFE + 322,311 SBM)
+- **50 states + DC** — 320/320 ACA marketplace carriers = **100% carrier coverage**
+- **15,245,850 total formulary records** (14,854,187 FFE plan-level + 391,663 SBM drug-level)
+- **45 enrichment files** with PA/QL/ST restriction data (157,885 drugs)
 - **20,354+ SBC plan variants** (FFE + SBM)
 - Formulary URL registry: `data/config/formulary-url-registry-2026.json` (primary source of truth)
-- SBM source registry: `data/config/sbm-source-registry.json` (legacy — registry is primary)
+- Carrier fact-check: `docs/aca_2026_ifp_carriers_fact_check.md` (320 carriers verified)
+- Formulary landing page: `docs/50-states-formulary.md` (complete audit)
 - Annual refresh scripts: `scripts/refresh/annual-formulary-refresh.py` and `scripts/refresh/annual-sbc-refresh.py`
 - Refresh calendar: `docs/annual-refresh-calendar.md`
 
-### SBM State List (21 + DC for PY2026)
-Full SBM (21): CA, CO, CT, DC, GA, ID, IL, KY, MA, MD, ME, MN, NJ, NM, NV, NY, PA, RI, VA, VT, WA
+### SBM State List (22 + DC for PY2026)
+Full SBM (22): CA, CO, CT, DC, GA, ID, IL, KY, MA, MD, ME, MN, NJ, NM, NV, NY, OR, PA, RI, VA, VT, WA
 SBM-FP (2): AR, OR
 Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
