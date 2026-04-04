@@ -10,9 +10,9 @@
 
 | Metric | Value |
 |--------|-------|
-| **FFE formulary (29 FFE states)** | **12,955,136 plan-level records** — `formulary_intelligence.json` (4.0 GB, 186 issuers) |
+| **FFE formulary (29 FFE states)** | **14,635,973 plan-level records** — `formulary_intelligence.json` (4.44 GB, 211 issuers) |
 | **SBM formulary (22 SBM states + DC)** | **332,096 drug-level records** — per-state `formulary_sbm_XX.json` files |
-| **Total records** | **13,287,232** |
+| **Total records** | **14,968,069** |
 | **SBC plan variants** | **27,588 total (50 states + DC — 100% coverage)** |
 | FFE SBC plan variants | 20,354 — `sbc_decoded.json` |
 | SBM SBC plan variants | 7,234 — 22 `sbc_sbm_XX.json` files |
@@ -363,18 +363,18 @@
 **Source:** `formulary_intelligence.json` (4.0 GB)
 **Refresh:** Download new MR-PUF from `data.cms.gov`, run `python scripts/fetch/fetch_formulary_full.py`
 **Missing issuer re-fetch:** `python scripts/fetch/fetch_formulary_missing_ffe.py` (32/40 succeeded 2026-04-04)
+**6 additional carriers fetched 2026-04-04** via streaming + browser headers: AZ Blue (553K), Cambia UT (881K), Network Health WI (135K), Capital Health FL (40K), Community First TX (24K), GHC WI (21K) = **+1,654,758 records**
 
 States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, NH, OH, OK, SC, SD, TN, TX, UT, WI, WV, WY
 
-> **Note:** FFE records are plan-level (one record per drug × plan). Original deduped unique drugs: 196,303. Post missing-issuer fetch: 12,955,136 total records (includes plan-level expansion across all plan variants per issuer).
+> **Note:** FFE records are plan-level (one record per drug × plan). Original deduped unique drugs: 196,303. Total as of 2026-04-04: **14,635,973 records** across 211 issuers.
 
 *GA is included in SBM formulary registry above despite using federal enrollment platform. AR and OR are SBM-FP states captured separately.*
 
-### Remaining FFE Failures (8 issuers)
+### Remaining FFE Failures (2 issuers)
 | Type | Issuers | Fix Needed |
 |------|---------|------------|
-| 403 Forbidden | Capital Health FL, Community First TX, Dean WI, Medica SSM MO, AZ Blue (SSL cert) | Browser headers / session cookies |
-| MemoryError | Network Health WI, Cambia UT, GHC WI | Streaming download (avoid `json.loads(raw)`) |
+| 403 Forbidden | Dean WI (38345), Medica SSM MO (47840) | Browser session cookies / Imperva bypass |
 
 ---
 
