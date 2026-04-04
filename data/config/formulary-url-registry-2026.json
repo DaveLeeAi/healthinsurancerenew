@@ -1480,7 +1480,7 @@
       "exchange_name": "CoverME.gov",
       "exchange_type": "SBM",
       "exchange_url": "https://www.coverme.gov",
-      "state_drugs_total": 3905,
+      "state_drugs_total": 6202,
       "carriers": [
         {
           "carrier_name": "Anthem Blue Cross (ME) - Elevance",
@@ -1497,6 +1497,21 @@
           "notes": "Elevance index â†’ FormularyNavigator drugs/35. Standard CMS QHP schema.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly â€” no auth needed"
+        },
+        {
+          "carrier_name": "Harvard Pilgrim Health Care of New England (ME)",
+          "hios_prefix": "77432",
+          "formulary_url": "https://contenthub-aem.optumrx.com/content/dam/contenthub/rx-assets/en/documents/clients/harvard-pilgrim/hphc-formulary-documents/2026-oe/HPHC-Core-MA-5T-Comprehensive.pdf",
+          "formulary_type": "pdf",
+          "source_type": "optumrx_cdn",
+          "pbm": "OptumRx",
+          "tiers": 5,
+          "status": "verified",
+          "last_fetched": "2026-04-04",
+          "drugs_parsed": 2397,
+          "notes": "Reuses MA HPHC Core 5T formulary (harvardpilgrim_ma_core_5t_2026.pdf). Same formulary covers MA and ME plans.",
+          "fetch_method": "pdf_parse",
+          "parsed_file": "data/raw/formulary_pdf/harvardpilgrim_ma_core_5t_2026.pdf"
         },
         {
           "carrier_name": "Community Health Options (ME)",
@@ -2024,22 +2039,6 @@
           "notes": "Also available via national Molina JSON endpoint (cmsjson/378245). 3,830 drugs in state file. Parsed 2026-04-04 via CMS JSON endpoint cmsjson/378245. Replaced old 00560 placeholder.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly â€” no auth needed"
-        },
-        {
-          "carrier_name": "Ambetter / Western Sky (NM)",
-          "hios_prefix": "57173",
-          "formulary_url": null,
-          "formulary_type": "pdf",
-          "source_type": "direct_download",
-          "pbm": "Centene/IngenioRx",
-          "tiers": 4,
-          "status": "not_found",
-          "last_fetched": "2026-04-03",
-          "drugs_parsed": null,
-          "year_pattern": "Centene path â€” replace '2026' with new year. Subsidiary name: 'ambetter-from-western-sky-community-care'",
-          "notes": "PATTERN â€” may 404. Western Sky Community Care is Centene NM subsidiary.",
-          "fetch_method": "auto_download",
-          "fetch_notes": "FormularyNavigator siteCode 0053161016 is senior/Medicare plan, not ACA IFP. ambetterhealth.com PDF URL redirects to HTML. Centene API 404 for NM. No ACA formulary PDF located."
         },
         {
           "carrier_name": "UnitedHealthcare (NM)",
