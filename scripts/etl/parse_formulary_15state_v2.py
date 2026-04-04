@@ -367,7 +367,7 @@ def parse_bcidaho(pdf_path, issuer_ids, start_page=5, end_page=-1):
 # Premera WA — word-position, drug x<320, tier x~333, notes x~393
 # ══════════════════════════════════════════════════════════════════════════════
 
-def parse_premera(pdf_path, issuer_ids, start_page=5, end_page=-1):
+def parse_premera(pdf_path, issuer_ids, start_page=5, end_page=-1, state="WA"):
     """Parse Premera Blue Cross Metallic formulary."""
     records = []
     with pdfplumber.open(str(pdf_path)) as pdf:
@@ -650,6 +650,15 @@ V2_CARRIERS = {
                     "pdf": "lifewise_wa_formulary_2026.pdf", "parser": "premera", "start_page": 5},
     "kaiser_wa": {"state": "WA", "issuer_ids": ["23371"], "issuer_name": "Kaiser Permanente (WA-NW)",
                   "pdf": "kaiser_wa_marketplace_formulary_2026.pdf", "parser": "premera", "start_page": 3},
+
+    # ── Gap carriers ──────────────────────────────────────────────────────────
+    # NOTE: kaiser_or and kaiser_va are handled by parse_formulary_15state.py (v1)
+    # using standard_3col with tier_col=2 (Kaiser table format differs from Premera).
+    # VA UHC: IFP PDL dual-column format (same layout as MD/MA/NJ/WA UHC)
+    "uhc_va": {"state": "VA", "issuer_ids": ["24251"],
+               "issuer_name": "UnitedHealthcare (VA)",
+               "pdf": "uhc_va_ifp_pdl_2026.pdf",
+               "parser": "uhc_dual", "start_page": 8},
 }
 
 
@@ -672,7 +681,7 @@ def parse_carrier(key, cdef):
     elif p == "hpn_nv":
         return parse_hpn_nv(pdf_path, ids, sp)
     elif p == "premera":
-        return parse_premera(pdf_path, ids, sp)
+        return parse_premera(pdf_path, ids, sp, state=state)
     elif p == "wellsense":
         return parse_wellsense(pdf_path, ids, sp)
     elif p == "chpw":

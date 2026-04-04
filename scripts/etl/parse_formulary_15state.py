@@ -60,6 +60,9 @@ TIER_MAP = {
     "LCG": "LOW-COST-GENERIC", "G": "GENERIC",
     "PB": "PREFERRED-BRAND", "NP": "NON-PREFERRED-BRAND",
     "S": "SPECIALTY", "SP": "SPECIALTY",
+    # UPMC Advantage Choice
+    "SG": "GENERIC", "PG": "PREFERRED-GENERIC",
+    "PBG": "PREFERRED-BRAND", "NP": "NON-PREFERRED-BRAND",
     # Geisinger T1-T5
     "T1": "GENERIC", "T2": "PREFERRED-BRAND",
     "T3": "NON-PREFERRED-BRAND", "T4": "SPECIALTY",
@@ -970,12 +973,15 @@ CARRIER_DEFS = {
     },
 
     # ── CT gap carriers ────────────────────────────────────────────────────────
-    "caresource_ct": {
+    "connecticare_choice_ct": {
+        # Issuer 76962 = ConnectiCare (Choice-branded plans). Not CareSource.
+        # Uses same ConnectiCare formulary PDF as issuer 86545.
         "state": "CT", "issuer_ids": ["76962"],
-        "issuer_name": "CareSource (CT)",
-        "pdf": "caresource_ct_formulary_2026.pdf",
-        "url": "https://www.caresource.com/documents/marketplace-2026-ct-formulary.pdf",
-        "parser": "centene", "start_page": 5, "end_page": -1,
+        "issuer_name": "ConnectiCare (CT — Choice plans)",
+        "pdf": "connecticare_ct_formulary_2026.pdf",
+        "url": "https://www.connecticare.com/en/-/media/Project/PWS/Microsites/ConnectiCare/PDFs/Members/Marketplace/EN/Pharmacy/CTFormulary2026.pdf",
+        # col[0]=Drug Name, col[1]=Formulary Status (Tier 1/2/3/4), col[2]=Requirements
+        "parser": "standard_3col", "start_page": 31, "end_page": -1,
     },
 
     # ── DC gap carriers ────────────────────────────────────────────────────────
@@ -984,7 +990,8 @@ CARRIER_DEFS = {
         "issuer_name": "UPMC Health Plan (DC)",
         "pdf": "upmc_advantage_choice_formulary_2026.pdf",
         "url": "https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf?t.download=true&u=oid6pr",
-        "parser": "standard_3col", "start_page": 5, "end_page": -1,
+        # Same PDF as UPMC PA. Tiers: SG/PG/PBG/NP/SP
+        "parser": "standard_3col", "start_page": 10, "end_page": -1,
     },
 
     # ── OR gap carriers ────────────────────────────────────────────────────────
@@ -993,7 +1000,9 @@ CARRIER_DEFS = {
         "issuer_name": "Kaiser Permanente (OR — NW region)",
         "pdf": "kaiser_nw_marketplace_formulary_2026.pdf",
         "url": "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/nw/washington-marketplace-formulary-nw-en-2026-commercial.pdf",
-        "parser": "standard_3col", "start_page": 3, "end_page": -1,
+        # NW Kaiser PDF: col[0]=drug, col[1]=None, col[2]=tier, col[3]=notes
+        "parser": "standard_3col", "name_col": 0, "tier_col": 2, "notes_col": 3,
+        "min_cols": 3, "start_page": 3, "end_page": -1,
     },
     "pacificsource_or": {
         "state": "OR", "issuer_ids": ["10091"],
@@ -1036,7 +1045,24 @@ CARRIER_DEFS = {
         "min_cols": 4, "start_page": 8, "end_page": -1,
     },
 
+    "sentara_va": {
+        "state": "VA", "issuer_ids": ["20507"],
+        "issuer_name": "Sentara Health Plans (VA)",
+        "pdf": "sentara_va_individual_formulary_2026.pdf",
+        "url": "https://shc-p-001.sitecorecontenthub.cloud/api/public/content/2bcba04af2334f9fab14d927a4221c12?v=723f233b",
+        # Standard 3-col: col[0]=Drug Name, col[1]=Drug Tier, col[2]=Requirements/Limits
+        "parser": "standard_3col", "start_page": 12, "end_page": -1,
+    },
+
     # ── PA gap carriers ────────────────────────────────────────────────────────
+    "upmc_pa": {
+        "state": "PA", "issuer_ids": ["16322", "62560"],
+        "issuer_name": "UPMC Health Plan (PA)",
+        "pdf": "upmc_advantage_choice_formulary_2026.pdf",
+        "url": "https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf?t.download=true&u=oid6pr",
+        # 3-col: col[0]=Drug Name, col[1]=Drug Tier (SG/PG/PBG/NP/SP), col[2]=Notes
+        "parser": "standard_3col", "start_page": 10, "end_page": -1,
+    },
     "oscar_pa": {
         "state": "PA", "issuer_ids": ["98517"],
         "issuer_name": "Oscar Health (PA)",
@@ -1044,6 +1070,16 @@ CARRIER_DEFS = {
         "url": "https://assets.ctfassets.net/plyq12u1bv8a/63B8wAgFLaG6cPTA9ZY9uy/a917f396ad20287d6a6234b17d2aa351/Oscar_4T_PA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
         "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
         "min_cols": 4, "start_page": 8, "end_page": -1,
+    },
+
+    # ── MA gap carriers ────────────────────────────────────────────────────────
+    "fallon_ma": {
+        "state": "MA", "issuer_ids": ["41304"],
+        "issuer_name": "Fallon Health (MA)",
+        "pdf": "fallon_ma_qhp_formulary_2026.pdf",
+        "url": "https://fm.formularynavigator.com/FBO/126/2026_QHP_Formulary.pdf",
+        # Standard 3-col: col[0]=Drug Name, col[1]=Drug Tier (Tier 1-4), col[2]=Requirements
+        "parser": "standard_3col", "start_page": 13, "end_page": -1,
     },
 
     # ── ME gap carriers ────────────────────────────────────────────────────────

@@ -273,11 +273,22 @@ CARRIERS = [
      "oscar_va_4t_formulary_2026.pdf",
      "VERIFIED in registry — Oscar VA 4-tier standard formulary"),
 
+    ("VA", "sentara_va", ["20507"],
+     "https://shc-p-001.sitecorecontenthub.cloud/api/public/content/2bcba04af2334f9fab14d927a4221c12?v=723f233b",
+     "sentara_va_individual_formulary_2026.pdf",
+     "VERIFIED — Sentara Individual & Family Plans 2026 formulary, 3MB PDF, updated 03/31/2026"),
+
     # ── PA gap carriers ────────────────────────────────────────────────────────
     ("PA", "oscar_pa", ["98517"],
      "https://assets.ctfassets.net/plyq12u1bv8a/63B8wAgFLaG6cPTA9ZY9uy/a917f396ad20287d6a6234b17d2aa351/Oscar_4T_PA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
      "oscar_pa_4t_formulary_2026.pdf",
      "VERIFIED in registry — Oscar PA 4-tier standard formulary"),
+
+    # ── MA gap carriers ────────────────────────────────────────────────────────
+    ("MA", "fallon_ma", ["41304"],
+     "https://fm.formularynavigator.com/FBO/126/2026_QHP_Formulary.pdf",
+     "fallon_ma_qhp_formulary_2026.pdf",
+     "VERIFIED — Fallon Health FCHP QHP formulary, FBO/126, 3.4MB PDF"),
 
     # ── ME gap carriers ────────────────────────────────────────────────────────
     ("ME", "hphc_ne_me", ["77432"],
