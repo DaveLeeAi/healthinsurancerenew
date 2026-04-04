@@ -11,7 +11,7 @@
 | Metric | Value |
 |--------|-------|
 | **FFE formulary (29 FFE states)** | **14,635,973 plan-level records** — `formulary_intelligence.json` (4.44 GB, 211 issuers) |
-| **SBM formulary (22 SBM states + DC)** | **332,096 drug-level records** — per-state `formulary_sbm_XX.json` files |
+| **SBM formulary (22 SBM states + DC)** | **374,008 drug-level records** — per-state `formulary_sbm_XX.json` files |
 | **Total records** | **14,968,069** |
 | **SBC plan variants** | **27,588 total (50 states + DC — 100% coverage)** |
 | FFE SBC plan variants | 20,354 — `sbc_decoded.json` |
@@ -226,13 +226,13 @@
 
 ---
 
-### NM — 8,369 drugs | 3/4 carriers | NEAR COMPLETE
+### NM — 8,071 drugs | 3/4 carriers | NEAR COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
 | ✅ | 19722 | Molina Healthcare of NM (PDF) | 2,257 |
-| ✅ | 75605 | BCBS New Mexico (PDF) | 2,670 |
-| ✅ | 65428 | UnitedHealthcare (NM) (PDF) | 3,516 |
+| ✅ | 75605 | BCBS New Mexico (PDF) | 2,596 |
+| ✅ | 65428 | UnitedHealthcare (NM) (PDF) | 3,218 |
 | ❌ | 57173 | Ambetter / Western Sky (NM) | 0 |
 
 *Ambetter NM PDF URL returns HTML redirect. 1 carrier remains blocked.*
@@ -403,8 +403,8 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 | IL | GetCoveredIllinois | 6,742 | 3 | Partial |
 | RI | HealthSource RI | 7,283 | 2 | Complete |
 | ME | CoverME.gov | 6,202 | 2 | Partial |
-| NM | beWellnm | 8,369 | 3/4 | Near Complete |
-| **Total SBM** | | **374,306** | | |
+| NM | beWellnm | 8,071 | 3/4 | Near Complete |
+| **Total SBM** | | **374,008** | | |
 
 ---
 
@@ -414,7 +414,7 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 |--------|---------|-------|
 | FFE formulary records | ≥ 14,635,973 plan-level | 4.44 GB file, 211 issuers |
 | FFE unique deduped drugs | ≥ 196,303 | Pre-plan-expansion baseline |
-| SBM formulary total | ≥ 374,306 drug-level | 22 SBM states + DC |
+| SBM formulary total | ≥ 374,008 drug-level | 22 SBM states + DC |
 | Total records (FFE + SBM) | ≥ 15,010,279 | Plan-level + drug-level combined |
 | SBC plan variants (total) | ≥ 27,588 | 50 states + DC |
 | SBC FFE plan variants | ≥ 20,354 | `sbc_decoded.json` |
