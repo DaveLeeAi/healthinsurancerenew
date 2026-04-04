@@ -226,16 +226,16 @@
 
 ---
 
-### NM — 4,927 drugs | 2/4 carriers | PARTIAL
+### NM — 8,369 drugs | 3/4 carriers | NEAR COMPLETE
 
 | Fetch | HIOS | Carrier | Drugs |
 |-------|------|---------|-------|
 | ✅ | 19722 | Molina Healthcare of NM (PDF) | 2,257 |
 | ✅ | 75605 | BCBS New Mexico (PDF) | 2,670 |
+| ✅ | 65428 | UnitedHealthcare (NM) (PDF) | 3,516 |
 | ❌ | 57173 | Ambetter / Western Sky (NM) | 0 |
-| ❌ | 65428 | UnitedHealthcare (NM) | 0 |
 
-*Ambetter NM PDF URL returns HTML redirect; UHC NM 403. 2 carriers remain blocked.*
+*Ambetter NM PDF URL returns HTML redirect. 1 carrier remains blocked.*
 
 ---
 
@@ -403,8 +403,8 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 | IL | GetCoveredIllinois | 6,742 | 3 | Partial |
 | RI | HealthSource RI | 7,283 | 2 | Complete |
 | ME | CoverME.gov | 6,202 | 2 | Partial |
-| NM | beWellnm | 4,927 | 2/4 | Partial |
-| **Total SBM** | | **370,864** | | |
+| NM | beWellnm | 8,369 | 3/4 | Near Complete |
+| **Total SBM** | | **374,306** | | |
 
 ---
 
@@ -412,18 +412,18 @@ States: AK, AL, AR, AZ, DE, FL, HI, IA, IN, KS, LA, MI, MO, MS, MT, NC, ND, NE, 
 
 | Metric | Baseline | Notes |
 |--------|---------|-------|
-| FFE formulary records | ≥ 12,955,136 plan-level | 4.0 GB file, 186 issuers |
+| FFE formulary records | ≥ 14,635,973 plan-level | 4.44 GB file, 211 issuers |
 | FFE unique deduped drugs | ≥ 196,303 | Pre-plan-expansion baseline |
-| SBM formulary total | ≥ 370,864 drug-level | 22 SBM states + DC |
-| Total records (FFE + SBM) | ≥ 13,326,000 | Plan-level + drug-level combined |
+| SBM formulary total | ≥ 374,306 drug-level | 22 SBM states + DC |
+| Total records (FFE + SBM) | ≥ 15,010,279 | Plan-level + drug-level combined |
 | SBC plan variants (total) | ≥ 27,588 | 50 states + DC |
 | SBC FFE plan variants | ≥ 20,354 | `sbc_decoded.json` |
 | SBC SBM plan variants | ≥ 7,234 | Per-state `sbc_sbm_XX.json` |
-| FFE issuers covered | 186 / 214 | 28 still missing (403/OOM/no-drug-URL) |
+| FFE issuers covered | 211 / 214 | 3 still missing: Dean WI, Medica MO, AZ Blue SSL |
 | SBM states complete | 16 / 22 | NM/IL/ME partial; 16 fully covered |
-| States with any formulary data | 51 / 51 | NM now has 4,927 drugs |
+| States with any formulary data | 51 / 51 | All states have formulary data |
 
 ---
 
 *Generated 2026-04-04 by Claude Code from `data/config/formulary-url-registry-2026.json` (schema v2.0)*
-*Last updated: 2026-04-04 — NJ Oscar 47163 added (2,385 drugs); DC completed w/ Kaiser MAS + CareFirst (15,394 total); NM unblocked: Molina 19722 + BCBS 75605 (4,927 drugs); VA complete (7 issuers, 14,209 drugs); CT complete (4 issuers); SBM total: 370,864 drugs*
+*Last updated: 2026-04-04 — NM UHC 65428 added (3,516 drugs → NM total 8,369); FFE expanded to 14,635,973 records (211 issuers) via 6 new carriers; SBM total: 374,306 drugs*
