@@ -1,10 +1,11 @@
 {
   "metadata": {
-    "total_errors": 4,
+    "total_errors": 12,
     "error_breakdown": {
-      "index_fetch_failed": 4
+      "index_fetch_failed": 9,
+      "unexpected_error": 3
     },
-    "generated_at": "2026-03-10T00:43:52.721594"
+    "generated_at": "2026-04-04T04:12:42.695343"
   },
   "errors": [
     {
@@ -151,6 +152,135 @@
       "drugs_urls_successful": 0,
       "drug_records": 0,
       "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://app.mo-central.medica.com/MachineReadable/Medica-MO-cms-data-index.json",
+      "issuer_ids": [
+        "47840"
+      ],
+      "states": [
+        "MO"
+      ],
+      "carrier_hint": "Medica with SSM Health (MO)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://azblue.com/JSON/Index.JSON",
+      "issuer_ids": [
+        "53901"
+      ],
+      "states": [
+        "AZ"
+      ],
+      "carrier_hint": "Arizona Blue Cross Blue Shield",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://capitalhealth.com/cms-data-index.json",
+      "issuer_ids": [
+        "66966"
+      ],
+      "states": [
+        "FL"
+      ],
+      "carrier_hint": "Capital Health Plan (FL)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://exchange.communityfirsthealthplans.com/cms-data-index.json",
+      "issuer_ids": [
+        "63251"
+      ],
+      "states": [
+        "TX"
+      ],
+      "carrier_hint": "Community First Health Plans (TX)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://cms-machine-readable.cambiahealth.com/index.json",
+      "issuer_ids": [
+        "22013",
+        "34541"
+      ],
+      "states": [
+        "UT"
+      ],
+      "carrier_hint": "Cambia Health / BridgeSpan (UT)",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
+    },
+    {
+      "index_url": "https://app.deancare.com/MachineReadable/deanhealthplan-cms-data-index.json",
+      "issuer_ids": [
+        "38345"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Dean Health Plan (WI)",
+      "status": "index_fetch_failed",
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "drug_records": 0,
+      "error": "Could not fetch index.json after retries"
+    },
+    {
+      "index_url": "https://data.networkhealth.com/hix/index.json",
+      "issuer_ids": [
+        "81413"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Network Health (WI)",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
+    },
+    {
+      "index_url": "https://planfinder.ghcscw.com/cms/index.json",
+      "issuer_ids": [
+        "94529"
+      ],
+      "states": [
+        "WI"
+      ],
+      "carrier_hint": "Group Health Cooperative of South Central WI",
+      "status": "unexpected_error",
+      "drug_records": 0,
+      "formulary_urls_found": 0,
+      "drugs_urls_attempted": 0,
+      "drugs_urls_successful": 0,
+      "error": ""
     }
   ]
 }

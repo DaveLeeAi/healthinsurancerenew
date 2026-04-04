@@ -968,6 +968,94 @@ CARRIER_DEFS = {
         "url": "https://individualandfamily.chpw.org/wp-content/uploads/cascade-select/content/member/pharmacy/CS_RX010_Formulary_2026.pdf",
         "parser": "optumrx_words", "start_page": 5, "end_page": -1,
     },
+
+    # ── CT gap carriers ────────────────────────────────────────────────────────
+    "caresource_ct": {
+        "state": "CT", "issuer_ids": ["76962"],
+        "issuer_name": "CareSource (CT)",
+        "pdf": "caresource_ct_formulary_2026.pdf",
+        "url": "https://www.caresource.com/documents/marketplace-2026-ct-formulary.pdf",
+        "parser": "centene", "start_page": 5, "end_page": -1,
+    },
+
+    # ── DC gap carriers ────────────────────────────────────────────────────────
+    "upmc_dc": {
+        "state": "DC", "issuer_ids": ["78079"],
+        "issuer_name": "UPMC Health Plan (DC)",
+        "pdf": "upmc_advantage_choice_formulary_2026.pdf",
+        "url": "https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf?t.download=true&u=oid6pr",
+        "parser": "standard_3col", "start_page": 5, "end_page": -1,
+    },
+
+    # ── OR gap carriers ────────────────────────────────────────────────────────
+    "kaiser_or": {
+        "state": "OR", "issuer_ids": ["71287"],
+        "issuer_name": "Kaiser Permanente (OR — NW region)",
+        "pdf": "kaiser_nw_marketplace_formulary_2026.pdf",
+        "url": "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/nw/washington-marketplace-formulary-nw-en-2026-commercial.pdf",
+        "parser": "standard_3col", "start_page": 3, "end_page": -1,
+    },
+    "pacificsource_or": {
+        "state": "OR", "issuer_ids": ["10091"],
+        "issuer_name": "PacificSource Health Plans (OR)",
+        "pdf": "pacificsource_or_formulary_2026.pdf",
+        "url": "https://pacificsource.com/ps_find_drug/pdf/OR/2026",
+        "parser": "standard_3col", "start_page": 5, "end_page": -1,
+    },
+
+    # ── VA gap carriers ────────────────────────────────────────────────────────
+    "kaiser_va": {
+        "state": "VA", "issuer_ids": ["95185"],
+        "issuer_name": "Kaiser Permanente (VA — MAS region)",
+        "pdf": "kaiser_mas_marketplace_formulary_2026.pdf",
+        "url": "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/mas/marketplace-formulary-mas-en.pdf",
+        "parser": "standard_3col", "start_page": 3, "end_page": -1,
+    },
+    "anthem_hk_va": {
+        "state": "VA", "issuer_ids": ["88380"],
+        "issuer_name": "Anthem HealthKeepers (VA)",
+        "pdf": "anthem_va_select_4tier_ind_2026.pdf",
+        "url": "https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_VA_IND.pdf",
+        "parser": "standard_3col", "start_page": 6, "end_page": -1,
+    },
+    "uhc_va": {
+        "state": "VA", "issuer_ids": ["24251"],
+        "issuer_name": "UnitedHealthcare (VA)",
+        "pdf": "uhc_va_ifp_pdl_2026.pdf",
+        "url": "https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-VA_UHC_IFP_PY26.pdf",
+        "parser": "standard_3col", "start_page": 6, "end_page": -1, "min_cols": 2,
+    },
+    "oscar_va": {
+        # NOTE: Oscar VA HIOS prefix TBD — update issuer_ids once confirmed
+        "state": "VA", "issuer_ids": ["VA_OSCAR_TBD"],
+        "issuer_name": "Oscar Health (VA)",
+        "pdf": "oscar_va_4t_formulary_2026.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/31SHD9kMQqcXQjBa3Kja4R/094cd572318caa382cf01e323ababed6/Oscar_4T_VA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        # Oscar PDFs: col[0]=blank/category, col[1]=drug name, col[2]=tier, col[3]=notes
+        "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
+        "min_cols": 4, "start_page": 8, "end_page": -1,
+    },
+
+    # ── PA gap carriers ────────────────────────────────────────────────────────
+    "oscar_pa": {
+        "state": "PA", "issuer_ids": ["98517"],
+        "issuer_name": "Oscar Health (PA)",
+        "pdf": "oscar_pa_4t_formulary_2026.pdf",
+        "url": "https://assets.ctfassets.net/plyq12u1bv8a/63B8wAgFLaG6cPTA9ZY9uy/a917f396ad20287d6a6234b17d2aa351/Oscar_4T_PA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+        "parser": "standard_3col", "name_col": 1, "tier_col": 2, "notes_col": 3,
+        "min_cols": 4, "start_page": 8, "end_page": -1,
+    },
+
+    # ── ME gap carriers ────────────────────────────────────────────────────────
+    "hphc_ne_me": {
+        # Harvard Pilgrim Health Care of New England — ME issuer, likely same formulary
+        # as HPHC MA (OptumRx Core 5-tier). Reuses the already-downloaded MA PDF.
+        "state": "ME", "issuer_ids": ["77432"],
+        "issuer_name": "Harvard Pilgrim Health Care of New England (ME)",
+        "pdf": "harvardpilgrim_ma_core_5t_2026.pdf",
+        "url": "https://contenthub-aem.optumrx.com/content/dam/contenthub/rx-assets/en/documents/clients/harvard-pilgrim/hphc-formulary-documents/2026-oe/HPHC-Core-MA-5T-Comprehensive.pdf",
+        "parser": "optumrx_words", "start_page": 5, "end_page": -1,
+    },
 }
 
 

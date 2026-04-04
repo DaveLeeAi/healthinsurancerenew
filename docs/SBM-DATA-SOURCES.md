@@ -1,7 +1,8 @@
 # SBM State Data Sources — Consolidated Research Spec
 
-**Last updated:** 2026-03-29
-**Purpose:** Single source of truth for SBC and formulary data acquisition across all 17 missing SBM states.
+**Last updated:** 2026-04-04
+**Purpose:** Single source of truth for SBC and formulary data acquisition across all SBM states.
+**Current SBM coverage:** 332,096 drugs across 22 states — 12 complete, 9 partial, 1 empty (NM)
 **Usage:** Claude Code reads this file to determine what to download, parse, and commit per state.
 
 ---

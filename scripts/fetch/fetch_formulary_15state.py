@@ -242,6 +242,48 @@ CARRIERS = [
      "https://individualandfamily.chpw.org/wp-content/uploads/cascade-select/content/member/pharmacy/CS_RX010_Formulary_2026.pdf",
      "chpw_wa_cascade_select_formulary_2026.pdf",
      "Community Health Plan of WA, Express Scripts"),
+
+    # DC UPMC entry already at line 53 above — no duplicate needed
+
+    # ── OR gap carriers ────────────────────────────────────────────────────────
+    ("OR", "kaiser_or", ["71287"],
+     "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/nw/washington-marketplace-formulary-nw-en-2026-commercial.pdf",
+     "kaiser_nw_marketplace_formulary_2026.pdf",
+     "Kaiser NW region covers both OR and WA — reuse WA Kaiser PDF"),
+    ("OR", "pacificsource_or", ["10091"],
+     "https://pacificsource.com/ps_find_drug/pdf/OR/2026",
+     "pacificsource_or_formulary_2026.pdf",
+     "VERIFIED in registry — direct PDF download"),
+
+    # ── VA gap carriers ────────────────────────────────────────────────────────
+    ("VA", "kaiser_va", ["95185"],
+     "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/mas/marketplace-formulary-mas-en.pdf",
+     "kaiser_mas_marketplace_formulary_2026.pdf",
+     "Kaiser MAS region covers DC, MD, VA — reuse DC/MD Kaiser PDF"),
+    ("VA", "anthem_hk_va", ["88380"],
+     "https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_VA_IND.pdf",
+     "anthem_va_select_4tier_ind_2026.pdf",
+     "PATTERN — Anthem/Elevance FBO/143 VA, same format as CT/KY/NV Anthem"),
+    ("VA", "uhc_va", ["24251"],
+     "https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-VA_UHC_IFP_PY26.pdf",
+     "uhc_va_ifp_pdl_2026.pdf",
+     "PATTERN — UHC IFP PDL VA (IFP2895550 is multi-state code used for MD/MA/NJ/NM)"),
+    ("VA", "oscar_va", ["VA_OSCAR_HIOS_TBD"],
+     "https://assets.ctfassets.net/plyq12u1bv8a/31SHD9kMQqcXQjBa3Kja4R/094cd572318caa382cf01e323ababed6/Oscar_4T_VA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+     "oscar_va_4t_formulary_2026.pdf",
+     "VERIFIED in registry — Oscar VA 4-tier standard formulary"),
+
+    # ── PA gap carriers ────────────────────────────────────────────────────────
+    ("PA", "oscar_pa", ["98517"],
+     "https://assets.ctfassets.net/plyq12u1bv8a/63B8wAgFLaG6cPTA9ZY9uy/a917f396ad20287d6a6234b17d2aa351/Oscar_4T_PA_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+     "oscar_pa_4t_formulary_2026.pdf",
+     "VERIFIED in registry — Oscar PA 4-tier standard formulary"),
+
+    # ── ME gap carriers ────────────────────────────────────────────────────────
+    ("ME", "hphc_ne_me", ["77432"],
+     "https://contenthub-aem.optumrx.com/content/dam/contenthub/rx-assets/en/documents/clients/harvard-pilgrim/hphc-formulary-documents/2026-oe/HPHC-Core-MA-5T-Comprehensive.pdf",
+     "harvardpilgrim_ma_core_5t_2026.pdf",
+     "PATTERN — Harvard Pilgrim NE (ME issuer 77432) likely shares HPHC Core MA formulary via OptumRx"),
 ]
 
 HEADERS = {

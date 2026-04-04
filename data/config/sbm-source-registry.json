@@ -890,6 +890,13 @@
           "parsed_drug_count": 3584,
           "verified_date": "2026-04-03",
           "notes": "Single Exchange Formulary covers HIOS 28137, 45532, 94084. 4 tiers + ACA-Preventive."
+        },
+        {
+          "issuer_id": "97928",
+          "issuer_name": "Molina Healthcare of DC",
+          "index_url": "https://www.molinahealthcare.com/cmsjson/378245/cms/index.json",
+          "status": "active",
+          "notes": "ADDED 2026-04-04. Same Molina index as CT (378245). HIOS 97928 confirmed for DC Molina marketplace plans."
         }
       ]
     },

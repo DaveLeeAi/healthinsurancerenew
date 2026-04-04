@@ -18,6 +18,7 @@
 
 ## November (data parsing)
 - [ ] Run FFE formulary fetch: `python scripts/fetch/fetch_formulary_full.py --year {YEAR}`
+- [ ] Cross-check fetched issuers vs plan_intelligence issuer list — run `fetch_formulary_missing_ffe.py` for any gaps
 - [ ] Run SBM PDF fetch + parse for each state with auto_download carriers
 - [ ] Parse manually downloaded PDFs: `python scripts/fetch/parse_manual_pdfs.py --year {YEAR}`
 - [ ] Run SBC parsers: `python scripts/etl/build_sbc_from_puf.py` (FFE) + SBM parsers
@@ -80,10 +81,21 @@ Oscar uses Contentful CDN with unique asset IDs per document. Cannot increment y
 - **Sitemap resubmission**: After build with new data
 
 ## Validation Checklist (after all parsing complete)
-- [ ] FFE formulary total >= 196,303 drugs (PY2026 baseline)
-- [ ] SBM formulary total >= 322,311 drugs (PY2026 baseline)
+- [ ] FFE formulary_intelligence.json >= 12,955,136 records (PY2026 baseline, plan-level)
+- [ ] FFE unique deduped drugs >= 196,303 (PY2026 baseline)
+- [ ] SBM formulary total >= 332,096 drugs (PY2026 baseline, drug-level)
 - [ ] SBC plan variants >= 20,354 (PY2026 baseline)
 - [ ] All 50 states + DC have data
-- [ ] No state has 0 drugs (except RI which is blocked)
+- [ ] NM should no longer be 0 drugs (was empty as of PY2026)
 - [ ] `npm run build` passes with 0 errors
 - [ ] Spot-check: 5 formulary pages, 3 plan pages, 2 subsidy pages render correctly
+
+## PY2026 Baselines (as of 2026-04-04)
+| Dataset | Baseline | Notes |
+|---------|---------|-------|
+| `formulary_intelligence.json` | 12,955,136 records | Plan-level; 4.0 GB |
+| FFE deduped drugs | 196,303 | Original deduped before missing-issuer fetch |
+| SBM drugs | 332,096 | Drug-level across 22 SBM states |
+| SBC plan variants | 20,354 | From sbc_decoded.json |
+| FFE issuers covered | 186/214 | 28 still missing (403/OOM/no-drug-URL) |
+| SBM issuers complete | 12/22 states | NM=0, 9 partial |
