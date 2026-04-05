@@ -1016,12 +1016,12 @@ export default async function FormularyDrugPage({ params }: Props) {
                   {
                     badge: hasQuantityLimit ? 'gray' : 'green',
                     badgeText: hasQuantityLimit ? 'QL' : '\u2713',
-                    title: `Supply limits per fill`,
+                    title: `Supply limits per month`,
                     observation: hasQuantityLimit
                       ? `found in ${quantityLimitCount} of ${results.length} plans`
                       : 'not found in plans reviewed',
                     body: hasQuantityLimit
-                      ? `Some plans limit how much you can pick up per fill \u2014 typically one monthly supply at a time. Check your plan\u2019s benefit documents for the exact rule. Mail order is often an exception and can allow a larger supply at a lower per-dose cost.`
+                      ? `Some plans limit how much you can pick up per month \u2014 typically one monthly supply at a time. Check your plan\u2019s benefit documents for the exact rule. Mail order is often an exception and can allow a larger supply at a lower per-dose cost.`
                       : `No supply restrictions were found in the plans we reviewed. Your plan may still have fill-quantity guidelines \u2014 check your benefit documents for details.`,
                   },
                 ]}
@@ -1283,7 +1283,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             >
               <span>{isState ? `${stateCode}` : ''} insurers that included {titleCase(drugDisplay)} in {PLAN_YEAR}</span>
               <span className="text-muted normal-case italic font-normal" style={{ fontSize: '11px', letterSpacing: 0 }}>
-                Tier from plan documents reviewed · prior auth status noted
+                Tier from plan documents reviewed · prior authorization status noted
               </span>
             </div>
             {/* Insurer table intro */}

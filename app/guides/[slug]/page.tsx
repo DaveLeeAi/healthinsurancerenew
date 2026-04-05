@@ -113,7 +113,7 @@ export default async function GuideDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: entry.contentHtml }}
       />
 
-      {faqs && faqs.length > 0 && <PageFaq faqs={faqs} />}
+      {faqs && faqs.length > 0 && <PageFaq faqs={faqs} includeSchema={false} />}
 
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" />
