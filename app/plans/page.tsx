@@ -58,7 +58,7 @@ const FAQ_ITEMS = [
   {
     question: 'How do subsidies affect my plan choice?',
     answer:
-      'The Premium Tax Credit (APTC) lowers your monthly premium based on income and the cost of the benchmark Silver plan in your county. If your income is between 100% and 400% FPL (or higher under the IRA enhanced credits through 2025), you likely qualify. Subsidies apply to any metal tier, but the credit amount is calculated off the Silver benchmark. Use our subsidy calculator to estimate your savings.',
+      'The Premium Tax Credit (APTC) lowers your monthly premium based on income and the cost of the benchmark Silver plan in your county. If your income is between 100% and 400% FPL, you likely qualify. The IRA enhanced credits that extended subsidies above 400% FPL expired at the end of 2025. Subsidies apply to any metal tier, but the credit amount is calculated off the Silver benchmark. Use our subsidy calculator to estimate your savings.',
   },
 ]
 

@@ -46,7 +46,7 @@ function getInterpretation(fplPercent: number): string {
   } else if (fplPercent < 400) {
     return 'At this income level (between 150% and 400% FPL), individuals generally may receive premium tax credits that reduce the monthly cost of a marketplace health insurance plan. The amount of financial assistance typically decreases as income increases.'
   } else {
-    return 'At this income level (above 400% FPL), enhanced premium tax credits may still be available under current ACA provisions. Under extended subsidy rules, marketplace enrollees are generally not expected to pay more than a set percentage of income toward a benchmark plan premium.'
+    return 'At this income level (above 400% FPL), no premium tax credit is available for 2026. The enhanced subsidies that previously extended assistance above 400% FPL expired at the end of 2025. You would pay the full unsubsidized premium. A licensed agent can help you find the most affordable plan options.'
   }
 }
 

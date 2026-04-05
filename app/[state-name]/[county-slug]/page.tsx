@@ -653,7 +653,7 @@ function buildCountyFaqs({
         (medianSubsidy
           ? `For example, a household at 250% FPL (~$${medianSubsidy.annual_income.toLocaleString()}/year) may receive about $${medianSubsidy.monthly_aptc.toFixed(0)}/month in subsidies. `
           : '') +
-        `Under the Inflation Reduction Act's enhanced credits (through ${PLAN_YEAR}), no one pays more than 8.5% of income toward a benchmark Silver plan. ` +
+        `Note: The enhanced credits that previously extended subsidies above 400% FPL expired at the end of 2025. For ${PLAN_YEAR}, the standard 400% FPL subsidy cliff is back in effect. ` +
         `Apply through HealthCare.gov during Open Enrollment or a qualifying Special Enrollment Period. A licensed agent can help you maximize your subsidy.`,
     },
   ]

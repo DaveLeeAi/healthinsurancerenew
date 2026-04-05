@@ -351,8 +351,8 @@ function getStateProseData(
 
   paragraphs.push(
     `The majority of ${stateName} marketplace enrollees receive federal premium tax credits (APTC) that significantly reduce ` +
-    `monthly premiums. Under the current IRA-enhanced subsidy structure, households earning up to and above 400% of the Federal ` +
-    `Poverty Level may qualify for assistance.${deductibleNote}${ageSpread ? ' ' + ageSpread : ''} ` +
+    `monthly premiums. For 2026, households earning between 100% and 400% of the Federal ` +
+    `Poverty Level may qualify for assistance. The IRA enhanced credits that previously extended subsidies above 400% FPL expired at the end of 2025.${deductibleNote}${ageSpread ? ' ' + ageSpread : ''} ` +
     `Silver-tier plans are often the best value for subsidy-eligible enrollees because they unlock Cost Sharing Reductions (CSR) ` +
     `for households below 250% FPL, reducing deductibles and copays in addition to the premium subsidy.`
   )
@@ -394,7 +394,7 @@ function getStateProseData(
             `Medicaid enrollees pay no monthly premium. Those just above 138% FPL often qualify for Silver plans with Cost Sharing Reductions.`
           : `No. ${stateName} has not expanded Medicaid as of ${PLAN_YEAR}. This creates a coverage gap where adults below 100% FPL ` +
             `may not qualify for either Medicaid or marketplace subsidies. ${carrierCount > 0 ? `The marketplace offers ${planCount} plans from ${carrierCount} carriers ` : 'The marketplace offers plans '}` +
-            `for those who do qualify for premium tax credits (100%–400%+ FPL under enhanced credits).`,
+            `for those who do qualify for premium tax credits (100%–400% FPL for 2026).`,
       },
       {
         q: `When is Open Enrollment for ${stateName} health insurance?`,
@@ -407,8 +407,8 @@ function getStateProseData(
       {
         q: `How do I apply for health insurance subsidies in ${stateName}?`,
         a: `Apply through ${exchange} and enter your household size and estimated annual income. Premium tax credits are calculated ` +
-           `automatically based on your income relative to the Federal Poverty Level. Under current enhanced credits, households ` +
-           `above 400% FPL may also qualify. ${avgPrem40 ? `In ${stateName}, the average unsubsidized premium is $${avgPrem40}/mo (age 40) — ` +
+           `automatically based on your income relative to the Federal Poverty Level. For 2026, subsidies are available for households ` +
+           `between 100% and 400% FPL. The enhanced credits that previously extended subsidies above 400% FPL expired at the end of 2025. ${avgPrem40 ? `In ${stateName}, the average unsubsidized premium is $${avgPrem40}/mo (age 40) — ` +
            `subsidies can reduce this to under $100/mo for many enrollees. ` : ''}` +
            `Silver plans unlock additional Cost Sharing Reductions for households below 250% FPL.`,
       },

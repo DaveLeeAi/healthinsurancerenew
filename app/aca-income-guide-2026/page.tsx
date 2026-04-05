@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
-import FAQSection from '../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
@@ -50,7 +50,7 @@ const faqs = [
   {
     question: 'Do I get any help above 400% of the poverty level?',
     answer:
-      'Under the enhanced subsidy rules (if still in effect for 2026), your premium is capped at 8.5% of household income regardless of how high your income is. Under the original ACA rules, no premium tax credit is available above 400% FPL. Check which rules apply for the year you are enrolling.',
+      'For 2026, the enhanced subsidies that were in effect from 2021 to 2025 have expired. Under the standard ACA rules now in effect, no premium tax credit is available above 400% FPL ($62,600 for a single person). This is known as the subsidy cliff.',
   },
   {
     question: 'How do I know which income band I fall into?',
@@ -94,7 +94,7 @@ export default function ACAIncomeGuidePage() {
         Health Insurance Savings by Income Level: 2026 Guide
       </h1>
 
-      <AnswerBox answer="Your health insurance savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to enhanced subsidies at the top." />
+      <AnswerBox answer="Your health insurance savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to the 400% FPL subsidy cutoff at the top." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">How Income Determines Your Health Insurance Benefits</h2>
@@ -123,7 +123,7 @@ export default function ACAIncomeGuidePage() {
                   { band: '150%–200% FPL', s1: Math.round(g.household_1 * 1.5), s2: g.household_1 * 2, f1: Math.round(g.household_4 * 1.5), f2: g.household_4 * 2, benefit: 'Very low premium + 87% CSR' },
                   { band: '200%–250% FPL', s1: g.household_1 * 2, s2: Math.round(g.household_1 * 2.5), f1: g.household_4 * 2, f2: Math.round(g.household_4 * 2.5), benefit: '2%–4% of income premium + 73% CSR' },
                   { band: '250%–400% FPL', s1: Math.round(g.household_1 * 2.5), s2: g.household_1 * 4, f1: Math.round(g.household_4 * 2.5), f2: g.household_4 * 4, benefit: '4%–8.5% of income premium, no CSR' },
-                  { band: '400%+ FPL', s1: g.household_1 * 4, s2: null, f1: g.household_4 * 4, f2: null, benefit: '8.5% cap on premium (enhanced rules)' },
+                  { band: '400%+ FPL', s1: g.household_1 * 4, s2: null, f1: g.household_4 * 4, f2: null, benefit: 'No subsidy — full premium (cliff)' },
                 ].map((row, i) => (
                   <tr key={row.band} className={i % 2 === 0 ? 'border-b border-slate-100' : 'border-b border-slate-100 bg-slate-50/50'}>
                     <td className="px-4 py-3 font-medium text-slate-800">{row.band}</td>
@@ -142,7 +142,7 @@ export default function ACAIncomeGuidePage() {
         </div>
         <p className="text-xs text-slate-500">
           Based on 2026 FPL guidelines. Single = 1-person household. Family of 4 = 4-person household. Premium
-          percentages are for benchmark Silver plans under enhanced subsidy rules.
+          percentages are for benchmark Silver plans under standard 2026 subsidy rules. Enhanced subsidies from 2021–2025 have expired.
         </p>
       </section>
 
@@ -249,10 +249,10 @@ export default function ACAIncomeGuidePage() {
         </ul>
       </div>
 
-      <FAQSection faqs={faqs} />
+      <PageFaq faqs={faqs} />
       <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

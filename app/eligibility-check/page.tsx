@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
-import FAQSection from '../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
@@ -56,7 +56,7 @@ const faqs = [
   {
     question: 'Is there an income limit for marketplace premium tax credits?',
     answer:
-      'Under the enhanced subsidy rules (if still in effect for 2026), there is no hard income cutoff. Instead, your expected premium contribution is capped at 8.5% of your income. Under the original ACA rules, premium help phases out entirely at 400% of the Federal Poverty Level. Check the current rules for the year you are enrolling.',
+      'For 2026, the enhanced subsidies that removed the income cap have expired. Under the standard ACA rules now in effect, premium tax credits phase out entirely at 400% of the Federal Poverty Level ($62,600 for a single person). Above that threshold, no premium assistance is available.',
   },
 ]
 
@@ -202,8 +202,8 @@ export default function EligibilityCheckPage() {
               <p className="mb-2">
                 Lower income generally means more savings. People with income between 100% and 150% of FPL pay $0 per
                 month for a benchmark Silver plan. As income rises, you are expected to pay a larger share. At 400%
-                FPL and above, you may still receive some help under enhanced subsidy rules, but the savings are
-                smaller.
+                FPL and above, no premium tax credit is available for 2026. The enhanced subsidies that previously
+                extended help above 400% FPL expired at the end of 2025.
               </p>
               <p>
                 See the{' '}
@@ -331,8 +331,8 @@ export default function EligibilityCheckPage() {
           <ul className="list-disc pl-5 space-y-2">
             <li>You do not have affordable employer coverage</li>
             <li>
-              Your household income is between 100% and 400% of the Federal Poverty Level (or above 400% under
-              enhanced subsidy rules)
+              Your household income is between 100% and 400% of the Federal Poverty Level (the subsidy cutoff
+              for 2026)
             </li>
             <li>You are a U.S. citizen or lawfully present</li>
             <li>You are not currently incarcerated</li>
@@ -357,10 +357,10 @@ export default function EligibilityCheckPage() {
         </div>
       </section>
 
-      <FAQSection faqs={faqs} />
+      <PageFaq faqs={faqs} />
       <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

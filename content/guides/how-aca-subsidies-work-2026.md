@@ -31,4 +31,4 @@ Cost-sharing reductions are available exclusively on Silver-tier marketplace pla
 
 ## What to Watch for in 2026
 
-Subsidy availability in 2026 depends on current federal legislation. Enhanced premium tax credits, which removed the income cap and reduced the maximum percentage of income spent on benchmark premiums, were introduced as temporary measures. Whether these enhancements remain active for the 2026 plan year directly affects how much financial assistance is available. Checking updated subsidy calculators during open enrollment provides the most accurate estimate of expected costs.
+The enhanced premium tax credits that removed the income cap and reduced the maximum percentage of income spent on benchmark premiums expired on December 31, 2025. For 2026, the standard ACA subsidy rules are back in effect: premium tax credits are available only to households with income between 100% and 400% of the Federal Poverty Level. Above 400% FPL ($62,600 for a single person), no subsidy is available. Checking updated subsidy calculators during open enrollment provides the most accurate estimate of expected costs.

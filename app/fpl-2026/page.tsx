@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
-import FAQSection from '../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
@@ -68,7 +68,7 @@ const faqs = [
   {
     question: 'What does "400% of FPL" mean for premium tax credits?',
     answer:
-      'Under the original ACA, premium tax credits phased out at 400% of FPL. Enhanced subsidies changed this, but 400% FPL remains a common reference point. For a single person in 2026, 400% FPL is ' +
+      'Under the ACA, premium tax credits phase out at 400% of FPL. The enhanced subsidies that temporarily removed this cap expired at the end of 2025, so the 400% FPL cliff is back in effect for 2026. For a single person in 2026, 400% FPL is ' +
       fmt(g.household_1 * 4) +
       '.',
   },
@@ -191,8 +191,8 @@ export default function FPL2026Page() {
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
             <h3 className="font-semibold text-slate-800 mb-2">100–150% FPL — $0 Premium Silver Plan</h3>
             <p className="text-slate-700 text-sm font-serif">
-              Under enhanced subsidies, people with income between 100% and 150% FPL pay $0 per month for a benchmark
-              Silver plan. This is one of the most significant marketplace benefits.
+              People with income between 100% and 150% FPL pay very low premiums for a benchmark
+              Silver plan. This remains one of the most significant marketplace benefits for 2026.
             </p>
           </div>
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
@@ -203,19 +203,20 @@ export default function FPL2026Page() {
             </p>
           </div>
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
-            <h3 className="font-semibold text-slate-800 mb-2">400%+ FPL — Enhanced Subsidies</h3>
+            <h3 className="font-semibold text-slate-800 mb-2">400%+ FPL — No Subsidy (Cliff)</h3>
             <p className="text-slate-700 text-sm font-serif">
-              Under enhanced subsidy rules, there is no hard cutoff at 400% FPL. Instead, premiums are capped at 8.5%
-              of income for benchmark Silver plans, regardless of how far above 400% FPL you are.
+              For 2026, there is a hard cutoff at 400% FPL. Households above this threshold receive zero premium tax
+              credits and pay the full unsubsidized premium. The enhanced subsidies that previously removed this cliff
+              expired at the end of 2025.
             </p>
           </div>
         </div>
       </section>
 
-      <FAQSection faqs={faqs} />
+      <PageFaq faqs={faqs} />
       <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

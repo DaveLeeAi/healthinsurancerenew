@@ -53,7 +53,7 @@ const terms = [
   {
     term: 'Subsidy Cliff',
     definition:
-      'The income level where marketplace premium help used to completely disappear. Under the original ACA rules, all premium tax credits stopped at 400% of the Federal Poverty Level. Enhanced subsidies have softened this cliff, but they may expire depending on future legislation.',
+      'The income level where marketplace premium help completely disappears. Under the standard ACA rules (now back in effect for 2026 after enhanced subsidies expired), all premium tax credits stop at 400% of the Federal Poverty Level. A household earning $1 above the threshold receives zero subsidy.',
   },
   {
     term: 'Affordability Test',
@@ -154,7 +154,7 @@ export default function GlossaryPage() {
         </p>
       </div>
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

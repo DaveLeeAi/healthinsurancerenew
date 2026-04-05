@@ -225,10 +225,9 @@ export default function SubsidiesPage({ params }: Props) {
                 Level (FPL). In {PLAN_YEAR}, 100% FPL for a {subsidy.household_size}-person
                 household is <strong>${subsidy.fpl_base.toLocaleString()}/year</strong>.
                 Households earning between 100% and 400% FPL qualify for the standard credit.
-                Under the IRA enhanced credits (currently in effect through {PLAN_YEAR}),
-                subsidies are also available above 400% FPL, with your contribution capped at
-                8.5% of your income. If these enhanced credits expire, the 400% FPL cliff
-                would be reinstated and no subsidy would apply above that threshold.
+                Note: The IRA enhanced credits that previously extended subsidies above 400% FPL
+                expired at the end of 2025. For {PLAN_YEAR}, the standard 400% FPL cliff is
+                back in effect — no premium tax credit is available above that threshold.
               </p>
               <p>
                 To use your credit, you apply it when enrolling through HealthCare.gov or your
@@ -316,10 +315,10 @@ export default function SubsidiesPage({ params }: Props) {
             {policyScenario && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
                 <h3 className="font-semibold text-amber-900 mb-2">
-                  What If Enhanced Credits Expire?
+                  How the Enhanced Credit Expiration Affects You
                 </h3>
                 <p className="text-sm text-amber-800 leading-relaxed">
-                  If IRA enhanced subsidies expire, a{' '}
+                  With IRA enhanced subsidies now expired, a{' '}
                   <strong>
                     {policyScenario.headline.age}-year-old at{' '}
                     {policyScenario.headline.fpl_percent}% FPL
@@ -329,13 +328,13 @@ export default function SubsidiesPage({ params }: Props) {
                   <strong>
                     +${policyScenario.headline.monthly_increase_at_expiration.toFixed(0)}/month
                   </strong>{' '}
-                  more — ${policyScenario.headline.annual_increase_at_expiration.toFixed(0)}/year.
+                  more — ${policyScenario.headline.annual_increase_at_expiration.toFixed(0)}/year compared to 2025 rates.
                 </p>
                 <a
                   href={enhancedCreditsHref}
                   className="inline-block mt-3 text-sm font-medium text-amber-800 underline"
                 >
-                  See full enhanced credit expiration analysis for {countyDisplay} →
+                  See full enhanced credit expiration impact for {countyDisplay} →
                 </a>
               </div>
             )}
@@ -354,7 +353,7 @@ export default function SubsidiesPage({ params }: Props) {
             Subsidy estimates are based on the CMS QHP Rate PUF benchmark silver premium for
             plan year {PLAN_YEAR}. All APTC amounts are estimates and subject to change based
             on final income, enrollment date, household composition, and applicable law.
-            Enhanced credit availability depends on current legislation.
+            The IRA enhanced credits expired at the end of 2025. Standard 400% FPL rules apply for 2026.
           </p>
           <p>
             This page is for informational purposes only and does not constitute tax or

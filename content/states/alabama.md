@@ -10,7 +10,7 @@ faqs:
   - question: "When is the ACA Open Enrollment period in Alabama?"
     answer: "Open Enrollment in Alabama typically runs from November 1 through January 15 each year. During this window, residents can enroll in or change their ACA Marketplace health insurance plan through Healthcare.gov."
   - question: "What is the income limit for ACA subsidies in Alabama?"
-    answer: "Premium tax credits are available to Alabama residents with household incomes between 100% and 400% of the federal poverty level. Enhanced subsidies under recent legislation have expanded eligibility further, making more households eligible for financial assistance."
+    answer: "Premium tax credits are available to Alabama residents with household incomes between 100% and 400% of the federal poverty level ($62,600 for a single person in 2026). The enhanced subsidies that previously extended credits above 400% FPL expired at the end of 2025. Above 400% FPL, no premium assistance is available for 2026."
 ---
 
 ## Health Insurance Options in Alabama

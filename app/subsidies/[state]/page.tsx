@@ -262,7 +262,7 @@ export default function SubsidiesStatePage({ params }: Props) {
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400">
           <p>
             {isSbm
-              ? `Subsidy estimates use national average benchmark premiums and IRA enhanced applicable percentage rates. ` +
+              ? `Subsidy estimates use national average benchmark premiums and standard ACA applicable percentage rates. ` +
                 `Actual tax credit amounts depend on the benchmark plan in your county and your final MAGI. ` +
                 `Consult a licensed agent to confirm your eligibility.`
               : `Subsidy estimates are based on CMS benchmark silver premium data and IRS applicable ` +

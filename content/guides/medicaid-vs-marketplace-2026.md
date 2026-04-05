@@ -26,7 +26,7 @@ In states that have expanded Medicaid under the ACA, adults with household incom
 
 ## Eligibility and Income Thresholds
 
-For a single adult in 2026, 138% of the Federal Poverty Level is approximately $21,597 in expansion states. Marketplace premium tax credits generally begin at 100% FPL (approximately $15,650 for a single adult) and extend through all income levels under current enhanced subsidy rules, with the maximum expected contribution capped at 8.5% of household income.
+For a single adult in 2026, 138% of the Federal Poverty Level is approximately $21,597 in expansion states. Marketplace premium tax credits generally begin at 100% FPL (approximately $15,650 for a single adult) and extend through 400% FPL ($62,600 for a single adult). The enhanced subsidies that previously extended credits above 400% FPL expired at the end of 2025. Above 400% FPL, no premium tax credit is available for 2026.
 
 Household size significantly affects both programs. A family of four with income below approximately $44,367 may qualify for Medicaid in expansion states, while marketplace subsidies would apply above that level. Income is measured as Modified Adjusted Gross Income (MAGI), which includes wages, self-employment income, Social Security benefits, and certain other income sources.
 

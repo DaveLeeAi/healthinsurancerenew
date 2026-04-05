@@ -25,7 +25,7 @@ Enrollment begins with an application on the marketplace, which collects househo
 
 ## What Changes to Expect in 2026
 
-Plan availability, premiums, and subsidy amounts shift each year based on insurer participation and federal policy. For 2026, close attention should be paid to whether enhanced premium tax credits -- originally expanded under the American Rescue Plan and extended through subsequent legislation -- remain in effect. Changes to subsidy structure can significantly alter net premium costs, making it essential to re-shop rather than rely on auto-renewal.
+Plan availability, premiums, and subsidy amounts shift each year based on insurer participation and federal policy. For 2026, the enhanced premium tax credits originally expanded under the American Rescue Plan and extended through subsequent legislation have expired as of December 31, 2025. The 400% FPL subsidy cliff is back in effect, meaning households above that threshold receive no premium assistance. This change makes it especially important to re-shop rather than rely on auto-renewal.
 
 ## Steps to Prepare Before Enrollment Opens
 
