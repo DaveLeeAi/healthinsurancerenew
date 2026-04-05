@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
-import FAQSection from '../../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import SourcesBox from '../../../components/SourcesBox'
 import SchemaScript from '../../../components/SchemaScript'
 import GenericByline from '../../../components/GenericByline'
@@ -297,7 +297,7 @@ export default async function StateDetailPage({ params }: Props) {
           )}
         </div>
         <p className="text-xs text-slate-400">
-          Last updated {dateModified} &middot; Plan year {PLAN_YEAR}
+          Last updated <time dateTime={dateModified ?? new Date().toISOString().slice(0, 10)}>{dateModified}</time> &middot; Plan year {PLAN_YEAR}
         </p>
       </header>
 
@@ -482,7 +482,7 @@ export default async function StateDetailPage({ params }: Props) {
 
       {/* ── 7. FAQ SECTION ── */}
       <section id="hub-faqs" className="my-10">
-        <FAQSection faqs={allFaqs} />
+        <PageFaq faqs={allFaqs} includeSchema={false} />
       </section>
 
       {/* ── 8. RELATED GUIDES & TOOLS ── */}

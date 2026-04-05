@@ -11,14 +11,18 @@
 
 interface TrustBarProps {
   lastUpdated: string; // Display format: "March 29, 2026"
+  lastUpdatedIso?: string; // ISO format: "2026-03-29" for <time dateTime>
   reviewedBy?: string; // e.g. "Licensed ACA Agent"
   reviewedDate?: string;
+  reviewedDateIso?: string; // ISO format for <time dateTime>
 }
 
 export function TrustBar({
   lastUpdated,
+  lastUpdatedIso,
   reviewedBy = 'Licensed ACA Agent',
   reviewedDate,
+  reviewedDateIso,
 }: TrustBarProps) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-gray-200 pb-3 mb-6 text-sm text-gray-600">
@@ -38,7 +42,7 @@ export function TrustBar({
           />
         </svg>
         <span>
-          Updated <time>{lastUpdated}</time>
+          Updated <time dateTime={lastUpdatedIso}>{lastUpdated}</time>
         </span>
       </span>
 
@@ -70,7 +74,7 @@ export function TrustBar({
           {reviewedDate && (
             <>
               {' '}
-              on <time>{reviewedDate}</time>
+              on <time dateTime={reviewedDateIso}>{reviewedDate}</time>
             </>
           )}
         </span>

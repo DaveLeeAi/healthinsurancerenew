@@ -73,7 +73,7 @@ export default function MethodologyPage() {
           Our Methodology
         </h1>
 
-        <TrustBar lastUpdated="March 29, 2026" />
+        <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" />
 
         <BLUFBox>
           Every data point on HealthInsuranceRenew.com is sourced from official

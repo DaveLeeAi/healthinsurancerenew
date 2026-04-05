@@ -272,7 +272,7 @@ export default function DataMethodologyPage() {
         </p>
       </div>
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

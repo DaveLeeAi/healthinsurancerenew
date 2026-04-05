@@ -120,7 +120,7 @@ export default function DoesAcaCoverOzempic2026Page() {
         Does ACA Cover Ozempic in 2026? What Marketplace Plans Include
       </h1>
 
-      <TrustBar lastUpdated="March 29, 2026" reviewedDate="March 29, 2026" />
+      <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" reviewedDate="March 29, 2026" reviewedDateIso="2026-03-29" />
 
       <BLUFBox>
         Ozempic (semaglutide) is included on an estimated 82% of ACA marketplace plan

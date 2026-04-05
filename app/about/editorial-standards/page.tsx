@@ -78,7 +78,7 @@ export default function EditorialStandardsPage() {
           Editorial Standards
         </h1>
 
-        <TrustBar lastUpdated="March 29, 2026" />
+        <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" />
 
         <BLUFBox>
           Every article on HealthInsuranceRenew.com follows a 7-step editorial

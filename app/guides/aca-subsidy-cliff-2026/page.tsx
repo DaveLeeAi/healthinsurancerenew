@@ -99,7 +99,7 @@ export default function AcaSubsidyCliff2026Page() {
         ACA Subsidy Cliff 2026: What It Means for Your Health Insurance Premiums
       </h1>
 
-      <TrustBar lastUpdated="March 29, 2026" reviewedDate="March 29, 2026" />
+      <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" reviewedDate="March 29, 2026" reviewedDateIso="2026-03-29" />
 
       <BLUFBox>
         The enhanced ACA premium tax credits expired on December 31, 2025. If your

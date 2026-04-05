@@ -1,3 +1,4 @@
+// @deprecated — use PageFaq instead (includes FAQPage JSON-LD schema)
 interface FAQ {
   question: string
   answer: string

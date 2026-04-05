@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import AnswerBox from '../../components/AnswerBox'
-import FAQSection from '../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
 import SourcesBox from '../../components/SourcesBox'
@@ -214,10 +214,10 @@ export default function Turning26Page() {
         </ul>
       </div>
 
-      <FAQSection faqs={faqs} />
+      <PageFaq faqs={faqs} />
       <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="HealthInsuranceRenew editorial team" />
+      <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>
   )
 }

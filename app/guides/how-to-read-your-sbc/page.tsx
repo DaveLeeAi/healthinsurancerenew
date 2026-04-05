@@ -99,7 +99,7 @@ export default function HowToReadYourSbcPage() {
         How to Read Your Summary of Benefits and Coverage (SBC) in 2026
       </h1>
 
-      <TrustBar lastUpdated="March 29, 2026" reviewedDate="March 29, 2026" />
+      <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" reviewedDate="March 29, 2026" reviewedDateIso="2026-03-29" />
 
       <BLUFBox>
         The Summary of Benefits and Coverage is a standardized document every health

@@ -50,7 +50,10 @@ export default function GenericByline({
           {planYear}
         </p>
         <p>
-          <strong>Last reviewed:</strong> {reviewDate}
+          <strong>Last reviewed:</strong>{' '}
+          <time dateTime={lastReviewed ?? new Date().toISOString().slice(0, 10)}>
+            {reviewDate}
+          </time>
         </p>
       </div>
     </section>

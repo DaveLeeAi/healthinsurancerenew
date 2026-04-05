@@ -132,7 +132,7 @@ export default function Glp1DrugsCoveredPage() {
         GLP-1 Drugs Covered by ACA Plans: 2026 Formulary Guide
       </h1>
 
-      <TrustBar lastUpdated="March 29, 2026" reviewedDate="March 29, 2026" />
+      <TrustBar lastUpdated="March 29, 2026" lastUpdatedIso="2026-03-29" reviewedDate="March 29, 2026" reviewedDateIso="2026-03-29" />
 
       <BLUFBox>
         ACA marketplace plans generally cover GLP-1 medications when prescribed for

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AnswerBox from '../../../components/AnswerBox'
-import FAQSection from '../../../components/FAQSection'
+import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../../components/GenericByline'
 import LlmComment from '../../../components/LlmComment'
 import SourcesBox from '../../../components/SourcesBox'
@@ -88,7 +88,7 @@ export default async function GuideDetailPage({ params }: Props) {
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         {title}
       </h1>
-      <p className="text-xs text-slate-400 mb-4">Updated {dateModified}</p>
+      <p className="text-xs text-slate-400 mb-4">Updated <time dateTime={dateModified}>{dateModified}</time></p>
 
       <AnswerBox answer={description} />
 
@@ -113,7 +113,7 @@ export default async function GuideDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: entry.contentHtml }}
       />
 
-      {faqs && faqs.length > 0 && <FAQSection faqs={faqs} />}
+      {faqs && faqs.length > 0 && <PageFaq faqs={faqs} />}
 
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" />
