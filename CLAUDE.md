@@ -57,7 +57,8 @@
 
 - **50 states + DC** — 320/320 ACA marketplace carriers = **100% carrier coverage**
 - **15,245,850 total formulary records** (14,854,187 FFE plan-level + 391,663 SBM drug-level)
-- **45 enrichment files** with PA/QL/ST restriction data (157,885 drugs)
+- **46 enrichment files** with PA/QL/ST restriction data (199,438 drugs)
+- Includes Selenium-scraped data: Presbyterian NM (16,561), Mountain Health CO-OP ID (33,862), Highmark PA (7,921)
 - **20,354+ SBC plan variants** (FFE + SBM)
 - Formulary URL registry: `data/config/formulary-url-registry-2026.json` (primary source of truth)
 - Carrier fact-check: `docs/aca_2026_ifp_carriers_fact_check.md` (320 carriers verified)

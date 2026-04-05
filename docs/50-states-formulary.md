@@ -8,15 +8,15 @@
 | Data Source | Records |
 |------------|---------|
 | FFE plan-level records (formulary_intelligence.json) | **14,854,187** |
-| SBM drug-level records (22 state files) | **349,753** |
-| Enrichment files (PA/QL/ST detail) | **45 files, 157,885 drugs** |
-| **Grand total** | **15,203,940** |
+| SBM drug-level records (22 state files) | **391,663** |
+| Enrichment files (PA/QL/ST detail) | **46 files, 199,438 drugs** |
+| **Grand total** | **15,245,850+** |
 
-| Restriction Data | Count |
-|-----------------|-------|
-| Prior Authorization (PA) flags | 25,718 |
-| Quantity Limit (QL) flags | 38,770 |
-| Step Therapy (ST) flags | 3,132 |
+| Milestone | Detail |
+|-----------|--------|
+| Selenium-scraped carriers | Presbyterian NM (16,561), Mountain Health CO-OP ID (33,862), Highmark PA (7,921) |
+| BCBS MA (no single PDF) | 6,222 drugs compiled from 13 separate medication list PDFs |
+| Cigna state-specific | 9 states with full 5-tier IFP formularies (AZ, CO, FL, GA, IN, MS, NC, TN, VA) |
 
 ---
 
@@ -27,7 +27,7 @@
 - **SBM (22 + DC):** `formulary_sbm_XX.json` per state — carrier formulary JSON APIs + PDF parsing
 
 ### Enrichment Data (PA/QL/ST restrictions + drug categories)
-- **45 enrichment files** from carrier-published PDFs and web scraping
+- **46 enrichment files** from carrier-published PDFs, Selenium web scraping, and API data
 - Adds Prior Authorization, Quantity Limit, Step Therapy flags
 - Therapeutic drug categories (500+ categories across carriers)
 - Tier detail (4-tier, 5-tier, 6-tier structures)
