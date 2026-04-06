@@ -164,7 +164,7 @@ export default function CategoryHubPage({ params }: Props) {
           <div className="space-y-3 text-sm text-blue-800 leading-relaxed">
             <p>
               Marketplace (Obamacare) plans are required to cover prescription drugs, but each
-              insurer sets its own formulary — the list of covered medications and their cost
+              insurance company sets its own formulary — the list of covered medications and their cost
               tiers. Coverage for {cat.label.toLowerCase()} varies significantly across plans.
             </p>
             <p>
@@ -175,7 +175,7 @@ export default function CategoryHubPage({ params }: Props) {
             </p>
             <p>
               <strong>If your drug isn&apos;t covered:</strong> You can request a formulary
-              exception through your insurer. Under federal law (45 C.F.R. § 156.122), plans
+              exception through your insurance company. Under federal law (45 C.F.R. § 156.122), plans
               must have a process for these appeals.
             </p>
           </div>
@@ -269,7 +269,7 @@ export default function CategoryHubPage({ params }: Props) {
           <p>
             This page is for informational purposes only and does not constitute medical or insurance advice.{' '}
             <strong>Consult a licensed health insurance agent</strong> to evaluate your specific coverage
-            options. Always verify formulary coverage directly with your insurer before enrolling.
+            options. Always verify formulary coverage directly with your plan before enrolling.
           </p>
         </footer>
 
@@ -286,7 +286,7 @@ function buildCategoryFAQs(categoryId: string, categoryLabel: string): FAQ[] {
   const base: FAQ[] = [
     {
       question: `Are ${categoryLabel.toLowerCase()} covered by Marketplace (Obamacare) plans?`,
-      answer: `Most Marketplace plans cover ${categoryLabel.toLowerCase()}, but coverage varies by insurer and plan tier. Each plan has its own formulary — the list of covered drugs. Some medications may require prior authorization or step therapy before coverage is approved. Check each drug's individual coverage page for plan-specific details.`,
+      answer: `Most Marketplace plans cover ${categoryLabel.toLowerCase()}, but coverage varies by plan. Each plan has its own formulary — the list of covered drugs. Some medications may require prior authorization or step therapy before coverage is approved. Check each drug's individual coverage page for plan-specific details.`,
     },
     {
       question: `What does "drug tier" mean for ${categoryLabel.toLowerCase()}?`,
@@ -294,7 +294,7 @@ function buildCategoryFAQs(categoryId: string, categoryLabel: string): FAQ[] {
     },
     {
       question: `What is prior authorization for ${categoryLabel.toLowerCase()}?`,
-      answer: `Prior authorization (PA) means your doctor must get approval from your insurer before the plan will cover a medication. The insurer reviews whether the drug is medically necessary and whether you've tried lower-cost alternatives. PA is common for brand-name and specialty ${categoryLabel.toLowerCase()}. If PA is denied, you can appeal — your insurer must provide an internal review process under federal law.`,
+      answer: `Prior authorization (PA) means your doctor must get approval from your insurance company before the plan will cover a medication. Your plan reviews whether the drug is medically necessary and whether you've tried lower-cost alternatives. PA is common for brand-name and specialty ${categoryLabel.toLowerCase()}. If PA is denied, you can appeal — your insurance company must provide an internal review process under federal law.`,
     },
     {
       question: `Can I appeal if my ${categoryLabel.toLowerCase()} isn't covered?`,

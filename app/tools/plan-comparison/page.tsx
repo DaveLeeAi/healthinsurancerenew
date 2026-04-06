@@ -139,7 +139,7 @@ export default function PlanComparisonPage() {
 
             <p className="text-xs text-slate-500 mt-4">
               This comparison is for educational purposes only. Actual plan costs, benefits, and
-              availability vary by location, insurer, and enrollment period. The suggestion above
+              availability vary by location, plan, and enrollment period. The suggestion above
               is a general starting point, not a recommendation for any specific plan. Consider
               all factors including available cost-sharing reductions for Silver plans.
             </p>

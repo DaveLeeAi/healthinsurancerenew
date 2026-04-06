@@ -82,7 +82,7 @@ const DRUG_CATEGORIES = [
 const FAQ_ITEMS = [
   { question: 'What is a drug formulary?', answer: 'A drug formulary is a list of prescription medications covered by a health insurance plan. Each plan maintains its own formulary, which determines whether a drug is covered, what tier it falls under, and what cost-sharing (copay or coinsurance) applies. Formularies are updated annually and may change during the plan year.' },
   { question: 'Why does drug coverage vary between health insurance plans?', answer: 'Each insurance issuer negotiates its own drug pricing with manufacturers and pharmacy benefit managers. These negotiations result in different formularies per plan. A drug that is Tier 1 (low cost) on one plan may be Tier 3 (higher cost) or not covered at all on another plan from a different issuer.' },
-  { question: 'What does "prior authorization" mean?', answer: 'Prior authorization means your doctor must get approval from the insurance company before the plan will cover the medication. The insurer reviews whether the drug is medically necessary for your condition. Without prior authorization, the plan may deny coverage or require you to pay full price.' },
+  { question: 'What does "prior authorization" mean?', answer: 'Prior authorization means your doctor must get approval from the insurance company before the plan will cover the medication. The plan reviews whether the drug is medically necessary for your situation. Without prior authorization, the plan may deny coverage or require you to pay full price.' },
   { question: 'What are drug tiers on a health insurance plan?', answer: 'Drug tiers are categories that determine your out-of-pocket cost for a medication. Most plans use 4 to 6 tiers: Tier 1 (preferred generic, lowest cost), Tier 2 (generic), Tier 3 (preferred brand), Tier 4 (non-preferred brand), Tier 5 (specialty). The higher the tier, the more you pay.' },
   { question: 'How do I check if my medication is covered?', answer: 'Use this formulary lookup tool to search for your medication by name. Select your state and issuer to see whether the drug is covered, which tier it falls under, and whether it requires prior authorization, step therapy, or quantity limits. Always confirm coverage with your plan before filling a prescription.' },
 ]
@@ -180,7 +180,7 @@ export default function FormularyIndexPage() {
             Search {DRUG_COUNT} prescription drugs across {ISSUER_COUNT} insurance issuers
             for 2026. Compare drug tiers, copays, and prior authorization requirements
             by plan and state. Data sourced from CMS machine-readable formulary files
-            that insurers are required by law to publish.
+            that insurance companies are required by law to publish.
           </p>
         </div>
 
@@ -230,7 +230,7 @@ export default function FormularyIndexPage() {
           <PreviewCard
             icon={<BuildingIcon />}
             title="Plans & Issuers"
-            description="Which insurers include the drug"
+            description="Which insurance companies include the drug"
           />
         </div>
 
@@ -294,7 +294,7 @@ export default function FormularyIndexPage() {
           </h2>
           <ul className="space-y-2.5 text-sm text-neutral-600">
             <TrustBullet>
-              Uses official CMS machine-readable data (MR-PUF) &mdash; the same data insurers are
+              Uses official CMS machine-readable data (MR-PUF) &mdash; the same data insurance companies are
               required by law to publish
             </TrustBullet>
             <TrustBullet>

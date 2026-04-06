@@ -299,7 +299,7 @@ export function generatePlanComparisonContent(params: PlanComparisonParams): Pag
     The Affordable Care Act Marketplace in ${countyName} offers ${nPlans} qualifying health
     plan${nPlans !== 1 ? 's' : ''} across ${nCarriers} insurance carrier${nCarriers !== 1 ? 's' : ''}
     for the ${planYear} coverage year. Plans are distributed across metal levels as follows:
-    ${metalSummary}. Metal levels define how costs are split between you and the insurer — not
+    ${metalSummary}. Metal levels define how costs are split between you and your plan — not
     the quality of care you receive. All Marketplace plans must cover the same ten Essential
     Health Benefit categories regardless of metal level.
   </p>
@@ -627,7 +627,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
 
   const competitionContext =
     carrier_count >= 4
-      ? `With ${carrier_count} carriers competing in ${countyName}, this county has strong insurer competition, which tends to moderate premium increases.`
+      ? `With ${carrier_count} carriers competing in ${countyName}, this county has strong insurance company competition, which tends to moderate premium increases.`
       : carrier_count === 3
       ? `With ${carrier_count} carriers in ${countyName}, competition is moderate. Consumers have meaningful plan choices, though fewer than in higher-competition markets.`
       : carrier_count === 2
@@ -657,7 +657,7 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
 
   <h2>The Age-Rating Factor and Premium Variation</h2>
   <p>
-    Under federal law, insurers may charge older adults up to 3× the premium charged to a 21-year-old
+    Under federal law, insurance companies may charge older adults up to 3× the premium charged to a 21-year-old
     for the same plan. In ${countyName}, the average monthly premium for a 21-year-old is
     $${Math.round(avg_premium_age_21).toLocaleString()}, rising to
     $${Math.round(avg_premium_age_40).toLocaleString()} at age 40 and
@@ -1015,7 +1015,7 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
 
   <h2>Annual Maximum Benefit</h2>
   <p>
-    This plan's annual maximum benefit is <strong>${annualMax}</strong> — the most the insurer
+    This plan's annual maximum benefit is <strong>${annualMax}</strong> — the most the plan
     will pay for covered dental services in a plan year. Once you exceed this amount, you pay
     100% of costs for the remainder of the year. Unlike marketplace medical plans, dental plans do not
     have an out-of-pocket maximum that caps your total spending. For consumers expecting
@@ -1108,16 +1108,16 @@ export function generateBillingContent(params: BillingTemplateParams): PageConte
 
   <h2>Documentation to Keep</h2>
   <ul class="billing-documentation-checklist">
-    <li>Your Explanation of Benefits (EOB) from the insurer — sent after every claim</li>
+    <li>Your Explanation of Benefits (EOB) from your insurance company — sent after every claim</li>
     <li>The original itemized bill from the provider</li>
     <li>Any prior authorization approvals or denial letters</li>
-    <li>Correspondence with insurer customer service (note date, time, representative name)</li>
+    <li>Correspondence with your insurance company's customer service (note date, time, representative name)</li>
     <li>Your plan's Summary of Benefits and Coverage (SBC) and Evidence of Coverage (EOC) documents</li>
   </ul>
 
   <h2>When to Escalate</h2>
   <p>
-    If the insurer's internal appeal process does not resolve your billing dispute, you have the
+    If the plan's internal appeal process does not resolve your billing dispute, you have the
     right to request an External Independent Review. For disputes involving the No Surprises Act,
     you may file a complaint with the federal No Surprises Help Desk at 1-800-985-3059. Your
     state's Department of Insurance handles complaints against carriers for state-regulated plans.

@@ -798,7 +798,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
               ))}
             </div>
             <p className="text-xs text-neutral-400 mt-4">
-              Source: CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}. Tier and restriction data reflect issuer formulary filings. Verify coverage directly with your insurer before enrolling.
+              Source: CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}. Tier and restriction data reflect issuer formulary filings. Verify coverage directly with your plan before enrolling.
             </p>
           </section>
         )}
@@ -918,7 +918,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
           <p>
             This page is for informational purposes only and does not constitute medical or insurance advice.{' '}
             <strong>Consult a licensed health insurance agent</strong> to evaluate your specific coverage options.
-            Always verify formulary coverage directly with your insurer before enrolling or filling a prescription.
+            Always verify formulary coverage directly with your plan before enrolling or filling a prescription.
           </p>
         </footer>
       </main>
@@ -1070,7 +1070,7 @@ function buildDrugFAQContent(drugName: string, countyDisplay: string, stateName:
   return [
     {
       question: `Is ${drugName} covered by Marketplace plans in ${countyDisplay}?`,
-      answer: `Coverage for ${drugName} in ${countyDisplay} depends on the specific plan. All ACA Marketplace plans must cover prescription drugs, but each insurer maintains its own formulary. The coverage summary above shows which carriers in ${countyDisplay} include ${drugName} and at what cost tier.`,
+      answer: `Coverage for ${drugName} in ${countyDisplay} depends on the specific plan. All ACA Marketplace plans must cover prescription drugs, but each insurance company maintains its own drug list. The coverage summary above shows which carriers in ${countyDisplay} include ${drugName} and at what cost tier.`,
     },
     {
       question: `How much does ${drugName} cost on a Marketplace plan in ${countyDisplay}?`,
@@ -1079,8 +1079,8 @@ function buildDrugFAQContent(drugName: string, countyDisplay: string, stateName:
     {
       question: `Does ${drugName} require prior authorization in ${countyDisplay}?`,
       answer: hasPriorAuth
-        ? `Some Marketplace plans in ${countyDisplay} require prior authorization for ${drugName}. This means your doctor must submit documentation to your insurer before the plan will approve coverage. If denied, you have the right to appeal under federal law (45 C.F.R. § 156.122).`
-        : `Based on our data, prior authorization is not commonly required for ${drugName} on Marketplace plans in ${countyDisplay}. Requirements can vary by plan — always confirm directly with your insurer or pharmacist.`,
+        ? `Some Marketplace plans in ${countyDisplay} require prior authorization for ${drugName}. This means your doctor must submit documentation to your insurance company before the plan will approve coverage. If denied, you have the right to appeal under federal law (45 C.F.R. § 156.122).`
+        : `Based on our data, prior authorization is not commonly required for ${drugName} on Marketplace plans in ${countyDisplay}. Requirements can vary by plan — always confirm directly with your plan or pharmacist.`,
     },
     {
       question: `Which carrier in ${countyDisplay} offers the best coverage for ${drugName}?`,

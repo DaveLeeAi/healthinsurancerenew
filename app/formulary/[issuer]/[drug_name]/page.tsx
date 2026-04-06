@@ -645,18 +645,18 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
       answer: hasPriorAuth
-        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount === results.length ? 'all' : 'some'} plans${stateOrNational}. Your doctor submits a request with your diagnosis and clinical rationale. The insurer must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you have the right to a peer-to-peer review and then a formal appeal.`
-        : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance insurer approval. Formulary requirements can change during the plan year — always confirm current coverage with your insurer.`,
+        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount === results.length ? 'all' : 'some'} plans${stateOrNational}. Your doctor submits a request with your diagnosis and clinical rationale. Your insurance company must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you have the right to a peer-to-peer review and then a formal appeal.`
+        : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
     {
       question: `What tier does ${titleCase(drugDisplay)} fall under in ${isState ? stateName : 'Marketplace'} plans?`,
       answer: humanTiers.length > 0
-        ? `${titleCase(drugDisplay)} is placed on a ${dominantHumanTier.shortLabel.toLowerCase()} tier on most plans${stateOrNational}. ${dominantHumanTier.costHint}. Tier placement can vary by insurer — the same drug can be Tier 2 on one plan and Tier 4 on another, depending on PBM rebate contracts. This is one of the most important reasons to check the specific drug list of any plan you are considering.`
+        ? `${titleCase(drugDisplay)} is placed on a ${dominantHumanTier.shortLabel.toLowerCase()} tier on most plans${stateOrNational}. ${dominantHumanTier.costHint}. Tier placement can vary by plan — the same drug can be Tier 2 on one plan and Tier 4 on another, depending on PBM rebate contracts. This is one of the most important reasons to check the specific drug list of any plan you are considering.`
         : `Tier details for ${titleCase(drugDisplay)} vary across plans. Check your specific plan's drug list for tier placement. Drug lists are updated annually, so verify coverage each Open Enrollment period.`,
     },
     {
       question: `What if my plan doesn't cover ${titleCase(drugDisplay)}?`,
-      answer: `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. The insurer must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review Organization (IRO) review — the IRO decision is binding on the insurer. You can also ask your doctor about a covered therapeutic alternative.`,
+      answer: `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. Your insurance company must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review Organization (IRO) review — the IRO decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
     },
     {
       question: `Can I switch plans to get ${titleCase(drugDisplay)} covered${isState ? ` in ${stateName}` : ''}?`,
@@ -664,7 +664,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     },
     {
       question: `What's the difference between a coverage exception and prior approval?`,
-      answer: `Prior authorization requires your doctor to document medical necessity before your insurer will cover a drug — it is about getting coverage activated. A coverage exception asks the insurer to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or getting coverage for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`,
+      answer: `Prior authorization requires your doctor to document medical necessity before your plan will cover a drug — it is about getting coverage activated. A coverage exception asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or getting coverage for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`,
     },
   ]
   const faqSchema = buildFAQSchema(formularyFaqs)
@@ -1000,7 +1000,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                       : 'not found in plans we reviewed',
                     body: hasPriorAuth
                       ? `Before your pharmacy can fill ${titleCase(drugDisplay)}, most plans require your doctor to submit documentation to the plan first. Your doctor\u2019s office typically handles this. The criteria, process, and timelines vary by plan \u2014 check your benefit documents for the specifics that apply to yours. If a request is denied, your plan will have an appeal process you can use.`
-                      : `Your doctor can prescribe ${titleCase(drugDisplay)} directly. Your pharmacy can fill it without advance insurer approval. Formulary requirements can change during the plan year \u2014 always confirm current coverage with your insurer.`,
+                      : `Your doctor can prescribe ${titleCase(drugDisplay)} directly. Your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year \u2014 always confirm current coverage with your plan.`,
                   },
                   {
                     badge: hasStepTherapy ? 'blue' : 'green',
@@ -1276,19 +1276,19 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── Insurer list (V19 .ins-block) ── */}
         {otherIssuers.length > 0 && (
-          <section aria-labelledby="insurers-heading" style={{ marginTop: '44px' }}>
+          <section aria-labelledby="insurance-companies-heading" style={{ marginTop: '44px' }}>
             <div
               className="text-faint uppercase font-medium border-b border-rule flex justify-between items-baseline flex-wrap"
               style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px', gap: '4px' }}
             >
-              <span>{isState ? `${stateCode}` : ''} insurers that included {titleCase(drugDisplay)} in {PLAN_YEAR}</span>
+              <span>{isState ? `${stateCode}` : ''} insurance companies that included {titleCase(drugDisplay)} in {PLAN_YEAR}</span>
               <span className="text-muted normal-case italic font-normal" style={{ fontSize: '11px', letterSpacing: 0 }}>
                 Tier from plan documents reviewed · prior authorization status noted
               </span>
             </div>
             {/* Insurer table intro */}
             <p className="text-muted" style={{ fontSize: '13px', lineHeight: 1.55, marginBottom: '10px' }}>
-              Plans from different insurers can place {titleCase(drugDisplay)} on different tiers — meaning your cost for the same drug can vary significantly depending on which plan you choose.
+              Plans from different insurance companies can place {titleCase(drugDisplay)} on different tiers — meaning your cost for the same drug can vary significantly depending on which plan you choose.
             </p>
             <div className="bg-white border border-rule rounded-[10px] overflow-hidden">
               {otherIssuers.slice(0, 12).map((ins, i) => {
@@ -1329,7 +1329,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 className="bg-surface border-t border-rule"
                 style={{ padding: '9px 20px', fontSize: '11.5px', color: '#728fa4', fontStyle: 'italic' }}
               >
-                Click any insurer to see plan-level detail. Confirm current coverage before enrolling.
+                Click any insurance company to see plan-level detail. Confirm current coverage before enrolling.
               </div>
             </div>
             {(() => {
@@ -1524,7 +1524,7 @@ function SBMExplanationPage({
             <p className="text-sm text-slate-600 mb-4">
               Across all states in our dataset, {titleCase(drugDisplay)} appears on{' '}
               {allResults.length} formulary {allResults.length === 1 ? 'record' : 'records'} from{' '}
-              {new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size} insurers.
+              {new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size} insurance companies.
               {allResults[0]?.drug_tier && (
                 <> It is typically listed as a {humanizeTierForDrug(allResults[0].drug_tier, drugDisplay).shortLabel.toLowerCase()} drug.</>
               )}

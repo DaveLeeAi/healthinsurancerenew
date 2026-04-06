@@ -117,7 +117,7 @@ export default function HowToReadYourSbcPage() {
         health plans without reading hundreds of pages of policy documents.
       </p>
       <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
-        <li>Uses a uniform four-double-sided-page template (plus coverage examples) &mdash; the same layout for every plan from every insurer</li>
+        <li>Uses a uniform four-double-sided-page template (plus coverage examples) &mdash; the same layout for every plan from every insurance company</li>
         <li>Designed as a &ldquo;nutrition label&rdquo; for health insurance</li>
         <li>Plans must provide it within 7 business days of your request</li>
         <li>Penalty for failing to provide: up to $1,000 per offense</li>
@@ -271,7 +271,7 @@ export default function HowToReadYourSbcPage() {
           labeled &ldquo;Summary of Benefits and Coverage.&rdquo;
         </li>
         <li>
-          <strong>From your insurer&apos;s website:</strong> Most carriers have an
+          <strong>From your insurance company&apos;s website:</strong> Most carriers have an
           online SBC search tool where you can enter your plan name or ID.
         </li>
         <li>

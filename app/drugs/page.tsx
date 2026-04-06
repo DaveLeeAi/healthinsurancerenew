@@ -197,7 +197,7 @@ export default function DrugsIndexPage() {
           <div className="space-y-3 text-sm text-neutral-600 leading-relaxed">
             <p>
               All Marketplace (Obamacare) plans are required to cover prescription drugs as an
-              Essential Health Benefit, but each insurer decides which specific medications are
+              Essential Health Benefit, but each insurance company decides which specific medications are
               covered and at what cost tier.
             </p>
             <p>
@@ -206,7 +206,7 @@ export default function DrugsIndexPage() {
               Tier 4 (specialty drugs, often hundreds per month).
             </p>
             <p>
-              Some medications require <strong>prior authorization</strong> (insurer approval before
+              Some medications require <strong>prior authorization</strong> (plan approval before
               you can fill) or <strong>step therapy</strong> (trying a lower-cost alternative first).
               You always have the right to appeal these restrictions.
             </p>
@@ -224,7 +224,7 @@ export default function DrugsIndexPage() {
           <p>
             This site is for informational purposes only and does not constitute medical or insurance advice.{' '}
             <strong>Consult a licensed health insurance agent</strong> to evaluate your specific
-            coverage options. Verify formulary coverage directly with your insurer before enrolling.
+            coverage options. Verify formulary coverage directly with your plan before enrolling.
           </p>
         </footer>
 

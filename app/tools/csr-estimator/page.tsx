@@ -232,7 +232,7 @@ export default function CsrEstimatorPage() {
 
             <p className="text-xs text-slate-500 mt-4">
               CSR eligibility is based on household income and enrollment in a Silver marketplace
-              plan. Actual plan values vary by insurer and location. These are national average
+              plan. Actual plan values vary by insurance company and location. These are national average
               estimates.
             </p>
           </div>

@@ -70,7 +70,7 @@ const TIER_GROUPS: Record<TierGroup, Omit<HumanTier, 'group'>> = {
   'preferred-brand': {
     label: 'Preferred brand (moderate cost)',
     shortLabel: 'Preferred Brand',
-    costHint: 'Brand-name drug with insurer-negotiated pricing — moderate copay',
+    costHint: 'Brand-name drug with plan-negotiated pricing — moderate copay',
     costRange: '$30–$60',
     sortOrder: 2,
     color: 'text-blue-700',

@@ -32,7 +32,7 @@ const faqs = [
   {
     question: "When do I lose my parents' health insurance after turning 26?",
     answer:
-      "You stay on your parent's plan until the end of the month you turn 26, or until the end of the plan year in which you turn 26, depending on the insurer and state rules. Most employer plans drop you at the end of the birth month. Check with the insurer for the exact date.",
+      "You stay on your parent's plan until the end of the month you turn 26, or until the end of the plan year in which you turn 26, depending on the insurance company and state rules. Most employer plans drop you at the end of the birth month. Check with the insurance company for the exact date.",
   },
   {
     question: "Is turning 26 a qualifying life event for the health insurance marketplace?",
@@ -95,8 +95,8 @@ export default function Turning26Page() {
         <h2 className="text-2xl font-bold text-slate-900 mb-4">What Happens When You Turn 26</h2>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           Under the ACA, you can stay on a parent&apos;s health insurance plan until you turn 26. After that, the
-          plan drops you. The exact date depends on the insurer: some end coverage on your birthday, some at the end
-          of the birth month, and some at the end of the plan year. Check with the insurer to know the exact cutoff.
+          plan drops you. The exact date depends on the insurance company: some end coverage on your birthday, some at the end
+          of the birth month, and some at the end of the plan year. Check with your insurance company to know the exact cutoff.
         </p>
         <p className="text-slate-700 leading-relaxed font-serif mb-4">
           Losing this coverage triggers a <strong>Special Enrollment Period</strong> — a 60-day window where you can
@@ -161,7 +161,7 @@ export default function Turning26Page() {
         <h2 className="text-2xl font-bold text-slate-900 mb-4">Step-by-Step: What to Do</h2>
         <ol className="list-decimal pl-5 text-slate-700 leading-relaxed font-serif space-y-3">
           <li>
-            <strong>Find out your exact coverage end date.</strong> Contact your parent&apos;s insurer or HR
+            <strong>Find out your exact coverage end date.</strong> Contact your parent&apos;s insurance company or HR
             department to confirm when you will lose coverage.
           </li>
           <li>

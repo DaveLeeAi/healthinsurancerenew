@@ -39,7 +39,7 @@ const FAQ_ITEMS = [
   {
     question: 'Why do health insurance costs vary by state?',
     answer:
-      'Health insurance premiums differ by state due to variations in state regulations, provider costs, insurer competition, population health, and whether the state has expanded Medicaid. States with more carriers competing tend to have lower premiums. Local cost of living and hospital reimbursement rates also influence pricing. Rural counties often have fewer carriers and higher premiums than urban areas.',
+      'Health insurance premiums differ by state due to variations in state regulations, provider costs, insurance company competition, population health, and whether the state has expanded Medicaid. States with more carriers competing tend to have lower premiums. Local cost of living and hospital reimbursement rates also influence pricing. Rural counties often have fewer carriers and higher premiums than urban areas.',
   },
   {
     question: 'Which states have expanded Medicaid?',
@@ -59,7 +59,7 @@ const FAQ_ITEMS = [
   {
     question: 'Which state has the cheapest health insurance?',
     answer:
-      'Premiums vary significantly by state and county. States with high insurer competition (like Ohio, Pennsylvania, and Virginia) tend to have lower premiums. However, the cheapest state depends on your age, income, and county. Premium Tax Credits (APTC) can reduce costs dramatically — most marketplace enrollees pay less than $100/month after subsidies. Use our state pages to compare actual premium data for your location.',
+      'Premiums vary significantly by state and county. States with high insurance company competition (like Ohio, Pennsylvania, and Virginia) tend to have lower premiums. However, the cheapest state depends on your age, income, and county. Premium Tax Credits (APTC) can reduce costs dramatically — most marketplace enrollees pay less than $100/month after subsidies. Use our state pages to compare actual premium data for your location.',
   },
 ]
 

@@ -144,7 +144,7 @@ const STATE_PROSE: Partial<Record<string, StateProseData>> = {
       },
       {
         q: 'Why are health insurance premiums in Florida different by county?',
-        a: 'ACA premiums are set by rating area, and Florida has multiple rating areas across its 67 counties. Factors include local healthcare costs, provider networks, hospital pricing, and insurer competition. South Florida tends to have higher premiums than the northern part of the state.',
+        a: 'ACA premiums are set by rating area, and Florida has multiple rating areas across its 67 counties. Factors include local healthcare costs, provider networks, hospital pricing, and insurance company competition. South Florida tends to have higher premiums than the northern part of the state.',
       },
       {
         q: 'Does Florida have Medicaid expansion?',
@@ -168,7 +168,7 @@ const STATE_PROSE: Partial<Record<string, StateProseData>> = {
     aboutProse:
       'Texas is the second-largest marketplace state by enrollment, with approximately 2.4 million residents on Healthcare.gov plans. ' +
       'The state has not expanded Medicaid, making the marketplace the primary source of subsidized individual coverage. ' +
-      'Texas has strong insurer competition in major metro areas — Houston, Dallas-Fort Worth, San Antonio, and Austin typically offer plans from multiple carriers. ' +
+      'Texas has strong insurance company competition in major metro areas — Houston, Dallas-Fort Worth, San Antonio, and Austin typically offer plans from multiple carriers. ' +
       'Rural West Texas and the Rio Grande Valley may have fewer options. ' +
       'With 26 rating areas spanning 254 counties, premium variation across the state is significant. ' +
       'About 90% of Texas marketplace enrollees receive premium tax credits. ' +
@@ -192,7 +192,7 @@ const STATE_PROSE: Partial<Record<string, StateProseData>> = {
       },
       {
         q: 'Which carriers offer marketplace plans in Texas?',
-        a: 'Texas has broad insurer participation including Ambetter (Superior HealthPlan), Molina Healthcare, Oscar Health, Blue Cross Blue Shield of Texas, Community Health Choice, Sendero Health Plans, and others. Carrier availability varies by county and rating area.',
+        a: 'Texas has broad insurance company participation including Ambetter (Superior HealthPlan), Molina Healthcare, Oscar Health, Blue Cross Blue Shield of Texas, Community Health Choice, Sendero Health Plans, and others. Carrier availability varies by county and rating area.',
       },
     ],
   },
@@ -219,7 +219,7 @@ const STATE_PROSE: Partial<Record<string, StateProseData>> = {
       },
       {
         q: 'Does New York charge a tobacco surcharge on health insurance?',
-        a: 'No. New York has community rating laws that prohibit insurers from charging different premiums based on tobacco use. This is stricter than the federal ACA rules, which allow up to a 1.5:1 tobacco surcharge. New York residents pay the same premium regardless of smoking status.',
+        a: 'No. New York has community rating laws that prohibit insurance companies from charging different premiums based on tobacco use. This is stricter than the federal ACA rules, which allow up to a 1.5:1 tobacco surcharge. New York residents pay the same premium regardless of smoking status.',
       },
       {
         q: 'When is Open Enrollment for New York health insurance?',

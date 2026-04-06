@@ -280,7 +280,7 @@ export default function RatesPage({ params }: Props) {
               </p>
             )}
             <p className="text-neutral-600 text-sm mt-3">
-              Under ACA rules, insurers can charge up to a 3:1 age ratio — the oldest
+              Under ACA rules, insurance companies can charge up to a 3:1 age ratio — the oldest
               enrollees pay no more than 3× the youngest. The actual ratio in your county
               depends on each carrier&apos;s rate filing with CMS.
             </p>

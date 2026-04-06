@@ -145,7 +145,7 @@ export default function EditorialPolicyPage() {
         {/* Section 5 — Independence */}
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Independence</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          We do not accept payment to recommend specific plans or insurers. How we earn revenue is fully disclosed
+          We do not accept payment to recommend specific plans or insurance companies. How we earn revenue is fully disclosed
           at{' '}
           <a href="/how-we-get-paid" className="text-primary-600 hover:text-primary-700 underline">
             How We Get Paid

@@ -626,7 +626,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
   })
   links.push({
     href: '/billing/prior_auth',
-    label: 'Prior authorization — when your insurer can require approval before treatment',
+    label: 'Prior authorization — when your plan can require approval before treatment',
     type: 'billing',
     relevanceScore: 68,
   })
@@ -753,7 +753,7 @@ function buildFaqLinks(ctx: Extract<PageContext, { pageType: 'faq' }>): EntityLi
   const categoryLinkMap: Partial<Record<string, EntityLink[]>> = {
     billing_scenarios: [
       { href: '/billing/split_billing', label: 'How split billing works at in-network facilities', type: 'billing', relevanceScore: 82 },
-      { href: '/billing/prior_auth', label: 'Prior authorization — when your insurer requires pre-approval', type: 'billing', relevanceScore: 78 },
+      { href: '/billing/prior_auth', label: 'Prior authorization — when your insurance company requires pre-approval', type: 'billing', relevanceScore: 78 },
       { href: '/billing/surprise_billing', label: 'Surprise billing — federal protections under the No Surprises Act', type: 'billing', relevanceScore: 74 },
     ],
     sep_triggers: [

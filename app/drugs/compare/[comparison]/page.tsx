@@ -320,7 +320,7 @@ export default function ComparisonPage({ params }: Props) {
           <p>
             Drug coverage data sourced from the CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}.
             Coverage information reflects issuer formulary filings and is subject to change. Verify coverage
-            directly with your insurer before enrolling.
+            directly with your plan before enrolling.
           </p>
           <p>
             This page is for informational purposes only and does not constitute medical or insurance advice.{' '}

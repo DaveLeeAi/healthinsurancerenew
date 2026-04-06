@@ -43,7 +43,7 @@ const FAQ_ITEMS = [
   {
     question: 'What is the difference between Bronze, Silver, Gold, and Platinum plans?',
     answer:
-      'Metal tiers reflect how you split costs with the insurer. Bronze plans have the lowest premiums but highest out-of-pocket costs (insurer pays ~60%). Silver plans (70%) are popular because cost-sharing reductions (CSR) are available if your income is under 250% FPL. Gold plans (80%) have higher premiums but lower copays. Platinum plans (90%) have the highest premiums and lowest cost-sharing.',
+      'Metal tiers reflect how you split costs with the plan. Bronze plans have the lowest premiums but highest out-of-pocket costs (the plan pays ~60%). Silver plans (70%) are popular because cost-sharing reductions (CSR) are available if your income is under 250% FPL. Gold plans (80%) have higher premiums but lower copays. Platinum plans (90%) have the highest premiums and lowest cost-sharing.',
   },
   {
     question: 'How do I know if my state uses Healthcare.gov or its own exchange?',

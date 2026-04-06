@@ -52,7 +52,7 @@ const FAQS = [
   {
     question: 'What is silver loading and how does it affect my premiums?',
     answer:
-      'Silver loading is when insurers add the cost of unfunded cost-sharing reductions to Silver plan premiums only. Because marketplace subsidies are calculated from the inflated Silver benchmark premium, the resulting larger subsidy can make Bronze plans free or Gold plans cheaper than Silver in many areas.',
+      'Silver loading is when insurance companies add the cost of unfunded cost-sharing reductions to Silver plan premiums only. Because marketplace subsidies are calculated from the inflated Silver benchmark premium, the resulting larger subsidy can make Bronze plans free or Gold plans cheaper than Silver in many areas.',
   },
   {
     question: 'What is the out-of-pocket maximum for ACA plans in 2026?',
@@ -164,7 +164,7 @@ export default function BronzeVsSilverPlan2026Page() {
         </table>
       </div>
       <p className="text-gray-700 leading-relaxed mb-4">
-        ACA marketplace insurers raised premiums approximately 26% on average in 2026,
+        ACA marketplace insurance companies raised premiums approximately 26% on average in 2026,
         with benchmark Silver plans on Healthcare.gov states increasing 30%. The 2026
         out-of-pocket maximum is $10,600 for individual coverage and $21,200 for family
         coverage &mdash; a 15.2% increase from 2025. This was revised upward from the
@@ -266,8 +266,8 @@ export default function BronzeVsSilverPlan2026Page() {
       {/* ── Silver Loading ── */}
       <SectionHeading>Silver Loading: How It May Make Bronze Plans Free</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
-        Since 2017, the federal government has not reimbursed insurers for the cost of
-        providing cost-sharing reductions. To recoup these costs, insurers add the CSR
+        Since 2017, the federal government has not reimbursed insurance companies for the cost of
+        providing cost-sharing reductions. To recoup these costs, insurance companies add the CSR
         expense to Silver plan premiums only &mdash; a practice known as &ldquo;silver
         loading.&rdquo;
       </p>

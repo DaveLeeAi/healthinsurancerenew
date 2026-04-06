@@ -275,7 +275,7 @@ export default function AcaSubsidyCliff2026Page() {
       <p className="text-gray-700 leading-relaxed mb-4">
         According to KFF analysis, subsidized marketplace enrollees may face an estimated
         114% average premium increase &mdash; from an estimated $888 per year in 2025 to
-        an estimated $1,904 per year in 2026. ACA marketplace insurers raised premiums
+        an estimated $1,904 per year in 2026. ACA marketplace insurance companies raised premiums
         approximately 26% on average, with benchmark Silver plans increasing 30%.
       </p>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -362,7 +362,7 @@ export default function AcaSubsidyCliff2026Page() {
         </li>
         <li>
           <strong>Compare plans carefully.</strong> You may qualify for a $0-premium Bronze
-          plan through silver loading. When insurers add CSR costs to Silver premiums only,
+          plan through silver loading. When insurance companies add CSR costs to Silver premiums only,
           the subsidy calculated from the inflated Silver price can cover the full Bronze
           premium in many areas.
         </li>

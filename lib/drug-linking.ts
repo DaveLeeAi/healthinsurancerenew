@@ -430,7 +430,7 @@ export function getEducationalLinks(context: {
     links.push({
       label: 'What is prior authorization and how to appeal a denial',
       href: '/faq/prior_authorization/pa_001',
-      context: 'Your doctor must get insurer approval before prescribing',
+      context: 'Your doctor must get plan approval before prescribing',
     })
   }
 

@@ -105,7 +105,7 @@ function buildFAQs(scenario: BillingScenario): Array<{ question: string; answer:
     },
     {
       question: 'What should I do if I receive an unexpected bill for this?',
-      answer: 'First, request an itemized bill and compare it line-by-line with your EOB. Verify that all codes are correct and that in-network providers were billed at in-network rates. If you find errors, call your insurer\'s customer service to dispute. For surprise bills from out-of-network providers, the No Surprises Act may protect you. Keep all documentation and note dates and names when calling.',
+      answer: 'First, request an itemized bill and compare it line-by-line with your EOB. Verify that all codes are correct and that in-network providers were billed at in-network rates. If you find errors, call your insurance company\'s customer service to dispute. For surprise bills from out-of-network providers, the No Surprises Act may protect you. Keep all documentation and note dates and names when calling.',
     },
     {
       question: 'Can I appeal this charge with my insurance company?',
@@ -113,21 +113,21 @@ function buildFAQs(scenario: BillingScenario): Array<{ question: string; answer:
     },
     {
       question: `What are the consumer protections for ${catDisplay.toLowerCase()}?`,
-      answer: `Key protections include: ${scenario.related_cfr}. Additionally, the ACA requires all plans to provide a Summary of Benefits and Coverage (SBC) that explains cost-sharing for common medical events. Your state's Department of Insurance can investigate billing complaints against insurers.`,
+      answer: `Key protections include: ${scenario.related_cfr}. Additionally, the ACA requires all plans to provide a Summary of Benefits and Coverage (SBC) that explains cost-sharing for common medical events. Your state's Department of Insurance can investigate billing complaints against insurance companies.`,
     },
   ]
 
   if (cptCodes.length > 0) {
     faqs.push({
       question: `What do CPT codes ${cptCodes.slice(0, 3).join(', ')} mean?`,
-      answer: `These Current Procedural Terminology (CPT) codes identify specific medical services for billing purposes. ${getAllCodeEntries(scenario).slice(0, 3).map((e) => `CPT ${e.cpt}: ${e.description}`).join('. ')}. CPT codes are maintained by the American Medical Association and are used by all insurers to process claims.`,
+      answer: `These Current Procedural Terminology (CPT) codes identify specific medical services for billing purposes. ${getAllCodeEntries(scenario).slice(0, 3).map((e) => `CPT ${e.cpt}: ${e.description}`).join('. ')}. CPT codes are maintained by the American Medical Association and are used by all insurance companies to process claims.`,
     })
   }
 
   if (scenario.how_it_gets_coded.icd10_examples && scenario.how_it_gets_coded.icd10_examples.length > 0) {
     faqs.push({
       question: 'What ICD-10 diagnosis codes are associated with this billing scenario?',
-      answer: `Common ICD-10 codes paired with this scenario include: ${scenario.how_it_gets_coded.icd10_examples.join('; ')}. ICD-10 codes identify the medical reason for the service. The combination of CPT (procedure) and ICD-10 (diagnosis) codes determines how your insurer processes and covers the claim.`,
+      answer: `Common ICD-10 codes paired with this scenario include: ${scenario.how_it_gets_coded.icd10_examples.join('; ')}. ICD-10 codes identify the medical reason for the service. The combination of CPT (procedure) and ICD-10 (diagnosis) codes determines how your plan processes and covers the claim.`,
     })
   }
 
@@ -319,7 +319,7 @@ export default function BillingScenarioPage({ params }: Props) {
             <div className="bg-neutral-50 rounded-xl p-5 border border-neutral-200">
               <p className="text-sm text-neutral-600 mb-3">
                 These ICD-10 diagnosis codes typically appear alongside the CPT codes in this billing
-                scenario. The diagnosis code tells your insurer <em>why</em> the service was
+                scenario. The diagnosis code tells your insurance company <em>why</em> the service was
                 performed, which affects coverage determinations.
               </p>
               <ul className="space-y-2">
@@ -370,7 +370,7 @@ export default function BillingScenarioPage({ params }: Props) {
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 space-y-4">
             <SurpriseItem
               title="Balance Billing"
-              text="If an out-of-network provider charges more than your insurer's allowed amount, you may receive a 'balance bill' for the difference. The No Surprises Act protects against this for emergency services and certain in-facility scenarios, but gaps remain for non-emergency elective care."
+              text="If an out-of-network provider charges more than your plan's allowed amount, you may receive a 'balance bill' for the difference. The No Surprises Act protects against this for emergency services and certain in-facility scenarios, but gaps remain for non-emergency elective care."
             />
             <SurpriseItem
               title="Out-of-Network Providers at In-Network Facilities"
@@ -396,12 +396,12 @@ export default function BillingScenarioPage({ params }: Props) {
             <ActionStep
               number={1}
               title="Request an itemized bill"
-              text="Call the provider's billing department and ask for a line-by-line itemized statement showing every CPT code, quantity, and charge. Compare each line to your EOB from the insurer."
+              text="Call the provider's billing department and ask for a line-by-line itemized statement showing every CPT code, quantity, and charge. Compare each line to your EOB from your insurance company."
             />
             <ActionStep
               number={2}
               title="Check your Explanation of Benefits (EOB)"
-              text="Your insurer sends an EOB after processing each claim. It shows the billed amount, allowed amount, what the plan paid, and what you owe. If the bill doesn't match the EOB, the provider may have billed incorrectly."
+              text="Your insurance company sends an EOB after processing each claim. It shows the billed amount, allowed amount, what the plan paid, and what you owe. If the bill doesn't match the EOB, the provider may have billed incorrectly."
             />
             <ActionStep
               number={3}
@@ -416,7 +416,7 @@ export default function BillingScenarioPage({ params }: Props) {
             <ActionStep
               number={5}
               title="File an appeal if needed"
-              text="If you believe the bill is incorrect or the claim was improperly denied, file an internal appeal with your insurer within 180 days. If denied, request an External Independent Review. For No Surprises Act disputes, call 1-800-985-3059."
+              text="If you believe the bill is incorrect or the claim was improperly denied, file an internal appeal with your insurance company within 180 days. If denied, request an External Independent Review. For No Surprises Act disputes, call 1-800-985-3059."
             />
             <ActionStep
               number={6}
