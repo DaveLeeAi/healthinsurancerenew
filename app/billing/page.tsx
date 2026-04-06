@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     title: 'Insurance Billing Guides — 20 Common Billing Scenarios Explained',
     description:
       '20 billing scenarios with CPT codes, cost-sharing breakdowns, and consumer action steps.',
-  },,
+  },
 }
 
 export default function BillingIndexPage() {

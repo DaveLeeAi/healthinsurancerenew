@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance Savings by Income Level (2026)',
     description:
       'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -100,7 +100,7 @@ export default function ACAIncomeGuidePage() {
         Health Insurance Savings by Income Level: 2026 Guide
       </h1>
 
-      <AnswerBox answer="Your health insurance savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to the 400% FPL subsidy cutoff at the top." />
+      <AeoBlock answer="Your health insurance savings depend almost entirely on your income relative to the Federal Poverty Level. This guide explains what happens at each income level, from Medicaid at the bottom to the 400% FPL subsidy cutoff at the top." caveat="Subsidy estimates are approximate. Actual amounts are determined during enrollment." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">How Income Determines Your Health Insurance Benefits</h2>

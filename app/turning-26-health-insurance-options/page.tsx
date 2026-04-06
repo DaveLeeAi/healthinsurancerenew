@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'Turning 26? Health Insurance Options Explained',
     description:
       'Aging off a parent',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -95,7 +95,7 @@ export default function Turning26Page() {
         Turning 26? Your Health Insurance Options Explained
       </h1>
 
-      <AnswerBox answer="When you turn 26, you lose eligibility to stay on a parent's health plan. This is a qualifying life event that gives you 60 days to enroll in your own coverage through the marketplace, an employer plan, or Medicaid. Most people find affordable options through the marketplace with premium tax credits." />
+      <AeoBlock answer="When you turn 26, you lose eligibility to stay on a parent's health plan. This is a qualifying life event that gives you 60 days to enroll in your own coverage through the marketplace, an employer plan, or Medicaid. Most people find affordable options through the marketplace with premium tax credits." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">What Happens When You Turn 26</h2>

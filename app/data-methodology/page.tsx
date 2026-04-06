@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: 'Data Methodology — How We Process CMS Public Use Files',
     description:
       'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
-  },,
+  },
 }
 
 const breadcrumbs = [

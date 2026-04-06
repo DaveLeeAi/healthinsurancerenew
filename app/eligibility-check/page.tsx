@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'ACA Eligibility Check — Do You Qualify for Savings?',
     description:
       'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -94,7 +94,7 @@ export default function EligibilityCheckPage() {
         Do I Qualify for Health Insurance Savings in 2026?
       </h1>
 
-      <AnswerBox answer="Whether you qualify depends on a few things: your income, your household size, whether you have employer coverage, and where you live. This page walks through each factor in plain English." />
+      <AeoBlock answer="Whether you qualify depends on a few things: your income, your household size, whether you have employer coverage, and where you live. This page walks through each factor in plain English." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <p className="text-slate-600 leading-relaxed font-serif mb-8">
         Marketplace eligibility is not a single yes-or-no question. It depends on several pieces of your situation working

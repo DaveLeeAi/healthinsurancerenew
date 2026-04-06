@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import SourcesBox from '../../../components/SourcesBox'
 import fplData from '../../../data/config/fpl-current.json'
 import csrData from '../../../data/config/csr-tiers.json'
@@ -92,7 +92,7 @@ export default function CsrEstimatorPage() {
         Check for Extra Savings on Silver Plans (CSR Estimator)
       </h1>
 
-      <AnswerBox answer="Enter your household size and income to see if you might qualify for extra savings on a Silver plan — lower copays, smaller deductibles, and a lower cap on what you pay out of pocket." />
+      <AeoBlock answer="Enter your household size and income to see if you might qualify for extra savings on a Silver plan — lower copays, smaller deductibles, and a lower cap on what you pay out of pocket." caveat="This is an estimate for planning purposes. Verify with your plan or a licensed agent." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">

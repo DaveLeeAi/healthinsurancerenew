@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: 'Editorial Policy | HealthInsuranceRenew',
     description:
       'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals.',
-  },,
+  },
 }
 
 // NOTE: No name/NPN on this page — generic byline only

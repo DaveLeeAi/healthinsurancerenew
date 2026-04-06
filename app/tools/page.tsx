@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance Tools & Calculators',
     description:
       'Free tools to estimate your health insurance savings, check eligibility, compare employer plans to marketplace options, and understand COBRA costs.',
-  },,
+  },
 }
 
 const breadcrumbs = [

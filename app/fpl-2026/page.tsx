@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: '2026 Federal Poverty Level (FPL) Guidelines | HealthInsuranceRenew',
     description:
       '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -114,7 +114,7 @@ export default function FPL2026Page() {
         2026 Federal Poverty Level (FPL) Guidelines
       </h1>
 
-      <AnswerBox answer="The Federal Poverty Level (FPL) is the income benchmark used to determine eligibility for Medicaid, premium tax credits, and cost-sharing reductions under the ACA. The table below shows the 2026 FPL for every household size, plus what common FPL percentages translate to in annual income." />
+      <AeoBlock answer="The Federal Poverty Level (FPL) is the income benchmark used to determine eligibility for Medicaid, premium tax credits, and cost-sharing reductions under the ACA. The table below shows the 2026 FPL for every household size, plus what common FPL percentages translate to in annual income." caveat="Subsidy estimates are approximate. Actual amounts are determined during enrollment." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">2026 FPL by Household Size</h2>

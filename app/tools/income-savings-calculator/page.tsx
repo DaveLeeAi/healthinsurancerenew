@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import SourcesBox from '../../../components/SourcesBox'
 import fplData from '../../../data/config/fpl-current.json'
 import contributionData from '../../../data/config/contribution-scale.json'
@@ -101,7 +101,7 @@ export default function IncomeSavingsCalculatorPage() {
         Estimate Your Health Insurance Savings
       </h1>
 
-      <AnswerBox answer="Enter your household size and annual income to calculate an estimate of your potential marketplace savings." />
+      <AeoBlock answer="Enter your household size and annual income to calculate an estimate of your potential marketplace savings." caveat="This is an estimate for planning purposes. Verify with your plan or a licensed agent." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">

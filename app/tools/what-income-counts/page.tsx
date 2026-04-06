@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import SourcesBox from '../../../components/SourcesBox'
 
 const breadcrumbs = [
@@ -80,7 +80,7 @@ export default function WhatIncomeCountsPage() {
         What Income Counts for Health Insurance Subsidies?
       </h1>
 
-      <AnswerBox answer="The marketplace uses a specific income number called MAGI to decide your savings. Enter your income details below to see what yours might be." />
+      <AeoBlock answer="The marketplace uses a specific income number called MAGI to decide your savings. Enter your income details below to see what yours might be." caveat="This is an estimate for planning purposes. Verify with your plan or a licensed agent." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: 'CSR Estimator: Cost-Sharing Reduction Calculator | HealthInsuranceRenew',
     description:
       'Estimate your cost-sharing reduction (CSR) benefit on marketplace silver plans based on your household income and family size. Updated with 2026 thresholds.',
-  },,
+  },
 }
 
 // NOTE: No name/NPN on this page — generic byline only

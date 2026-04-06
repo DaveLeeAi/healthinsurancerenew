@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: 'Terms of Service | HealthInsuranceRenew',
     description:
       'Terms of use for HealthInsuranceRenew. Understand the conditions for using this educational health insurance resource, including disclaimers and limitations.',
-  },,
+  },
 }
 
 const breadcrumbs = [

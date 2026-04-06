@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance Glossary — Key Terms Explained',
     description:
       'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
-  },,
+  },
 }
 
 const breadcrumbs = [

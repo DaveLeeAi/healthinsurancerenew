@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: 'Lost Your Job? Health Insurance Options (2026)',
     description:
       'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
-  },,
+  },
 }
 
 const g = fplData.guidelines
@@ -105,7 +105,7 @@ export default function LostJobPage() {
         Lost Your Job? Health Insurance Options for 2026
       </h1>
 
-      <AnswerBox answer="Losing your job triggers a 60-day window to enroll in a new health plan. A marketplace plan with income-based subsidies is usually the cheapest option. COBRA lets you keep your old plan at full cost. Medicaid may be free if your income qualifies. Act within 60 days." />
+      <AeoBlock answer="Losing your job triggers a 60-day window to enroll in a new health plan. A marketplace plan with income-based subsidies is usually the cheapest option. COBRA lets you keep your old plan at full cost. Medicaid may be free if your income qualifies. Act within 60 days." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">Your Three Options at a Glance</h2>

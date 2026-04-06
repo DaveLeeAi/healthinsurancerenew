@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: 'Job Plan Affordability Checker | HealthInsuranceRenew',
     description:
       'Check if your employer\',
-  },,
+  },
 }
 
 // NOTE: No name/NPN on this page — generic byline only

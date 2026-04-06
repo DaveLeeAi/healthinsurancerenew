@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import SourcesBox from '../../../components/SourcesBox'
 import affordabilityData from '../../../data/config/affordability-threshold.json'
 
@@ -59,7 +59,7 @@ export default function JobPlanAffordabilityPage() {
         Does My Employer Plan Count? Affordability Check
       </h1>
 
-      <AnswerBox answer="Enter your income and your employer's health insurance premium to determine if it meets ACA affordability standards and whether you may qualify for marketplace savings." />
+      <AeoBlock answer="Enter your income and your employer's health insurance premium to determine if it meets ACA affordability standards and whether you may qualify for marketplace savings." caveat="This is an estimate for planning purposes. Verify with your plan or a licensed agent." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">

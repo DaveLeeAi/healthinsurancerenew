@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: 'How We Get Paid | HealthInsuranceRenew',
     description:
       'HealthInsuranceRenew.com discloses all revenue sources. The site earns through standard CMS-regulated agent compensation when consumers enroll in health plans — at no cost to the consumer.',
-  },,
+  },
 }
 
 // NOTE: No name/NPN on this page — generic byline only

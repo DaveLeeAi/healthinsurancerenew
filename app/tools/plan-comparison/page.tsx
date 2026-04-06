@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import SourcesBox from '../../../components/SourcesBox'
 import metalTiers from '../../../data/config/metal-tiers.json'
 
@@ -44,7 +44,7 @@ export default function PlanComparisonPage() {
         Compare Plan Levels: Bronze, Silver, Gold, Platinum
       </h1>
 
-      <AnswerBox answer="Health plans come in four levels: Bronze, Silver, Gold, and Platinum. Pick how often you use health care to see which level might be the best fit for you." />
+      <AeoBlock answer="Health plans come in four levels: Bronze, Silver, Gold, and Platinum. Pick how often you use health care to see which level might be the best fit for you." caveat="This is an estimate for planning purposes. Verify with your plan or a licensed agent." />
 
       <div className="bg-white/70 border border-slate-200/80 rounded-2xl p-4 mb-6">
         <p className="text-sm text-slate-600 leading-relaxed">

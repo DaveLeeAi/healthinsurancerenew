@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'Early Retirement Health Insurance — Bridge to Medicare',
     description:
       'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -96,7 +96,7 @@ export default function EarlyRetirementPage() {
         Early Retirement Health Insurance: Your 2026 Options
       </h1>
 
-      <AnswerBox answer="If you retire before turning 65 and losing employer coverage, the health insurance marketplace is your primary option until Medicare kicks in. Your retirement income level determines how much help you get with premiums. Many early retirees qualify for substantial savings by managing how much income they take each year." />
+      <AeoBlock answer="If you retire before turning 65 and losing employer coverage, the health insurance marketplace is your primary option until Medicare kicks in. Your retirement income level determines how much help you get with premiums. Many early retirees qualify for substantial savings by managing how much income they take each year." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">The Gap Between Retirement and Medicare</h2>

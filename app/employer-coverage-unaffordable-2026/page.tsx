@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'Employer Coverage Unaffordable? Your ACA Options (2026)',
     description:
       'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -96,7 +96,7 @@ export default function EmployerCoverageUnaffordablePage() {
         Employer Coverage Unaffordable? Your Marketplace Options in 2026
       </h1>
 
-      <AnswerBox answer="If your employer's health plan costs more than about 9.96% of your household income for employee-only coverage, it may be considered unaffordable under ACA rules. In that case, you can decline the employer plan and get marketplace coverage with premium tax credits instead." />
+      <AeoBlock answer="If your employer's health plan costs more than about 9.96% of your household income for employee-only coverage, it may be considered unaffordable under ACA rules. In that case, you can decline the employer plan and get marketplace coverage with premium tax credits instead." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">The ACA Affordability Test</h2>

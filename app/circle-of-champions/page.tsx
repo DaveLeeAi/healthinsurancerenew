@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: 'CMS Elite Circle of Champions | HealthInsuranceRenew',
     description:
       'Health Insurance Renew received ${config.operator.recognition} recognition for the ${config.operator.recognitionPeriod}, enrolling ${config.operator.enrollmentVolume} in annual Marketplace premium.',
-  },,
+  },
 }
 
 const breadcrumbs = [

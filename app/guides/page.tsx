@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance Guides',
     description:
       'Educational guides about marketplace enrollment, subsidies, special enrollment, and coverage costs.',
-  },,
+  },
 }
 
 const breadcrumbs = [

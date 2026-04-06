@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: 'Privacy Policy | HealthInsuranceRenew',
     description:
       'Privacy policy for HealthInsuranceRenew. Learn what information is collected, how it is used, and how your privacy is protected.',
-  },,
+  },
 }
 
 const breadcrumbs = [

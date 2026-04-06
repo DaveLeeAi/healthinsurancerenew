@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'Self-Employed Health Insurance Guide (2026)',
     description:
       'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -96,7 +96,7 @@ export default function SelfEmployedPage() {
         Self-Employed Health Insurance in 2026: Your Options
       </h1>
 
-      <AnswerBox answer="The health insurance marketplace is the primary source of individual health insurance for self-employed workers. Premium tax credits based on your net income can reduce costs significantly. You can also deduct premiums as a business expense, and pair a high-deductible plan with an HSA for additional tax savings." />
+      <AeoBlock answer="The health insurance marketplace is the primary source of individual health insurance for self-employed workers. Premium tax credits based on your net income can reduce costs significantly. You can also deduct premiums as a business expense, and pair a high-deductible plan with an HSA for additional tax savings." caveat="Verify details with your plan or a licensed agent before making decisions." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">Marketplace Coverage for Freelancers and Gig Workers</h2>

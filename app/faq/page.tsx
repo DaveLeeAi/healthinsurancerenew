@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance FAQ — 54 Real Questions Answered',
     description:
       'Expert answers to real health insurance questions. Coverage transitions, subsidies, billing disputes, and more.',
-  },,
+  },
 }
 
 export default function FAQIndexPage() {

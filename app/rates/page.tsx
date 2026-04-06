@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: 'Health Insurance Premium Rate Trends by State (2026)',
     description:
       'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
-  },,
+  },
 }
 
 interface StateEntry {

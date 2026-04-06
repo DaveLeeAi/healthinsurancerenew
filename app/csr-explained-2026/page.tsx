@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import AnswerBox from '../../components/AnswerBox'
+import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: 'Cost-Sharing Reductions (CSR) Explained for 2026',
     description:
       'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
-  },,
+  },
 }
 
 const breadcrumbs = [
@@ -111,7 +111,7 @@ export default function CSRExplainedPage() {
         What Is Cost-Sharing Reduction (CSR) in 2026?
       </h1>
 
-      <AnswerBox answer="Cost-sharing reductions lower what you pay when you actually use health care — your deductible, copays, and out-of-pocket maximum. They are only available on Silver plans through the marketplace. The amount of savings depends on your income." />
+      <AeoBlock answer="Cost-sharing reductions lower what you pay when you actually use health care — your deductible, copays, and out-of-pocket maximum. They are only available on Silver plans through the marketplace. The amount of savings depends on your income." caveat="Subsidy estimates are approximate. Actual amounts are determined during enrollment." />
 
       <section className="mb-10">
         <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">What CSR Means in Practice</h2>

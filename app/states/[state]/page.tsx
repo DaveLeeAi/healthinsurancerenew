@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Breadcrumbs from '../../../components/Breadcrumbs'
-import AnswerBox from '../../../components/AnswerBox'
+import AeoBlock from '../../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import SourcesBox from '../../../components/SourcesBox'
 import SchemaScript from '../../../components/SchemaScript'
@@ -301,7 +301,7 @@ export default async function StateDetailPage({ params }: Props) {
         </p>
       </header>
 
-      <AnswerBox answer={description} />
+      <AeoBlock answer={description} caveat={`Based on ${PLAN_YEAR} federal plan data. Verify current details with your plan.`} />
 
       {/* ── 2. STATE SNAPSHOT ── */}
       <section id="state-snapshot" className="my-10">

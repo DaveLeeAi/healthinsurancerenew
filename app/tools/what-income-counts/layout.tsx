@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: 'What Income Counts for Health Insurance Subsidies? | HealthInsuranceRenew',
     description:
       'Learn which income sources count toward your MAGI for premium tax credits: wages, self-employment, Social Security, rental income, alimony, and more.',
-  },,
+  },
 }
 
 // NOTE: No name/NPN on this page — generic byline only
