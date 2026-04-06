@@ -57,7 +57,7 @@ Features:
 **Plan slug format:** `{plan-name-lowercased-hyphenated}-plan` (always ends in `-plan`; no double suffix)
 
 ### Formulary
-`/formulary/[issuer]/[drug_name]` — Drug coverage by insurer
+`/[state]/[drug]/` — Drug coverage by state
 
 Features:
 - Drug Coverage Snapshot card (tier, PA status, step therapy, quantity limit, plans count, generic availability)
