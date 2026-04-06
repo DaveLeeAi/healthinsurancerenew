@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Turning 26? Health Insurance Options Explained',
     description:
-      'Aging off a parent',
+      "Aging off a parent's health plan at 26? Learn your health insurance options for 2026, including marketplace enrollment, Medicaid, employer coverage, and key deadlines.",
   },
 }
 

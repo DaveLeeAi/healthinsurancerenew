@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis',
+    title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description:
       'County-level analysis of enhanced credit expiration impact on marketplace health insurance premiums.',
   },

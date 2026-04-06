@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Licensing Information | HealthInsuranceRenew',
     description:
-      'HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.',
+      `HealthInsuranceRenew agents are licensed in ${config.licensedStates.length} states. View our licensing information and regulatory compliance details.`,
   },
 }
 
