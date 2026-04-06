@@ -1365,13 +1365,22 @@ export default async function FormularyDrugPage({ params }: Props) {
               <div className="text-mid" style={{ fontSize: '13.5px' }}>
                 See drug coverage data for all medications reviewed in <strong className="text-ink font-medium">{stateName}</strong> health plans.
               </div>
-              <a
-                href={`/formulary/${canonicalIssuerParam}/all`}
-                className="border border-rule text-vblue font-medium hover:border-vblue transition-colors"
-                style={{ borderRadius: '6px', padding: '7px 16px', fontSize: '13px', textDecoration: 'none' }}
-              >
-                All {stateCode} drug coverage &rarr;
-              </a>
+              <div className="flex flex-wrap" style={{ gap: '8px' }}>
+                <a
+                  href={`/formulary/${canonicalIssuerParam}/all`}
+                  className="border border-rule text-vblue font-medium hover:border-vblue transition-colors"
+                  style={{ borderRadius: '6px', padding: '7px 16px', fontSize: '13px', textDecoration: 'none' }}
+                >
+                  All {stateCode} drug coverage &rarr;
+                </a>
+                <a
+                  href={`/states/${stateCode?.toLowerCase()}`}
+                  className="border border-rule text-vblue font-medium hover:border-vblue transition-colors"
+                  style={{ borderRadius: '6px', padding: '7px 16px', fontSize: '13px', textDecoration: 'none' }}
+                >
+                  {stateName} health insurance overview &rarr;
+                </a>
+              </div>
             </div>
           </section>
         )}
