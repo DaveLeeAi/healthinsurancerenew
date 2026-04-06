@@ -49,7 +49,6 @@ import {
   getStatePlanLinks,
   getRelatedGuides,
 } from '@/lib/drug-linking'
-import DrugPageCta from '@/components/DrugPageCta'
 import allStatesData from '@/data/config/all-states.json'
 import { stateCodeToSlug, stateSlugToCode } from '@/lib/county-lookup'
 
