@@ -174,7 +174,7 @@ export default function FormularyIndexPage() {
             Marketplace Drug Coverage Tool
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-navy-900 leading-tight mb-3">
-            Health Insurance Formulary &amp; Drug Coverage Lookup
+            Health Insurance Drug Coverage Lookup
           </h1>
           <p id="formulary-bluf" className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
             Search {DRUG_COUNT} prescription drugs across {ISSUER_COUNT} insurance issuers
