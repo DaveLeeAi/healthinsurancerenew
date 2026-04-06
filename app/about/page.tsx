@@ -17,14 +17,14 @@ import {
 export const metadata: Metadata = {
   title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
   description:
-    'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+    'HealthInsuranceRenew is operated by a licensed ACA agent with CMS Elite Circle of Champions recognition. Our mission, data sources, and editorial standards.',
   alternates: {
     canonical: `${SITE_URL}/about/`,
   },
   openGraph: {
     title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
     description:
-      'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+      'HealthInsuranceRenew is operated by a licensed ACA agent with CMS Elite Circle of Champions recognition. Our mission, data sources, and editorial standards.',
     url: `${SITE_URL}/about/`,
     type: 'website',
     siteName: 'HealthInsuranceRenew',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary' as const,
     title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
     description:
-      'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+      'HealthInsuranceRenew is operated by a licensed ACA agent with CMS Elite Circle of Champions recognition. Our mission, data sources, and editorial standards.',
   },
 };
 
@@ -43,7 +43,7 @@ const pageSchema = getWebPageSchema({
   url: `${SITE_URL}/about/`,
   name: `About ${AGENCY_NAME}`,
   description:
-    'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+    'HealthInsuranceRenew is operated by a licensed ACA agent with CMS Elite Circle of Champions recognition. Our mission, data sources, and editorial standards.',
   datePublished: '2026-03-29T00:00:00-04:00',
   dateModified: '2026-03-29T00:00:00-04:00',
   breadcrumbs: [

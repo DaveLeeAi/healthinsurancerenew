@@ -7,7 +7,7 @@ import SchemaScript from '../../components/SchemaScript'
 export const metadata: Metadata = {
   title: 'Editorial Policy | HealthInsuranceRenew',
   description:
-    'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals with CMS Elite Circle of Champions recognition.',
+    'How HealthInsuranceRenew creates, reviews, and updates health insurance content. Reviewed by licensed professionals with CMS Circle of Champions recognition.',
   alternates: { canonical: 'https://healthinsurancerenew.com/editorial-policy' },
   openGraph: {
     title: 'Editorial Policy | HealthInsuranceRenew',

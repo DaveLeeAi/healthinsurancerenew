@@ -95,12 +95,12 @@ export function generateMetadata(): Metadata {
   return {
     title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
     description:
-      'Search prescription drug coverage across all marketplace health plans. Find your medication\'s tier, copay, and prior authorization requirements.',
+      'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
     alternates: { canonical: CANONICAL },
     openGraph: {
       title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
       description:
-        'Search prescription drug coverage across all marketplace health plans. Find your medication\'s tier, copay, and prior authorization requirements.',
+        'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
       url: CANONICAL,
       type: 'website',
       siteName: 'HealthInsuranceRenew',
@@ -109,7 +109,7 @@ export function generateMetadata(): Metadata {
       card: 'summary_large_image',
       title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
       description:
-        'Search prescription drug coverage across all marketplace health plans. Find your medication\'s tier, copay, and prior authorization requirements.',
+        'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
     },
   }
 }

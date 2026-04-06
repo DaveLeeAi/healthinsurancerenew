@@ -11,12 +11,12 @@ const SITE_URL = 'https://healthinsurancerenew.com'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Premium Rate Trends by State (2026)',
-  description: 'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
+  description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from CMS Rate PUF data.',
   alternates: { canonical: `${SITE_URL}/rates` },
   openGraph: {
     type: 'website',
     title: 'Health Insurance Premium Rate Trends by State (2026)',
-    description: 'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
+    description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from CMS Rate PUF data.',
     url: `${SITE_URL}/rates`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',

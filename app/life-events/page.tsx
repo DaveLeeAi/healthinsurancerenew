@@ -11,7 +11,7 @@ const SITE_URL = 'https://healthinsurancerenew.com'
 export const metadata: Metadata = {
   title: 'Life Events & Health Insurance — Special Enrollment Periods',
   description:
-    'Navigate health insurance coverage changes after major life events: turning 26, job loss, marriage, having a baby, divorce, early retirement, Medicare at 65, moving states, and immigration status changes. SEP windows, deadlines, and required documentation.',
+    'What happens to your health insurance after a life event? Special enrollment periods, deadlines, and next steps for turning 26, job loss, marriage, and more.',
   alternates: {
     canonical: `${SITE_URL}/life-events`,
   },
