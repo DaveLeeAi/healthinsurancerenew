@@ -97,7 +97,7 @@ export default function AboutPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           Every page on this site is reviewed by a licensed ACA health insurance
           agent — not a content writer guessing at policy details. Our data comes
-          directly from CMS plan benefit filings, state insurance department rate
+          directly from CMS federal plan data, state insurance department rate
           databases, and HHS policy analyses. When regulations change, we update
           our content within days, not months.
         </p>
@@ -117,7 +117,7 @@ export default function AboutPage() {
           premiums.{' '}
           <strong>Formulary data</strong> — drug coverage lookups across
           marketplace plans, including tier placement, prior authorization
-          requirements, and cost estimates from plan benefit filings.{' '}
+          requirements, and cost estimates from federal plan data.{' '}
           <strong>SBC decoded</strong> — plain-language explanations of Summary
           of Benefits and Coverage documents.{' '}
           <strong>Provider networks</strong> — carrier network mapping by plan

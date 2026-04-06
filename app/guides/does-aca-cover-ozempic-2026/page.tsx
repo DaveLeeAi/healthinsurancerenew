@@ -180,7 +180,7 @@ export default function DoesAcaCoverOzempic2026Page() {
         Reauthorization is generally required every 6 to 12 months.
       </p>
       <p className="text-xs text-gray-500 mb-4">
-        Estimated from 2026 plan benefit filings. Actual copays depend on your specific
+        Estimated from 2026 federal plan data. Actual copays depend on your specific
         plan, tier placement, and deductible status.
       </p>
       <DataSourceAttribution
@@ -286,7 +286,7 @@ export default function DoesAcaCoverOzempic2026Page() {
         </table>
       </div>
       <p className="text-xs text-gray-500 mb-4">
-        Estimated from manufacturer pricing and plan benefit filings. Actual cost depends
+        Estimated from manufacturer pricing and federal plan data. Actual cost depends
         on your plan, pharmacy, deductible status, and eligibility for assistance programs.
       </p>
       <DataSourceAttribution

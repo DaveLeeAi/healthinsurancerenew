@@ -849,7 +849,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
     (priorAuthCount > 0
       ? `${priorAuthCount} plan${priorAuthCount !== 1 ? 's' : ''} require prior authorization for this medication. `
       : 'No plans in this dataset require prior authorization for this medication. ') +
-    `Source: ${planYear} plan benefit filings.`
+    `Source: ${planYear} federal plan data.`
 
   const bodyHtml = `<section class="content-formulary">
   <h2>Understanding Formulary Tier Structure</h2>

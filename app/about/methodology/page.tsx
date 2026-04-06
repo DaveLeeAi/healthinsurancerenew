@@ -91,7 +91,7 @@ export default function MethodologyPage() {
 
         <BLUFBox>
           Every data point on HealthInsuranceRenew.com is sourced from official
-          government records — primarily CMS plan benefit filings, HHS policy
+          government records — primarily CMS federal plan data, HHS policy
           analyses, and state insurance department databases. All content is
           verified by a licensed ACA agent before publication and reviewed at
           least once per plan year or when regulations change.
@@ -262,7 +262,7 @@ export default function MethodologyPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           While we strive for accuracy, government data sources occasionally
           contain errors or lag behind regulatory changes. Cost estimates on
-          this site are based on published plan benefit filings and may not
+          this site are based on published federal plan data and may not
           reflect negotiated rates, manufacturer rebates, or individual
           circumstances. Subsidy estimates are for informational purposes and
           may differ from amounts determined by HealthCare.gov or the IRS.

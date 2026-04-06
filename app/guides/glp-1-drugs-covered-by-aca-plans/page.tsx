@@ -234,7 +234,7 @@ export default function Glp1DrugsCoveredPage() {
         out of 300 marketplace carriers offer any GLP-1 obesity coverage.
       </p>
       <p className="text-xs text-gray-500 mb-4">
-        Estimated from plan benefit filings and published analyses. Actual formulary
+        Estimated from federal plan data and published analyses. Actual formulary
         inclusion varies by carrier, state, and plan year.
       </p>
       <DataSourceAttribution
@@ -261,7 +261,7 @@ export default function Glp1DrugsCoveredPage() {
         meaning $300 or more per month before manufacturer assistance.
       </p>
       <p className="text-xs text-gray-500 mb-4">
-        Estimated from 2026 plan benefit filings. Actual cost depends on your plan, tier
+        Estimated from 2026 federal plan data. Actual cost depends on your plan, tier
         placement, pharmacy, and deductible status.
       </p>
       <DataSourceAttribution

@@ -778,7 +778,7 @@ export default async function FormularyDrugPage({ params }: Props) {
       />
 
       <ProcessBar items={[
-        `${PLAN_YEAR} plan benefit filings`,
+        `${PLAN_YEAR} federal plan data`,
         `${results.length} plan${results.length === 1 ? '' : 's'} reviewed`,
         'Licensed agent reviewed',
         'Updated March 2026',
@@ -827,7 +827,7 @@ export default async function FormularyDrugPage({ params }: Props) {
           {results.length > 0 && (
             <AeoBlock
               answer={`${titleCase(drugDisplay)} was on most of the ${isState ? stateName : 'Marketplace'} health plans we reviewed \u2014 ${results.length} of them for ${PLAN_YEAR}.${hasPriorAuth ? ` Prior approval is a common requirement on plans that include it \u2014 found in ${priorAuthCount} of ${results.length} plans we reviewed.` : ' Prior approval was not required on the plans we reviewed.'} What you pay can vary quite a bit depending on your plan\u2019s tier placement and where you are in your deductible year.`}
-              caveat={`Based on ${PLAN_YEAR} plan benefit filings. Actual cost depends on your plan, pharmacy, and deductible status.`}
+              caveat={`Based on ${PLAN_YEAR} federal plan data. Actual cost depends on your plan, pharmacy, and deductible status.`}
             />
           )}
 
@@ -944,7 +944,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               </p>
               <CostBlock
                 rows={costRows}
-                note={`These ranges come from plan benefit documents reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
+                note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
                 varyRows={[
                   { key: 'Tier placement matters', value: `Preferred and non-preferred tiers can differ by $40\u2013$80 per month or more, based on what we found in reviewed plans. Tier placement is one of the more impactful things to check when comparing options.` },
                   { key: 'Pharmacy choice', value: `Your plan\u2019s negotiated rate varies by pharmacy. Preferred pharmacies and mail-order often come in lower \u2014 worth checking before your first fill.` },
@@ -1192,7 +1192,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── AboutBlock ── */}
         <div style={{ marginTop: '44px' }}>
           <AboutBlock
-            text={`The information here comes from reviewing plan benefit documents for ${results.length} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in those plan filings \u2014 not from live pharmacy transactions or claims data. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
+            text={`The information here comes from reviewing plan information for ${results.length} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in federal plan data \u2014 not from live pharmacy transactions. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
             reviewedLine={`Reviewed using a structured editorial process \u00b7 Data snapshot: January ${PLAN_YEAR} \u00b7 Last updated: March ${PLAN_YEAR}`}
             links={[
               { href: '/editorial-policy', label: 'Editorial process' },
@@ -1404,7 +1404,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── 19. GenericByline ── */}
         <div style={{ marginTop: '24px' }}>
-          <GenericByline dataSource="CMS plan benefit filings" planYear={PLAN_YEAR} />
+          <GenericByline dataSource="CMS federal plan data" planYear={PLAN_YEAR} />
         </div>
 
         {/* ── 20. Page disclaimer footer (V19 .disc) ── */}
@@ -1539,7 +1539,7 @@ function SBMExplanationPage({
 
         <footer className="border-t border-neutral-200 mt-8 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Formulary data sourced from CMS plan benefit filings, plan year {PLAN_YEAR}.
+            Formulary data sourced from CMS federal plan data, plan year {PLAN_YEAR}.
             Always verify current coverage with your insurance carrier or at healthcare.gov.
           </p>
           <p>

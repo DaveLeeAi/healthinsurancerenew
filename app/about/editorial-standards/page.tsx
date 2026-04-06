@@ -141,7 +141,7 @@ export default function EditorialStandardsPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Step 4: Fact-checking against source data.</strong> Every
           factual claim is checked against its cited source. Our fact-checking
-          checklist verifies that cost figures match CMS plan benefit filings,
+          checklist verifies that cost figures match CMS federal plan data,
           eligibility rules reflect current HHS guidance, formulary data matches
           published plan formularies, enrollment dates match the current plan
           year calendar, and regulatory references cite the correct CFR section

@@ -314,7 +314,7 @@ export default function FormularyIndexPage() {
         <PageFaq faqs={FAQ_ITEMS} />
 
         <GenericByline
-          dataSource="CMS Machine-Readable PUF + Carrier Formulary JSON Files"
+          dataSource="CMS plan information + Carrier Formulary JSON Files"
           planYear={2026}
         />
       </main>
