@@ -1,13 +1,14 @@
 # DESIGN.md — HealthInsuranceRenew Full Site Framework
-## Version: 2.0 | Standard: V19 | Updated: March 2026
+## Version: 3.0 | Standard: V35 (content/schema) · V19 (layout) | Updated: April 2026
 
 > Single source of truth for every page on the site.
 > Claude Code must read this file at the start of every session.
 > Do not deviate without a documented reason in the commit message.
-> The V19 formulary mockup (ozempic_nc_formulary_v19.html) is the approved
-> visual reference. All page types inherit from this standard.
-> The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is
-> locked at **9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
+> V19 (ozempic_nc_formulary_v19.html) is the approved visual/layout reference.
+> V35 (healthinsurancerenew_v35_formulary.html) is the locked content, copy, and schema reference.
+> All page types inherit from V19 layout; formulary pages follow V35 content standard.
+> The formulary template (`app/[state]/[drug]/page.tsx`) is locked at **9.5/10**.
+> V35 is the locked template for ~37,500 drug-in-state pages. Phase 4 drug+plan pages need their own template.
 
 ---
 
@@ -271,8 +272,8 @@ BUILD NEW (Priority 2 — before other page types):
 ### Canonical patterns
 | Pattern | Pillar | Primary user question |
 |---|---|---|
-| `/formulary/{state}/{drug}` | Formulary | Is my drug covered + cost? |
-| `/formulary/{issuer}/{drug}` | Formulary | What does this carrier cover? |
+| `/{state}/{drug-name}/` | Formulary (drug in state) | Is my drug covered in my state? |
+| `/{state}/{drug-name}/{plan-slug}/` | Formulary (drug+plan) | Is my drug covered on this plan + cost? |
 | `/drugs` | Drug index | Browse drugs by category |
 | `/drugs/categories/{category}` | Drug hub | What drugs are in this class? |
 | `/drugs/compare/{a}-vs-{b}` | Comparison | Which is better covered? |
@@ -298,22 +299,55 @@ BUILD NEW (Priority 2 — before other page types):
 - All existing 301 redirects must be maintained:
   - `/plan-details/{id}/{slug}` → `/{state}/{county}/{plan}-plan`
   - `/drugs/{state}/{county}/{drug}` → `/{state}/{county}/{drug}-coverage`
+  - `/formulary/{issuer}/{drug_name}` → `/{state}/{drug}/` (legacy redirect)
   - `/plans/{state}` and `/plans/{state}/{county}` are currently stubs —
     they need full page implementations (see Section 13)
+
+### Formulary URL conventions (locked)
+| Element | Rule |
+|---|---|
+| State | Full name hyphenated — `north-carolina` not `nc` |
+| Drug name | Brand slug (`ozempic`) or generic slug (`semaglutide`) — one page per, no duplication |
+| Plan slug | Carrier + metal tier + plan type — `blue-cross-silver-ppo` |
+
+Examples:
+- `/north-carolina/ozempic/`
+- `/north-carolina/semaglutide/`
+- `/north-carolina/ozempic/blue-cross-silver-ppo/`
+
+### Brand vs Generic Page Differentiation (locked)
+
+**Brand page** (e.g. `/north-carolina/ozempic/`):
+- Focus: coverage, cost, real-world pharmacy usage, carrier comparison, savings alternatives
+- Links DOWN to generic page (`/north-carolina/semaglutide/`)
+
+**Generic page** (e.g. `/north-carolina/semaglutide/`):
+- Focus: drug class explanation (GLP-1), brand variants comparison (Ozempic vs Wegovy vs Rybelsus), broader coverage patterns
+- Links UP to brand pages
+- Must NOT duplicate brand page content
+
+Data source: keyword map `Type` column (`Brand`/`Generic`) → field in drug registry → conditional rendering in `app/[state]/[drug]/page.tsx`
+
+HTML marker in template output:
+```html
+<meta name="page-type" content="brand">
+<!-- or -->
+<meta name="page-type" content="generic">
+```
 
 ---
 
 ## 7. SCHEMA BY PAGE TYPE
 
 ### The one rule that overrides all others
-Never use `MedicalWebPage` on any page. Insurance decision-support
-is not clinical medical content. The formulary page currently uses
-`MedicalWebPage` — this must be removed as Phase 1 priority.
+Never use `MedicalWebPage` on any page EXCEPT formulary drug pages.
+Formulary pages use a triple `@graph` JSON-LD (see below). All other
+page types use `WebPage` as primary schema.
 
 ### Schema map
 | Page type | Primary | Supporting |
 |---|---|---|
-| Formulary drug | `WebPage` | `FAQPage` + `Drug` in about + `BreadcrumbList` |
+| Formulary drug | `MedicalWebPage` | `Drug` + `HealthInsurancePlan` → `HealthPlanFormulary` → `HealthPlanCostSharingSpecification` + `Organization` + `FAQPage` + `BreadcrumbList` — triple @graph with @id cross-references |
 | Drug category/index | `WebPage` | `BreadcrumbList` |
 | Drug comparison | `WebPage` | `FAQPage` + `BreadcrumbList` |
 | County/state hub | `WebPage` | `FAQPage` + `BreadcrumbList` |
@@ -327,6 +361,19 @@ is not clinical medical content. The formulary page currently uses
 | Guides | `Article` | `FAQPage` + `BreadcrumbList` |
 | FAQ pages | `FAQPage` | `BreadcrumbList` |
 | Tools | `WebApplication` | `BreadcrumbList` |
+
+### Formulary Triple Schema (locked — V35 reference)
+
+Single `@graph` array with `@id` cross-references:
+
+1. **Drug** — `name`, `nonProprietaryName`, `rxcui`, `drugClass`, `includedInHealthInsurancePlan` bridge, PA/step therapy/QL as `additionalProperty`
+2. **MedicalWebPage** — `lastReviewed`, `reviewedBy`, `medicalAudience: Patient`, `speakable` pointing at BLUF block (`.ca` selector), `about` linking to Drug entity via `@id`
+3. **HealthInsurancePlan** → `HealthPlanFormulary` → `HealthPlanCostSharingSpecification` chain
+4. **Organization** — publisher and author reference
+5. **BreadcrumbList** — matches visible breadcrumb nav
+6. **FAQPage** — all visible FAQ questions, text must match `<summary>` exactly
+
+See `healthinsurancerenew_v35_formulary.html` for the complete working example.
 
 ### Required WebPage fields (every page)
 ```json
@@ -349,11 +396,11 @@ Three hard rules:
 - Schema `description` must be identical to `<meta name="description">`
 - FAQPage `name` must be identical to visible `<summary>` text
 
-### Remove from all pages immediately
+### Remove from all non-formulary pages immediately
 ```
-medicalAudience: { "@type": "MedicalAudience" }
-"@type": "MedicalWebPage"
-identifier: issuer  (raw CMS issuer IDs — never public-facing)
+medicalAudience: { "@type": "MedicalAudience" }  — allowed on formulary pages only
+"@type": "MedicalWebPage"                         — allowed on formulary pages only
+identifier: issuer  (raw CMS issuer IDs — never public-facing anywhere)
 ```
 
 ---
@@ -383,12 +430,11 @@ identifier: issuer  (raw CMS issuer IDs — never public-facing)
 
 **Formulary**
 ```
-Title: {Drug} Coverage in {State} — Cost, Tier & Prior Authorization ({Year})
-H1:    {Drug} Coverage in {State}: What It Costs, What Plans Cover It,
-       and What to Know Before You Enroll
-Meta:  {Drug} is covered by most {State} health plans for {year}.
-       Prior authorization typically required. Typical copay after
-       deductible: ${low}–${high}/month.
+Title: {Drug} Coverage in {State} ({Year}) | {Drug} Copay, Tier & Prior Auth
+H1:    {Drug} Coverage in {State} ({Year})
+Meta:  Does your {State} ACA plan cover {Drug}? See tier placement, copay
+       estimates, and prior authorization requirements across {N} plans
+       reviewed for {Year}.
 AEO:   {Drug} is covered by {N} of the {total} {State} health plans we
        reviewed for {year}. Most plans place it on a {tier} tier and
        require prior authorization. After your deductible, typical
@@ -467,6 +513,60 @@ Note:  No AEO block required — guides are long-form editorial
 
 ---
 
+## 8a. KEYWORD INTENT SYSTEM (formulary pages — locked)
+
+One page = one primary keyword. Each section = one intent cluster.
+Do NOT create separate pages for copay, tier, prior auth.
+Do NOT use HTML comments as intent labels (bloat at scale).
+
+| Section | Intent captured |
+|---|---|
+| Coverage summary | `does insurance cover [drug]`, `does marketplace cover [drug]` |
+| Cost section | `[drug] copay`, `[drug] cost after deductible` |
+| Approval rules | `[drug] prior authorization`, `[drug] step therapy`, `[drug] quantity limits` |
+| Tier explanation | `[drug] tier`, `preferred brand vs specialty` |
+| Plan comparison / CTA | `best plan for [drug]`, `compare plans that cover [drug]` |
+| FAQ | Long-tail: `does every plan cover [drug]`, `why is [drug] not covered`, `can coverage change mid-year` |
+
+---
+
+## 8b. SEO ARCHITECTURE (locked — March 2026 research)
+
+**Rendering:** ISR hybrid — SSG for top 50K–100K pages, ISR for remainder, SSR only for personalized. All SEO-critical content in initial HTML — no JS rendering of coverage data. Target sub-200ms TTFB.
+
+**Sitemap:** State-segmented, 30K URL files (not 50K max), accurate `<lastmod>`, omit `<priority>` and `<changefreq>`. IndexNow for Bing/Yandex only — Google does not support as of April 2026.
+
+**Phased indexing:** Top 50K–100K first, expand progressively. noindex or do not generate pages below minimum data threshold. Thin pages drag down domain authority.
+
+**Crawl budget:** Sub-200ms TTFB allows ~5x more crawls than 1-second responses. Block low-value URL parameters in robots.txt. No soft 404s.
+
+**Internal linking hierarchy:**
+```
+Homepage → State Hubs (50) → Drug Class in State (~750) → Drug in State (~37,500) → Drug+Plan pages (15.2M)
+```
+
+---
+
+## 8c. E-E-A-T FOR YMYL FORMULARY PAGES (March 2026)
+
+- Minimum 30–40% unique content per page (not just variable substitution)
+- Minimum 8–10 distinct data fields unique per drug/plan combination
+- Conditional content blocks: PA explanation only when required, step therapy only when applicable
+- Contextual comparison sentences add analytical value
+- FAQPage schema on every formulary page — implement aggressively
+
+---
+
+## 8d. AI OVERVIEW OPTIMIZATION
+
+- 88% of healthcare queries trigger AI Overviews (BrightEdge, March 2026)
+- Answer-first content: 40–60 word direct answer at top (BLUF/catch block)
+- Do NOT block AI crawlers in `robots.txt`
+- ISR/SSR pages under 2.5s receive ~3x more AI citations
+- `speakable` property on MedicalWebPage pointing at BLUF block
+
+---
+
 ## 9. COPY RULES
 
 ### Forbidden phrases — search and replace before every PR
@@ -486,7 +586,47 @@ Note:  No AEO block required — guides are long-form editorial
 "ACA guidelines"                → remove
 "FPL" in visible copy           → "income limit" (link to /fpl-2026)
 "coinsurance" in hero           → move below fold
+"insurer" / "insurers"          → "insurance company" or "your plan" per actor rotation
+"clinical situation"            → "your situation" or remove
+"plan filings" (consumer copy)  → "plan information" or "federal plan data"
+"provide the medication"        → "fill the prescription"
+"pick it up from the pharmacy"  → "fill the prescription" or "fill it"
+"your health plan" (overuse)    → rotate: "your plan" / "the plan" / "your insurance company"
+"clinical information"          → remove or rephrase
+"criteria"                      → "approval requirements"
+"negotiated rate"               → remove or rephrase
+"substantial"                   → remove or rephrase
+"claims data"                   → remove or rephrase
+"medically appropriate"         → avoid unless clinically necessary
 ```
+
+### Vocabulary — Always Use
+- `fill the prescription` / `fill it` — pharmacy actions only, NOT in summaries or structured sections
+- `tier` (not `formulary tier level`)
+- `approval` — plain English for prior authorization
+- `approval requirements` — not `criteria`
+- `federal plan data` — not `plan filings` in consumer copy
+- `drug list` — not `formulary` in consumer copy
+- `insurance company` OR `your plan` / `the plan` — by context per actor rotation
+
+### Actor Rotation Rule (locked)
+
+Confirmed across Cigna, Prime Therapeutics, Florida Blue carrier research.
+
+| Context | Actor to use |
+|---|---|
+| Coverage rules / tiers / deductibles | `your plan` or `the plan` |
+| Approval / process steps | `the plan` or `your insurance company` |
+| Human institution clearly acting | `your insurance company` |
+
+- Never repeat the same actor phrase in adjacent sentences
+- Never use `insurer` anywhere
+
+### Reading Level
+- Target: Grade 6–8 (Flesch-Kincaid), Flesch Reading Ease 60+
+- Active voice default
+- Consumer-first framing — `you/your` language throughout
+- `fill the prescription` — ONLY for real-world pharmacy actions, NOT in summaries
 
 ### Required patterns
 - Cost claims: one disclaimer per cost block, not per row
@@ -522,6 +662,17 @@ Note:  No AEO block required — guides are long-form editorial
 
 ---
 
+## 10a. CMS COMPLIANCE (required on every page)
+
+- **CMS General Non-FFM Disclaimer** per 45 C.F.R. § 155.220(c)(3)(vii) — must appear on every page
+- **Data currency statement** on every formulary page: "This information is based on [Plan Year] formulary data from [source]. Drug coverage can change during the plan year. Always confirm coverage with your insurance company."
+- **Not-medical-advice statement** required
+- **"Licensed ACA Agent"** attribution on inner pages — never Dave's name or NPN
+- **Referral fee disclosure** required in footer
+- **Notice of Availability of Language Assistance Services** required beginning CY2026
+
+---
+
 ## 11. YMYL COMPLIANCE CHECKLIST
 
 Run before every deploy. Every box must be checked.
@@ -536,7 +687,7 @@ Run before every deploy. Every box must be checked.
 - [ ] Evidence block with specific counts (data pages)
 
 ### Schema
-- [ ] WebPage schema — never MedicalWebPage
+- [ ] WebPage schema on all pages — MedicalWebPage permitted on formulary pages only (triple schema)
 - [ ] FAQPage names match visible `<summary>` text exactly
 - [ ] BreadcrumbList matches visible breadcrumb
 - [ ] dateModified matches visible `<time>` element
@@ -570,11 +721,13 @@ Run before every deploy. Every box must be checked.
 
 ## 12. PAGE-TYPE SPECIFICATIONS
 
-### 12a. Formulary — `/formulary/{state}/{drug}`
+### 12a. Formulary — `/{state}/{drug-name}/` and `/{state}/{drug-name}/{plan-slug}/`
 Primary question: Is my drug covered and what does it cost?
-Data: formulary_intelligence.json (20.5M records)
+Data: formulary_intelligence.json (13.2M+ records, 186 issuers, 4.0GB)
 **Status: LOCKED at 9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
-Template file: `app/formulary/[issuer]/[drug_name]/page.tsx`
+Template file: `app/[state]/[drug]/page.tsx` (brand/generic conditional rendering)
+Visual reference: V19 (ozempic_nc_formulary_v19.html)
+Content/schema reference: V35 (healthinsurancerenew_v35_formulary.html)
 
 Required sections (order fixed — matches built template exactly):
 1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box (conditional by tier/PA)
@@ -809,13 +962,13 @@ Do not start the next phase until the current phase is complete
 and validated against the YMYL checklist.
 
 ```
-Phase 1 — Foundation (formulary first)
-  1. Build Priority 1 components (Section 5g)
-  2. Update formulary/[issuer]/[drug_name]/page.tsx to V19 standard
-  3. Update lib/schema-markup.ts (remove MedicalWebPage everywhere)
-  4. Update lib/content-templates.ts (copy rules throughout)
-  5. Validate formulary against full YMYL checklist
-  6. Test on mobile real device
+Phase 1 — Foundation (formulary first) — COMPLETE
+  1. Build Priority 1 components (Section 5g) — DONE
+  2. Update app/[state]/[drug]/page.tsx to V35 standard — DONE
+  3. Update lib/schema-markup.ts (triple schema on formulary, remove MedicalWebPage elsewhere) — DONE
+  4. Update lib/content-templates.ts (copy rules throughout) — DONE
+  5. Validate formulary against full YMYL checklist — DONE
+  6. Test on mobile real device — DONE
 
 Phase 2 — Sitewide fixes
   7. Build Priority 2 components (Section 5g)
@@ -849,8 +1002,12 @@ Phase 4 — Page type by page type (validate each before next)
 # TypeScript
 npx tsc --noEmit
 
-# Forbidden phrases
-grep -r "per pen\|per fill\|prior auth[^o]\|MedicalWebPage\|medicalAudience\|TL;DR\|most plans cover\|related conditions" \
+# Forbidden phrases (MedicalWebPage/medicalAudience allowed in formulary only)
+grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
+  app/ components/ lib/ --include="*.tsx" --include="*.ts"
+
+# MedicalWebPage audit — should ONLY appear in app/[state]/[drug]/page.tsx
+grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
 # <br> in headings
@@ -859,6 +1016,9 @@ grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 # JS-rendered FAQ (should return nothing after Phase 2)
 grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
   app/ --include="*.tsx"
+
+# Meta description present on all pages
+grep -rL "meta name=\"description\"" app/ --include="*.tsx"
 
 # Schema/meta sync (manual)
 # WebPage description === <meta name="description"> in each page
@@ -870,7 +1030,8 @@ grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
 ## 16. REFERENCE FILES
 
 - `formulary-mock-up.html` — legacy V12 visual reference (superseded by V19)
-- `ozempic_nc_formulary_v19.html` — V19 approved visual reference
+- `ozempic_nc_formulary_v19.html` — V19 approved visual/layout reference
+- `healthinsurancerenew_v35_formulary.html` — V35 locked content, copy, and schema reference
 - `CLAUDE.md` — project rules, data pipeline, coding standards
 - `docs/audits/` — previous audit reports (do not regress fixed issues)
 - `skills/` — data pipeline, formulary-aggregator, content-generator
@@ -882,5 +1043,5 @@ grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
 ---
 
 *This document supersedes all previous design discussions.
-When in doubt, match the V19 mockup exactly.
+When in doubt, match V19 for layout and V35 for content/copy/schema.
 Update this file whenever a structural decision changes.*

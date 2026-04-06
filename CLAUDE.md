@@ -20,7 +20,8 @@
 |------|---------|
 | `CLAUDE.md` | This file — master project instructions |
 | `DESIGN.md` | Single source of truth for every page type, component, schema, and copy rule |
-| `ozempic_nc_formulary_v19.html` | V19 approved visual mockup — all page types inherit from this standard |
+| `ozempic_nc_formulary_v19.html` | V19 approved visual/layout reference — all page types inherit this layout |
+| `healthinsurancerenew_v35_formulary.html` | V35 locked content, copy, and schema reference |
 | `PHASE1_PROMPTS.md` | Phase 1 implementation prompts and task tracking |
 
 ---
@@ -86,12 +87,12 @@ Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| 1 | Formulary page redesign to V19 standard | **COMPLETE** — locked at 9.5/10 |
+| 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** — locked at 9.5/10 |
 | 2 | Sitewide component migration (FAQ, AEO, schema fixes) | Pending |
 | 3 | Critical 2026 content updates (subsidy cliff, enhanced credits) | Pending |
-| 4 | Page-type-by-page-type conversion to V19 | Pending |
+| 4 | Page-type conversion + ISR + 15.2M drug/plan pages | Pending |
 
-**Phase 1 details:** Formulary template scored 9.5/10 by external LLM reviewers (ChatGPT, Gemini). Template file: `app/formulary/[issuer]/[drug_name]/page.tsx`. This is the locked reference — all other page types should aim to match this quality.
+**Phase 1 details:** Formulary template scored 9.5/10 by external LLM reviewers (ChatGPT, Gemini). Template file: `app/[state]/[drug]/page.tsx` (brand/generic conditional rendering). V19 remains the visual layout reference; V35 is the locked content, copy, and schema reference. V35 is the locked template for the ~37,500 drug-in-state page tier. Phase 4 drug+plan pages (`/[state]/[drug]/[plan-slug]/`) need their own simpler template.
 
 ---
 
@@ -151,7 +152,8 @@ healthinsurancerenew/
 │   ├── layout.tsx                     # Root layout
 │   ├── page.tsx                       # Homepage
 │   ├── [state-name]/                  # State/county/plan routes
-│   ├── formulary/                     # Formulary drug pages
+│   ├── [state]/                       # Formulary pages: /[state]/[drug]/page.tsx (brand/generic conditional)
+│   ├── formulary/                     # Legacy formulary routes (redirect to /[state]/[drug]/)
 │   ├── plans/                         # Plan listing pages
 │   ├── subsidies/                     # Subsidy calculator pages
 │   ├── rates/                         # Rate volatility pages
@@ -226,7 +228,49 @@ healthinsurancerenew/
 "FPL" in visible copy           → "income limit" (link to /fpl-2026)
 "coinsurance" in hero           → move below fold
 "Machine-Readable PUF"          → "plan benefit documents"
+"insurer" / "insurers"          → "insurance company" or "your plan" per actor rotation
+"clinical situation"            → "your situation" or remove
+"plan filings" (consumer copy)  → "plan information" or "federal plan data"
+"provide the medication"        → "fill the prescription"
+"pick it up from the pharmacy"  → "fill the prescription" or "fill it"
+"your health plan" (overuse)    → rotate: "your plan" / "the plan" / "your insurance company"
+"clinical information"          → remove or rephrase
+"criteria"                      → "approval requirements"
+"negotiated rate"               → remove or rephrase
+"substantial"                   → remove or rephrase
+"claims data"                   → remove or rephrase
+"medically appropriate"         → avoid unless clinically necessary
 ```
+
+### Actor Rotation Rule (locked)
+
+Confirmed across Cigna, Prime Therapeutics, Florida Blue carrier research.
+
+| Context | Actor to use |
+|---|---|
+| Coverage rules / tiers / deductibles | `your plan` or `the plan` |
+| Approval / process steps | `the plan` or `your insurance company` |
+| Human institution clearly acting | `your insurance company` |
+
+- Never repeat the same actor phrase in adjacent sentences
+- Never use `insurer` anywhere
+- `your health plan` is permitted but must not be overused — rotate with above
+
+### Vocabulary — Always Use
+
+- `fill the prescription` / `fill it` — pharmacy actions only, NOT in summaries or structured sections
+- `tier` (not `formulary tier level`)
+- `approval` — plain English for prior authorization
+- `approval requirements` — not `criteria`
+- `federal plan data` — not `plan filings` in consumer copy
+- `drug list` — not `formulary` in consumer copy
+- `insurance company` OR `your plan` / `the plan` — by context per actor rotation
+
+### Reading Level
+
+- Target: Grade 6–8 (Flesch-Kincaid), Flesch Reading Ease 60+
+- Active voice default
+- Consumer-first framing — `you/your` language throughout
 
 ---
 
@@ -236,8 +280,12 @@ healthinsurancerenew/
 # TypeScript
 npx tsc --noEmit
 
-# Forbidden phrases
-grep -r "per pen\|per fill\|prior auth[^o]\|MedicalWebPage\|medicalAudience\|TL;DR\|most plans cover\|related conditions" \
+# Forbidden phrases (MedicalWebPage/medicalAudience allowed in formulary pages only)
+grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
+  app/ components/ lib/ --include="*.tsx" --include="*.ts"
+
+# MedicalWebPage audit — should ONLY appear in app/[state]/[drug]/page.tsx
+grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
 # <br> in headings
@@ -246,6 +294,9 @@ grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 # JS-rendered FAQ (should return nothing after Phase 2)
 grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
   app/ --include="*.tsx"
+
+# Meta description present on all pages
+grep -rL "meta name=\"description\"" app/ --include="*.tsx"
 
 # Schema/meta sync (manual)
 # WebPage description === <meta name="description"> in each page
@@ -279,8 +330,9 @@ grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
 
 ## NEVER Do This
 
-- Never use `MedicalWebPage` schema on any page
-- Never use `medicalAudience` in schema
+- Never use `MedicalWebPage` schema on any page EXCEPT formulary pages (triple schema — see DESIGN.md §7)
+- Never use `medicalAudience` in schema on any page EXCEPT formulary pages (`medicalAudience: Patient`)
+- Never use `insurer` or `insurers` anywhere — use `insurance company` or `your plan`
 - Never expose raw CMS issuer IDs (e.g., `77422`) in visible UI
 - Never add named author on inner pages (asset-sale constraint)
 - Never use `<br>` in headings
