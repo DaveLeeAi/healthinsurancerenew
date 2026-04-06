@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import { buildBreadcrumbSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -215,6 +215,30 @@ export default function ToolsIndexPage() {
           </p>
         </div>
       </section>
+
+      {/* ── FAQ ── */}
+      {(() => {
+        const faqs = [
+          { question: 'Are these health insurance tools free?', answer: 'Yes. All tools on this site are free to use with no sign-up required. They use public CMS and IRS data to generate estimates.' },
+          { question: 'How accurate are the subsidy estimates?', answer: 'Estimates are based on current IRS contribution percentages and CMS benchmark premiums. Actual amounts may vary based on your exact income, household composition, and local plan availability.' },
+          { question: 'Can I use these tools to enroll in a plan?', answer: 'These tools help you understand your options and estimate costs. To actually enroll, visit Healthcare.gov or your state exchange, or connect with a licensed agent.' },
+          { question: 'What income counts for marketplace subsidies?', answer: 'The marketplace uses Modified Adjusted Gross Income (MAGI), which includes wages, self-employment income, Social Security benefits, and other sources. Use our MAGI calculator to check which income types count.' },
+        ]
+        return (
+          <>
+            <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+            <section className="my-10">
+              <h2 className="text-2xl font-bold text-navy-900 mb-4">Frequently Asked Questions</h2>
+              {faqs.map((f, i) => (
+                <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                  <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
+            </section>
+          </>
+        )
+      })()}
 
       <GenericByline dataSource="CMS Federal Poverty Level Guidelines + IRS Contribution Percentages" planYear={2026} />
     </div>

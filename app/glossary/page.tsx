@@ -3,7 +3,8 @@ import type { Metadata } from 'next'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildArticleSchema, buildFAQSchema } from '../../lib/schema-markup'
+import SchemaScript from '../../components/SchemaScript'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Glossary — Key Terms Explained | HealthInsuranceRenew',
@@ -159,6 +160,29 @@ export default function GlossaryPage() {
           .
         </p>
       </div>
+      {/* ── FAQ ── */}
+      {(() => {
+        const faqs = [
+          { question: 'What is the difference between a copay and coinsurance?', answer: 'A copay is a fixed dollar amount you pay for a service (like $30 for a doctor visit). Coinsurance is a percentage of the cost you pay after meeting your deductible (like 20% of a hospital bill).' },
+          { question: 'What does "out-of-pocket maximum" mean?', answer: 'The out-of-pocket maximum is the most you pay for covered services in a plan year. After you reach it, your plan pays 100% of covered services for the rest of the year.' },
+          { question: 'What is MAGI and why does it matter?', answer: 'MAGI (Modified Adjusted Gross Income) is the income figure the marketplace uses to determine your subsidy eligibility. It includes wages, self-employment income, Social Security, and other sources.' },
+        ]
+        return (
+          <>
+            <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+            <section className="my-10">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+              {faqs.map((f, i) => (
+                <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                  <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
+            </section>
+          </>
+        )
+      })()}
+
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

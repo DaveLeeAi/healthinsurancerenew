@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadPolicyScenarios } from '@/lib/data-loader'
-import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildArticleSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -266,6 +266,30 @@ export default function EnhancedCreditsIndexPage() {
             ))}
           </div>
         </section>
+
+        {/* ── FAQ ── */}
+        {(() => {
+          const faqs = [
+            { question: 'What are enhanced premium tax credits?', answer: 'Enhanced credits were temporary increases to ACA subsidies under the Inflation Reduction Act. They expanded eligibility above 400% FPL and reduced required contribution percentages for all income levels.' },
+            { question: 'When do enhanced credits expire?', answer: 'Enhanced credits expired at the end of 2025. Starting in 2026, the original ACA subsidy rules apply, including the subsidy cliff at 400% of the Federal Poverty Level.' },
+            { question: 'What is the subsidy cliff?', answer: 'The subsidy cliff means that households earning above 400% FPL receive zero premium tax credits. A small income increase above the threshold can result in losing thousands of dollars in annual subsidies.' },
+            { question: 'How does this affect my 2026 premiums?', answer: 'Without enhanced credits, many households will pay more for marketplace coverage. The exact impact depends on your income, age, family size, and the benchmark silver plan premium in your county.' },
+          ]
+          return (
+            <>
+              <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+              <section className="my-10">
+                <h2 className="text-2xl font-bold text-navy-900 mb-4">Frequently Asked Questions</h2>
+                {faqs.map((f, i) => (
+                  <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                    <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                  </details>
+                ))}
+              </section>
+            </>
+          )
+        })()}
 
         <GenericByline dataSource="CMS QHP Rate PUF + IRS FPL Tables" planYear={PLAN_YEAR} />
 

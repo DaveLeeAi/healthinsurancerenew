@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadBillingIntel } from '@/lib/data-loader'
-import { buildBreadcrumbSchema, buildArticleSchema, extractCptCodes } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildArticleSchema, extractCptCodes, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -204,6 +204,30 @@ export default function BillingIndexPage() {
             </section>
           )
         })}
+
+        {/* ── FAQ ── */}
+        {(() => {
+          const faqs = [
+            { question: 'What is split billing in health insurance?', answer: 'Split billing happens when a single doctor visit generates two separate charges — one for the office visit and one for a procedure or test performed during the same appointment.' },
+            { question: 'How do I dispute a medical bill?', answer: 'Start by requesting an itemized bill. Compare each charge to your Explanation of Benefits (EOB). Contact your insurance company if charges don\'t match. You have the right to appeal denied claims under ACA rules.' },
+            { question: 'What is a surprise medical bill?', answer: 'A surprise bill occurs when you receive care from an out-of-network provider at an in-network facility. The No Surprises Act protects you from most surprise bills for emergency and certain non-emergency services.' },
+            { question: 'What are CPT codes?', answer: 'CPT (Current Procedural Terminology) codes are standard codes that describe medical procedures and services. Your insurance company uses them to determine how much to pay for each service.' },
+          ]
+          return (
+            <>
+              <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+              <section className="my-10">
+                <h2 className="text-2xl font-bold text-navy-900 mb-4">Frequently Asked Questions</h2>
+                {faqs.map((f, i) => (
+                  <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                    <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                  </details>
+                ))}
+              </section>
+            </>
+          )
+        })()}
 
         <GenericByline dataSource="AMA CPT + CMS ACA Regulations" planYear={2026} />
 

@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import { loadRateVolatility } from '@/lib/data-loader'
 import allStatesData from '@/data/config/all-states.json'
-import { buildBreadcrumbSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -162,6 +162,30 @@ export default function RatesIndexPage() {
           </div>
         </section>
       )}
+
+      {/* ── FAQ ── */}
+      {(() => {
+        const faqs = [
+          { question: 'Why do health insurance rates change every year?', answer: 'Rates change based on medical cost trends, claims experience, regulatory changes, and carrier competition in each market. CMS reviews all rate filings before they take effect.' },
+          { question: 'What is the age-64 rate ratio?', answer: 'ACA rules allow carriers to charge older enrollees up to 3x more than younger ones. The age-64 "shock ratio" shows how much more the oldest enrollees pay compared to a 21-year-old in the same plan.' },
+          { question: 'Do rate changes affect my subsidy?', answer: 'Subsidies are based on the benchmark silver plan premium in your area. If rates increase, your subsidy may also increase to offset the higher cost — but your net premium can still change.' },
+          { question: 'Where does this rate data come from?', answer: 'All rate data comes from the CMS Rate PUF (Public Use File), which contains every marketplace plan\'s approved premium rates by age, rating area, and tobacco status.' },
+        ]
+        return (
+          <>
+            <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+            <section className="my-10">
+              <h2 className="text-2xl font-bold text-navy-900 mb-4">Frequently Asked Questions</h2>
+              {faqs.map((f, i) => (
+                <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                  <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
+            </section>
+          </>
+        )
+      })()}
 
       <GenericByline dataSource="CMS Rate PUF" planYear={2026} />
     </main>

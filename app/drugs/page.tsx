@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { DRUG_TAXONOMY } from '@/lib/drug-linking'
-import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/schema-markup'
+import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -220,6 +220,31 @@ export default function DrugsIndexPage() {
             </p>
           </div>
         </section>
+
+        {/* ── FAQ ── */}
+        {(() => {
+          const faqs = [
+            { question: 'What is a drug formulary?', answer: 'A formulary is the list of prescription drugs your health plan covers. Each drug is placed on a tier that determines your copay or coinsurance amount.' },
+            { question: 'How do drug tiers affect my cost?', answer: 'Lower tiers (like Tier 1 generics) have lower copays. Higher tiers (like Tier 4 specialty) have higher costs. Your plan documents show the exact copay for each tier.' },
+            { question: 'What does prior authorization mean?', answer: 'Prior authorization means your insurance company must approve coverage before you fill the prescription. Your doctor submits a request, and the plan responds — generally within a few days.' },
+            { question: 'Can drug coverage change during the plan year?', answer: 'Yes. Plans can update their formulary during the year. Always confirm current coverage with your insurance company before filling a prescription.' },
+            { question: 'Where does this drug coverage data come from?', answer: 'All data comes from CMS machine-readable formulary files that insurance companies are required by law to publish for each plan year.' },
+          ]
+          return (
+            <>
+              <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+              <section className="my-10">
+                <h2 className="text-2xl font-bold text-navy-900 mb-4">Frequently Asked Questions</h2>
+                {faqs.map((f, i) => (
+                  <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                    <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                    <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                  </details>
+                ))}
+              </section>
+            </>
+          )
+        })()}
 
         <GenericByline dataSource="CMS Machine-Readable Formulary PUF" planYear={PLAN_YEAR} />
 

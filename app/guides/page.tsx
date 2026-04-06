@@ -5,7 +5,8 @@ import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
 import { getCollectionList } from '../../lib/markdown'
 import type { GuideFrontmatter } from '../../lib/markdown'
-import { buildBreadcrumbSchema } from '../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildFAQSchema } from '../../lib/schema-markup'
+import SchemaScript from '../../components/SchemaScript'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Guides | HealthInsuranceRenew',
@@ -108,6 +109,29 @@ export default function GuidesIndexPage() {
           </Link>
         ))}
       </div>
+
+      {/* ── FAQ ── */}
+      {(() => {
+        const faqs = [
+          { question: 'Are these health insurance guides free?', answer: 'Yes. All guides are free to read. They are written by licensed health insurance professionals and based on current ACA regulations and CMS data.' },
+          { question: 'How often are the guides updated?', answer: 'Guides are reviewed and updated annually to reflect new plan year rules, subsidy changes, and enrollment deadlines. Each guide shows its last updated date.' },
+          { question: 'Can I use these guides to make enrollment decisions?', answer: 'These guides help you understand your options, but they are for informational purposes only. For personalized advice, consult a licensed health insurance agent.' },
+        ]
+        return (
+          <>
+            <SchemaScript schema={buildFAQSchema(faqs)} id="faq-schema" />
+            <section className="my-10">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+              {faqs.map((f, i) => (
+                <details key={i} className="border-b border-neutral-200 py-3" {...(i === 0 ? { open: true } : {})}>
+                  <summary className="cursor-pointer font-medium text-slate-800 hover:text-primary-700">{f.question}</summary>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
+            </section>
+          </>
+        )
+      })()}
 
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" />
