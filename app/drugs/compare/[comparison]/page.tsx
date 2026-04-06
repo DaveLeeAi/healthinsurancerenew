@@ -160,9 +160,12 @@ export default function ComparisonPage({ params }: Props) {
           <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 mb-2">
             Drug Coverage Comparison · {PLAN_YEAR}
           </p>
-          <h1 className="text-3xl font-bold text-navy-900 mb-3">
+          <h1 className="text-3xl font-bold text-navy-900 mb-1">
             {nameA} vs {nameB}: Coverage, Cost, and Marketplace Differences ({PLAN_YEAR})
           </h1>
+          <p className="text-xs text-slate-400 mb-3">
+            Data snapshot: <time dateTime="2026-01-15">January 2026</time> · Plan year {PLAN_YEAR}
+          </p>
           {seed && (
             <p className="text-neutral-500 text-sm mb-3">{seed.context}</p>
           )}

@@ -86,9 +86,12 @@ export default function DrugsIndexPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 mb-2">
             Marketplace Drug Coverage · {PLAN_YEAR}
           </p>
-          <h1 className="text-3xl font-bold text-navy-900 mb-3">
+          <h1 className="text-3xl font-bold text-navy-900 mb-1">
             Drug Coverage on Marketplace Plans ({PLAN_YEAR})
           </h1>
+          <p className="text-xs text-slate-400 mb-3">
+            Data snapshot: <time dateTime="2026-01-15">January 2026</time> · Plan year {PLAN_YEAR}
+          </p>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             Browse prescription drug coverage by category. Each category page lists which
             medications are covered by ACA Marketplace (Obamacare) plans, their cost tier,
