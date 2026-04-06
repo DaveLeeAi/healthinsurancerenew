@@ -247,6 +247,11 @@ export default async function StateDetailPage({ params }: Props) {
       label: `${stateName} Dental Plans`,
       description: 'Stand-alone dental plan options and coverage',
     },
+    {
+      href: `/formulary?state=${stateAbbr.toLowerCase()}`,
+      label: `${stateName} Drug Coverage`,
+      description: 'Search prescription drug tiers, copays, and prior authorization by plan',
+    },
   ]
 
   return (
