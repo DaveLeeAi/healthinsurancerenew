@@ -884,8 +884,8 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
   <p>
     If your PA request is denied, you have the right to appeal. The ACA requires carriers to
     maintain an internal appeals process and, if that fails, an external independent review.
-    For urgent clinical situations, expedited appeals must be decided within 72 hours. Keep
-    copies of all submitted clinical documentation and denial notices.
+    For urgent medical needs, expedited appeals must be decided within 72 hours. Keep
+    copies of all documentation and denial notices you submit.
   </p>
 
 ${
