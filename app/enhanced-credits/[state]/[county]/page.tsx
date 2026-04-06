@@ -45,9 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Analysis`
   const description =
-    `What happens to your health insurance premium in ${countyDisplay}, ${stateUpper} ` +
-    `if enhanced subsidies from the Inflation Reduction Act expire? See the dollar impact at every ` +
-    `income level for ages 27–64. Source: CMS benchmark premiums + IRS FPL tables.`
+    `Enhanced subsidies expired end of 2025. See how ${PLAN_YEAR} health insurance premiums changed ` +
+    `in ${countyDisplay}, ${stateUpper} — dollar impact at every income level for ages 27–64. ` +
+    `Source: CMS benchmark premiums + IRS FPL tables.`
 
   return {
     title,
@@ -102,7 +102,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} — ${PLAN_YEAR} Analysis`,
-    description: `Impact of IRA enhanced credit expiration on marketplace premiums in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: CMS Rate PUF + IRS FPL tables.`,
+    description: `Enhanced credits expired end of 2025. See the ${PLAN_YEAR} premium increase in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: CMS Rate PUF + IRS FPL tables.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS Federal Poverty Level Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -203,10 +203,9 @@ export default function EnhancedCreditsPage({ params }: Props) {
             Enhanced Premium Tax Credits in {countyDisplay}, {stateUpper} — {PLAN_YEAR} Analysis
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            The Inflation Reduction Act (IRA) enhanced premium tax credits are currently set to
-            expire after {PLAN_YEAR}. If Congress does not extend these credits, many marketplace enrollees
-            in {countyDisplay}, {stateUpper} will face significantly higher health insurance
-            premiums. This page models the exact dollar impact at every income level.
+            The Inflation Reduction Act (IRA) enhanced premium tax credits expired on January 1, {PLAN_YEAR}.
+            Marketplace enrollees in {countyDisplay}, {stateUpper} now face significantly higher health
+            insurance premiums. This page shows the exact dollar impact at every income level.
           </p>
         </section>
 
@@ -220,21 +219,21 @@ export default function EnhancedCreditsPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <div className="text-xs text-neutral-500 uppercase tracking-wide mb-1">
-                  Current Monthly Premium
+                  2025 Premium (Enhanced)
                 </div>
                 <div className="text-2xl font-bold text-navy-800">
                   ${headline.current_net_monthly_with_enhanced.toFixed(0)}/mo
                 </div>
-                <div className="text-xs text-neutral-400">With enhanced credits</div>
+                <div className="text-xs text-neutral-400">With enhanced credits (expired)</div>
               </div>
               <div>
                 <div className="text-xs text-neutral-500 uppercase tracking-wide mb-1">
-                  Without Enhanced Credits
+                  2026 Premium (Standard)
                 </div>
                 <div className="text-2xl font-bold text-red-700">
                   ${headline.net_monthly_without_enhanced_pre_arp.toFixed(0)}/mo
                 </div>
-                <div className="text-xs text-neutral-400">Pre-ARP formula</div>
+                <div className="text-xs text-neutral-400">Pre-ARP formula restored</div>
               </div>
               <div>
                 <div className="text-xs text-neutral-500 uppercase tracking-wide mb-1">
@@ -257,25 +256,25 @@ export default function EnhancedCreditsPage({ params }: Props) {
             id="explainer-heading"
             className="text-xl font-semibold text-navy-800 mb-4"
           >
-            What Are Enhanced Premium Tax Credits?
+            What Were Enhanced Premium Tax Credits?
           </h2>
           <div className="prose max-w-none text-neutral-600 leading-relaxed space-y-3">
             <p>
               The <strong>American Rescue Plan Act (ARP)</strong>, signed in March 2021, temporarily
               expanded ACA premium tax credits in two key ways: it lowered the percentage of income
-              that households must contribute toward their benchmark silver plan premium, and it
+              that households had to contribute toward their benchmark silver plan premium, and it
               eliminated the income cap at 400% of the Federal Poverty Level (FPL) — meaning people
               above 400% FPL could receive subsidies for the first time.
             </p>
             <p>
               The <strong>Inflation Reduction Act (IRA)</strong> of 2022 extended these enhanced
-              credits through plan year {PLAN_YEAR}. Under these enhanced rules, no household pays
+              credits through plan year 2025. Under those enhanced rules, no household paid
               more than 8.5% of their income toward a benchmark silver plan premium, regardless of
-              income level.
+              income level. These provisions expired on January 1, {PLAN_YEAR}.
             </p>
             <p>
-              <strong>If Congress does not act to extend these provisions</strong>, the applicable
-              percentage table reverts to the pre-ARP formula defined in{' '}
+              With the enhanced credits now expired, the applicable
+              percentage table has reverted to the pre-ARP formula defined in{' '}
               <a
                 href="https://www.law.cornell.edu/uscode/text/26/36B"
                 className="text-primary-600 hover:underline"
@@ -286,7 +285,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
               </a>
               . This means lower subsidies at every income level below 400% FPL, and the complete
               elimination of subsidies for anyone earning above 400% FPL — the so-called{' '}
-              <strong>&ldquo;subsidy cliff.&rdquo;</strong>
+              <strong>&ldquo;subsidy cliff.&rdquo;</strong> Congress may act to restore these credits
+              retroactively, but as of {PLAN_YEAR} they are not in effect.
             </p>
           </div>
         </section>
@@ -312,10 +312,10 @@ export default function EnhancedCreditsPage({ params }: Props) {
                     <th className="text-left py-3 px-4 font-semibold">Income Level</th>
                     <th className="text-right py-3 px-4 font-semibold">Annual Income</th>
                     <th className="text-right py-3 px-4 font-semibold">
-                      <span className="text-green-700">With Enhanced</span>
+                      <span className="text-green-700">2025 (Enhanced)</span>
                     </th>
                     <th className="text-right py-3 px-4 font-semibold">
-                      <span className="text-red-700">Without Enhanced</span>
+                      <span className="text-red-700">2026 (Standard)</span>
                     </th>
                     <th className="text-right py-3 px-4 font-semibold">Monthly Increase</th>
                     <th className="text-right py-3 px-4 font-semibold">Impact</th>
@@ -362,8 +362,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
               </table>
             </div>
             <p className="text-xs text-neutral-400 mt-2">
-              Net monthly premium after APTC subsidy. &ldquo;Without Enhanced&rdquo; uses the
-              pre-ARP applicable percentage table per IRC &sect; 36B. Source: CMS QHP Rate PUF +
+              Net monthly premium after APTC subsidy. &ldquo;2026 (Standard)&rdquo; uses the
+              pre-ARP applicable percentage table per IRC &sect; 36B, now in effect. Source: CMS QHP Rate PUF +
               IRS FPL tables, {PLAN_YEAR}.
             </p>
           </section>
@@ -384,12 +384,13 @@ export default function EnhancedCreditsPage({ params }: Props) {
               </div>
               <div>
                 <h3 className="font-semibold text-amber-900 text-lg">
-                  The &ldquo;Subsidy Cliff&rdquo; Returns If Enhanced Credits Expire
+                  The &ldquo;Subsidy Cliff&rdquo; Has Returned for {PLAN_YEAR}
                 </h3>
                 <p className="text-amber-800 mt-1">
-                  Under pre-ARP rules, households earning above 400% of the Federal Poverty Level
-                  received <strong>zero premium assistance</strong>. The enhanced credits eliminated
-                  this cliff by capping premiums at 8.5% of income regardless of how much you earn.
+                  With enhanced credits expired, households earning above 400% of the Federal Poverty Level
+                  now receive <strong>zero premium assistance</strong>. The enhanced credits had eliminated
+                  this cliff by capping premiums at 8.5% of income regardless of how much you earned.
+                  That protection is no longer in effect.
                 </p>
               </div>
             </div>
@@ -438,8 +439,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
                 <tr className="bg-navy-50 text-navy-700">
                   <th className="text-left py-3 px-4 font-semibold">Age</th>
                   <th className="text-right py-3 px-4 font-semibold">Benchmark Premium</th>
-                  <th className="text-right py-3 px-4 font-semibold">With Enhanced</th>
-                  <th className="text-right py-3 px-4 font-semibold">Without Enhanced</th>
+                  <th className="text-right py-3 px-4 font-semibold">2025 (Enhanced)</th>
+                  <th className="text-right py-3 px-4 font-semibold">2026 (Standard)</th>
                   <th className="text-right py-3 px-4 font-semibold">Monthly Increase</th>
                 </tr>
               </thead>
@@ -539,8 +540,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
           <div className="bg-primary-50 border border-primary-200 rounded-xl p-6 space-y-4">
             <ActionTip
               number={1}
-              title="Enroll during Open Enrollment while enhanced credits last"
-              text={`The ${PLAN_YEAR} Open Enrollment Period runs from November 1 to January 15. Enhanced credits are in effect for ${PLAN_YEAR} plan year coverage. Locking in a plan now ensures you benefit from the lower premiums while the credits are available.`}
+              title="Review your 2026 plan options now"
+              text={`Enhanced credits are no longer in effect for ${PLAN_YEAR}. If you enrolled based on 2025 subsidy amounts, your net premium has likely increased. Review your current plan and consider switching during Open Enrollment or a qualifying Special Enrollment Period.`}
             />
             <ActionTip
               number={2}
@@ -549,13 +550,13 @@ export default function EnhancedCreditsPage({ params }: Props) {
             />
             <ActionTip
               number={3}
-              title="Consider how income changes affect your credit"
-              text="If your income increases during the year, report the change to Healthcare.gov promptly. Under enhanced credits, exceeding 400% FPL doesn't eliminate your subsidy — but if credits expire and you're above 400% FPL, you'll owe the full premium. Plan accordingly."
+              title="Watch for income changes near the 400% FPL cliff"
+              text="With the subsidy cliff back in effect for 2026, exceeding 400% FPL means losing all premium assistance. If your income is near that threshold, report changes to Healthcare.gov promptly and consider strategies to manage your modified adjusted gross income."
             />
             <ActionTip
               number={4}
               title="Talk to a licensed agent about your options"
-              text="A licensed health insurance agent can model your exact scenario — factoring in your household size, projected income, state-specific rules, and plan options — to help you choose the most cost-effective coverage whether enhanced credits continue or expire."
+              text="A licensed health insurance agent can model your exact scenario — factoring in your household size, projected income, state-specific rules, and plan options — to help you find the most cost-effective coverage under the current 2026 subsidy rules."
             />
           </div>
         </section>
@@ -581,7 +582,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
             </p>
             <p>
               <strong>Inflation Reduction Act (P.L. 117-169, Section 12001)</strong> — Extended the
-              ARP modifications through tax year {PLAN_YEAR}.
+              ARP modifications through tax year 2025. These provisions expired January 1, {PLAN_YEAR}.
             </p>
             <p>
               <strong>45 CFR &sect; 147.102</strong> — CMS age rating curve used to calculate
@@ -604,8 +605,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
           <p>
             All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
             plan year {PLAN_YEAR}. Actual premiums depend on your specific plan selection, age,
-            tobacco use, household size, and income. Enhanced credit availability is subject to
-            Congressional action and may change.
+            tobacco use, household size, and income. Enhanced credits expired at the end of 2025.
+            Congress may act to restore them retroactively.
           </p>
           <p>
             This page is for informational purposes only and does not constitute insurance or tax
@@ -632,18 +633,18 @@ function buildFaqs(
 
   return [
     {
-      question: `What are enhanced premium tax credits?`,
-      answer: `Enhanced premium tax credits were introduced by the American Rescue Plan Act in 2021 and extended by the Inflation Reduction Act. Enhanced credits remain available for the 2026 plan year. They lower the percentage of income that households must contribute toward benchmark silver plan premiums and eliminate the 400% FPL income cap on subsidy eligibility.`,
+      question: `What were enhanced premium tax credits?`,
+      answer: `Enhanced premium tax credits were introduced by the American Rescue Plan Act in 2021 and extended through 2025 by the Inflation Reduction Act. They lowered the percentage of income that households had to contribute toward benchmark silver plan premiums and eliminated the 400% FPL income cap on subsidy eligibility. They expired on January 1, 2026.`,
     },
     {
-      question: `What happens if enhanced credits expire in ${countyDisplay}, ${stateUpper}?`,
+      question: `How did the enhanced credit expiration affect premiums in ${countyDisplay}, ${stateUpper}?`,
       answer: fpl250
-        ? `If enhanced credits expire, a 40-year-old at 250% FPL in ${countyDisplay} would see their monthly premium increase from $${fpl250.with_enhanced_credits.net_monthly_premium.toFixed(0)}/month to $${fpl250.without_enhanced_credits_pre_arp.net_monthly_premium.toFixed(0)}/month — an increase of $${fpl250.expiration_impact.monthly_premium_increase.toFixed(0)}/month ($${fpl250.expiration_impact.annual_premium_increase.toFixed(0)}/year).`
-        : `If enhanced credits expire, marketplace enrollees in ${countyDisplay} will see higher premiums across all income levels. The exact impact depends on age and income.`,
+        ? `With enhanced credits expired, a 40-year-old at 250% FPL in ${countyDisplay} saw their monthly premium increase from $${fpl250.with_enhanced_credits.net_monthly_premium.toFixed(0)}/month to $${fpl250.without_enhanced_credits_pre_arp.net_monthly_premium.toFixed(0)}/month — an increase of $${fpl250.expiration_impact.monthly_premium_increase.toFixed(0)}/month ($${fpl250.expiration_impact.annual_premium_increase.toFixed(0)}/year).`
+        : `With enhanced credits expired, marketplace enrollees in ${countyDisplay} face higher premiums across all income levels. The exact impact depends on age and income.`,
     },
     {
       question: `What is the ACA subsidy cliff?`,
-      answer: `Under pre-ARP rules (IRC Section 36B), households earning above 400% of the Federal Poverty Level received zero premium tax credits — this is the "subsidy cliff." The enhanced credits eliminated this cliff by capping premiums at 8.5% of income regardless of earnings. If enhanced credits expire, the cliff returns.`,
+      answer: `Under the pre-ARP rules now restored for 2026 (IRC Section 36B), households earning above 400% of the Federal Poverty Level receive zero premium tax credits — this is the "subsidy cliff." The enhanced credits had eliminated this cliff by capping premiums at 8.5% of income regardless of earnings. With those credits expired, the cliff is back in effect.`,
     },
     {
       question: `How much does a benchmark silver plan cost in ${countyDisplay}, ${stateUpper}?`,
@@ -652,8 +653,8 @@ function buildFaqs(
         : `Benchmark silver plan premiums vary by county. Check the CMS QHP Rate PUF for current data.`,
     },
     {
-      question: `When do enhanced premium tax credits expire?`,
-      answer: `Enhanced premium tax credits are currently authorized through plan year ${PLAN_YEAR} under the Inflation Reduction Act (P.L. 117-169, Section 12001). Congress must pass new legislation to extend them beyond ${PLAN_YEAR}.`,
+      question: `When did enhanced premium tax credits expire?`,
+      answer: `Enhanced premium tax credits expired on January 1, ${PLAN_YEAR}. They were authorized through plan year 2025 under the Inflation Reduction Act (P.L. 117-169, Section 12001). Congress may act to restore them retroactively, but as of ${PLAN_YEAR} they are not in effect.`,
     },
   ]
 }

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `Enhanced Premium Tax Credits by County — ${stateUpper} ${PLAN_YEAR} | Subsidy Cliff Impact`
   const description =
-    `See how enhanced premium tax credits affect marketplace premiums in every ` +
+    `Enhanced premium tax credits expired end of 2025. See how 2026 marketplace premiums increased in every ` +
     `county in ${stateUpper}. Compare the subsidy cliff impact at ages 27–64 across all income levels. ` +
     `Source: CMS benchmark premiums + IRS FPL tables.`
 
@@ -74,7 +74,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Credit Expiration Impact — ${stateUpper} Counties`,
-    description: `County-level analysis of IRA enhanced credit expiration on marketplace premiums in ${stateUpper}. ${records.length} counties modeled.`,
+    description: `Enhanced credits expired end of 2025. County-level analysis of the 2026 premium increase in ${stateUpper}. ${records.length} counties modeled.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -136,9 +136,9 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
             Enhanced Credit Expiration Impact — {stateUpper}
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            If IRA enhanced premium tax credits expire after {PLAN_YEAR},{' '}
-            <strong>{records.length}</strong> counties in {stateUpper} will see higher marketplace
-            premiums. Below is the projected impact for a 40-year-old at 250% FPL — the
+            IRA enhanced premium tax credits expired at the end of 2025.{' '}
+            <strong>{records.length}</strong> counties in {stateUpper} now face higher marketplace
+            premiums in {PLAN_YEAR}. Below is the impact for a 40-year-old at 250% FPL — the
             most commonly cited middle-market scenario.
           </p>
         </section>
@@ -179,10 +179,10 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
                   <th className="text-left py-3 px-4 font-semibold">County FIPS</th>
                   <th className="text-right py-3 px-4 font-semibold">Benchmark (Age 40)</th>
                   <th className="text-right py-3 px-4 font-semibold">
-                    <span className="text-green-700">With Enhanced</span>
+                    <span className="text-green-700">2025 (Enhanced)</span>
                   </th>
                   <th className="text-right py-3 px-4 font-semibold">
-                    <span className="text-red-700">Without Enhanced</span>
+                    <span className="text-red-700">2026 (Standard)</span>
                   </th>
                   <th className="text-right py-3 px-4 font-semibold">Monthly Increase</th>
                   <th className="text-right py-3 px-4 font-semibold">Annual Increase</th>
@@ -235,7 +235,8 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
             All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
-            plan year {PLAN_YEAR}. Enhanced credit availability is subject to Congressional action.
+            plan year {PLAN_YEAR}. Enhanced credits expired at the end of 2025. Congress may act to
+            restore them retroactively.
           </p>
           <p>
             This page is for informational purposes only and does not constitute insurance or tax

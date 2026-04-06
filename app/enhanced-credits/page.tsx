@@ -15,14 +15,14 @@ export const revalidate = 86400
 export const metadata: Metadata = {
   title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
   description:
-    `What happens to your health insurance premium when enhanced subsidies expire? ` +
-    `County-level impact analysis at ages 27–64 across 26 states. Source: CMS + IRS FPL tables.`,
+    `Enhanced health insurance subsidies expired end of 2025. See the county-level premium ` +
+    `impact for 2026 at ages 27–64 across 26 states. Source: CMS + IRS FPL tables.`,
   alternates: { canonical: `${SITE_URL}/enhanced-credits` },
   openGraph: {
     type: 'article',
     title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description:
-      'County-level analysis of enhanced credit expiration impact on marketplace health insurance premiums.',
+      'County-level analysis of how enhanced credit expiration raised marketplace health insurance premiums in 2026.',
     url: `${SITE_URL}/enhanced-credits`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description:
-      'County-level analysis of enhanced credit expiration impact on marketplace health insurance premiums.',
+      'County-level analysis of how enhanced credit expiration raised marketplace health insurance premiums in 2026.',
   },
 }
 
@@ -50,7 +50,7 @@ export default function EnhancedCreditsIndexPage() {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
-    description: `What happens to marketplace premiums when enhanced credits expire? ${policy.records.length} counties modeled across ${stateCount} states.`,
+    description: `Enhanced credits expired end of 2025. See the 2026 premium impact across ${policy.records.length} counties in ${stateCount} states.`,
     dateModified: new Date().toISOString().slice(0, 10),
     dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
@@ -133,10 +133,10 @@ export default function EnhancedCreditsIndexPage() {
             Enhanced Premium Tax Credits — {PLAN_YEAR} Expiration Analysis
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            The Inflation Reduction Act enhanced marketplace premium subsidies through {PLAN_YEAR}. If
-            Congress does not extend them, millions of enrollees will face higher premiums. This tool
-            shows the county-level dollar impact across {recordsWithHeadline.length.toLocaleString()}{' '}
-            counties in {states.length} states.
+            The Inflation Reduction Act enhanced marketplace premium subsidies through 2025. Those
+            enhanced credits expired on January 1, 2026, and millions of enrollees now face higher
+            premiums. This page shows the county-level dollar impact across{' '}
+            {recordsWithHeadline.length.toLocaleString()} counties in {states.length} states.
           </p>
         </section>
 
@@ -190,8 +190,8 @@ export default function EnhancedCreditsIndexPage() {
                 <tr className="bg-navy-50 text-navy-700">
                   <th className="text-left py-3 px-4 font-semibold">State</th>
                   <th className="text-left py-3 px-4 font-semibold">County</th>
-                  <th className="text-right py-3 px-4 font-semibold">With Enhanced</th>
-                  <th className="text-right py-3 px-4 font-semibold">Without Enhanced</th>
+                  <th className="text-right py-3 px-4 font-semibold">2025 (Enhanced)</th>
+                  <th className="text-right py-3 px-4 font-semibold">2026 (Standard)</th>
                   <th className="text-right py-3 px-4 font-semibold">Monthly Increase</th>
                   <th className="text-right py-3 px-4 font-semibold">Annual Increase</th>
                 </tr>
@@ -270,10 +270,10 @@ export default function EnhancedCreditsIndexPage() {
         {/* ── FAQ ── */}
         {(() => {
           const faqs = [
-            { question: 'What are enhanced premium tax credits?', answer: 'Enhanced credits were temporary increases to ACA subsidies under the Inflation Reduction Act. They expanded eligibility above 400% FPL and reduced required contribution percentages for all income levels.' },
-            { question: 'When do enhanced credits expire?', answer: 'Enhanced credits expired at the end of 2025. Starting in 2026, the original ACA subsidy rules apply, including the subsidy cliff at 400% of the Federal Poverty Level.' },
-            { question: 'What is the subsidy cliff?', answer: 'The subsidy cliff means that households earning above 400% FPL receive zero premium tax credits. A small income increase above the threshold can result in losing thousands of dollars in annual subsidies.' },
-            { question: 'How does this affect my 2026 premiums?', answer: 'Without enhanced credits, many households will pay more for marketplace coverage. The exact impact depends on your income, age, family size, and the benchmark silver plan premium in your county.' },
+            { question: 'What were enhanced premium tax credits?', answer: 'Enhanced credits were temporary increases to ACA subsidies, first enacted under the American Rescue Plan (2021) and extended through 2025 by the Inflation Reduction Act. They expanded eligibility above 400% FPL and reduced required contribution percentages for all income levels. They expired on January 1, 2026.' },
+            { question: 'When did enhanced credits expire?', answer: 'Enhanced credits expired at the end of 2025. Starting in 2026, the original ACA subsidy rules apply, including the subsidy cliff at 400% of the Federal Poverty Level. Congress may act to restore them retroactively, but as of now they are no longer in effect.' },
+            { question: 'What is the subsidy cliff?', answer: 'The subsidy cliff means that households earning above 400% FPL receive zero premium tax credits. With enhanced credits gone in 2026, a small income increase above the threshold can result in losing thousands of dollars in annual subsidies.' },
+            { question: 'How does this affect my 2026 premiums?', answer: 'Without enhanced credits, many households are paying more for marketplace coverage in 2026. The exact impact depends on your income, age, family size, and the benchmark silver plan premium in your county.' },
           ]
           return (
             <>
@@ -297,7 +297,8 @@ export default function EnhancedCreditsIndexPage() {
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
             All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
-            plan year {PLAN_YEAR}. Enhanced credit availability is subject to Congressional action.
+            plan year {PLAN_YEAR}. Enhanced credits expired at the end of 2025. Congress may act to
+            restore them retroactively.
           </p>
           <p>
             This page is for informational purposes only and does not constitute insurance or tax
