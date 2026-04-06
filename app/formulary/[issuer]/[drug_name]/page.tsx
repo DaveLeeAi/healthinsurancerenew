@@ -1144,7 +1144,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 title="What we can't confirm from plan documents alone"
                 items={[
                   `Your exact cost at a specific pharmacy. Prices at the counter can differ from what\u2019s in plan filings.`,
-                  `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval criteria \u2014 that depends on your plan\u2019s rules and your clinical situation.`,
+                  `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval criteria \u2014 that depends on your plan\u2019s rules and your situation.`,
                   `Whether your plan has updated its drug list or tier since our January ${PLAN_YEAR} snapshot. Plans can make mid-year changes.`,
                   `The exact timelines and appeal steps that apply to your plan. Those details are in your plan\u2019s benefit documents.`,
                   `Whether you qualify for the manufacturer savings card. Terms and eligibility can change \u2014 verify directly.`,
