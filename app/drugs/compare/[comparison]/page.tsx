@@ -246,7 +246,7 @@ export default function ComparisonPage({ params }: Props) {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <a
-              href={`/all/${slugA}`}
+              href={`/formulary/all/${slugA}`}
               className="flex items-center justify-between p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group"
             >
               <div>
@@ -256,7 +256,7 @@ export default function ComparisonPage({ params }: Props) {
               <svg className="w-4 h-4 text-neutral-400 group-hover:text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
             </a>
             <a
-              href={`/all/${slugB}`}
+              href={`/formulary/all/${slugB}`}
               className="flex items-center justify-between p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group"
             >
               <div>
@@ -359,7 +359,7 @@ function DrugSummaryCard({
       <h3 className="text-xl font-bold text-navy-900 mb-2">{name}</h3>
       <p className="text-sm text-neutral-600 mb-4">{note}</p>
       <a
-        href={`/all/${slug}`}
+        href={`/formulary/all/${slug}`}
         className="text-sm text-primary-600 font-medium hover:underline"
       >
         Check {name} coverage →

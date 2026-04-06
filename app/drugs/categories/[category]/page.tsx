@@ -140,7 +140,7 @@ export default function CategoryHubPage({ params }: Props) {
               return (
                 <a
                   key={drug}
-                  href={`/all/${slug}`}
+                  href={`/formulary/all/${slug}`}
                   className="group flex items-start gap-3 p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
                 >
                   <span className="mt-0.5 flex-shrink-0 w-2 h-2 rounded-full bg-primary-400 group-hover:bg-primary-600 transition-colors" />

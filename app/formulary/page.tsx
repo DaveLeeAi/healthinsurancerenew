@@ -257,7 +257,7 @@ export default function FormularyIndexPage() {
                   {cat.drugs.map((d) => (
                     <a
                       key={d}
-                      href={`/all/${d.toLowerCase().replace(/\s+/g, '-')}`}
+                      href={`/formulary/all/${d.toLowerCase().replace(/\s+/g, '-')}`}
                       className="inline-flex items-center justify-center min-w-[6rem] px-3 py-1.5 bg-primary-50 border border-primary-200 rounded-lg text-sm text-primary-700 font-medium text-center leading-tight hover:bg-primary-100 hover:border-primary-300 transition-colors"
                       title={`Check ${d} coverage`}
                     >
