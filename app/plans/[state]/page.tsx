@@ -1,7 +1,8 @@
-import { permanentRedirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { stateCodeToSlug } from '@/lib/county-lookup'
 
-// 301 redirect: /plans/[state] → /[state-slug]/health-insurance-plans
+// TODO: production — change to permanentRedirect for 301
+// Redirect: /plans/[state] → /[state-slug]/health-insurance-plans
 // e.g. /plans/nc → /north-carolina/health-insurance-plans
 
 interface Props {
@@ -10,5 +11,5 @@ interface Props {
 
 export default function PlansStateRedirect({ params }: Props) {
   const stateSlug = stateCodeToSlug(params.state.toUpperCase())
-  permanentRedirect(`/${stateSlug}/health-insurance-plans`)
+  redirect(`/${stateSlug}/health-insurance-plans`)
 }

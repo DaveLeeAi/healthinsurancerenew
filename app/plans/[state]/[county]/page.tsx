@@ -1,7 +1,8 @@
-import { permanentRedirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 
-// 301 redirect: /plans/[state]/[county] → /[state-slug]/[county-slug]
+// TODO: production — change to permanentRedirect for 301
+// Redirect: /plans/[state]/[county] → /[state-slug]/[county-slug]
 // e.g. /plans/nc/37183 → /north-carolina/wake-county
 
 interface Props {
@@ -11,5 +12,5 @@ interface Props {
 export default function PlansCountyRedirect({ params }: Props) {
   const stateSlug = stateCodeToSlug(params.state.toUpperCase())
   const countySlug = getCountySlug(params.county)
-  permanentRedirect(`/${stateSlug}/${countySlug}`)
+  redirect(`/${stateSlug}/${countySlug}`)
 }

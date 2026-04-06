@@ -9,7 +9,7 @@ export default function FormularySearchForm() {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
     const slug = drug.trim().toLowerCase().replace(/\s+/g, '-')
-    if (slug) router.push(`/formulary/all/${slug}`)
+    if (slug) router.push(`/all/${slug}`)
   }
 
   return (

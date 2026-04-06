@@ -30,7 +30,7 @@ export default function FormularySearch({ ffmStates, sbmStates }: FormularySearc
     const slug = drug.trim().toLowerCase().replace(/\s+/g, '-')
     if (!slug) return
     const stateParam = selectedState || 'all'
-    router.push(`/formulary/${stateParam}/${slug}`)
+    router.push(`/${stateParam}/${slug}`)
   }
 
   return (

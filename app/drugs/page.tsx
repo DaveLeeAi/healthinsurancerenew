@@ -99,7 +99,7 @@ export default function DrugsIndexPage() {
           </p>
           <div className="flex flex-wrap gap-3 mt-5">
             <a
-              href="/formulary"
+              href="/drugs"
               className="px-5 py-2.5 bg-primary-600 text-white rounded-xl text-sm font-semibold hover:bg-primary-700 transition-colors"
             >
               Search a specific drug

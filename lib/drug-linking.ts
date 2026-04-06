@@ -355,7 +355,7 @@ export function getRelatedDrugs(
       result.push({
         name: titleCase(drug),
         slug: slugify(drug),
-        href: `/formulary/${issuerSlug}/${slugify(drug)}`,
+        href: `/${issuerSlug}/${slugify(drug)}`,
       })
       if (result.length >= limit) return result
     }
@@ -495,7 +495,7 @@ export function getStatePlanLinks(
     },
     {
       label: `Browse all drugs covered in ${stateName}`,
-      href: `/formulary/${stateSlug}/all`,
+      href: `/${stateSlug}/all`,
     },
     {
       label: `${stateName} subsidy calculator — see if you qualify for help with premiums`,

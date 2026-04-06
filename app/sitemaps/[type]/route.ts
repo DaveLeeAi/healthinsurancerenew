@@ -164,7 +164,7 @@ function buildStaticEntries(): SitemapEntry[] {
     { path: '/plans', priority: 0.9, changefreq: 'monthly' },
     { path: '/subsidies', priority: 0.9, changefreq: 'monthly' },
     { path: '/rates', priority: 0.7, changefreq: 'monthly' },
-    { path: '/formulary', priority: 0.9, changefreq: 'monthly' },
+    { path: '/drugs', priority: 0.9, changefreq: 'monthly' },
     { path: '/dental', priority: 0.7, changefreq: 'monthly' },
     { path: '/drugs', priority: 0.8, changefreq: 'monthly' },
     { path: '/enhanced-credits', priority: 0.8, changefreq: 'monthly' },
@@ -347,7 +347,7 @@ function buildFormularyEntries(chunkIndex: number): SitemapEntry[] {
   for (let i = start; i < end; i++) {
     // Each pair is "state-slug/drug-slug"
     entries.push({
-      loc: `${BASE}/formulary/${pairs[i]}`,
+      loc: `${BASE}/${pairs[i]}`,
       lastmod: DATA_LASTMOD,
       changefreq: 'yearly' as const,
       priority: 0.6,

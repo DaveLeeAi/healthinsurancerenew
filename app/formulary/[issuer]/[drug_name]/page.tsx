@@ -445,7 +445,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `${titleCase(drugDisplay)} is covered by most ${stateName} health plans for ${PLAN_YEAR}. ${stateName} uses ${stateConf.exchange} for enrollment. See coverage details.`
       : `${titleCase(drugDisplay)} is covered by most ${stateName} health plans for ${PLAN_YEAR}. Prior authorization typically required. Typical copay after deductible: see plan details.`
     : `${titleCase(drugDisplay)} is covered by most ${issuerName} health plans for ${PLAN_YEAR}. Prior authorization typically required. Typical copay after deductible: see plan details.`
-  const canonical = `${SITE_URL}/formulary/${canonicalIssuer}/${params.drug_name}`
+  const canonical = `${SITE_URL}/${canonicalIssuer}/${params.drug_name}`
 
   return {
     title,
@@ -478,13 +478,13 @@ export default async function FormularyDrugPage({ params }: Props) {
 
   // Guard: /formulary/[state]/all is not a drug search
   if (drugSlug.toLowerCase() === 'all') {
-    redirect('/formulary')
+    redirect('/drugs')
   }
 
   // --- State slug detection + redirect from abbreviation to canonical slug ---
   const stateInfo = resolveStateParam(params.issuer)
   if (stateInfo?.needsRedirect) {
-    redirect(`/formulary/${stateInfo.stateSlug}/${params.drug_name}`)
+    redirect(`/${stateInfo.stateSlug}/${params.drug_name}`)
   }
 
   const issuer = params.issuer
@@ -585,15 +585,15 @@ export default async function FormularyDrugPage({ params }: Props) {
   const breadcrumbItems = isState
     ? [
         { name: 'Home', url: SITE_URL },
-        { name: 'Formulary', url: `${SITE_URL}/formulary` },
-        { name: stateName!, url: `${SITE_URL}/formulary/${canonicalIssuerParam}/all` },
-        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${canonicalIssuerParam}/${drugSlug}` },
+        { name: 'Drug Coverage', url: `${SITE_URL}/drugs` },
+        { name: stateName!, url: `${SITE_URL}/${canonicalIssuerParam}/health-insurance-plans` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/${canonicalIssuerParam}/${drugSlug}` },
       ]
     : [
         { name: 'Home', url: SITE_URL },
-        { name: 'Formulary', url: `${SITE_URL}/formulary` },
-        { name: issuerName, url: `${SITE_URL}/formulary/${canonicalIssuerParam}/all` },
-        { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${canonicalIssuerParam}/${drugSlug}` },
+        { name: 'Drug Coverage', url: `${SITE_URL}/drugs` },
+        { name: issuerName, url: `${SITE_URL}/${canonicalIssuerParam}/all` },
+        { name: titleCase(drugDisplay), url: `${SITE_URL}/${canonicalIssuerParam}/${drugSlug}` },
       ]
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems)
 
@@ -790,9 +790,9 @@ export default async function FormularyDrugPage({ params }: Props) {
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center text-faint" style={{ fontSize: '12px', gap: '4px', paddingTop: '20px' }}>
           <a href="/" className="text-vblue hover:underline">Home</a>
           <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
-          <a href="/formulary" className="text-vblue hover:underline">Drug Coverage</a>
+          <a href="/drugs" className="text-vblue hover:underline">Drug Coverage</a>
           <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
-          <a href={`/formulary/${canonicalIssuerParam}/all`} className="text-vblue hover:underline">
+          <a href={isState ? `/${canonicalIssuerParam}/health-insurance-plans` : `/${canonicalIssuerParam}/all`} className="text-vblue hover:underline">
             {isState ? stateName : issuerName}
           </a>
           <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
@@ -1068,7 +1068,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                   drugClass === 'injectable-glp1'
                     ? [
                         { icon: '$', title: `${glp1Manufacturer ?? 'Manufacturer'} savings card`, desc: `${glp1Manufacturer ?? 'The manufacturer'} offers a savings card for ${titleCase(drugDisplay)} that can significantly reduce your monthly cost for commercially insured people. Eligibility and savings amounts change \u2014 ask your doctor\u2019s office or pharmacist for current details, and confirm you qualify before factoring it into your budget.` },
-                        ...(oralAlt ? [{ icon: '\u2192', title: `Ask about the oral version`, desc: `If injectable ${titleCase(drugDisplay)} is hard to access or too expensive, ask your doctor about <a href="/formulary/${canonicalIssuerParam}/${oralAlt.slug}" class="text-vblue hover:underline">${oralAlt.name}</a> \u2014 an oral option with the same active ingredient that may be on a different tier.` }] : []),
+                        ...(oralAlt ? [{ icon: '\u2192', title: `Ask about the oral version`, desc: `If injectable ${titleCase(drugDisplay)} is hard to access or too expensive, ask your doctor about <a href="/${canonicalIssuerParam}/${oralAlt.slug}" class="text-vblue hover:underline">${oralAlt.name}</a> \u2014 an oral option with the same active ingredient that may be on a different tier.` }] : []),
                         { icon: '\u2197', title: 'Compare plans by specialty tier', desc: `Specialty tier copays can vary by hundreds of dollars between ${isState ? stateName : 'Marketplace'} plans. Choosing a plan where ${titleCase(drugDisplay)} is on a more favorable tier can meaningfully reduce your monthly cost.${isState && stateName ? ` <a href="/compare/${stateSlug ?? canonicalIssuerParam}" class="text-vblue hover:underline">Compare ${stateName} plan options</a> before enrollment closes.` : ''}` },
                         { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some plans offer lower rates at preferred pharmacies or through mail-order benefits. Check your plan\u2019s pharmacy benefit summary to see whether this applies and how to use it.` },
                       ]
@@ -1296,7 +1296,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 return (
                   <a
                     key={ins.id}
-                    href={`/formulary/${ins.id}/${drugSlug}`}
+                    href={`/${ins.id}/${drugSlug}`}
                     className={`flex items-center justify-between hover:bg-surface transition-colors ${i > 0 ? 'border-t border-rule' : ''}`}
                     style={{ padding: '12px 20px', fontSize: '13.5px', textDecoration: 'none', color: 'inherit' }}
                   >
@@ -1367,7 +1367,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               </div>
               <div className="flex flex-wrap" style={{ gap: '8px' }}>
                 <a
-                  href={`/formulary/${canonicalIssuerParam}/all`}
+                  href={`/${canonicalIssuerParam}/all`}
                   className="border border-rule text-vblue font-medium hover:border-vblue transition-colors"
                   style={{ borderRadius: '6px', padding: '7px 16px', fontSize: '13px', textDecoration: 'none' }}
                 >
@@ -1460,9 +1460,9 @@ function SBMExplanationPage({
 }) {
   const breadcrumbItems = [
     { name: 'Home', url: SITE_URL },
-    { name: 'Formulary', url: `${SITE_URL}/formulary` },
-    { name: stateName, url: `${SITE_URL}/formulary/${issuer}/all` },
-    { name: titleCase(drugDisplay), url: `${SITE_URL}/formulary/${issuer}/${drugSlug}` },
+    { name: 'Drug Coverage', url: `${SITE_URL}/drugs` },
+    { name: stateName, url: `${SITE_URL}/${stateSlug}/health-insurance-plans` },
+    { name: titleCase(drugDisplay), url: `${SITE_URL}/${stateSlug}/${drugSlug}` },
   ]
   const bSchema = buildBreadcrumbSchema(breadcrumbItems)
 
@@ -1475,9 +1475,9 @@ function SBMExplanationPage({
           <ol className="flex flex-wrap items-center gap-1">
             <li><a href="/" className="hover:underline text-primary-600">Home</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
-            <li><a href="/formulary" className="hover:underline text-primary-600">Formulary</a></li>
+            <li><a href="/drugs" className="hover:underline text-primary-600">Drug Coverage</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
-            <li><a href={`/formulary/${issuer}/all`} className="hover:underline text-primary-600">{stateName}</a></li>
+            <li><a href={`/${stateSlug}/health-insurance-plans`} className="hover:underline text-primary-600">{stateName}</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
             <li aria-current="page" className="text-neutral-700 font-medium">{titleCase(drugDisplay)}</li>
           </ol>
@@ -1511,7 +1511,7 @@ function SBMExplanationPage({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
           <a
-            href={`/formulary/all/${drugSlug}`}
+            href={`/drugs`}
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
           >
             Search all states for {titleCase(drugDisplay)}
@@ -1537,7 +1537,7 @@ function SBMExplanationPage({
                 <> It is typically listed as a {humanizeTierForDrug(allResults[0].drug_tier, drugDisplay).shortLabel.toLowerCase()} drug.</>
               )}
             </p>
-            <a href={`/formulary/all/${drugSlug}`} className="text-sm text-primary-600 font-semibold hover:text-primary-700">
+            <a href="/drugs" className="text-sm text-primary-600 font-semibold hover:text-primary-700">
               View national coverage details &rarr;
             </a>
           </div>
@@ -1670,7 +1670,7 @@ function DrugClinicalContext({
                       {data.genericAlts.map((alt) => (
                         <div key={alt.name}>
                           <a
-                            href={`/formulary/${issuer}/${alt.name.toLowerCase().replace(/\s+/g, '-')}`}
+                            href={`/${issuer}/${alt.name.toLowerCase().replace(/\s+/g, '-')}`}
                             className="text-sm font-medium text-primary-700 hover:underline"
                           >
                             {alt.name}
@@ -1689,7 +1689,7 @@ function DrugClinicalContext({
                       {data.therapeuticAlts.map((alt) => (
                         <div key={alt.name}>
                           <a
-                            href={`/formulary/${issuer}/${alt.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
+                            href={`/${issuer}/${alt.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
                             className="text-sm font-medium text-primary-700 hover:underline"
                           >
                             {alt.name}
@@ -1933,7 +1933,7 @@ function DrugPatientActionGuide({
               Never enroll in a plan without checking the formulary. Tiers change every January 1 — always verify for the specific plan year.
             </p>
             <a
-              href={`/formulary?drug=${encodeURIComponent(drugSlug)}`}
+              href={`/drugs?drug=${encodeURIComponent(drugSlug)}`}
               className="inline-block text-sm font-semibold text-primary-700 hover:text-primary-900 hover:underline"
             >
               Search plans that cover {titleCase(drugDisplay)} &rarr;

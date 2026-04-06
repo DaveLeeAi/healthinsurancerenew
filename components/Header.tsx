@@ -8,7 +8,7 @@ const navLinks = [
   { label: 'States', href: '/states' },
   { label: 'Plans', href: '/plans' },
   { label: 'Subsidies', href: '/subsidies' },
-  { label: 'Drug Lookup', href: '/formulary' },
+  { label: 'Drug Lookup', href: '/drugs' },
   { label: 'Dental', href: '/dental' },
 ]
 

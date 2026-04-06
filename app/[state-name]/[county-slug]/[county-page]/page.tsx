@@ -769,7 +769,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
                 <p className="text-neutral-500 text-sm mb-3">
                   No formulary data found for {drugName} on county-specific plans. Coverage may still exist — check your plan directly.
                 </p>
-                <a href={`/formulary/${stateCodeToSlug(stateCode)}/${drugSlug}`} className="text-sm text-primary-600 font-medium hover:underline">
+                <a href={`/${stateCodeToSlug(stateCode)}/${drugSlug}`} className="text-sm text-primary-600 font-medium hover:underline">
                   View statewide {drugName} coverage for {stateName} →
                 </a>
               </div>

@@ -140,7 +140,7 @@ export default function CategoryHubPage({ params }: Props) {
               return (
                 <a
                   key={drug}
-                  href={`/formulary/all/${slug}`}
+                  href={`/all/${slug}`}
                   className="group flex items-start gap-3 p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
                 >
                   <span className="mt-0.5 flex-shrink-0 w-2 h-2 rounded-full bg-primary-400 group-hover:bg-primary-600 transition-colors" />
@@ -342,14 +342,14 @@ interface Tool { label: string; href: string; icon: string; context: string }
 
 function getRelatedTools(categoryId: string): Tool[] {
   const common: Tool[] = [
-    { label: 'Check formulary coverage by state', href: '/formulary', icon: '🔍', context: 'Search 551,000+ medications across Marketplace plans' },
+    { label: 'Check drug coverage by state', href: '/drugs', icon: '🔍', context: 'Search 551,000+ medications across Marketplace plans' },
     { label: 'Compare plans in your area', href: '/plans', icon: '📋', context: 'Browse all Marketplace plans by state and county' },
     { label: 'Estimate your subsidy', href: '/subsidies', icon: '💰', context: 'See how much APTC you qualify for in 2026' },
     { label: 'Prior authorization explained', href: '/faq/prior_authorization/pa_001', icon: '📝', context: 'How to request PA and appeal a denial' },
   ]
 
   const extras: Record<string, Tool> = {
-    'weight-loss': { label: 'Are GLP-1 drugs covered?', href: '/formulary/all/ozempic', icon: '💊', context: 'Ozempic, Wegovy, Mounjaro coverage comparison' },
+    'weight-loss': { label: 'Are GLP-1 drugs covered?', href: '/all/ozempic', icon: '💊', context: 'Ozempic, Wegovy, Mounjaro coverage comparison' },
     'diabetes': { label: 'Insulin cost cap explained', href: '/guides/how-aca-subsidies-work-2026', icon: '🩺', context: '$35/month insulin cap under ACA plans' },
     'mental-health': { label: 'Mental health parity rights', href: '/faq/aca-marketplace-basics', icon: '⚖️', context: 'Federal parity rules for mental health coverage' },
   }

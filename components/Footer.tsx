@@ -10,7 +10,7 @@ const coverageDataLinks = [
   { label: 'Plans', url: '/plans' },
   { label: 'Subsidies', url: '/subsidies' },
   { label: 'Rates', url: '/rates' },
-  { label: 'Drug Lookup', url: '/formulary' },
+  { label: 'Drug Lookup', url: '/drugs' },
   { label: 'Dental', url: '/dental' },
   { label: 'Billing', url: '/billing' },
   { label: 'Life Events', url: '/life-events' },

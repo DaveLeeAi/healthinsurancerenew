@@ -1010,7 +1010,7 @@ export default function StatePlansPage({ params }: Props) {
               className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors">
               Rate Trends in {stateName}
             </a>
-            <a href={`/formulary/${stateCodeToSlug(stateCode)}/metformin`}
+            <a href={`/${stateCodeToSlug(stateCode)}/metformin`}
               className="px-4 py-2 rounded-lg border border-neutral-200 text-sm text-primary-700 hover:bg-primary-50 transition-colors">
               Drug Coverage Lookup
             </a>

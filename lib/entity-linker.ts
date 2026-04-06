@@ -102,7 +102,7 @@ export function getCanonicalUrl(pageType: PageType, params: CanonicalParams): st
     }
     case 'formulary': {
       const drugSlug = (params.drug_name ?? '').toLowerCase().replace(/\s+/g, '-')
-      return `${BASE_URL}/formulary/${params.issuer ?? 'all'}/${drugSlug}`
+      return `${BASE_URL}/${params.issuer ?? 'all'}/${drugSlug}`
     }
     case 'dental':
       return `${BASE_URL}/dental/${st}/${params.plan_variant ?? ''}`
@@ -210,7 +210,7 @@ export function policyScenarioLink(
 export function drugLink(drugName: string, issuer?: string): EntityLink {
   const slug = drugName.toLowerCase().replace(/\s+/g, '-')
   return {
-    href: `/formulary/${issuer ?? 'all'}/${slug}`,
+    href: `/${issuer ?? 'all'}/${slug}`,
     label: `Check ${drugName} formulary coverage across marketplace plans`,
     type: 'formulary',
     relevanceScore: 75,
@@ -555,7 +555,7 @@ function buildPlanDetailLinks(
   if (hasFormularyData) {
     const issuerSlug = plan.issuer_name.toLowerCase().replace(/\s+/g, '-')
     links.push({
-      href: `/formulary/${issuerSlug}/all`,
+      href: `/${issuerSlug}/all`,
       label: `Search ${plan.issuer_name} drug formulary — covered tiers and restrictions`,
       type: 'formulary',
       relevanceScore: 82,
@@ -613,7 +613,7 @@ function buildSbcLinks(ctx: Extract<PageContext, { pageType: 'sbc' }>): EntityLi
 
   const issuerSlug = plan.issuer_name.toLowerCase().replace(/\s+/g, '-')
   links.push({
-    href: `/formulary/${issuerSlug}/all`,
+    href: `/${issuerSlug}/all`,
     label: `Search ${plan.issuer_name} drug formulary covered under this plan`,
     type: 'formulary',
     relevanceScore: 80,
@@ -665,7 +665,7 @@ function buildFormularyLinks(
 
   const issuerSlug = issuer.toLowerCase().replace(/\s+/g, '-')
   links.push({
-    href: `/formulary/${issuerSlug}/all`,
+    href: `/${issuerSlug}/all`,
     label: `Browse all drugs covered by ${issuer} marketplace plans`,
     type: 'formulary',
     relevanceScore: 85,
@@ -850,7 +850,7 @@ function buildBillingLinks(ctx: Extract<PageContext, { pageType: 'billing' }>): 
   }
   if (billingCategory === 'prescription') {
     links.push({
-      href: '/formulary/all/lisinopril',
+      href: '/all/lisinopril',
       label: 'Search which marketplace plans cover your prescriptions and at what tier',
       type: 'formulary',
       relevanceScore: 82,
@@ -1070,7 +1070,7 @@ function buildDentalLinks(ctx: Extract<PageContext, { pageType: 'dental' }>): En
 
   const issuerSlug = issuerName.toLowerCase().replace(/\s+/g, '-')
   links.push({
-    href: `/formulary/${issuerSlug}/all`,
+    href: `/${issuerSlug}/all`,
     label: `Browse ${issuerName} medical plan formulary coverage`,
     type: 'formulary',
     relevanceScore: 65,

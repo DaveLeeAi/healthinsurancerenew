@@ -174,7 +174,7 @@ export default function SubsidiesStatePage({ params }: Props) {
                   View {stateName} health plans
                 </a>
                 <a
-                  href={`/formulary/${stateCodeToSlug(params.state.toUpperCase())}/metformin`}
+                  href={`/${stateCodeToSlug(params.state.toUpperCase())}/metformin`}
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-primary-200 bg-primary-50 text-primary-700 font-semibold hover:bg-primary-100 transition-colors"
                 >
                   Search drug coverage in {stateName}

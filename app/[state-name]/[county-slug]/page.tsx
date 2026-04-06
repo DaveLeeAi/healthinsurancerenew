@@ -516,7 +516,7 @@ function DrugCoveragePills({
           </a>
         ))}
         <a
-          href={`/formulary/${stateCodeToSlug(stateCode)}/all`}
+          href={`/${stateCodeToSlug(stateCode)}/all`}
           className="inline-block px-3 py-1.5 text-sm font-medium rounded-full border border-neutral-200 bg-neutral-50 text-neutral-600 hover:bg-neutral-100 transition-colors"
         >
           Browse all drugs →
