@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Job Plan Affordability Checker | HealthInsuranceRenew',
     description:
-      'Check if your employer\',
+      'Check if your employer\'s health plan meets ACA affordability standards in 2026. Determine if you qualify for marketplace subsidies instead.',
   },
 }
 
