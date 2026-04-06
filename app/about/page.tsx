@@ -43,7 +43,7 @@ const pageSchema = getWebPageSchema({
   url: `${SITE_URL}/about/`,
   name: `About ${AGENCY_NAME}`,
   description:
-    'About HealthInsuranceRenew.com — mission, data sources, and the licensed ACA agent behind the site.',
+    'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
   datePublished: '2026-03-29T00:00:00-04:00',
   dateModified: '2026-03-29T00:00:00-04:00',
   breadcrumbs: [

@@ -21,12 +21,13 @@ export const metadata: Metadata = {
   description:
     'Our editorial standards at HealthInsuranceRenew.com: 7-step content workflow, fact-checking checklist, AI disclosure policy, corrections process, and editorial independence commitment.',
   alternates: {
-    canonical: `${SITE_URL}
+    canonical: `${SITE_URL}/about/editorial-standards/`,
+  },
   openGraph: {
     title: 'Editorial Standards — How We Create and Verify Health Insurance Content',
     description:
       'Our editorial standards at HealthInsuranceRenew.com: 7-step content workflow, fact-checking checklist, AI disclosure policy, corrections process, and editorial independence commitment.',
-    url: '${SITE_URL}/about/editorial-standards/',
+    url: `${SITE_URL}/about/editorial-standards/`,
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
@@ -35,7 +36,6 @@ export const metadata: Metadata = {
     title: 'Editorial Standards — How We Create and Verify Health Insurance Content',
     description:
       'Our editorial standards at HealthInsuranceRenew.com: 7-step content workflow, fact-checking checklist, AI disclosure policy, corrections process, and editorial independence commitment.',
-  },/about/editorial-standards/`,
   },
 };
 
