@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import LlmComment from '../../../components/LlmComment'
-import { buildBreadcrumbSchema } from '../../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildWebApplicationSchema } from '../../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'CSR Estimator: Cost-Sharing Reduction Calculator | HealthInsuranceRenew',
@@ -33,12 +33,21 @@ const breadcrumbs = [
 
 export default function CsrEstimatorLayout({ children }: { children: React.ReactNode }) {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+  const webAppSchema = buildWebApplicationSchema({
+    name: 'CSR Estimator: Cost-Sharing Reduction Calculator',
+    description: 'Estimate your cost-sharing reduction benefit on marketplace silver plans based on household income and family size.',
+    url: 'https://healthinsurancerenew.com/tools/csr-estimator',
+  })
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
       />
       <LlmComment pageType="tool-csr-estimator" year={2026} data="IRS-FPL" />
       {children}

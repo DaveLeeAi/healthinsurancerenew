@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import LlmComment from '../../../components/LlmComment'
-import { buildBreadcrumbSchema } from '../../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildWebApplicationSchema } from '../../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Marketplace Plan Comparison Tool | HealthInsuranceRenew',
@@ -33,12 +33,21 @@ const breadcrumbs = [
 
 export default function PlanComparisonLayout({ children }: { children: React.ReactNode }) {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+  const webAppSchema = buildWebApplicationSchema({
+    name: 'Marketplace Plan Comparison Tool',
+    description: 'Compare marketplace health insurance plans side by side. Evaluate premiums, deductibles, copays, and out-of-pocket maximums.',
+    url: 'https://healthinsurancerenew.com/tools/plan-comparison',
+  })
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
       />
       <LlmComment pageType="tool-plan-comparison" year={2026} data="CMS-QHP-PUF" />
       {children}

@@ -911,3 +911,34 @@ export function buildFinancialProductSchema(params: {
     },
   }
 }
+
+
+// ─── WebApplication (DESIGN.md Section 7 — Tools) ─────────────────────────────
+
+/**
+ * Builds a schema.org/WebApplication for interactive tool pages.
+ * Per DESIGN.md §7: Tools require WebApplication + BreadcrumbList.
+ */
+export function buildWebApplicationSchema(params: {
+  name: string
+  description: string
+  url: string
+  applicationCategory?: string
+}): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: params.name,
+    description: params.description,
+    url: params.url,
+    applicationCategory: params.applicationCategory ?? 'HealthApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    publisher: PUBLISHER,
+  }
+}

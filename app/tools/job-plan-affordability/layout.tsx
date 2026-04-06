@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import LlmComment from '../../../components/LlmComment'
-import { buildBreadcrumbSchema } from '../../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildWebApplicationSchema } from '../../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Job Plan Affordability Checker | HealthInsuranceRenew',
@@ -33,12 +33,21 @@ const breadcrumbs = [
 
 export default function JobPlanAffordabilityLayout({ children }: { children: React.ReactNode }) {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+  const webAppSchema = buildWebApplicationSchema({
+    name: 'Job Plan Affordability Checker',
+    description: 'Check if your employer health plan meets ACA affordability standards in 2026 and whether you qualify for marketplace subsidies.',
+    url: 'https://healthinsurancerenew.com/tools/job-plan-affordability',
+  })
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
       />
       <LlmComment pageType="tool-job-plan-affordability" year={2026} data="IRS-ACA-affordability" />
       {children}

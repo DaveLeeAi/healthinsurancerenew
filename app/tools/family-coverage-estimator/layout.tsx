@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import LlmComment from '../../../components/LlmComment'
-import { buildBreadcrumbSchema } from '../../../lib/schema-markup'
+import { buildBreadcrumbSchema, buildWebApplicationSchema } from '../../../lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Family Coverage Estimator | HealthInsuranceRenew',
@@ -33,12 +33,21 @@ const breadcrumbs = [
 
 export default function FamilyCoverageEstimatorLayout({ children }: { children: React.ReactNode }) {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs)
+  const webAppSchema = buildWebApplicationSchema({
+    name: 'Family Coverage Estimator',
+    description: 'Estimate marketplace health insurance costs for your family in 2026 across metal tiers and family sizes.',
+    url: 'https://healthinsurancerenew.com/tools/family-coverage-estimator',
+  })
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
       />
       <LlmComment pageType="tool-family-coverage-estimator" year={2026} data="IRS-FPL" />
       {children}
