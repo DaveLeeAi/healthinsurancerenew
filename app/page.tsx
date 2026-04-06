@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary',
+    title: 'HealthInsuranceRenew — 2026 Health Insurance Marketplace Data & Tools',
+    description:
+      'CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.',
+  },,
   alternates: { canonical: 'https://healthinsurancerenew.com' },
 }
 

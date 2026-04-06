@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Health Insurance Glossary — Key Terms Explained',
+    description:
+      'Simple definitions for common health insurance terms like deductible, copay, FPL, MAGI, and more. No jargon — just clear explanations.',
+  },,
 }
 
 const breadcrumbs = [

@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'ACA Eligibility Check — Do You Qualify for Savings?',
+    description:
+      'Find out if you qualify for marketplace health insurance savings in 2026. Step-by-step guide covering employer coverage, income, Medicaid, and special enrollment.',
+  },,
 }
 
 const breadcrumbs = [

@@ -19,6 +19,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Health Insurance Subsidy Calculator — APTC by State & County (2026)',
+    description:
+      'Calculate your 2026 premium tax credit. Based on CMS benchmark silver premium data for all 50 states.',
+  },,
 }
 
 const SITE_URL = 'https://healthinsurancerenew.com'

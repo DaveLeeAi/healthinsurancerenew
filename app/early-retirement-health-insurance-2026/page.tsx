@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Early Retirement Health Insurance — Bridge to Medicare',
+    description:
+      'Retiring before 65? Learn your health insurance options for 2026 including marketplace plans, premium tax credits, income strategies, and how to bridge the gap to Medicare.',
+  },,
 }
 
 const breadcrumbs = [

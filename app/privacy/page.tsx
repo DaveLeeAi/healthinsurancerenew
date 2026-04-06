@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Privacy Policy | HealthInsuranceRenew',
+    description:
+      'Privacy policy for HealthInsuranceRenew. Learn what information is collected, how it is used, and how your privacy is protected.',
+  },,
 }
 
 const breadcrumbs = [

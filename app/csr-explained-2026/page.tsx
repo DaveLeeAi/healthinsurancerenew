@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Cost-Sharing Reductions (CSR) Explained for 2026',
+    description:
+      'Plain-English explanation of cost-sharing reductions (CSR) for 2026. See the three CSR tiers, who qualifies based on income, and how CSRs lower your health care costs.',
+  },,
 }
 
 const breadcrumbs = [

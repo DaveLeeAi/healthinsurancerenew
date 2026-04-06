@@ -18,6 +18,12 @@ export const metadata: Metadata = {
     url: 'https://healthinsurancerenew.com/states',
     type: 'website',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Health Insurance by State (2026)',
+    description:
+      'Find marketplace plans, premiums, subsidies, and carrier options for your state. All 50 states plus D.C. for plan year 2026.',
+  },,
 }
 
 interface StateEntry {

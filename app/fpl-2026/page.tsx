@@ -21,6 +21,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: '2026 Federal Poverty Level (FPL) Guidelines | HealthInsuranceRenew',
+    description:
+      '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds. See FPL amounts for every household size and how they determine Medicaid and subsidy eligibility.',
+  },,
 }
 
 const breadcrumbs = [

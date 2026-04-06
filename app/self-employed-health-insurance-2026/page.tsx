@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Self-Employed Health Insurance Guide (2026)',
+    description:
+      'Health insurance for freelancers and self-employed workers in 2026. Learn about marketplace options, premium tax credits, the self-employed deduction, and HSA strategies.',
+  },,
 }
 
 const breadcrumbs = [

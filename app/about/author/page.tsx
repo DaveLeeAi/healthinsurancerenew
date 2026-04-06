@@ -18,7 +18,21 @@ export const metadata: Metadata = {
   description:
     'Dave Lee is a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition, licensed in 20+ states. Learn about his credentials, licensing, and experience helping consumers navigate marketplace enrollment.',
   alternates: {
-    canonical: `${SITE_URL}/about/author/`,
+    canonical: `${SITE_URL}
+  openGraph: {
+    title: 'Dave Lee — Licensed ACA Health Insurance Agent | CMS Elite Circle of Champions',
+    description:
+      'Dave Lee is a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition, licensed in 20+ states. Learn about his credentials, licensing, and experience helping consumers navigate marketplace enrollment.',
+    url: '${SITE_URL}/about/author/',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Dave Lee — Licensed ACA Health Insurance Agent | CMS Elite Circle of Champions',
+    description:
+      'Dave Lee is a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition, licensed in 20+ states. Learn about his credentials, licensing, and experience helping consumers navigate marketplace enrollment.',
+  },/about/author/`,
   },
 };
 

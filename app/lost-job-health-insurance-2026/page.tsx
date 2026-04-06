@@ -21,6 +21,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Lost Your Job? Health Insurance Options (2026)',
+    description:
+      'Lost your job and health insurance? Compare COBRA, marketplace plans, and Medicaid for 2026. Learn costs, deadlines, and how to get covered within 60 days.',
+  },,
 }
 
 const g = fplData.guidelines

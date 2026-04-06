@@ -21,6 +21,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/about/`,
   },
+  openGraph: {
+    title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
+    description:
+      'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+    url: `${SITE_URL}/about/`,
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
+  twitter: {
+    card: 'summary' as const,
+    title: `About ${AGENCY_NAME} — Licensed ACA Health Insurance Guide`,
+    description:
+      'HealthInsuranceRenew.com is operated by a licensed ACA health insurance agent with CMS Elite Circle of Champions recognition. Learn about our mission, data sources, and commitment to accurate health insurance information.',
+  },
 };
 
 // ─── Schema ──────────────────────────────────────────────────────────────────

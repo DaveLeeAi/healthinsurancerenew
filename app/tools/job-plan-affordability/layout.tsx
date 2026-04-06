@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Job Plan Affordability Checker | HealthInsuranceRenew',
+    description:
+      'Check if your employer\',
+  },,
 }
 
 // NOTE: No name/NPN on this page — generic byline only

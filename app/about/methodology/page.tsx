@@ -21,7 +21,21 @@ export const metadata: Metadata = {
   description:
     'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
   alternates: {
-    canonical: `${SITE_URL}/about/methodology/`,
+    canonical: `${SITE_URL}
+  openGraph: {
+    title: 'Our Methodology — How We Source and Verify Health Insurance Data',
+    description:
+      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
+    url: '${SITE_URL}/about/methodology/',
+    type: 'website',
+    siteName: 'HealthInsuranceRenew',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Our Methodology — How We Source and Verify Health Insurance Data',
+    description:
+      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
+  },/about/methodology/`,
   },
 };
 

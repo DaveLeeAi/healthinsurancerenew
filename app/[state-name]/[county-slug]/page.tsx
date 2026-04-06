@@ -104,6 +104,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'HealthInsuranceRenew',
       locale: 'en_US',
     },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
   }
 }
 

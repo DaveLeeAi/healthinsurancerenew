@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Turning 26? Health Insurance Options Explained',
+    description:
+      'Aging off a parent',
+  },,
 }
 
 const breadcrumbs = [

@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Employer Coverage Unaffordable? Your ACA Options (2026)',
+    description:
+      'Is your employer health plan too expensive? Learn the ACA affordability test, the family glitch fix, and how to get marketplace coverage with premium tax credits in 2026.',
+  },,
 }
 
 const breadcrumbs = [

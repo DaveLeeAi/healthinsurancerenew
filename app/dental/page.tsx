@@ -46,6 +46,12 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State',
+    description:
+      '1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from CMS SADP PUF data.',
+  },,
 }
 
 export default function DentalIndexPage() {

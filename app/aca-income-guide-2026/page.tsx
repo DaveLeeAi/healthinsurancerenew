@@ -23,6 +23,12 @@ export const metadata: Metadata = {
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Health Insurance Savings by Income Level (2026)',
+    description:
+      'Understand what health insurance savings you qualify for at every income level. Covers Medicaid, premium tax credits, and cost-sharing reductions by FPL percentage.',
+  },,
 }
 
 const breadcrumbs = [

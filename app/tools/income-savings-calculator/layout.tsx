@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Health Insurance Savings Calculator | HealthInsuranceRenew',
+    description:
+      'Calculate how much you can save on marketplace health insurance by adjusting your reported income. See the impact of IRA contributions and deductions on subsidies.',
+  },,
 }
 
 // NOTE: No name/NPN on this page — generic byline only

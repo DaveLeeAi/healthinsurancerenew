@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     url: 'https://healthinsurancerenew.com/plans',
     type: 'website',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Compare Health Insurance Plans by State & County (2026)',
+    description:
+      'Browse marketplace health insurance plans across 50 states. Compare premiums, deductibles, and carriers by county for plan year 2026.',
+  },,
 }
 
 interface StateEntry {

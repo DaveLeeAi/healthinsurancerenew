@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis',
+    description:
+      'County-level analysis of enhanced credit expiration impact on marketplace health insurance premiums.',
+  },,
 }
 
 export default function EnhancedCreditsIndexPage() {

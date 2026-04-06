@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'HealthInsuranceRenew',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Family Coverage Estimator | HealthInsuranceRenew',
+    description:
+      'Estimate marketplace health insurance costs for your family in 2026. Compare premiums, deductibles, and out-of-pocket maximums across metal tiers and family sizes.',
+  },,
 }
 
 // NOTE: No name/NPN on this page — generic byline only

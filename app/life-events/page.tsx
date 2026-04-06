@@ -24,6 +24,12 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Life Events & Health Insurance — Special Enrollment Periods',
+    description:
+      'Navigate health insurance coverage changes after major life events. SEP windows, deadlines, and required documentation.',
+  },,
 }
 
 // ─── Category config ──────────────────────────────────────────────────────────

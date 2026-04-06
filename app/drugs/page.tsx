@@ -26,6 +26,11 @@ export const metadata: Metadata = {
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary',
+    title,
+    description,
+  },
 }
 
 // High-priority comparison pairs for the homepage grid

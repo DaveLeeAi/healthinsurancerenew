@@ -33,6 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `https://healthinsurancerenew.com/guides/${params.slug}`,
       siteName: 'HealthInsuranceRenew',
     },
+    twitter: {
+      card: 'summary',
+      title: `${entry.frontmatter.title} | HealthInsuranceRenew`,
+      description: entry.frontmatter.description,
+    },,
   }
 }
 
