@@ -16,7 +16,7 @@
 Read these files before doing anything else:
 1. DESIGN.md (project root — sitewide design rules)
 2. ozempic_nc_formulary_v19.html (in project root or uploads — the V19 approved mockup)
-3. app/formulary/[issuer]/[drug_name]/page.tsx (current formulary page, 2040 lines)
+3. app/[state]/[drug]/page.tsx (current formulary page, 2040 lines)
 
 Confirm you've read all three. List the V19 above-fold section order
 and the current page's above-fold section order side by side.
@@ -202,7 +202,7 @@ This is the main rewrite. Read these files first:
 - DESIGN.md (full file, especially Sections 4, 5, 9, 11, 12a)
 - ozempic_nc_formulary_v19.html (the visual standard)
 - The 9 new components in components/ (from Prompt 1)
-- app/formulary/[issuer]/[drug_name]/page.tsx (current file)
+- app/[state]/[drug]/page.tsx (current file)
 
 IMPORTANT: Keep ALL existing data logic — the imports, generateStaticParams,
 generateMetadata, searchFormulary calls, tier/restriction computations,
@@ -341,7 +341,7 @@ CHECKPOINT:
 1. Run `npx tsc --noEmit` — zero errors
 2. Run these greps and confirm zero results:
    grep -r "MedicalWebPage\|medicalAudience\|per fill\|per pen" \
-     app/formulary/[issuer]/[drug_name]/page.tsx
+     app/[state]/[drug]/page.tsx
 3. Count the total lines — should be shorter than 2040 (target ~1200-1500)
 4. Report the section order of the rendered page
 ```
@@ -351,7 +351,7 @@ CHECKPOINT:
 ## PROMPT 6 — Schema Sync Verification
 
 ```
-Open app/formulary/[issuer]/[drug_name]/page.tsx.
+Open app/[state]/[drug]/page.tsx.
 
 Verify these three schema sync rules from DESIGN.md Section 7:
 
@@ -407,7 +407,7 @@ CHECKPOINT: All 4 commands return zero violations.
 ## PROMPT 8 — Mobile & Accessibility Check
 
 ```
-Review app/formulary/[issuer]/[drug_name]/page.tsx for:
+Review app/[state]/[drug]/page.tsx for:
 
 MOBILE (DESIGN.md Section 11 — Mobile):
 1. No <br> in any heading element

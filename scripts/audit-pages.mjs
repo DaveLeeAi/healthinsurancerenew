@@ -78,7 +78,7 @@ const pages = [
   },
   {
     name: 'formulary',
-    route: 'app/formulary/[issuer]/[drug_name]/page.tsx',
+    route: 'app/[state]/[drug]/page.tsx',
     dataFn: 'searchFormulary',
     contentFn: 'generateFormularyContent',
     schemaFns: ['buildFormularyDrugSchema', 'buildBreadcrumbSchema'],

@@ -158,7 +158,7 @@ These are **non-negotiable** on every generated page:
 
 ## Formulary Section Order (locked at 9.5/10 — reference template)
 
-The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is the locked reference. Section order:
+The formulary template (`app/[state]/[drug]/page.tsx`) is the locked reference. Section order:
 
 ```
 1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box
