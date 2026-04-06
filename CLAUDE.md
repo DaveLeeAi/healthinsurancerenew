@@ -88,7 +88,7 @@ Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 | Phase | Focus | Status |
 |-------|-------|--------|
 | 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** — locked at 9.5/10 |
-| 2 | Sitewide component migration (FAQ, AEO, schema fixes) | Pending |
+| 2 | Sitewide component migration (FAQ, AEO, schema fixes) | **COMPLETE** |
 | 3 | Critical 2026 content updates (subsidy cliff, enhanced credits) | Pending |
 | 4 | Page-type conversion + ISR + 15.2M drug/plan pages | Pending |
 

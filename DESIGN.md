@@ -970,7 +970,7 @@ Phase 1 — Foundation (formulary first) — COMPLETE
   5. Validate formulary against full YMYL checklist — DONE
   6. Test on mobile real device — DONE
 
-Phase 2 — Sitewide fixes
+Phase 2 — Sitewide fixes — COMPLETE
   7. Build Priority 2 components (Section 5g)
   8. Convert all FAQSection/PageFaq → StaticFaq
   9. Convert all AnswerBox → AeoBlock (except guides)
