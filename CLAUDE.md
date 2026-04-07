@@ -75,13 +75,13 @@
 **Formulary template:** `app/formulary/[issuer]/[drug_name]/page.tsx` (2,036 lines). Scored 9.5/10 by ChatGPT and Gemini. V35 is the locked content, copy, tone, and schema reference.
 
 ### Phase 4 substatus (SERP-validated build order):
-- 🔲 20. SBC plan detail pages — highest SERP-validated demand (priority score: 96)
-- 🔲 21. State hub pages — state + drug discovery + internal link equity
-- 🔲 22. Life events pages — high standalone volume, evergreen SEP triggers
-- 🔲 23. County hub pages — geo landing only, no drug expansion at county level
-- 🔲 24. Dental pages — standalone SADP demand
-- 🔲 25. Rate volatility pages — seasonal (spikes Oct–Dec)
-- 🔲 26. Billing pages — lowest priority
+- ✅ 20. SBC plan detail pages — V35 standard confirmed, schema ID fix
+- ✅ 21. State hub pages — PageFaq → inline static FAQ
+- ✅ 22. Life events pages — added WebPage + FAQPage schema
+- ✅ 23. County hub pages — PageFaq → inline, added WebPage + FAQPage schema
+- ✅ 24. Dental pages — added WebPage schema
+- ✅ 25. Rate volatility pages — added WebPage schema
+- ✅ 26. Billing pages — added WebPage schema
 - 🔲 27. ISR configuration + phased indexing
 
 ---
