@@ -12,19 +12,18 @@ const coverageDataLinks = [
   { label: 'Rates', url: '/rates' },
   { label: 'Drug Lookup', url: '/formulary' },
   { label: 'Dental', url: '/dental' },
-  { label: 'Billing', url: '/billing' },
   { label: 'Life Events', url: '/life-events' },
   { label: 'Enhanced Credits', url: '/enhanced-credits' },
-  { label: 'FAQ', url: '/faq' },
 ]
 
 const resourceLinks = [
   { label: 'Guides', url: '/guides' },
-  { label: 'Tools', url: '/tools' },
-  { label: 'States', url: '/states' },
-  { label: 'Glossary', url: '/glossary' },
   { label: 'Lost Your Job?', url: '/lost-job-health-insurance-2026' },
   { label: 'Self-Employed Coverage', url: '/self-employed-health-insurance-2026' },
+  { label: 'Billing', url: '/billing' },
+  { label: 'FAQ', url: '/faq' },
+  { label: 'Tools', url: '/tools' },
+  { label: 'Glossary', url: '/glossary' },
 ]
 
 const companyLinks = [
