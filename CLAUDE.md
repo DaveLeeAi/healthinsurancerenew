@@ -82,7 +82,7 @@
 - ✅ 24. Dental pages — added WebPage schema
 - ✅ 25. Rate volatility pages — added WebPage schema
 - ✅ 26. Billing pages — added WebPage schema
-- 🔲 27. ISR configuration + phased indexing
+- ✅ 27. ISR configuration + phased indexing
 
 ---
 
