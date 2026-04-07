@@ -30,6 +30,8 @@ interface Props {
 // Static params — 54 Q&As across 9 categories
 // ---------------------------------------------------------------------------
 
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   const dataset = loadFrictionQA()
   return dataset.data.map((q) => ({

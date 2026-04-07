@@ -14,6 +14,8 @@ interface Props {
   params: { slug: string }
 }
 
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   const slugs = getCollectionSlugs('guides')
   return slugs.map((slug) => ({ slug }))

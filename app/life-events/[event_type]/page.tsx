@@ -17,6 +17,8 @@ interface Props {
   params: { event_type: string }
 }
 
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   return getAllLifeEventParams()
 }

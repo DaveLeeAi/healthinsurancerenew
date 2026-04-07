@@ -42,6 +42,8 @@ interface Props {
   params: { state: string }
 }
 
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   const slugs = getCollectionSlugs('states')
   return slugs.map((state) => ({ state }))

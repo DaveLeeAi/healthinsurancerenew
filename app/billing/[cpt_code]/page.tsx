@@ -50,6 +50,8 @@ interface Props {
 // Static params — 20 billing scenarios by category
 // ---------------------------------------------------------------------------
 
+export const revalidate = 86400
+
 export async function generateStaticParams() {
   const dataset = loadBillingIntel()
   return dataset.data.map((b) => ({ cpt_code: b.billing_category }))
