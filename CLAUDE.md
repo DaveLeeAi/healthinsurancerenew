@@ -70,9 +70,19 @@
 | 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** |
 | 2 | Sitewide component migration (FAQ, AEO, schema fixes) | **COMPLETE** |
 | 3 | 2026 content + routing + differentiation + triple schema | **COMPLETE** |
-| 4 | Page-type conversion + ISR + phased indexing | Pending |
+| 4 | Page-type conversion + ISR + phased indexing | **IN PROGRESS** |
 
 **Formulary template:** `app/formulary/[issuer]/[drug_name]/page.tsx` (2,036 lines). Scored 9.5/10 by ChatGPT and Gemini. V35 is the locked content, copy, tone, and schema reference.
+
+### Phase 4 substatus (SERP-validated build order):
+- 🔲 20. SBC plan detail pages — highest SERP-validated demand (priority score: 96)
+- 🔲 21. State hub pages — state + drug discovery + internal link equity
+- 🔲 22. Life events pages — high standalone volume, evergreen SEP triggers
+- 🔲 23. County hub pages — geo landing only, no drug expansion at county level
+- 🔲 24. Dental pages — standalone SADP demand
+- 🔲 25. Rate volatility pages — seasonal (spikes Oct–Dec)
+- 🔲 26. Billing pages — lowest priority
+- 🔲 27. ISR configuration + phased indexing
 
 ---
 
