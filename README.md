@@ -2,7 +2,9 @@
 
 A Next.js 14 programmatic SEO site powering 150,000+ pages of structured ACA health insurance data across all US states and counties. Built from federal marketplace plan data and plan benefit documents with zero manual content entry.
 
-**Operator:** Licensed health insurance agent — CMS Elite Circle of Champions recognition. See `data/config/config.json` for operator details.
+**Operator:** Licensed health insurance agent — CMS Elite Circle of Champions recognition. See `middleware.ts`/`CLAUDE.md` for operator details.
+
+**Stack:** Next.js 14 App Router · TypeScript · Tailwind CSS · Vercel
 
 ---
 
