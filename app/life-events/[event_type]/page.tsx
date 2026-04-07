@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getLifeEventBySlug, getAllLifeEventParams, loadLifeEvents } from '@/lib/data-loader'
-import { buildLifeEventHowToSchema, buildBreadcrumbSchema } from '@/lib/schema-markup'
+import { buildLifeEventHowToSchema, buildBreadcrumbSchema, buildWebPageSchema, buildFAQSchema } from '@/lib/schema-markup'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
@@ -111,6 +111,20 @@ export default function LifeEventPage({ params }: Props) {
 
   const howToSchema = buildLifeEventHowToSchema({ event })
 
+  const webPageSchema = buildWebPageSchema({
+    name: `${event.title} — Special Enrollment Period Guide 2026`,
+    description: `${event.trigger_description} Step-by-step guide: documentation needed, key deadlines, decision tree.`,
+    url: `https://healthinsurancerenew.com/life-events/${event.slug}`,
+    dateModified: new Date().toISOString().split('T')[0],
+    speakableCssSelectors: ['h1', '#faq-heading'],
+  })
+
+  const faqItems = (event.content_page_data?.faq_questions ?? []).map((q) => ({
+    question: q,
+    answer: 'For detailed guidance on this question, review the decision tree and timeline sections above, or contact a licensed agent for personalized assistance.',
+  }))
+  const faqSchema = faqItems.length > 0 ? buildFAQSchema(faqItems) : null
+
   // Editorial content
   const editorial = generateLifeEventContent({ event })
 
@@ -132,7 +146,9 @@ export default function LifeEventPage({ params }: Props) {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <SchemaScript schema={howToSchema} id="howto-schema" />
+      {faqSchema && <SchemaScript schema={faqSchema} id="faq-schema" />}
       <LlmComment
         pageType="life-event"
         data="editorial"
@@ -363,7 +379,7 @@ export default function LifeEventPage({ params }: Props) {
         {/* ── FAQ Questions ────────────────────────────────────────── */}
         {event.content_page_data?.faq_questions && event.content_page_data.faq_questions.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-semibold text-navy-800 mb-3">Frequently Asked Questions</h2>
+            <h2 id="faq-heading" className="text-xl font-semibold text-navy-800 mb-3">Frequently Asked Questions</h2>
             <div className="space-y-2">
               {event.content_page_data.faq_questions.map((q, i) => (
                 <details key={i} className="group border border-neutral-200 rounded-lg">
