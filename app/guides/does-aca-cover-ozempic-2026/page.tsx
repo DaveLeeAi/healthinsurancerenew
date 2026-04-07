@@ -329,17 +329,17 @@ export default function DoesAcaCoverOzempic2026Page() {
       />
 
       {/* ── Patient Assistance ── */}
-      <SectionHeading>Patient Assistance and Savings Programs</SectionHeading>
+      <SectionHeading>Savings and Assistance Programs</SectionHeading>
       <ul className="list-disc pl-6 text-gray-700 space-y-3 mb-4">
         <li>
           <strong>Novo Nordisk Patient Assistance Program (PAP):</strong> Free medication
-          for uninsured patients with household income at or below 200% FPL (approximately
-          $31,300 for a single person). Medicare patients are no longer eligible for PAP
+          for uninsured people with household income at or below 200% FPL (approximately
+          $31,300 for a single person). People with Medicare are no longer eligible for PAP
           as of 2026.
         </li>
         <li>
           <strong>Ozempic Savings Card:</strong> Reduces costs to as low as $25 per month
-          for commercially insured patients (maximum savings $100 to $150 per 28-day
+          for commercially insured people (maximum savings $100 to $150 per 28-day
           supply, valid up to 48 months). Not available for people with government
           insurance (Medicare, Medicaid, VA, TRICARE).
         </li>
