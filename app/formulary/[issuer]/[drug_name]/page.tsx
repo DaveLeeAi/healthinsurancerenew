@@ -180,7 +180,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
   },
   'atorvastatin': {
     drugClass: 'HMG-CoA reductase inhibitor (High-intensity Statin)',
-    indications: 'Reduces LDL cholesterol and cardiovascular event risk. First-line statin for high-risk patients.',
+    indications: 'Reduces LDL cholesterol and cardiovascular event risk. First-line statin for people at high cardiovascular risk.',
     genericAlts: [],
     therapeuticAlts: [
       { name: 'Rosuvastatin', tier: 'Tier 1 Generic', desc: 'High-intensity statin — generic available since 2021, equivalent efficacy' },
@@ -190,7 +190,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
   },
   'lisinopril': {
     drugClass: 'ACE Inhibitor (Hypertension / Heart failure)',
-    indications: 'First-line for hypertension, heart failure, and kidney protection in diabetic patients.',
+    indications: 'First-line for hypertension, heart failure, and kidney protection in people with diabetes.',
     genericAlts: [],
     therapeuticAlts: [
       { name: 'Losartan', tier: 'Tier 1 Generic', desc: 'ARB — preferred when ACE inhibitor causes dry cough' },
@@ -223,7 +223,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
     indications: 'First-line treatment for hypothyroidism. Taken daily on an empty stomach.',
     genericAlts: [{ name: 'Levothyroxine generic', tier: 'Tier 1 Generic', desc: 'Identical active ingredient — same drug at generic pricing' }],
     therapeuticAlts: [
-      { name: 'Synthroid', tier: 'Tier 2 Preferred Brand', desc: 'Brand-name version — some patients prefer for consistency' },
+      { name: 'Synthroid', tier: 'Tier 2 Preferred Brand', desc: 'Brand-name version — some people prefer for consistency' },
       { name: 'Liothyronine (T3)', tier: 'Tier 1 Generic', desc: 'Added when T4-only therapy is insufficient' },
     ],
     otcAlts: [],
@@ -264,7 +264,7 @@ const DRUG_CLINICAL_DATA: Record<string, ClinicalData> = {
   },
   'losartan': {
     drugClass: 'Angiotensin II Receptor Blocker (ARB)',
-    indications: 'Treats hypertension and reduces kidney disease progression in diabetic patients. Alternative when ACE inhibitor causes cough.',
+    indications: 'Treats hypertension and reduces kidney disease progression in people with diabetes. Alternative when ACE inhibitor causes cough.',
     genericAlts: [],
     therapeuticAlts: [
       { name: 'Lisinopril', tier: 'Tier 1 Generic', desc: 'ACE inhibitor — first-line for BP with heart protection benefit' },
@@ -676,8 +676,8 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible?`,
       answer: humanTiers.length > 0
-        ? `Before your deductible is met, you typically pay the plan's negotiated rate — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills. Always check your Summary of Benefits and Coverage for exact cost-sharing.`
-        : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the plan's full negotiated rate. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
+        ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills. Always check your Summary of Benefits and Coverage for exact cost-sharing.`
+        : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
     },
     {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
@@ -828,7 +828,7 @@ export default async function FormularyDrugPage({ params }: Props) {
       desc: 'Estimated from plan filings \u2014 varies by plan and pharmacy',
       figure: beforeDeductibleRange,
       unit: 'month',
-      hint: 'This is typically the highest out-of-pocket phase \u2014 you pay your plan\u2019s negotiated rate until the deductible is met.',
+      hint: 'This is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until the deductible is met.',
     })
     costRows.push({
       name: `After your deductible \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
@@ -1056,7 +1056,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
                 varyRows={[
                   { key: 'Tier placement matters', value: stateInsights?.tierBreakdown || `Preferred and non-preferred tiers can differ by $40\u2013$80 per month or more, based on what we found in reviewed plans. Tier placement is one of the more impactful things to check when comparing options.` },
-                  { key: 'Pharmacy choice', value: `Your plan\u2019s negotiated rate varies by pharmacy. Preferred pharmacies and mail-order often come in lower \u2014 worth checking before your first fill.` },
+                  { key: 'Pharmacy choice', value: `Your plan\u2019s price varies by pharmacy. Preferred pharmacies and mail-order often come in lower \u2014 worth checking before your first fill.` },
                   { key: 'How your deductible works', value: `Some plans have a separate drug deductible; others combine it with your medical one. That structure determines when your lower monthly copay kicks in.` },
                 ]}
               />
@@ -1157,7 +1157,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               <TimelineSteps
                 steps={[
                   { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting clinical information directly to your health plan. The exact documentation required varies by plan.`, time: 'Day 1' },
-                  { title: 'Plan reviews the request', desc: `The plan checks the request against its coverage criteria. Your doctor and the plan\u2019s review team handle this \u2014 you don\u2019t need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
+                  { title: 'Plan reviews the request', desc: `The plan checks the request against its coverage requirements. Your doctor and the plan\u2019s review team handle this \u2014 you don\u2019t need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
                   { title: 'Decision issued', desc: `Response times vary by plan and urgency. Check your benefit documents or call member services for the timeline that applies to your specific coverage \u2014 urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
                   { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Authorization periods vary by plan \u2014 check your benefit documents for how long yours is valid.`, time: 'After approval' },
                   { title: 'If not approved \u2014 you have options', desc: `Most plans include an internal appeal process. If the appeal is also denied, you may be able to request an independent external review. Your plan\u2019s benefit documents will outline the steps and timelines that apply to your specific coverage.`, time: 'Review your plan documents for deadlines' },
@@ -1256,7 +1256,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 title="What we can't confirm from plan documents alone"
                 items={[
                   `Your exact cost at a specific pharmacy. Prices at the counter can differ from what\u2019s in plan filings.`,
-                  `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval criteria \u2014 that depends on your plan\u2019s rules and your situation.`,
+                  `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval requirements \u2014 that depends on your plan\u2019s rules and your situation.`,
                   `Whether your plan has updated its drug list or tier since our January ${PLAN_YEAR} snapshot. Plans can make mid-year changes.`,
                   `The exact timelines and appeal steps that apply to your plan. Those details are in your plan\u2019s benefit documents.`,
                   `Whether you qualify for the manufacturer savings card. Terms and eligibility can change \u2014 verify directly.`,
@@ -1915,7 +1915,7 @@ function DrugCashPriceComparison({
       <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
         <p className="text-sm text-amber-800 leading-relaxed">
           <strong>Pre-deductible reality check:</strong> If you have not met your deductible, you pay the plan&apos;s full allowed amount — not the copay.
-          For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be {beforeDeductibleRange} depending on your plan&apos;s negotiated rate with the pharmacy.
+          For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be {beforeDeductibleRange} depending on your plan&apos;s arrangement with the pharmacy.
           In some cases, paying the pharmacy cash price is cheaper than using insurance before your deductible is met.
         </p>
       </div>
@@ -2148,7 +2148,7 @@ function getUniqueIssuers(drugs: FormularyDrug[], stateCode?: string): IssuerInf
 
       const name = getIssuerName(id)
       if (!name) continue
-      // Deduplicate by display name to avoid showing the same insurer multiple times
+      // Deduplicate by display name to avoid showing the same insurance company multiple times
       if (!seenNames.has(name)) {
         seenNames.set(name, { id, name, tier: d.drug_tier })
       }
