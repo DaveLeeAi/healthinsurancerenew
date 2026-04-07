@@ -68,7 +68,7 @@ export default function CategoryHubPage({ params }: Props) {
     headline: `${cat.label} Covered by Marketplace Plans (${PLAN_YEAR})`,
     description: cat.description,
     dateModified: new Date().toISOString().slice(0, 7),
-    dataSourceName: 'CMS Machine-Readable Formulary PUF',
+    dataSourceName: 'federal plan benefit documents',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -93,7 +93,7 @@ export default function CategoryHubPage({ params }: Props) {
       <LlmComment
         pageType="drug-category"
         year={PLAN_YEAR}
-        data="CMS-MR-PUF"
+        data="federal-plan-benefit-documents"
         extra={{ category: cat.id, drugs: cat.drugs.length }}
       />
 
@@ -266,12 +266,12 @@ export default function CategoryHubPage({ params }: Props) {
           </a>
         </section>
 
-        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="federal plan benefit documents & carrier formulary files" planYear={PLAN_YEAR} />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Drug coverage data sourced from the CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}.
+            Drug coverage data sourced from federal plan benefit documents, plan year {PLAN_YEAR}.
             Coverage status reflects issuer formulary filings and may not reflect real-time plan changes.
           </p>
           <p>

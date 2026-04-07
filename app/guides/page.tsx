@@ -113,7 +113,7 @@ export default function GuidesIndexPage() {
       {/* ── FAQ ── */}
       {(() => {
         const faqs = [
-          { question: 'Are these health insurance guides free?', answer: 'Yes. All guides are free to read. They are written by licensed health insurance professionals and based on current ACA regulations and CMS data.' },
+          { question: 'Are these health insurance guides free?', answer: 'Yes. All guides are free to read. They are written by licensed health insurance professionals and based on current ACA regulations and federal marketplace data.' },
           { question: 'How often are the guides updated?', answer: 'Guides are reviewed and updated annually to reflect new plan year rules, subsidy changes, and enrollment deadlines. Each guide shows its last updated date.' },
           { question: 'Can I use these guides to make enrollment decisions?', answer: 'These guides help you understand your options, but they are for informational purposes only. For personalized advice, consult a licensed health insurance agent.' },
         ]

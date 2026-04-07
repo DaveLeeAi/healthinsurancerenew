@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `Calculate your ${PLAN_YEAR} premium tax credit (APTC) for ${countyDisplay},` +
     ` ${stateUpper}. Enter your income to see your estimated subsidy at each FPL level.` +
-    `${benchmarkStr} Source: CMS QHP Rate PUF.`
+    `${benchmarkStr} Source: federal marketplace rate filings.`
 
   return {
     title,
@@ -131,7 +131,7 @@ export default function SubsidiesPage({ params }: Props) {
         pageType="subsidies-county"
         state={stateUpper}
         county={countyDisplay}
-        data="CMS-Benchmark-Premium-IRS-FPL"
+        data="federal-benchmark-premium-IRS-FPL"
         extra={{
           benchmark: subsidy ? `$${subsidy.benchmark_silver_premium.toFixed(0)}` : 'N/A',
         }}
@@ -171,7 +171,7 @@ export default function SubsidiesPage({ params }: Props) {
                 The benchmark silver plan premium in {countyDisplay} is{' '}
                 <strong>${subsidy.benchmark_silver_premium.toFixed(0)}/month</strong> (age-40
                 reference rate). Enter your household details below to estimate your Advance
-                Premium Tax Credit (APTC) and net monthly premium. Source: CMS QHP Rate PUF ·
+                Premium Tax Credit (APTC) and net monthly premium. Source: federal marketplace rate filings ·
                 Plan Year {PLAN_YEAR}.
               </>
             ) : (
@@ -310,7 +310,7 @@ export default function SubsidiesPage({ params }: Props) {
                   </table>
                 </div>
                 <p className="text-xs text-neutral-400 mt-2">
-                  Source: CMS QHP Rate PUF {PLAN_YEAR} · Amounts are estimates at the age-40
+                  Source: federal marketplace rate filings {PLAN_YEAR} · Amounts are estimates at the age-40
                   reference rate · Consult a licensed agent to confirm your eligibility
                 </p>
               </div>
@@ -350,12 +350,12 @@ export default function SubsidiesPage({ params }: Props) {
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
         {/* ── Byline ── */}
-        <GenericByline dataSource="CMS Benchmark Premium & IRS FPL Tables" />
+        <GenericByline dataSource="Federal Benchmark Premiums and IRS Income Guidelines" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Subsidy estimates are based on the CMS QHP Rate PUF benchmark silver premium for
+            Subsidy estimates are based on the federal benchmark silver premium for
             plan year {PLAN_YEAR}. All APTC amounts are estimates and subject to change based
             on final income, enrollment date, household composition, and applicable law.
             The IRA enhanced credits expired at the end of 2025. Standard 400% FPL rules apply for 2026.

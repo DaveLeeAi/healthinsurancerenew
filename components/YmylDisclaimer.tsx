@@ -37,7 +37,7 @@ export default function YmylDisclaimer({
             rel="noopener noreferrer"
             className="text-primary-500 hover:underline"
           >
-            CMS Public Use Files
+            federal marketplace data
           </a>{' '}
           for Plan Year {planYear}.
         </p>

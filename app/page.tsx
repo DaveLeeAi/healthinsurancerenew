@@ -6,11 +6,11 @@ import LlmComment from '../components/LlmComment'
 export const metadata: Metadata = {
   title: 'HealthInsuranceRenew | 2026 Health Insurance Marketplace — Plans, Savings & Tools',
   description:
-    `Free marketplace health insurance tools and guides powered by CMS Public Use Files. Compare 2026 plans, calculate your premium tax credit, and understand your coverage options. Licensed agents in ${config.licensedStates.length} states.`,
+    `Free marketplace health insurance tools and guides powered by federal marketplace data. Compare 2026 plans, calculate your premium tax credit, and understand your coverage options. Licensed agents in ${config.licensedStates.length} states.`,
   openGraph: {
     title: 'HealthInsuranceRenew — 2026 Health Insurance Marketplace Data & Tools',
     description:
-      `CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.`,
+      `Government-data-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.`,
     type: 'website',
     url: 'https://healthinsurancerenew.com',
     siteName: 'HealthInsuranceRenew',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'HealthInsuranceRenew — 2026 Health Insurance Marketplace Data & Tools',
     description:
-      `CMS-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.`,
+      `Government-data-powered tools and plain-English guides for marketplace health insurance (Obamacare). Subsidy calculators, plan comparisons, drug lookup, and licensed agent help in ${config.licensedStates.length} states.`,
   },
   alternates: { canonical: 'https://healthinsurancerenew.com' },
 }
@@ -46,6 +46,7 @@ const tools = [
   { title: 'Compare Plan Levels', description: 'Compare Bronze, Silver, Gold, and Platinum coverage and costs.', url: '/tools/plan-comparison' },
   { title: 'Check for Extra Savings on Silver Plans', description: 'Determine your eligibility for reduced copays and deductibles.', url: '/tools/csr-estimator' },
   { title: "Estimate Your Family's Costs", description: "Project your family's monthly costs across all plan levels.", url: '/tools/family-coverage-estimator' },
+  { title: 'Compare Iowa Plans', description: 'Compare 2026 Iowa marketplace plans based on your profile, medications, and coverage needs.', url: '/iowa/compare-health-insurance' },
 ]
 
 const heroTools = [
@@ -64,11 +65,11 @@ const whoItsFor = [
 ]
 
 const dataPillars = [
-  { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. CMS QHP Landscape PUF.' },
-  { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. CMS Rate PUF.' },
-  { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. CMS Rate PUF.' },
+  { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. Federal marketplace plan data.' },
+  { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. Federal marketplace rate filings.' },
+  { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. Federal marketplace rate filings.' },
   { title: 'Drug Formulary', url: '/drugs', description: '551,000+ drug coverage records. Tier placement and cost-sharing by plan.' },
-  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. CMS SADP PUF.' },
+  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. Federal dental plan data.' },
   { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.' },
   { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.' },
   { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.' },
@@ -81,7 +82,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   'name': 'HealthInsuranceRenew',
   'url': 'https://healthinsurancerenew.com',
-  'description': 'Free marketplace health insurance tools and guides powered by CMS Public Use Files for all 50 states.',
+  'description': 'Free marketplace health insurance tools and guides powered by federal marketplace data for all 50 states.',
   'potentialAction': {
     '@type': 'SearchAction',
     'target': {
@@ -99,7 +100,7 @@ const organizationSchema = {
   'alternateName': ['Health Insurance Renew', 'HealthInsuranceRenew.com'],
   'url': 'https://healthinsurancerenew.com',
   'logo': 'https://healthinsurancerenew.com/favicon.svg',
-  'description': 'HealthInsuranceRenew.com is a free ACA Marketplace intelligence platform powered by CMS Public Use Files. It provides plan comparisons, subsidy calculators, drug formulary lookup, and plain-English guides for all 50 US states. Content is reviewed by licensed health insurance professionals holding CMS Elite Circle of Champions recognition.',
+  'description': 'HealthInsuranceRenew.com is a free ACA Marketplace intelligence platform powered by federal marketplace data. It provides plan comparisons, subsidy calculators, drug formulary lookup, and plain-English guides for all 50 US states. Content is reviewed by licensed health insurance professionals holding CMS Elite Circle of Champions recognition.',
   'areaServed': {
     '@type': 'Country',
     'name': 'United States'
@@ -113,7 +114,7 @@ const organizationSchema = {
     'Open Enrollment',
     'Medicaid Eligibility',
     'COBRA vs Marketplace',
-    'CMS Public Use Files',
+    'Federal Marketplace Data',
     'Summary of Benefits and Coverage',
     'Metal Tier Health Plans',
     'Prior Authorization',
@@ -164,11 +165,11 @@ export default function HomePage() {
       <SchemaScript schema={websiteSchema} id="schema-website" />
       <SchemaScript schema={organizationSchema} id="schema-organization" />
       <SchemaScript schema={speakableSchema} id="schema-speakable" />
-      <LlmComment pageType="homepage" year={2026} data="CMS-QHP-PUF" />
+      <LlmComment pageType="homepage" year={2026} data="federal-marketplace-plan-data" />
 
       <p id="site-bluf" className="sr-only">
         HealthInsuranceRenew.com is a free ACA health insurance intelligence platform
-        powered by CMS Public Use Files. It covers all 50 US states and provides
+        powered by federal marketplace data. It covers all 50 US states and provides
         subsidy calculators, drug formulary lookup, plan comparisons, and
         plain-English guides written and reviewed by licensed health insurance
         professionals recognized with CMS Elite Circle of Champions status.
@@ -246,9 +247,9 @@ export default function HomePage() {
       {/* Section 2: Data Authority Bar */}
       <section className="bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h2 className="text-xl font-bold text-white mb-2 leading-heading">What&rsquo;s Behind This Site — CMS Public Use File Coverage</h2>
+          <h2 className="text-xl font-bold text-white mb-2 leading-heading">What&rsquo;s Behind This Site — Federal Marketplace Data Coverage</h2>
           <p className="text-slate-400 text-sm mb-8 max-w-3xl">
-            All data is sourced directly from CMS (Centers for Medicare &amp; Medicaid Services) Public Use Files — the same government datasets that power Healthcare.gov.
+            All data is sourced directly from federal government datasets published by the Centers for Medicare &amp; Medicaid Services — the same data that powers Healthcare.gov.
           </p>
           <div className="grid grid-cols-3 lg:grid-cols-6 gap-6 mb-6">
             {[
@@ -266,7 +267,7 @@ export default function HomePage() {
             ))}
           </div>
           <p className="text-xs text-slate-500">
-            Source: CMS QHP Landscape PUF &middot; CMS Rate PUF &middot; CMS MR-PUF &middot; CMS SADP PUF &middot; IRS FPL Tables &middot; Updated 2026
+            Source: Federal marketplace plan data &middot; Federal marketplace rate filings &middot; Federal plan benefit documents &middot; Federal dental plan data &middot; IRS FPL Tables &middot; Updated 2026
           </p>
         </div>
       </section>
@@ -313,7 +314,7 @@ export default function HomePage() {
       <section className="bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <h2 className="text-2xl font-bold text-slate-900 mb-2 leading-heading">Free Tools — No Sign-Up Required</h2>
-          <p className="text-slate-600 mb-8">Answer a few questions and get a personalized estimate in under 60 seconds. All calculations use current CMS data and IRS FPL tables.</p>
+          <p className="text-slate-600 mb-8">Answer a few questions and get a personalized estimate in under 60 seconds. All calculations use current federal marketplace data and IRS FPL tables.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tools.map((tool) => (
               <a key={tool.url} href={tool.url} className="group block p-5 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-300 transition-all duration-300">
@@ -328,7 +329,7 @@ export default function HomePage() {
       {/* Section 5: Data Pillars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 id="data-pillars-heading" className="text-2xl font-bold text-slate-900 mb-2 leading-heading">10 Data Pillars — Full Coverage of Marketplace Health Insurance</h2>
-        <p className="text-slate-600 mb-8">Explore the complete dataset. Each pillar is powered by a separate CMS Public Use File and updated annually.</p>
+        <p className="text-slate-600 mb-8">Explore the complete dataset. Each pillar is powered by a separate federal government dataset and updated annually.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {dataPillars.map((pillar) => (
             <a
@@ -377,9 +378,9 @@ export default function HomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
               </svg>
             </div>
-            <h3 className="font-semibold text-slate-900 mb-2">Powered by CMS Public Use Files</h3>
+            <h3 className="font-semibold text-slate-900 mb-2">Powered by Federal Government Data</h3>
             <p className="text-sm text-slate-600 leading-relaxed mb-3">
-              Every data point — plans, rates, subsidies, formulary — comes directly from CMS government datasets, the same source used by Healthcare.gov. No third-party data aggregators.
+              Every data point — plans, rates, subsidies, formulary — comes directly from federal government datasets, the same source used by Healthcare.gov. No third-party data aggregators.
             </p>
             <a href="/data-methodology" className="inline-flex items-center gap-1 text-sm text-primary-600 font-semibold hover:text-primary-700 transition-colors">
               Our data methodology

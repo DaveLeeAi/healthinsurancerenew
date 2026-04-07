@@ -73,7 +73,7 @@ const faqs = [
 const sources = [
   { title: 'Healthcare.gov - How Savings Work', url: 'https://www.healthcare.gov/lower-costs/' },
   { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-  { title: 'CMS - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
+  { title: 'Federal Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
   { title: 'Medicaid.gov - Eligibility', url: 'https://www.medicaid.gov/medicaid/eligibility/index.html' },
 ]
 
@@ -86,7 +86,7 @@ export default function ACAIncomeGuidePage() {
     headline: 'Health Insurance Savings by Income Level (2026)',
     description: 'Understand what health insurance savings you qualify for at every income level.',
     dateModified: '2026-03-19',
-    dataSourceName: 'IRS Premium Tax Credit & CMS CSR Data',
+    dataSourceName: 'IRS Premium Tax Credit & federal marketplace data',
     dataSourceUrl: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit',
   })
 
@@ -94,7 +94,7 @@ export default function ACAIncomeGuidePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <LlmComment pageType="income-guide" year={2026} data="IRS-CMS" />
+      <LlmComment pageType="income-guide" year={2026} data="IRS-federal-marketplace" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         Health Insurance Savings by Income Level: 2026 Guide

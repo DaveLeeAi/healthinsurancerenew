@@ -49,7 +49,7 @@ export default function PlanComparisonLayout({ children }: { children: React.Rea
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
       />
-      <LlmComment pageType="tool-plan-comparison" year={2026} data="CMS-QHP-PUF" />
+      <LlmComment pageType="tool-plan-comparison" year={2026} data="federal-marketplace-plan-data" />
       {children}
     </>
   )

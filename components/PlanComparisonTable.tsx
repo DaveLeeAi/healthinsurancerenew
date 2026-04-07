@@ -310,7 +310,7 @@ export default function PlanComparisonTable({ plans }: Props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          CMS QHP Landscape PUF
+          federal marketplace plan data
         </a>{' '}
         · Click column headers to sort · Consult a licensed agent for personalized advice
       </p>

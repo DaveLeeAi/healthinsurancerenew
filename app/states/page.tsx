@@ -135,7 +135,7 @@ export default function StatesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <LlmComment pageType="states-index" planCount={totalPlans} year={2026} data="CMS-QHP-PUF" />
+      <LlmComment pageType="states-index" planCount={totalPlans} year={2026} data="federal-marketplace-plan-data" />
 
       <Breadcrumbs items={breadcrumbs} />
 
@@ -215,12 +215,12 @@ export default function StatesIndexPage() {
       </section>
 
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="CMS QHP Landscape & Rate PUF" />
+      <GenericByline dataSource="Federal Marketplace Plan and Rate Data" />
 
       {/* Source citation */}
       <footer className="text-xs text-slate-400 border-t border-slate-100 pt-4">
         <p>
-          Data source: CMS QHP Landscape and Rate Public Use Files, plan year 2026.
+          Data source: federal marketplace plan and rate data, plan year 2026.
           Medicaid expansion status current as of January 2026.
           Published by the Centers for Medicare &amp; Medicaid Services.
         </p>

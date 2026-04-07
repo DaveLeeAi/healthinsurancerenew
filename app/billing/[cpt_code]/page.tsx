@@ -216,7 +216,7 @@ export default function BillingScenarioPage({ params }: Props) {
     headline: `${scenario.title}${cptLabel} — Insurance Billing Guide`,
     description: scenario.description,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'AMA CPT, CMS ACA Regulations',
+    dataSourceName: 'AMA CPT codes and federal ACA regulations',
     dataSourceUrl: 'https://www.cms.gov/nosurprises',
   })
 

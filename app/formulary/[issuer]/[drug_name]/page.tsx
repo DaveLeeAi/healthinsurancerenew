@@ -787,7 +787,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         state={stateCode}
         planCount={results.length}
         year={PLAN_YEAR}
-        data="CMS-MR-PUF"
+        data="federal-plan-benefit-documents"
         extra={{ drug: titleCase(drugDisplay), issuer: issuerName }}
       />
 
@@ -1459,15 +1459,15 @@ export default async function FormularyDrugPage({ params }: Props) {
 
         {/* ── 19. GenericByline ── */}
         <div style={{ marginTop: '24px' }}>
-          <GenericByline dataSource="CMS federal plan data" planYear={PLAN_YEAR} />
+          <GenericByline dataSource="Federal marketplace plan data" planYear={PLAN_YEAR} />
         </div>
 
         {/* ── 20. Page disclaimer footer (V19 .disc) ── */}
         <footer className="border-t border-rule text-muted" style={{ fontSize: '11.5px', lineHeight: 1.65, paddingTop: '18px', marginTop: '24px' }}>
           <p>
             This page is for informational purposes only and does not constitute
-            medical or insurance advice. Formulary data sourced from CMS plan benefit
-            filings for plan year {PLAN_YEAR}. Drug tier placement, prior authorization
+            medical or insurance advice. Formulary data sourced from federal plan benefit
+            documents for plan year {PLAN_YEAR}. Drug tier placement, prior authorization
             requirements, and quantity limits may change during the plan year. Always
             verify current coverage with your insurance carrier or at healthcare.gov.
             Consult a licensed health insurance agent to confirm coverage for your
@@ -1548,8 +1548,8 @@ function SBMExplanationPage({
               </p>
               <p className="text-amber-700 text-sm leading-relaxed">
                 {isSBMState
-                  ? `${stateName} marketplace plans enroll through ${exchangeName}, which maintains its own formulary database separate from the federal CMS dataset. To check if ${titleCase(drugDisplay)} is covered by a ${stateName} plan, use the ${exchangeName} plan finder directly.`
-                  : `Formulary records for ${stateName} marketplace plans are not available in the current CMS dataset. This does not mean ${titleCase(drugDisplay)} is uncovered — check directly with your plan or the federal marketplace.`
+                  ? `${stateName} marketplace plans enroll through ${exchangeName}, which maintains its own formulary database separate from the federal marketplace dataset. To check if ${titleCase(drugDisplay)} is covered by a ${stateName} plan, use the ${exchangeName} plan finder directly.`
+                  : `Formulary records for ${stateName} marketplace plans are not available in the current federal marketplace dataset. This does not mean ${titleCase(drugDisplay)} is uncovered — check directly with your plan or the federal marketplace.`
                 }
               </p>
             </div>
@@ -1590,11 +1590,11 @@ function SBMExplanationPage({
           </div>
         )}
 
-        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="Federal plan benefit documents and carrier formulary filings" planYear={PLAN_YEAR} />
 
         <footer className="border-t border-neutral-200 mt-8 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Formulary data sourced from CMS federal plan data, plan year {PLAN_YEAR}.
+            Formulary data sourced from federal marketplace plan data, plan year {PLAN_YEAR}.
             Always verify current coverage with your insurance carrier or at healthcare.gov.
           </p>
           <p>

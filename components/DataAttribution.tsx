@@ -9,7 +9,7 @@ interface DataAttributionProps {
 }
 
 export default function DataAttribution({
-  source = 'CMS QHP Landscape PUF',
+  source = 'federal marketplace plan data',
   planYear = 2026,
   lastReviewed,
 }: DataAttributionProps) {

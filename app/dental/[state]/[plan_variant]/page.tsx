@@ -96,19 +96,19 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
       question: `What does ${plan.plan_name} cover for preventive dental care?`,
       answer: cp.preventive_adult != null
         ? `${plan.plan_name} covers preventive dental care (cleanings, exams, x-rays) at ${cp.preventive_adult}% for adults${cp.preventive_child != null ? ` and ${cp.preventive_child}% for children` : ''}. Most dental plans consider two cleanings and exams per year as standard preventive care.`
-        : `Preventive coverage details for ${plan.plan_name} are not published in the CMS dataset. Check the plan's Summary of Benefits and Coverage (SBC) document for exact preventive care percentages.`,
+        : `Preventive coverage details for ${plan.plan_name} are not published in the federal dataset. Check the plan's Summary of Benefits and Coverage (SBC) document for exact preventive care percentages.`,
     },
     {
       question: `What is the annual maximum benefit for ${plan.plan_name}?`,
       answer: annualMax != null
         ? `The annual maximum benefit for ${plan.plan_name} is $${annualMax.toLocaleString()} per individual. This is the most the plan will pay toward covered dental services in a single plan year. Once you reach this limit, you pay 100% of any remaining dental costs.`
-        : `The annual maximum benefit for ${plan.plan_name} is not published in the CMS dataset. Contact ${plan.issuer_name} directly or review the plan's SBC for this information.`,
+        : `The annual maximum benefit for ${plan.plan_name} is not published in the federal dataset. Contact ${plan.issuer_name} directly or review the plan's SBC for this information.`,
     },
     {
       question: `Does ${plan.plan_name} cover crowns, root canals, and other major dental work?`,
       answer: cp.major_adult != null
         ? `Yes, ${plan.plan_name} covers major restorative work at ${cp.major_adult}% for adults${cp.major_child != null ? ` and ${cp.major_child}% for children` : ''}. Major dental work typically includes crowns, bridges, root canals, dentures, and oral surgery. Note that this is applied after any deductible and subject to the annual maximum.`
-        : `Major restorative coverage details are not published in the CMS dataset for this plan. Check the SBC or contact ${plan.issuer_name} for specifics on crowns, root canals, and other major work.`,
+        : `Major restorative coverage details are not published in the federal dataset for this plan. Check the SBC or contact ${plan.issuer_name} for specifics on crowns, root canals, and other major work.`,
     },
     {
       question: `Does ${plan.plan_name} cover orthodontia (braces)?`,
@@ -121,7 +121,7 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
     {
       question: `Are there waiting periods for ${plan.plan_name}?`,
       answer: plan.waiting_periods.needs_pdf_parsing
-        ? `Waiting period details for ${plan.plan_name} are not published in the CMS public dataset. Many dental plans impose waiting periods of 6–12 months for basic and major services. Review the plan's SBC document or contact ${plan.issuer_name} to confirm.`
+        ? `Waiting period details for ${plan.plan_name} are not published in the federal public dataset. Many dental plans impose waiting periods of 6–12 months for basic and major services. Review the plan's SBC document or contact ${plan.issuer_name} to confirm.`
         : plan.waiting_periods.basic_months != null && plan.waiting_periods.basic_months > 0
           ? `Yes, ${plan.plan_name} has waiting periods: ${plan.waiting_periods.basic_months} months for basic services${plan.waiting_periods.major_months != null ? ` and ${plan.waiting_periods.major_months} months for major services` : ''}. Preventive care typically has no waiting period.`
           : `Based on available data, ${plan.plan_name} has no documented waiting periods. However, always confirm with the plan's SBC document, as some waiting periods may apply.`,
@@ -134,7 +134,7 @@ function buildFAQs(plan: DentalRecord, stateName: string): Array<{ question: str
       question: `Does ${plan.plan_name} cover dental implants?`,
       answer: plan.implants_adult_covered
         ? `Yes, ${plan.plan_name} includes coverage for adult dental implants. Implants are typically categorized as major restorative work and subject to the plan's major coverage percentage and annual maximum. Check the SBC for specific implant coverage terms and any limitations.`
-        : `${plan.plan_name} does not cover adult dental implants based on CMS plan data. Dental implants are not commonly covered by stand-alone dental plans. If you need implant coverage, compare plans specifically for this benefit or consider supplemental dental discount programs.`,
+        : `${plan.plan_name} does not cover adult dental implants based on federal plan data. Dental implants are not commonly covered by stand-alone dental plans. If you need implant coverage, compare plans specifically for this benefit or consider supplemental dental discount programs.`,
     },
     {
       question: `How does ${plan.plan_name} compare to other dental plans in ${stateName}?`,
@@ -196,9 +196,9 @@ export default function DentalPlanPage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `${plan.plan_name} Dental Coverage in ${stateName} — ${PLAN_YEAR} Benefits`,
-    description: `Stand-alone dental plan (SADP) from ${plan.issuer_name}. Coverage tiers, annual maximum, waiting periods, and what's included. Source: CMS SADP PUF.`,
+    description: `Stand-alone dental plan (SADP) from ${plan.issuer_name}. Coverage tiers, annual maximum, waiting periods, and what's included. Source: federal dental plan data.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS SADP PUF',
+    dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -215,7 +215,7 @@ export default function DentalPlanPage({ params }: Props) {
         pageType="dental-plan"
         state={stateUpper}
         year={PLAN_YEAR}
-        data="CMS-SADP-PUF"
+        data="federal-dental-plan-data"
         extra={{ plan: plan.plan_name, issuer: plan.issuer_name }}
       />
 
@@ -347,12 +347,12 @@ export default function DentalPlanPage({ params }: Props) {
           </div>
           <p className="text-xs text-neutral-400 mt-2">
             Coverage percentages represent the plan&apos;s share of costs (plan pays %). You pay
-            the remaining percentage after any deductible. Source: CMS BenCS PUF + SADP Plan
-            Attributes PUF, plan year {PLAN_YEAR}.
+            the remaining percentage after any deductible. Source: federal plan benefit documents,
+            plan year {PLAN_YEAR}.
           </p>
           {plan.waiting_periods.needs_pdf_parsing && (
             <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
-              Waiting period details for this plan are not published in the CMS public dataset.
+              Waiting period details for this plan are not published in the federal public dataset.
               Many dental plans impose 6–12 month waiting periods for basic and major services.
               Review the plan&apos;s Summary of Benefits and Coverage (SBC) document for exact terms.
             </div>
@@ -424,7 +424,7 @@ export default function DentalPlanPage({ params }: Props) {
               </>
             ) : (
               <p className="text-neutral-700 leading-relaxed">
-                The annual maximum benefit for this plan is not published in the CMS dataset. Contact{' '}
+                The annual maximum benefit for this plan is not published in the federal dataset. Contact{' '}
                 {plan.issuer_name} or review the SBC document for this information.
               </p>
             )}
@@ -566,13 +566,13 @@ export default function DentalPlanPage({ params }: Props) {
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
-        <GenericByline dataSource="CMS SADP PUF" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="federal dental plan data" planYear={PLAN_YEAR} />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Dental plan data sourced from the CMS SADP Plan Attributes PUF and BenCS PUF, plan
-            year {PLAN_YEAR}. Coverage percentages and benefits shown are based on CMS public data
+            Dental plan data sourced from federal plan benefit documents, plan
+            year {PLAN_YEAR}. Coverage percentages and benefits shown are based on federal public data
             and may not reflect all plan terms. Always review the Summary of Benefits and Coverage
             (SBC) document for complete plan details.
           </p>

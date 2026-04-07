@@ -159,7 +159,7 @@ export default function PlanComparisonPage() {
       <SourcesBox sources={[
         { title: 'Healthcare.gov - Plan Categories', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
         { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
-        { title: 'CMS - Actuarial Value and Cost Sharing', url: 'https://www.cms.gov/cciio/resources/data-resources/marketplace-puf' },
+        { title: 'Federal Actuarial Value and Cost Sharing Standards', url: 'https://www.cms.gov/cciio/resources/data-resources/marketplace-puf' },
       ]} />
     </div>
   )

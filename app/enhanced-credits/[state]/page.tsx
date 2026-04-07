@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `Enhanced premium tax credits expired end of 2025. See how 2026 marketplace premiums increased in every ` +
     `county in ${stateUpper}. Compare the subsidy cliff impact at ages 27–64 across all income levels. ` +
-    `Source: CMS benchmark premiums + IRS FPL tables.`
+    `Source: federal benchmark premiums and IRS income guidelines.`
 
   return {
     title,
@@ -76,7 +76,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
     headline: `Enhanced Credit Expiration Impact — ${stateUpper} Counties`,
     description: `Enhanced credits expired end of 2025. County-level analysis of the 2026 premium increase in ${stateUpper}. ${records.length} counties modeled.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
+    dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -122,7 +122,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
       <LlmComment
         pageType="enhanced-credits-state"
         state={stateUpper}
-        data="CMS-Rate-PUF-IRS-FPL"
+        data="federal-marketplace-rate-data-IRS-FPL"
         extra={{ counties: records.length }}
       />
 
@@ -223,18 +223,17 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
             </table>
           </div>
           <p className="text-xs text-neutral-400 mt-2">
-            Scenario: Age 40, 250% FPL, household size 1. Source: CMS QHP Rate PUF + IRS FPL
-            tables, {PLAN_YEAR}. All amounts are net monthly premium after APTC.
+            Scenario: Age 40, 250% FPL, household size 1. Source: federal marketplace rate data and IRS income guidelines, {PLAN_YEAR}. All amounts are net monthly premium after APTC.
           </p>
         </section>
 
         {/* ── Byline ── */}
-        <GenericByline dataSource="CMS Rate PUF & IRS FPL Tables" />
+        <GenericByline dataSource="Federal Marketplace Rate Data and IRS Income Guidelines" />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
+            All premium amounts are estimates based on federal benchmark data and IRS income guidelines for
             plan year {PLAN_YEAR}. Enhanced credits expired at the end of 2025. Congress may act to
             restore them retroactively.
           </p>

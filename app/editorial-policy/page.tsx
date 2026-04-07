@@ -49,7 +49,7 @@ const faqSchema = {
       name: 'Is HealthInsuranceRenew.com affiliated with the government or Healthcare.gov?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'No. HealthInsuranceRenew.com is an independent platform. It uses CMS Public Use Files as its data source but is not affiliated with Healthcare.gov, CMS, or any government agency.',
+        text: 'No. HealthInsuranceRenew.com is an independent platform. It uses federal marketplace data as its data source but is not affiliated with Healthcare.gov, CMS, or any government agency.',
       },
     },
     {
@@ -57,7 +57,7 @@ const faqSchema = {
       name: 'How current is the data on HealthInsuranceRenew.com?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Plan, rate, subsidy, and formulary data is updated annually following CMS Public Use File release cycles. The current data reflects the 2026 plan year.',
+        text: 'Plan, rate, subsidy, and formulary data is updated annually following federal marketplace data release cycles. The current data reflects the 2026 plan year.',
       },
     },
   ],
@@ -104,10 +104,10 @@ export default function EditorialPolicyPage() {
           <li>All guides and data pages are reviewed by a licensed health insurance professional before publication.</li>
           <li>Content must cite regulatory sources (ACA statute, CFR, CMS guidance) where applicable.</li>
           <li>
-            Dollar figures, income thresholds, and plan data are sourced directly from CMS Public Use Files — not
+            Dollar figures, income thresholds, and plan data are sourced directly from federal marketplace data — not
             estimated or extrapolated.
           </li>
-          <li>Pages are updated annually following CMS data release cycles.</li>
+          <li>Pages are updated annually following federal marketplace data release cycles.</li>
           <li>
             YMYL standard: all health insurance content is treated as financial/health advice and held to the highest
             accuracy standard.
@@ -117,25 +117,25 @@ export default function EditorialPolicyPage() {
         {/* Section 3 — Data Sources */}
         <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Data Sources</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          All plan, rate, subsidy, and formulary data on this site is sourced from CMS Public Use Files (PUFs) published
+          All plan, rate, subsidy, and formulary data on this site is sourced from federal marketplace data files published
           by the Centers for Medicare &amp; Medicaid Services. These datasets are public domain and updated annually.
         </p>
         <ul className="list-disc pl-5 text-slate-700 leading-relaxed mb-4 space-y-2">
-          <li><strong>QHP Landscape PUF</strong> — Plan-level data for all qualified health plans on the ACA Marketplace</li>
-          <li><strong>Rate PUF</strong> — Premium rates by plan, age, tobacco use, and rating area</li>
-          <li><strong>Plan Attributes PUF</strong> — Benefits, cost-sharing, and network details</li>
-          <li><strong>Formulary PUF (MR-PUF)</strong> — Machine-readable drug formulary files from every carrier</li>
-          <li><strong>SADP PUF</strong> — Stand-alone dental plan data</li>
+          <li><strong>Federal marketplace plan data</strong> — Plan-level data for all qualified health plans on the ACA Marketplace</li>
+          <li><strong>Federal marketplace rate filings</strong> — Premium rates by plan, age, tobacco use, and rating area</li>
+          <li><strong>Federal plan benefit documents</strong> — Benefits, cost-sharing, and network details</li>
+          <li><strong>Federal drug formulary data</strong> — Drug formulary files from every marketplace carrier</li>
+          <li><strong>Federal dental plan data</strong> — Stand-alone dental plan data</li>
         </ul>
         <p className="text-slate-700 leading-relaxed mb-4">
-          Full details are available on the CMS data page:{' '}
+          Full details are available on the federal marketplace data page:{' '}
           <a
             href="https://www.cms.gov/marketplace/resources/data/public-use-files"
             className="text-primary-600 hover:text-primary-700 underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            CMS Marketplace Public Use Files
+            Federal Marketplace Data Files
           </a>
         </p>
 

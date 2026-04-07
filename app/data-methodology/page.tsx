@@ -7,22 +7,22 @@ import SchemaScript from '../../components/SchemaScript'
 import { buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
-  title: 'Data Methodology — How We Process CMS Public Use Files | HealthInsuranceRenew',
+  title: 'Data Methodology — How We Process Federal Marketplace Data | HealthInsuranceRenew',
   description:
-    'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
+    'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from federal marketplace data — the same government datasets that power Healthcare.gov.',
   alternates: { canonical: 'https://healthinsurancerenew.com/data-methodology' },
   openGraph: {
-    title: 'Data Methodology — How We Process CMS Public Use Files',
-    description: 'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
+    title: 'Data Methodology — How We Process Federal Marketplace Data',
+    description: 'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from federal marketplace data — the same government datasets that power Healthcare.gov.',
     url: 'https://healthinsurancerenew.com/data-methodology',
     type: 'article',
     siteName: 'HealthInsuranceRenew',
   },
   twitter: {
     card: 'summary',
-    title: 'Data Methodology — How We Process CMS Public Use Files',
+    title: 'Data Methodology — How We Process Federal Marketplace Data',
     description:
-      'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from CMS Public Use Files — the same government datasets that power Healthcare.gov.',
+      'Where our numbers come from. All plan, rate, subsidy, and formulary data is sourced from federal marketplace data — the same government datasets that power Healthcare.gov.',
   },
 }
 
@@ -35,7 +35,7 @@ const datasetSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: 'CMS QHP Landscape Public Use File 2026',
+    name: 'Federal marketplace plan comparison data (2026)',
     description: 'Plan-level data for all qualified health plans available on the ACA Marketplace, including premiums, metal levels, and plan types.',
     url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     provider: {
@@ -48,7 +48,7 @@ const datasetSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: 'CMS Rate Public Use File 2026',
+    name: 'Federal marketplace rate filing data (2026)',
     description: 'Premium rates by plan, age, tobacco use, and rating area for all ACA Marketplace health plans.',
     url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     provider: {
@@ -61,7 +61,7 @@ const datasetSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: 'CMS Plan Attributes Public Use File 2026',
+    name: 'Federal marketplace plan attributes data (2026)',
     description: 'Detailed benefits, cost-sharing, copays, and SBC data for every ACA Marketplace plan.',
     url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     provider: {
@@ -74,8 +74,8 @@ const datasetSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: 'CMS Formulary Public Use File 2026',
-    description: 'Machine-readable drug formulary files with tier placement, prior authorization, step therapy, and quantity limit data for 551,000+ drug coverage records.',
+    name: 'Federal marketplace formulary data (2026)',
+    description: 'Drug formulary files with tier placement, prior authorization, step therapy, and quantity limit data for 551,000+ drug coverage records.',
     url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     provider: {
       '@type': 'GovernmentOrganization',
@@ -87,7 +87,7 @@ const datasetSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
-    name: 'CMS SADP Public Use File 2026',
+    name: 'Federal dental plan data (2026)',
     description: 'Stand-alone dental plan data including coverage percentages, waiting periods, annual maximums, and orthodontia coverage across 942 plans.',
     url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     provider: {
@@ -120,10 +120,10 @@ const dataSchemaIds = [
 
 export default function DataMethodologyPage() {
   const articleSchema = buildArticleSchema({
-    headline: 'Data Methodology — How We Process CMS Public Use Files',
-    description: 'Where our numbers come from. All data sourced from CMS Public Use Files.',
+    headline: 'Data Methodology — How We Process Federal Marketplace Data',
+    description: 'Where our numbers come from. All data sourced from federal marketplace data.',
     dateModified: '2026-03-19',
-    dataSourceName: 'CMS Marketplace Public Use Files',
+    dataSourceName: 'Federal marketplace data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -134,7 +134,7 @@ export default function DataMethodologyPage() {
       {datasetSchemas.map((schema, i) => (
         <SchemaScript key={dataSchemaIds[i]} schema={schema} id={dataSchemaIds[i]} />
       ))}
-      <LlmComment pageType="data-methodology" year={2026} data="CMS-PUF" />
+      <LlmComment pageType="data-methodology" year={2026} data="federal-marketplace-data" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Data &amp; Methodology</h1>
 
@@ -178,16 +178,17 @@ export default function DataMethodologyPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            CMS Marketplace Public Use Files
-          </a>{' '}
-          page. These are the same government datasets that power Healthcare.gov.
+
+            federal marketplace data published by CMS
+          </a>
+          . These are the same government datasets that power Healthcare.gov.
         </p>
         <div className="overflow-x-auto mb-6">
           <table className="min-w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
             <thead className="bg-slate-50">
               <tr>
                 <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Data Type</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">CMS Source File</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Federal Data Source</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Records</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b border-slate-200">Updated</th>
               </tr>
@@ -195,31 +196,31 @@ export default function DataMethodologyPage() {
             <tbody className="divide-y divide-slate-100">
               <tr>
                 <td className="px-4 py-3 text-slate-700">Health Plans</td>
-                <td className="px-4 py-3 text-slate-600">QHP Landscape PUF</td>
+                <td className="px-4 py-3 text-slate-600">Plan comparison data</td>
                 <td className="px-4 py-3 text-slate-600">All ACA plans, all states</td>
                 <td className="px-4 py-3 text-slate-600">Annually</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 text-slate-700">Premium Rates</td>
-                <td className="px-4 py-3 text-slate-600">Rate PUF</td>
+                <td className="px-4 py-3 text-slate-600">Rate filing data</td>
                 <td className="px-4 py-3 text-slate-600">Age-rated premiums by county</td>
                 <td className="px-4 py-3 text-slate-600">Annually</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 text-slate-700">Plan Benefits</td>
-                <td className="px-4 py-3 text-slate-600">Plan Attributes PUF</td>
+                <td className="px-4 py-3 text-slate-600">Plan attributes data</td>
                 <td className="px-4 py-3 text-slate-600">Cost-sharing, copays, SBC data</td>
                 <td className="px-4 py-3 text-slate-600">Annually</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 text-slate-700">Drug Formulary</td>
-                <td className="px-4 py-3 text-slate-600">Formulary PUF</td>
+                <td className="px-4 py-3 text-slate-600">Formulary data</td>
                 <td className="px-4 py-3 text-slate-600">551,000+ drug coverage records</td>
                 <td className="px-4 py-3 text-slate-600">Annually</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 text-slate-700">Dental Plans</td>
-                <td className="px-4 py-3 text-slate-600">SADP PUF</td>
+                <td className="px-4 py-3 text-slate-600">Dental plan data</td>
                 <td className="px-4 py-3 text-slate-600">942 stand-alone dental plans</td>
                 <td className="px-4 py-3 text-slate-600">Annually</td>
               </tr>

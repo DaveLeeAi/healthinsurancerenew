@@ -240,7 +240,7 @@ export default function Glp1DrugsCoveredPage() {
       <DataSourceAttribution
         sources={[
           { name: 'KFF Marketplace Formulary Analysis', url: 'https://www.kff.org/health-reform/' },
-          { name: 'CMS EHB Framework', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
+          { name: 'Federal EHB Framework', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
         ]}
       />
 
@@ -266,7 +266,7 @@ export default function Glp1DrugsCoveredPage() {
       </p>
       <DataSourceAttribution
         sources={[
-          { name: 'CMS Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
+          { name: 'Federal Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
         ]}
       />
 

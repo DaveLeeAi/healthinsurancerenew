@@ -59,7 +59,7 @@ const CATEGORY_META: Record<string, { label: string; description: string; icon: 
 export const metadata: Metadata = {
   title: 'Health Insurance FAQ — 54 Real Questions Answered | HealthInsuranceRenew',
   description:
-    'Answers to the most common health insurance marketplace questions across 9 categories: turning 26, Medicare at 65, SEPs, income changes, dental, billing, and more. Based on ACA regulations and CMS guidance.',
+    'Answers to the most common health insurance marketplace questions across 9 categories: turning 26, Medicare at 65, SEPs, income changes, dental, billing, and more. Based on ACA regulations and federal enrollment guidance.',
   alternates: { canonical: `${SITE_URL}/faq` },
   openGraph: {
     type: 'website',
@@ -104,7 +104,7 @@ export default function FAQIndexPage() {
     <>
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <LlmComment pageType="faq-index" year={2026} data="CMS-ACA-Regulations" extra={{ questions: dataset.data.length, categories: byCategory.size }} />
+      <LlmComment pageType="faq-index" year={2026} data="federal-ACA-regulations" extra={{ questions: dataset.data.length, categories: byCategory.size }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -133,7 +133,7 @@ export default function FAQIndexPage() {
             <strong>{dataset.data.length}</strong> real questions about marketplace health
             insurance — also called Obamacare or the ACA — across{' '}
             <strong>{byCategory.size}</strong> categories. Answered with regulatory
-            citations and practical guidance based on current CMS enrollment policy.
+            citations and practical guidance based on current federal enrollment policy.
           </p>
         </section>
 
@@ -226,7 +226,7 @@ export default function FAQIndexPage() {
           </p>
         </section>
 
-        <GenericByline dataSource="CMS ACA Regulations & Enrollment Policy" planYear={2026} />
+        <GenericByline dataSource="federal ACA regulations & enrollment policy" planYear={2026} />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

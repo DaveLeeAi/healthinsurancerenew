@@ -116,7 +116,7 @@ export default function ComparisonPage({ params }: Props) {
     headline: `${nameA} vs ${nameB}: Coverage, Cost, and Marketplace Differences`,
     description: `Side-by-side comparison of ${nameA} and ${nameB} on ACA Marketplace plans for ${PLAN_YEAR}.`,
     dateModified: new Date().toISOString().slice(0, 7),
-    dataSourceName: 'CMS Machine-Readable Formulary PUF',
+    dataSourceName: 'federal plan benefit documents',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -136,7 +136,7 @@ export default function ComparisonPage({ params }: Props) {
       <LlmComment
         pageType="drug-compare"
         year={PLAN_YEAR}
-        data="CMS-MR-PUF"
+        data="federal-plan-benefit-documents"
         extra={{ drugA: nameA, drugB: nameB }}
       />
 
@@ -219,7 +219,7 @@ export default function ComparisonPage({ params }: Props) {
             </table>
           </div>
           <p className="text-xs text-neutral-400 mt-3">
-            Coverage varies by plan and state. Data based on CMS Machine-Readable Formulary PUF, {PLAN_YEAR}.{' '}
+            Coverage varies by plan and state. Data based on federal plan benefit documents, {PLAN_YEAR}.{' '}
             Check individual drug pages for plan-level detail.
           </p>
         </section>
@@ -321,12 +321,12 @@ export default function ComparisonPage({ params }: Props) {
           </a>
         </section>
 
-        <GenericByline dataSource="CMS MR-PUF & carrier formulary files" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="federal plan benefit documents & carrier formulary files" planYear={PLAN_YEAR} />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Drug coverage data sourced from the CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}.
+            Drug coverage data sourced from federal plan benefit documents, plan year {PLAN_YEAR}.
             Coverage information reflects issuer formulary filings and is subject to change. Verify coverage
             directly with your plan before enrolling.
           </p>

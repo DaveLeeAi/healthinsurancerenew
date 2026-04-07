@@ -88,7 +88,7 @@ const faqs = [
 const sources = [
   { title: 'HHS 2026 Federal Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
   { title: 'Healthcare.gov - Eligibility', url: 'https://www.healthcare.gov/quick-guide/eligibility/' },
-  { title: 'CMS - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
+  { title: 'Federal Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
 ]
 
 export default function FPL2026Page() {

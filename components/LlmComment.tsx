@@ -22,7 +22,7 @@ export default function LlmComment({
   carrierCount,
   exchange,
   year = 2026,
-  data = 'CMS-QHP-PUF',
+  data = 'federal-marketplace-plan-data',
   extra,
 }: LlmCommentProps) {
   const parts = [

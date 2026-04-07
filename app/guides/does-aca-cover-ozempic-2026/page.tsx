@@ -154,7 +154,7 @@ export default function DoesAcaCoverOzempic2026Page() {
       <DataSourceAttribution
         sources={[
           { name: 'KFF Marketplace Formulary Analysis', url: 'https://www.kff.org/health-reform/', description: 'Coverage rate estimates' },
-          { name: 'CMS Essential Health Benefits', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files', description: 'EHB framework and USP categories' },
+          { name: 'Federal Essential Health Benefits Framework', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files', description: 'EHB framework and USP categories' },
         ]}
       />
 
@@ -186,7 +186,7 @@ export default function DoesAcaCoverOzempic2026Page() {
       <DataSourceAttribution
         sources={[
           { name: 'KFF Formulary Analysis', url: 'https://www.kff.org/health-reform/' },
-          { name: 'CMS Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
+          { name: 'Federal Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
         ]}
       />
 

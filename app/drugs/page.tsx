@@ -64,7 +64,7 @@ export default function DrugsIndexPage() {
     headline: `Drug Coverage on Marketplace Plans (${PLAN_YEAR})`,
     description,
     dateModified: new Date().toISOString().slice(0, 7),
-    dataSourceName: 'CMS Machine-Readable Formulary PUF',
+    dataSourceName: 'federal plan benefit documents',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -77,7 +77,7 @@ export default function DrugsIndexPage() {
     <>
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <LlmComment pageType="drugs-index" year={PLAN_YEAR} data="CMS-MR-Formulary-PUF" extra={{ categories: DRUG_TAXONOMY.length }} />
+      <LlmComment pageType="drugs-index" year={PLAN_YEAR} data="federal-plan-benefit-documents" extra={{ categories: DRUG_TAXONOMY.length }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-12">
 
@@ -228,7 +228,7 @@ export default function DrugsIndexPage() {
             { question: 'How do drug tiers affect my cost?', answer: 'Lower tiers (like Tier 1 generics) have lower copays. Higher tiers (like Tier 4 specialty) have higher costs. Your plan documents show the exact copay for each tier.' },
             { question: 'What does prior authorization mean?', answer: 'Prior authorization means your insurance company must approve coverage before you fill the prescription. Your doctor submits a request, and the plan responds — generally within a few days.' },
             { question: 'Can drug coverage change during the plan year?', answer: 'Yes. Plans can update their formulary during the year. Always confirm current coverage with your insurance company before filling a prescription.' },
-            { question: 'Where does this drug coverage data come from?', answer: 'All data comes from CMS machine-readable formulary files that insurance companies are required by law to publish for each plan year.' },
+            { question: 'Where does this drug coverage data come from?', answer: 'All data comes from federal formulary data files that insurance companies are required by law to publish for each plan year.' },
           ]
           return (
             <>
@@ -246,12 +246,12 @@ export default function DrugsIndexPage() {
           )
         })()}
 
-        <GenericByline dataSource="CMS Machine-Readable Formulary PUF" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="federal plan benefit documents" planYear={PLAN_YEAR} />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Drug coverage data sourced from the CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}.
+            Drug coverage data sourced from federal plan benefit documents, plan year {PLAN_YEAR}.
             Coverage reflects issuer formulary filings and is subject to change throughout the plan year.
           </p>
           <p>

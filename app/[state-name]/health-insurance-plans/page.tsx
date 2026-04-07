@@ -580,7 +580,7 @@ export default function StatePlansPage({ params }: Props) {
 
   const datasetSchema = buildDatasetSchema({
     name: `${PLAN_YEAR} ACA Health Insurance Plans — ${stateName}`,
-    description: `Marketplace health insurance plan data for ${stateName}, plan year ${PLAN_YEAR}. Includes premiums, deductibles, carrier information, and metal tier details. Source: CMS QHP Landscape PUF.`,
+    description: `Marketplace health insurance plan data for ${stateName}, plan year ${PLAN_YEAR}. Includes premiums, deductibles, carrier information, and metal tier details. Source: federal marketplace plan data.`,
     url: canonical,
     year: String(PLAN_YEAR),
   })
@@ -595,7 +595,7 @@ export default function StatePlansPage({ params }: Props) {
       {/* LLM-friendly structured comment */}
       <div
         dangerouslySetInnerHTML={{
-          __html: `<!-- STATE: ${stateName} | STATE_CODE: ${stateCode} | PLANS: ${stats?.planCount ?? 'N/A'} | CARRIERS: ${stats?.carrierCount ?? 'N/A'} | EXCHANGE: ${isSbm ? 'SBM' : 'FFM'} | YEAR: ${PLAN_YEAR} | DATA: CMS QHP PUF | MEDICAID_EXPANDED: ${stateEntry.medicaidExpanded ? 'Yes' : 'No'} -->`,
+          __html: `<!-- STATE: ${stateName} | STATE_CODE: ${stateCode} | PLANS: ${stats?.planCount ?? 'N/A'} | CARRIERS: ${stats?.carrierCount ?? 'N/A'} | EXCHANGE: ${isSbm ? 'SBM' : 'FFM'} | YEAR: ${PLAN_YEAR} | DATA: federal marketplace plan data | MEDICAID_EXPANDED: ${stateEntry.medicaidExpanded ? 'Yes' : 'No'} -->`,
         }}
       />
 
@@ -652,7 +652,7 @@ export default function StatePlansPage({ params }: Props) {
             </div>
           </div>
           <p className="text-xs text-neutral-400 mt-2">
-            Data: CMS QHP Landscape PUF &middot; Plan Year {PLAN_YEAR} &middot; Premiums before tax credits
+            Data: federal marketplace plan data &middot; Plan Year {PLAN_YEAR} &middot; Premiums before tax credits
           </p>
         </section>
 
@@ -802,7 +802,7 @@ export default function StatePlansPage({ params }: Props) {
 
             <p className="text-xs text-neutral-400 mt-3">
               Premiums shown before premium tax credits. Actual cost depends on income, household size, and plan selection.
-              Source: CMS QHP Landscape PUF, plan year {PLAN_YEAR}.
+              Source: federal marketplace plan data, plan year {PLAN_YEAR}.
             </p>
           </section>
         )}
@@ -877,7 +877,7 @@ export default function StatePlansPage({ params }: Props) {
               </div>
             </dl>
             <p className="text-[10px] text-neutral-400 mt-2">
-              Source: CMS QHP Landscape PUF, plan year {PLAN_YEAR}. Premiums before premium tax credits.
+              Source: federal marketplace plan data, plan year {PLAN_YEAR}. Premiums before premium tax credits.
             </p>
           </div>
 
@@ -1022,7 +1022,7 @@ export default function StatePlansPage({ params }: Props) {
         <GenericByline
           dataSource={isSbm
             ? `${stateEntry.exchange} carrier Summary of Benefits and Coverage documents`
-            : 'CMS QHP Landscape Public Use File'}
+            : 'federal marketplace plan data'}
           planYear={PLAN_YEAR}
           lastReviewed={new Date(BUILD_DATE).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
         />
@@ -1033,7 +1033,7 @@ export default function StatePlansPage({ params }: Props) {
             Plan data sourced from{' '}
             {isSbm
               ? `${stateEntry.exchange} carrier Summary of Benefits and Coverage documents`
-              : 'CMS QHP Landscape Public Use File'}
+              : 'federal marketplace plan data'}
             , plan year {PLAN_YEAR}. Premiums shown are before premium tax credits and vary by age,
             household size, tobacco use (where applicable), and county of residence.
           </p>

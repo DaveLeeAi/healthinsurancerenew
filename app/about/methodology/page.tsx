@@ -19,14 +19,14 @@ import {
 export const metadata: Metadata = {
   title: 'Our Methodology — How We Source and Verify Health Insurance Data',
   description:
-    'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
+    'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from federal government sources, HHS, and state insurance departments and reviewed by a licensed agent.',
   alternates: {
     canonical: `${SITE_URL}/about/methodology/`,
   },
   openGraph: {
     title: 'Our Methodology — How We Source and Verify Health Insurance Data',
     description:
-      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
+      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from federal government sources, HHS, and state insurance departments and reviewed by a licensed agent.',
     url: `${SITE_URL}/about/methodology/`,
     type: 'website',
     siteName: 'HealthInsuranceRenew',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Our Methodology — How We Source and Verify Health Insurance Data',
     description:
-      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from CMS, HHS, and state insurance departments and reviewed by a licensed agent.',
+      'How HealthInsuranceRenew.com sources, verifies, and maintains data across 10 ACA data pillars. All information is drawn from federal government sources, HHS, and state insurance departments and reviewed by a licensed agent.',
   },
 };
 
@@ -91,7 +91,7 @@ export default function MethodologyPage() {
 
         <BLUFBox>
           Every data point on HealthInsuranceRenew.com is sourced from official
-          government records — primarily CMS federal plan data, HHS policy
+          government records — primarily federal marketplace plan data, HHS policy
           analyses, and state insurance department databases. All content is
           verified by a licensed ACA agent before publication and reviewed at
           least once per plan year or when regulations change.
@@ -114,7 +114,7 @@ export default function MethodologyPage() {
         </p>
 
         <SectionHeading level={3}>
-          CMS plan benefit and rate data
+          Federal plan benefit and rate data
         </SectionHeading>
         <p className="text-gray-700 leading-relaxed mb-4">
           The Centers for Medicare &amp; Medicaid Services publishes detailed
@@ -176,8 +176,8 @@ export default function MethodologyPage() {
         </SectionHeading>
 
         <p className="text-gray-700 leading-relaxed mb-4">
-          <strong>Plan intelligence pages</strong> are generated from CMS plan
-          benefit data files, filtered by state and county. Each page displays
+          <strong>Plan intelligence pages</strong> are generated from federal marketplace plan
+          benefit data, filtered by state and county. Each page displays
           only plans available in the consumer&rsquo;s rating area. Premium
           figures reflect filed rates before subsidies; estimated after-subsidy
           costs use the applicable APTC formula.
@@ -191,14 +191,14 @@ export default function MethodologyPage() {
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Formulary pages</strong> are built from plan-level formulary
-          files published by carriers as part of their CMS QHP submissions.
+          files published by carriers as part of their federal marketplace filings.
           Each drug lookup shows tier placement, quantity limits, prior
           authorization requirements, and step therapy protocols. Cost
           estimates are derived from the plan&rsquo;s published cost-sharing
           schedule for that tier.
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
-          <strong>State hub pages</strong> combine CMS enrollment data,
+          <strong>State hub pages</strong> combine federal enrollment data,
           carrier participation lists, average premium ranges, and
           state-specific policy context (expansion status, SBE vs FFM, state
           supplemental subsidies) into comprehensive guides. Each state page
@@ -284,9 +284,9 @@ export default function MethodologyPage() {
         <DataSourceAttribution
           sources={[
             {
-              name: 'CMS Plan Benefit Data',
+              name: 'Federal plan benefit data',
               url: 'https://data.cms.gov',
-              description: 'QHP plan benefits, formularies, and rate filings',
+              description: 'Plan benefits, formularies, and rate filings',
             },
             {
               name: 'HHS ASPE',

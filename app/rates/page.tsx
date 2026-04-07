@@ -11,12 +11,12 @@ const SITE_URL = 'https://healthinsurancerenew.com'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Premium Rate Trends by State (2026)',
-  description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from CMS Rate PUF data.',
+  description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from federal marketplace rate filings.',
   alternates: { canonical: `${SITE_URL}/rates` },
   openGraph: {
     type: 'website',
     title: 'Health Insurance Premium Rate Trends by State (2026)',
-    description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from CMS Rate PUF data.',
+    description: 'Track 2026 marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, year-over-year trends, and age-64 shock ratios from federal marketplace rate filings.',
     url: `${SITE_URL}/rates`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Health Insurance Premium Rate Trends by State (2026)',
     description:
-      'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from CMS Rate PUF.',
+      'Track marketplace premium rate changes by state and county. Carrier counts, metal level breakdowns, and age-64 shock ratios from federal marketplace rate filings.',
   },
 }
 
@@ -78,13 +78,13 @@ export default function RatesIndexPage() {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <LlmComment pageType="rates-index" year={2026} data="CMS-Rate-PUF" extra={{ counties: dataset.data.length, states: states.length }} />
+      <LlmComment pageType="rates-index" year={2026} data="federal-marketplace-rate-filings" extra={{ counties: dataset.data.length, states: states.length }} />
 
     <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
       <div>
         <h1 className="text-3xl font-bold text-navy-900 mb-2">Health Insurance Rate Volatility</h1>
         <p className="text-neutral-500">
-          {dataset.data.length.toLocaleString()} counties · Plan Year {dataset.metadata.plan_year} · Source: CMS Rate PUF
+          {dataset.data.length.toLocaleString()} counties · Plan Year {dataset.metadata.plan_year} · Source: federal marketplace rate filings
         </p>
       </div>
 
@@ -169,7 +169,7 @@ export default function RatesIndexPage() {
           { question: 'Why do health insurance rates change every year?', answer: 'Rates change based on medical cost trends, claims experience, regulatory changes, and carrier competition in each market. CMS reviews all rate filings before they take effect.' },
           { question: 'What is the age-64 rate ratio?', answer: 'ACA rules allow carriers to charge older enrollees up to 3x more than younger ones. The age-64 "shock ratio" shows how much more the oldest enrollees pay compared to a 21-year-old in the same plan.' },
           { question: 'Do rate changes affect my subsidy?', answer: 'Subsidies are based on the benchmark silver plan premium in your area. If rates increase, your subsidy may also increase to offset the higher cost — but your net premium can still change.' },
-          { question: 'Where does this rate data come from?', answer: 'All rate data comes from the CMS Rate PUF (Public Use File), which contains every marketplace plan\'s approved premium rates by age, rating area, and tobacco status.' },
+          { question: 'Where does this rate data come from?', answer: 'All rate data comes from federal marketplace rate filings, which contain every marketplace plan\'s approved premium rates by age, rating area, and tobacco status.' },
         ]
         return (
           <>
@@ -187,7 +187,7 @@ export default function RatesIndexPage() {
         )
       })()}
 
-      <GenericByline dataSource="CMS Rate PUF" planYear={2026} />
+      <GenericByline dataSource="Federal Marketplace Rate Filings" planYear={2026} />
     </main>
     </>
   )

@@ -46,7 +46,7 @@ export default function DrugLookup({ drugs, drugName }: Props) {
         </tbody>
       </table>
       <p className="text-xs text-neutral-400 mt-3">
-        Source: CMS MR-PUF · Prior Auth = PA · Quantity Limit = QL · Consult your plan for current coverage
+        Source: federal marketplace data · Prior Auth = PA · Quantity Limit = QL · Consult your plan for current coverage
       </p>
     </div>
   )

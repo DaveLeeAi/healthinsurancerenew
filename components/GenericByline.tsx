@@ -8,7 +8,7 @@ interface GenericBylineProps {
 }
 
 export default function GenericByline({
-  dataSource = 'CMS QHP Landscape Public Use File',
+  dataSource = 'federal marketplace plan data and plan benefit documents',
   planYear = 2026,
   lastReviewed,
 }: GenericBylineProps) {

@@ -56,7 +56,7 @@ const FEDERAL_DEFAULTS: Omit<PlanSourceEntry, 'dataSourceName' | 'dataSourceUrl'
 }
 
 const FEDERAL_SOURCE_ENTRY: Pick<PlanSourceEntry, 'dataSourceName' | 'dataSourceUrl'> = {
-  dataSourceName: 'CMS QHP Landscape & Plan Attributes PUF',
+  dataSourceName: 'Federal Marketplace Plan Data and Plan Benefit Documents',
   dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
 }
 

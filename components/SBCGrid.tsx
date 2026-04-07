@@ -201,7 +201,7 @@ export default function SBCGrid({ sbc }: Props) {
       <p className="text-xs text-neutral-400 mt-3">
         Costs shown are for in-network providers. Out-of-network costs are typically higher.
         Preventive care is covered at $0 under all ACA plans.
-        Source: CMS Benefits and Cost Sharing PUF.
+        Source: federal plan benefit documents.
       </p>
     </section>
   )

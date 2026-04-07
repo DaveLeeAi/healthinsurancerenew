@@ -92,7 +92,7 @@ export default function PlanDrugFitIntegration({ plan, sbc, stateSlug, countySlu
       <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
         Drug coverage varies by carrier formulary. Use the links below to check whether specific
         medications are covered by {plan.issuer_name} in this county. Each link goes to a
-        county-specific formulary page sourced from CMS Machine-Readable Formulary data.
+        county-specific formulary page sourced from federal formulary data.
       </p>
 
       {drugCostSummary && (
@@ -124,7 +124,7 @@ export default function PlanDrugFitIntegration({ plan, sbc, stateSlug, countySlu
       </div>
 
       <p className="text-xs text-neutral-400 mt-4">
-        Drug coverage links are county-specific, sourced from CMS Machine-Readable Formulary PUF,
+        Drug coverage links are county-specific, sourced from federal formulary data,
         plan year 2026. Formulary placement can change during the plan year — always verify current
         coverage directly with {plan.issuer_name} before filling a prescription.
       </p>

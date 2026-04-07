@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Estimate your ${PLAN_YEAR} premium tax credit in ${stateName}. ` +
       `Subsidies work the same whether you enroll through ${stateEntry.exchange} or Healthcare.gov.`
     : `Calculate your ${PLAN_YEAR} premium tax credit (APTC) across ${counties.length} counties in ${stateName}. ` +
-      `Enter your income to estimate your subsidy at each FPL level. Source: CMS QHP Rate PUF.`
+      `Enter your income to estimate your subsidy at each FPL level. Source: federal marketplace rate filings.`
 
   return {
     title,
@@ -121,7 +121,7 @@ export default function SubsidiesStatePage({ params }: Props) {
       <LlmComment
         pageType="subsidies-state"
         state={stateUpper}
-        data="CMS-Benchmark-Premium-IRS-FPL"
+        data="federal-benchmark-premium-IRS-FPL"
         extra={{ counties: counties.length, isSbm: isSbm }}
       />
 
@@ -261,7 +261,7 @@ export default function SubsidiesStatePage({ params }: Props) {
         )}
 
         {/* Byline */}
-        <GenericByline dataSource="CMS Benchmark Premium & IRS FPL Tables" />
+        <GenericByline dataSource="Federal Benchmark Premiums and IRS Income Guidelines" />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400">
@@ -270,7 +270,7 @@ export default function SubsidiesStatePage({ params }: Props) {
               ? `Subsidy estimates use national average benchmark premiums and standard ACA applicable percentage rates. ` +
                 `Actual tax credit amounts depend on the benchmark plan in your county and your final MAGI. ` +
                 `Consult a licensed agent to confirm your eligibility.`
-              : `Subsidy estimates are based on CMS benchmark silver premium data and IRS applicable ` +
+              : `Subsidy estimates are based on federal benchmark silver premium data and IRS applicable ` +
                 `percentage tables for plan year ${PLAN_YEAR}. Actual tax credit amounts depend on ` +
                 `your final MAGI. Consult a licensed agent to confirm your eligibility.`
             }

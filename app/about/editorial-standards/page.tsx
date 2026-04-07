@@ -97,7 +97,7 @@ export default function EditorialStandardsPage() {
         <BLUFBox>
           Every article on HealthInsuranceRenew.com follows a 7-step editorial
           workflow that includes government source verification, licensed agent
-          review, CMS compliance checking, and readability testing. We disclose
+          review, federal marketplace compliance checking, and readability testing. We disclose
           our use of AI tools, maintain editorial independence from carrier
           relationships, and correct errors promptly when identified.
         </BLUFBox>
@@ -124,7 +124,7 @@ export default function EditorialStandardsPage() {
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Step 2: Primary source research.</strong> Content is drafted
-          using primary government sources — CMS data files, HHS policy
+          using primary government sources — federal marketplace data files, HHS policy
           documents, IRS guidance, and state insurance department filings. We
           do not rely on secondary sources or other health insurance websites
           for factual claims. When we reference independent research (e.g., KFF
@@ -141,11 +141,11 @@ export default function EditorialStandardsPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Step 4: Fact-checking against source data.</strong> Every
           factual claim is checked against its cited source. Our fact-checking
-          checklist verifies that cost figures match CMS federal plan data,
+          checklist verifies that cost figures match federal marketplace plan data,
           eligibility rules reflect current HHS guidance, formulary data matches
           published plan formularies, enrollment dates match the current plan
           year calendar, and regulatory references cite the correct CFR section
-          or CMS bulletin.
+          or federal regulatory bulletin.
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Step 5: Licensed agent review.</strong> A{' '}
@@ -204,7 +204,7 @@ export default function EditorialStandardsPage() {
         </p>
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6 text-sm text-gray-700 space-y-2">
           <p>
-            ✓ Every cost figure cites a specific CMS data source or plan benefit
+            ✓ Every cost figure cites a specific federal data source or plan benefit
             filing
           </p>
           <p>

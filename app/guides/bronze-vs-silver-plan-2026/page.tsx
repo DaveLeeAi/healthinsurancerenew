@@ -221,13 +221,13 @@ export default function BronzeVsSilverPlan2026Page() {
         $874 in total annual health costs.
       </p>
       <p className="text-xs text-gray-500 mb-4">
-        Estimated from CMS cost-sharing reduction guidelines. Actual plan benefits
+        Estimated from federal cost-sharing reduction guidelines. Actual plan benefits
         vary by carrier and state.
       </p>
       <DataSourceAttribution
         sources={[
           { name: 'KFF', url: 'https://www.kff.org/health-reform/', description: 'CSR enrollment and benefit analysis' },
-          { name: 'CMS Cost-Sharing Reduction Guidelines', url: 'https://www.cms.gov/marketplace' },
+          { name: 'Federal Cost-Sharing Reduction Guidelines', url: 'https://www.cms.gov/marketplace' },
         ]}
       />
 

@@ -101,7 +101,7 @@ export default function BillingIndexPage() {
     headline: 'Insurance Billing Guides — Common Billing Scenarios',
     description: `${dataset.data.length} common billing scenarios with CPT codes, consumer tips, and action steps.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'AMA CPT, CMS ACA Regulations',
+    dataSourceName: 'AMA CPT codes and federal ACA regulations',
     dataSourceUrl: 'https://www.cms.gov/nosurprises',
   })
 
@@ -109,7 +109,7 @@ export default function BillingIndexPage() {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
-      <LlmComment pageType="billing-index" year={2026} data="AMA-CPT+CMS-ACA" extra={{ scenarios: dataset.data.length, cptCodes: totalCptCodes }} />
+      <LlmComment pageType="billing-index" year={2026} data="AMA-CPT+federal-ACA" extra={{ scenarios: dataset.data.length, cptCodes: totalCptCodes }} />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -229,7 +229,7 @@ export default function BillingIndexPage() {
           )
         })()}
 
-        <GenericByline dataSource="AMA CPT + CMS ACA Regulations" planYear={2026} />
+        <GenericByline dataSource="AMA CPT codes and federal ACA regulations" planYear={2026} />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

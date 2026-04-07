@@ -115,7 +115,7 @@ export default function ToolsIndexPage() {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <LlmComment pageType="tools-index" year={2026} data="CMS-FPL+IRS" />
+      <LlmComment pageType="tools-index" year={2026} data="federal-FPL+IRS" />
 
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Breadcrumbs items={breadcrumbs} />
@@ -184,8 +184,8 @@ export default function ToolsIndexPage() {
         <h2 className="text-xl font-bold text-slate-900 mb-4">How These Tools Help You</h2>
         <div className="text-slate-700 leading-relaxed font-serif space-y-4">
           <p>
-            Every tool uses official CMS data — Federal Poverty Level guidelines, IRS contribution
-            percentages, and CMS cost-sharing standards. We perform straightforward calculations to
+            Every tool uses official federal marketplace data — Federal Poverty Level guidelines, IRS contribution
+            percentages, and federal cost-sharing standards. We perform straightforward calculations to
             give you an accurate preliminary estimate.
           </p>
           <p>
@@ -219,8 +219,8 @@ export default function ToolsIndexPage() {
       {/* ── FAQ ── */}
       {(() => {
         const faqs = [
-          { question: 'Are these health insurance tools free?', answer: 'Yes. All tools on this site are free to use with no sign-up required. They use public CMS and IRS data to generate estimates.' },
-          { question: 'How accurate are the subsidy estimates?', answer: 'Estimates are based on current IRS contribution percentages and CMS benchmark premiums. Actual amounts may vary based on your exact income, household composition, and local plan availability.' },
+          { question: 'Are these health insurance tools free?', answer: 'Yes. All tools on this site are free to use with no sign-up required. They use public federal marketplace and IRS data to generate estimates.' },
+          { question: 'How accurate are the subsidy estimates?', answer: 'Estimates are based on current IRS contribution percentages and federal benchmark premiums. Actual amounts may vary based on your exact income, household composition, and local plan availability.' },
           { question: 'Can I use these tools to enroll in a plan?', answer: 'These tools help you understand your options and estimate costs. To actually enroll, visit Healthcare.gov or your state exchange, or connect with a licensed agent.' },
           { question: 'What income counts for marketplace subsidies?', answer: 'The marketplace uses Modified Adjusted Gross Income (MAGI), which includes wages, self-employment income, Social Security benefits, and other sources. Use our MAGI calculator to check which income types count.' },
         ]
@@ -240,7 +240,7 @@ export default function ToolsIndexPage() {
         )
       })()}
 
-      <GenericByline dataSource="CMS Federal Poverty Level Guidelines + IRS Contribution Percentages" planYear={2026} />
+      <GenericByline dataSource="Federal Poverty Level Guidelines + IRS Contribution Percentages" planYear={2026} />
     </div>
     </>
   )

@@ -114,7 +114,7 @@ export default function FAQDetailPage({ params }: Props) {
     headline: qa.question,
     description: qa.answer.slice(0, 155),
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'ACA Regulations & CMS Guidance',
+    dataSourceName: 'ACA regulations & federal enrollment guidance',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources',
   })
 

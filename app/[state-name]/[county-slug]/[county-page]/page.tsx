@@ -165,7 +165,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const description =
       `${plan.issuer_name} ${plan.metal_level} plan in ${countyDisplay}, ${stateName}. ` +
       `${deductible ? deductible + '. ' : ''}` +
-      `Full cost-sharing grid, covered services, exclusions. Source: CMS PUF ${PLAN_YEAR}.`
+      `Full cost-sharing grid, covered services, exclusions. Source: federal plan benefit documents ${PLAN_YEAR}.`
 
     const truncDesc = description.slice(0, 160)
     return {
@@ -293,13 +293,13 @@ async function CountyPlanDetailPage({ params }: Props) {
     headline: `${plan.plan_name} — Summary of Benefits & Coverage ${PLAN_YEAR}`,
     description: `Detailed cost-sharing, deductible, OOP max, and exclusion data for ${plan.plan_name} by ${plan.issuer_name}.`,
     dateModified: new Date().toISOString().split('T')[0],
-    dataSourceName: 'CMS Plan Attributes & Benefits Cost Sharing PUF',
+    dataSourceName: 'Federal Marketplace Plan Data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const medicalWebPageSchema = buildWebPageSchema({
     name: `${plan.plan_name} Benefits & Coverage ${PLAN_YEAR}`,
-    description: `${plan.metal_level} health insurance plan by ${plan.issuer_name} in ${countyDisplay}, ${stateName}. Deductible, out-of-pocket maximum, cost-sharing grid, and exclusions sourced from CMS PUF.`,
+    description: `${plan.metal_level} health insurance plan by ${plan.issuer_name} in ${countyDisplay}, ${stateName}. Deductible, out-of-pocket maximum, cost-sharing grid, and exclusions sourced from federal plan benefit documents.`,
     url: canonicalUrl,
     dateModified: new Date().toISOString().split('T')[0],
     // Signals to AI engines (Google AI Overviews, Perplexity, ChatGPT Browse)
@@ -341,7 +341,7 @@ async function CountyPlanDetailPage({ params }: Props) {
       {sbcSchemas.map((schema, i) => (
         <SchemaScript key={i} schema={schema} id={`schema-sbc-${i}`} />
       ))}
-      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="CMS-Plan-Attributes-PUF" extra={{ plan: plan.plan_name, metal: plan.metal_level, issuer: plan.issuer_name }} />
+      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="federal-marketplace-plan-data" extra={{ plan: plan.plan_name, metal: plan.metal_level, issuer: plan.issuer_name }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10">
 
@@ -422,7 +422,7 @@ async function CountyPlanDetailPage({ params }: Props) {
           <p className="text-xs text-neutral-400 mt-2">
             Last Updated:{' '}
             {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} ·
-            CMS Marketplace PUF {PLAN_YEAR} · Plan Year: {PLAN_YEAR}
+            Federal marketplace plan data {PLAN_YEAR} · Plan Year: {PLAN_YEAR}
           </p>
         </header>
 
@@ -532,7 +532,7 @@ async function CountyPlanDetailPage({ params }: Props) {
               </details>
             )}
             <p className="text-xs text-neutral-400 mt-3">
-              Source: CMS Plan Attributes PUF. Some exclusions require full SBC document review.
+              Source: federal marketplace plan data. Some exclusions require full SBC document review.
             </p>
           </section>
         )}
@@ -600,7 +600,7 @@ async function CountyPlanDetailPage({ params }: Props) {
           countyPlans={countyPlans}
         />
 
-        <GenericByline dataSource="CMS Plan Attributes & Benefits Cost Sharing PUF" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="Federal Marketplace Plan Data" planYear={PLAN_YEAR} />
 
       </main>
     </>
@@ -680,7 +680,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
     headline: `${drugName} Coverage in ${countyDisplay} (${PLAN_YEAR})`,
     description: `${drugName} formulary coverage across Marketplace plans in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}.`,
     dateModified: new Date().toISOString().slice(0, 7),
-    dataSourceName: 'CMS Machine-Readable Formulary PUF',
+    dataSourceName: 'Federal Formulary Data Files',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -699,7 +699,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
-      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="CMS-MR-Formulary-PUF" extra={{ drug: drugName, carriers: carrierCount }} />
+      <LlmComment pageType="county-subpage" state={stateCode} county={countyDisplay} year={PLAN_YEAR} data="federal-drug-formulary-data" extra={{ drug: drugName, carriers: carrierCount }} />
 
       <main className="max-w-4xl mx-auto px-4 py-10 space-y-10">
 
@@ -733,8 +733,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
           <p className="text-neutral-600 text-base leading-relaxed max-w-3xl mb-5">
             Coverage data for <strong>{drugName}</strong> across{' '}
             {carrierCount} carrier{carrierCount !== 1 ? 's' : ''} offering Marketplace
-            plans in {countyDisplay}, {stateName}. Source: CMS Machine-Readable
-            Formulary PUF, {PLAN_YEAR}.
+            plans in {countyDisplay}, {stateName}. Source: federal formulary data files, {PLAN_YEAR}.
           </p>
           <DrugPageCta variant="hero" drugName={drugName} stateCode={stateCode} stateName={stateName} />
         </section>
@@ -798,7 +797,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
               ))}
             </div>
             <p className="text-xs text-neutral-400 mt-4">
-              Source: CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR}. Tier and restriction data reflect issuer formulary filings. Verify coverage directly with your plan before enrolling.
+              Source: federal formulary data files, plan year {PLAN_YEAR}. Tier and restriction data reflect issuer formulary filings. Verify coverage directly with your plan before enrolling.
             </p>
           </section>
         )}
@@ -907,11 +906,11 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
 
         <DrugPageCta variant="bottom" drugName={drugName} stateCode={stateCode} stateName={stateName} />
 
-        <GenericByline dataSource="CMS Machine-Readable Formulary PUF" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="Federal Formulary Data Files" planYear={PLAN_YEAR} />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            <strong>Data methodology:</strong> Coverage data from the CMS Machine-Readable Formulary PUF, plan year {PLAN_YEAR},
+            <strong>Data methodology:</strong> Coverage data from federal formulary data files, plan year {PLAN_YEAR},
             filtered to issuers with plans in {countyDisplay} (FIPS {countyFips}). Tier placement reflects issuer formulary
             filings and may change during the plan year.
           </p>

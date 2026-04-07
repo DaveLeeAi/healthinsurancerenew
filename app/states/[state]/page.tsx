@@ -359,7 +359,7 @@ export default async function StateDetailPage({ params }: Props) {
           </div>
         </div>
         <p className="text-xs text-slate-400 mt-3">
-          Source: CMS Public Use Files, {PLAN_YEAR} plan year
+          Source: federal marketplace data, {PLAN_YEAR} plan year
         </p>
       </section>
 
@@ -584,12 +584,12 @@ export default async function StateDetailPage({ params }: Props) {
         </p>
       </div>
 
-      <GenericByline dataSource="CMS Public Use Files" planYear={PLAN_YEAR} />
+      <GenericByline dataSource="Federal Marketplace Data" planYear={PLAN_YEAR} />
 
       <SourcesBox
         sources={[
           {
-            title: 'CMS Public Use Files',
+            title: 'Federal Marketplace Data',
             url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
           },
           { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },

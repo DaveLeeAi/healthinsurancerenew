@@ -21,7 +21,7 @@ export default function PlanAuthorityBlock({ planYear = 2026 }: { planYear?: num
       <div className="space-y-3 text-sm text-neutral-600 leading-relaxed">
         <p>
           <strong>Reviewed by licensed insurance professionals.</strong> Plan benefit and
-          cost-sharing data on this page is sourced from CMS Public Use Files (PUF) published
+          cost-sharing data on this page is sourced from federal marketplace data published
           under{' '}
           <a
             href="https://www.cms.gov/marketplace/resources/data/public-use-files"
@@ -36,15 +36,15 @@ export default function PlanAuthorityBlock({ planYear = 2026 }: { planYear?: num
         </p>
 
         <p>
-          Cost-sharing information is derived from the CMS Benefits and Cost Sharing (BenCS) PUF,
-          which carriers are required to submit to CMS annually. While CMS requires accurate
+          Cost-sharing information is derived from federal plan benefit documents,
+          which carriers are required to submit annually. While federal rules require accurate
           carrier filings, discrepancies between PUF data and the carrier&apos;s actual plan
           documents may exist. The full Evidence of Coverage (EOC) governs your actual benefits —
           PUF data is for comparison purposes only.
         </p>
 
         <p>
-          Premium data is derived from the CMS Rate PUF. Amounts shown are full pre-subsidy rates
+          Premium data is derived from federal marketplace plan data. Amounts shown are full pre-subsidy rates
           and do not reflect Advance Premium Tax Credits (APTC) that may reduce your net monthly
           cost. To estimate your APTC, use the{' '}
           <a

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
   description:
     `Enhanced health insurance subsidies expired end of 2025. See the county-level premium ` +
-    `impact for 2026 at ages 27–64 across 26 states. Source: CMS + IRS FPL tables.`,
+    `impact for 2026 at ages 27–64 across 26 states. Source: federal marketplace rate data and IRS income guidelines.`,
   alternates: { canonical: `${SITE_URL}/enhanced-credits` },
   openGraph: {
     type: 'article',
@@ -52,7 +52,7 @@ export default function EnhancedCreditsIndexPage() {
     headline: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description: `Enhanced credits expired end of 2025. See the 2026 premium impact across ${policy.records.length} counties in ${stateCount} states.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS QHP Rate PUF + IRS FPL Tables',
+    dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -107,7 +107,7 @@ export default function EnhancedCreditsIndexPage() {
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
-      <LlmComment pageType="enhanced-credits-index" year={PLAN_YEAR} data="CMS-QHP-Rate-PUF+IRS-FPL" extra={{ counties: recordsWithHeadline.length, states: states.length }} />
+      <LlmComment pageType="enhanced-credits-index" year={PLAN_YEAR} data="federal-marketplace-rate-data+IRS-FPL" extra={{ counties: recordsWithHeadline.length, states: states.length }} />
 
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
         {/* ── Breadcrumbs ── */}
@@ -236,7 +236,7 @@ export default function EnhancedCreditsIndexPage() {
             </table>
           </div>
           <p className="text-xs text-neutral-400 mt-2">
-            Scenario: Age 40, 250% FPL, household size 1. Source: CMS + IRS, {PLAN_YEAR}.
+            Scenario: Age 40, 250% FPL, household size 1. Source: federal marketplace rate data and IRS income guidelines, {PLAN_YEAR}.
           </p>
         </section>
 
@@ -291,12 +291,12 @@ export default function EnhancedCreditsIndexPage() {
           )
         })()}
 
-        <GenericByline dataSource="CMS QHP Rate PUF + IRS FPL Tables" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="Federal Marketplace Rate Data and IRS Income Guidelines" planYear={PLAN_YEAR} />
 
         {/* ── Disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
+            All premium amounts are estimates based on federal benchmark data and IRS income guidelines for
             plan year {PLAN_YEAR}. Enhanced credits expired at the end of 2025. Congress may act to
             restore them retroactively.
           </p>

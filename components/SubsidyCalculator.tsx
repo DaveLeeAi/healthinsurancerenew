@@ -378,7 +378,7 @@ export default function SubsidyCalculator({
       )}
 
       <p className="text-xs text-neutral-400 pt-3 border-t border-neutral-100 leading-relaxed">
-        Estimates use the CMS benchmark silver premium for {countyDisplay} · Age-40 reference
+        Estimates use the federal benchmark silver premium for {countyDisplay} · Age-40 reference
         rate · 2025 FPL guidelines (lower 48 states + DC; Alaska and Hawaii have higher
         thresholds) · Actual credits depend on final reported income, enrollment status, and
         plan selection.{' '}

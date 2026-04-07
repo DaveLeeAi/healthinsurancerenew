@@ -123,8 +123,8 @@ export function buildAgentDisclaimerHtml(): string {
     premium amounts, and coverage terms should be verified at
     <a href="https://www.healthcare.gov" rel="noopener noreferrer" target="_blank">HealthCare.gov</a>
     or by consulting a licensed health insurance agent in your state.
-    Plan availability and pricing are subject to change. Data sourced from CMS Public Use Files
-    for the ${PLAN_YEAR} plan year.
+    Plan availability and pricing are subject to change. Data sourced from federal marketplace plan data
+    and plan benefit documents for the ${PLAN_YEAR} plan year.
   </p>
 </div>`.trim()
 }
@@ -161,43 +161,43 @@ export function buildDataSourcesHtml(sources: DataSourceEntry[]): string {
 // ─── Standard data source definitions per pillar ─────────────────────────────
 
 const CMS_PUF_SOURCE: DataSourceEntry = {
-  name: 'CMS QHP Landscape Public Use File',
+  name: 'Federal Marketplace Plan Data',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
-  description: `Consumer-facing plan comparison data for ${PLAN_YEAR}, published by CMS`,
+  description: `Consumer-facing plan comparison data for ${PLAN_YEAR}, published by the federal government`,
 }
 
 const CMS_RATE_PUF_SOURCE: DataSourceEntry = {
-  name: 'CMS Rate PUF',
+  name: 'Federal Marketplace Rate Filings',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: `Premium rates by plan, age, tobacco use, and rating area for ${PLAN_YEAR}`,
 }
 
 const CMS_PLAN_ATTR_SOURCE: DataSourceEntry = {
-  name: 'CMS Plan Attributes PUF',
+  name: 'Federal Marketplace Plan Data',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: 'Benefits, cost-sharing, network, and metal level details for all QHP plans',
 }
 
 const CMS_BENCS_SOURCE: DataSourceEntry = {
-  name: 'CMS Benefits and Cost Sharing (BenCS) PUF',
+  name: 'Federal Plan Benefit Documents',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: 'Service-level cost-sharing grid: copays, coinsurance, deductibles, and MOOP',
 }
 
 const CMS_MR_PUF_SOURCE: DataSourceEntry = {
-  name: 'CMS Plan Benefit Filings',
+  name: 'Federal Plan Benefit Documents',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: 'Carrier formulary JSON file URLs, mandated by ACA Section 1311(e)(3)',
 }
 
 const CMS_SADP_SOURCE: DataSourceEntry = {
-  name: 'CMS Stand-Alone Dental Plan (SADP) PUF',
+  name: 'Federal Dental Plan Data',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: `Stand-alone dental plan benefits, waiting periods, and coverage percentages for ${PLAN_YEAR}`,
 }
 
 const CMS_RATE_REVIEW_SOURCE: DataSourceEntry = {
-  name: 'CMS Rate Review PUF',
+  name: 'Federal Marketplace Rate Filings',
   url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   description: 'Rate change justifications and year-over-year premium volatility data',
 }
@@ -291,7 +291,7 @@ export function generatePlanComparisonContent(params: PlanComparisonParams): Pag
     `For the ${planYear} plan year, ${nPlans} health insurance plan${nPlans !== 1 ? 's' : ''} from ` +
     `${nCarriers} carrier${nCarriers !== 1 ? 's' : ''} are available in ${countyName}, ${stateCode} ` +
     `through the Marketplace. Premiums for a 40-year-old range from ${premiumRange} before any ` +
-    `subsidy is applied. Source: CMS QHP Landscape PUF, ${planYear} plan year.`
+    `subsidy is applied. Source: federal marketplace plan data, ${planYear} plan year.`
 
   const bodyHtml = `<section class="content-plan-comparison">
   <h2>Understanding Your ${planYear} Health Insurance Plan Options in ${countyName}, ${stateCode}</h2>
@@ -380,7 +380,7 @@ export function generateSubsidyContent(params: SubsidyTemplateParams): PageConte
     `The benchmark silver plan premium in ${countyName}, ${stateCode} for the ${planYear} plan year is ` +
     `${benchmarkFormatted} for a single adult (age 40, non-tobacco). This figure is used by the IRS ` +
     `to calculate Advance Premium Tax Credit (APTC) amounts for all Marketplace enrollees in this ` +
-    `county, regardless of which plan they ultimately select.`
+    `county, regardless of which plan they select.`
 
   const bodyHtml = `<section class="content-subsidy">
   <h2>How the Marketplace Subsidy Formula Works — IRC Section 36B</h2>
@@ -510,7 +510,7 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
         .map(
           (e) =>
             `<li><strong>${e.category}</strong>: ${e.description}` +
-            (e.source === 'puf' ? ` <em>(Source: CMS PUF)</em>` : '') +
+            (e.source === 'puf' ? ` <em>(Source: federal plan benefit documents)</em>` : '') +
             `</li>`
         )
         .join('\n      ')}
@@ -538,7 +538,7 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
     scenarios.
   </p>
   <p>
-    <strong>Important CMS notice:</strong> The SBC is a summary only.
+    <strong>Important notice:</strong> The SBC is a summary only.
     <em>"This is not a contract"</em> — the actual terms of your coverage are determined by the
     full plan documents, including the Evidence of Coverage (EOC) and carrier policy. In any
     conflict between the SBC and plan documents, the plan documents control.
@@ -564,7 +564,7 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
 
   <h2>Coverage Exclusions for This Plan</h2>
   <p>
-    The following coverage exclusions have been identified from CMS Public Use File data.
+    The following coverage exclusions have been identified from federal plan benefit data.
     Exclusions are services the plan does not cover. Understanding exclusions before enrolling
     can prevent unexpected bills. Always confirm exclusions in the full carrier SBC document.
   </p>
@@ -573,8 +573,8 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
 
   <h2>Using SBC Data When Comparing Plans</h2>
   <p>
-    The cost-sharing data on this page is derived from the CMS BenCS (Benefits and Cost Sharing)
-    Public Use File, which carriers are required to submit annually. While this data reflects
+    The cost-sharing data on this page is derived from federal plan benefit documents,
+    which carriers are required to submit annually. While this data reflects
     carrier filings, always verify current cost-sharing details directly with the carrier or at
     HealthCare.gov before enrolling, as plan documents are the legally binding source of truth.
     Use this data for comparison purposes; do not rely on it as definitive coverage confirmation.
@@ -733,7 +733,7 @@ export function generateFrictionQAContent(params: FrictionQATemplateParams): Pag
 
   const introParagraph =
     `This page answers: "${qa.question}" — one of the most common questions we receive from ` +
-    `Marketplace enrollees${locationContext}. The answer below is based on current CMS regulations and ` +
+    `Marketplace enrollees${locationContext}. The answer below is based on current federal regulations and ` +
     `IRS guidance applicable to the ${PLAN_YEAR} plan year.`
 
   const citationsHtml =
@@ -746,11 +746,11 @@ export function generateFrictionQAContent(params: FrictionQATemplateParams): Pag
 
   const categoryContextMap: Record<string, string> = {
     enrollment:
-      'ACA enrollment rules are governed by CMS and the Treasury Department. Enrollment windows, qualifying events, and plan selection rules are set annually through CMS guidance.',
+      'ACA enrollment rules are governed by the federal government and the Treasury Department. Enrollment windows, qualifying events, and plan selection rules are set annually through federal guidance.',
     subsidy:
       'ACA premium tax credits are governed by IRC Section 36B and related IRS regulations. Credit amounts, income thresholds, and reconciliation rules may change annually.',
     cost_sharing:
-      'ACA cost-sharing rules — including deductibles, copays, coinsurance, and out-of-pocket maximums — are set by carriers within CMS-established limits for each metal level.',
+      'ACA cost-sharing rules — including deductibles, copays, coinsurance, and out-of-pocket maximums — are set by carriers within federally established limits for each metal level.',
     sep:
       'Special Enrollment Periods are triggered by qualifying life events defined in 45 CFR Part 155. Documentation requirements and window lengths vary by event type.',
     formulary:
@@ -760,12 +760,12 @@ export function generateFrictionQAContent(params: FrictionQATemplateParams): Pag
     dental:
       'Dental coverage on the ACA Marketplace is offered as embedded pediatric dental (required) or as optional stand-alone dental plans (SADPs). Adult dental is not a required Essential Health Benefit.',
     billing:
-      'ACA billing rules are governed by CMS, the No Surprises Act (2022), and state insurance regulations. Billing disputes may involve federal and state consumer protection processes.',
+      'ACA billing rules are governed by federal regulations, the No Surprises Act (2022), and state insurance regulations. Billing disputes may involve federal and state consumer protection processes.',
   }
 
   const categoryIntro =
     categoryContextMap[qa.category] ??
-    'ACA coverage rules are set by CMS and state insurance departments and may vary by state and plan year.'
+    'ACA coverage rules are set by federal and state insurance departments and may vary by state and plan year.'
 
   const bodyHtml = `<section class="content-friction-qa">
   <h2>${qa.question}</h2>
@@ -999,7 +999,7 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
         ? `This plan has a ${wp.basic_months}-month waiting period for certain services.
     Waiting periods typically apply to major restorative services and orthodontia — not to
     preventive and basic services, which are usually covered from day one of enrollment.`
-        : 'This plan does not appear to have a waiting period for covered services per CMS SADP PUF data. Confirm directly with the carrier before enrolling.'
+        : 'This plan does not appear to have a waiting period for covered services per federal dental plan data. Confirm directly with the carrier before enrolling.'
     }
     If you have an urgent need for major dental work, verify the waiting period before
     enrolling to ensure coverage will be active when treatment is planned.
@@ -1010,7 +1010,7 @@ export function generateDentalContent(params: DentalTemplateParams): PageContent
     ${
       dental.deductible.individual_in_network != null
         ? `The individual deductible for this plan is $${dental.deductible.individual_in_network.toLocaleString()}. You must meet this deductible before cost-sharing applies to basic and major restorative services. Preventive services are often covered without meeting the deductible first.`
-        : 'Deductible information was not available in the CMS SADP PUF for this plan. Review the full plan documents for deductible details.'
+        : 'Deductible information was not available in the federal dental plan data for this plan. Review the full plan documents for deductible details.'
     }
   </p>
 </section>`.trim()
@@ -1243,7 +1243,7 @@ export function generatePolicyScenarioContent(params: PolicyScenarioTemplatePara
     `enhanced credits expire after ${ENHANCED_CREDIT_EXPIRATION_YEAR}, the estimated monthly ` +
     `increase is <strong>$${headline.monthly_increase_at_expiration.toFixed(2)}/month</strong> ` +
     `($${headline.annual_increase_at_expiration.toFixed(2)}/year). ` +
-    `Source: CMS Rate PUF + IRS FPL tables, ${planYear}.`
+    `Source: federal marketplace rate data and IRS income guidelines, ${planYear}.`
 
   const ageRowsHtml = Object.entries(age_scenarios)
     .filter((entry): entry is [string, NonNullable<typeof entry[1]>] => entry[1] != null)
@@ -1292,8 +1292,8 @@ export function generatePolicyScenarioContent(params: PolicyScenarioTemplatePara
   <h2>Age-Adjusted Scenarios at 250% FPL in ${countyName}</h2>
   <p>
     The following table shows how the benchmark premium and estimated APTC vary by age at 250%
-    FPL using current enhanced credit parameters. All figures are estimates based on CMS PUF
-    data and IRS FPL tables. Actual credits depend on final enrollment income, household size,
+    FPL using current enhanced credit parameters. All figures are estimates based on federal marketplace
+    data and IRS income guidelines. Actual credits depend on final enrollment income, household size,
     and plan year parameters.
   </p>
   <div class="table-responsive">
@@ -1312,7 +1312,7 @@ export function generatePolicyScenarioContent(params: PolicyScenarioTemplatePara
     </table>
   </div>
   <p class="table-note">
-    Source: CMS Rate PUF ${planYear}, IRS FPL tables. Estimated figures — verify at HealthCare.gov.
+    Source: federal marketplace rate data ${planYear}, IRS income guidelines. Estimated figures — verify at HealthCare.gov.
   </p>
 
   <h2>What You Can Do Now</h2>

@@ -67,7 +67,7 @@ function getWebSiteSchema() {
     url: SITE_URL,
     name: SITE_NAME,
     description:
-      'Independent ACA health insurance guide. Compare plans, estimate subsidies, and find coverage — powered by CMS data and reviewed by a licensed agent.',
+      'Independent ACA health insurance guide. Compare plans, estimate subsidies, and find coverage — powered by federal marketplace data and reviewed by a licensed agent.',
     publisher: { '@id': IDS.organization },
     inLanguage: 'en-US',
     potentialAction: {

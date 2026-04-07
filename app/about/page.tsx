@@ -83,7 +83,7 @@ export default function AboutPage() {
           operated by {AGENCY_NAME}, a licensed ACA agency with CMS Elite Circle
           of Champions recognition. We help consumers compare marketplace plans,
           estimate premium tax credits, and understand their coverage options
-          using verified data from CMS and state insurance departments.
+          using verified data from federal government sources and state insurance departments.
         </BLUFBox>
 
         {/* ── Mission ── */}
@@ -97,7 +97,7 @@ export default function AboutPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           Every page on this site is reviewed by a licensed ACA health insurance
           agent — not a content writer guessing at policy details. Our data comes
-          directly from CMS federal plan data, state insurance department rate
+          directly from federal marketplace plan data, state insurance department rate
           databases, and HHS policy analyses. When regulations change, we update
           our content within days, not months.
         </p>
@@ -110,7 +110,7 @@ export default function AboutPage() {
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Plan intelligence</strong> — side-by-side comparisons of
-          marketplace plans by state, county, and metal tier, drawn from CMS
+          marketplace plans by state, county, and metal tier, drawn from federal
           plan benefit data.{' '}
           <strong>Subsidy estimation</strong> — premium tax credit calculators
           using current federal poverty level guidelines and benchmark plan
@@ -169,7 +169,7 @@ export default function AboutPage() {
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">
           <strong>Government data sources.</strong> Our plan data, cost
-          estimates, and eligibility information come from CMS, HHS, and state
+          estimates, and eligibility information come from federal government sources, HHS, and state
           insurance departments — not third-party aggregators or outdated
           databases. We cite our sources on every page.
         </p>

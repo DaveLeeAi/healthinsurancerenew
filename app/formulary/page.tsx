@@ -16,16 +16,16 @@ const allStates = (allStatesData.states as StateEntry[]).sort(
   (a, b) => a.name.localeCompare(b.name)
 )
 
-// FFM states: plan data from Healthcare.gov PUF (includes SBM-FP states GA, IL that use federal platform)
+// FFM states: plan data from Healthcare.gov PUF
 const FFM_STATES = new Set([
-  'AK','AL','AR','AZ','DE','FL','GA','HI','IA','IL','IN','KS','LA',
+  'AK','AL','AR','AZ','DE','FL','HI','IA','IN','KS','LA',
   'MI','MO','MS','MT','NC','ND','NE','NH','OH','OK','SC','SD','TN',
   'TX','UT','WI','WV','WY'
 ])
 
-// SBM states: formulary data from carrier PDF parsing (State-Based Marketplaces)
+// SBM states (22 + DC): State-Based Marketplaces (includes SBM-FP states AR, GA, IL, OR)
 const SBM_STATES = new Set([
-  'CA','CO','CT','DC','ID','KY','MA','MD','ME','MN',
+  'CA','CO','CT','DC','GA','ID','IL','KY','MA','MD','ME','MN',
   'NJ','NM','NV','NY','OR','PA','RI','VA','VT','WA'
 ])
 
@@ -119,7 +119,7 @@ export function generateMetadata(): Metadata {
 function getStructuredData(): object[] {
   const dataset = buildDatasetSchema({
     name: 'ACA Marketplace Formulary Intelligence Dataset',
-    description: `Prescription drug coverage data for ${DRUG_COUNT} unique medications across ${ISSUER_COUNT} insurance issuers on the ACA Marketplace. Includes drug tier, prior authorization, step therapy, and quantity limit flags. Source: CMS MR-PUF and carrier formulary JSON files.`,
+    description: `Prescription drug coverage data for ${DRUG_COUNT} unique medications across ${ISSUER_COUNT} insurance issuers on the ACA Marketplace. Includes drug tier, prior authorization, step therapy, and quantity limit flags. Source: federal plan benefit documents and carrier formulary filings.`,
     url: CANONICAL,
     year: '2026',
   })
@@ -162,7 +162,7 @@ export default function FormularyIndexPage() {
 
       <LlmComment
         pageType="formulary-index"
-        data="CMS-MR-PUF"
+        data="federal-plan-benefit-documents"
         extra={{ drugs: DRUG_COUNT, issuers: ISSUER_COUNT, states: STATES_WITH_DATA.size }}
       />
 
@@ -179,7 +179,7 @@ export default function FormularyIndexPage() {
           <p id="formulary-bluf" className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
             Search {DRUG_COUNT} prescription drugs across {ISSUER_COUNT} insurance issuers
             for 2026. Compare drug tiers, copays, and prior authorization requirements
-            by plan and state. Data sourced from CMS machine-readable formulary files
+            by plan and state. Data sourced from federal formulary data files
             that insurance companies are required by law to publish.
           </p>
         </div>
@@ -188,7 +188,7 @@ export default function FormularyIndexPage() {
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mb-8 text-xs text-neutral-500">
           <span className="inline-flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Data source: CMS + issuer filings
+            Data source: federal marketplace data and issuer filings
           </span>
           <span className="hidden sm:inline text-neutral-300">|</span>
           <span className="inline-flex items-center gap-1.5">
@@ -294,7 +294,7 @@ export default function FormularyIndexPage() {
           </h2>
           <ul className="space-y-2.5 text-sm text-neutral-600">
             <TrustBullet>
-              Uses official CMS machine-readable data (MR-PUF) &mdash; the same data insurance companies are
+              Uses official federal marketplace data &mdash; the same data insurance companies are
               required by law to publish
             </TrustBullet>
             <TrustBullet>
@@ -314,7 +314,7 @@ export default function FormularyIndexPage() {
         <PageFaq faqs={FAQ_ITEMS} />
 
         <GenericByline
-          dataSource="CMS plan information + Carrier Formulary JSON Files"
+          dataSource="Federal plan benefit documents + carrier formulary filings"
           planYear={2026}
         />
       </main>

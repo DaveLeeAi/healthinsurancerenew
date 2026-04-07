@@ -174,7 +174,7 @@ export function buildStatePlansArticleSchema(params: {
     datePublished: '2025-11-01',
     isBasedOn: {
       '@type': 'Dataset',
-      name: 'CMS QHP Landscape Public Use File',
+      name: 'Federal Marketplace Plan Data',
       url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
     about: {
@@ -231,7 +231,7 @@ export function buildPlansProductSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: `Health Insurance Plans — ${countyName}, ${stateCode}`,
-    description: `Compare marketplace health insurance plans available in ${countyName}, ${stateCode} for plan year ${planYear}. Source: CMS QHP Landscape PUF.`,
+    description: `Compare marketplace health insurance plans available in ${countyName}, ${stateCode} for plan year ${planYear}. Source: federal marketplace plan data.`,
     publisher: PUBLISHER,
     offers: plans.map((plan) => ({
       '@type': 'Offer',
@@ -307,7 +307,7 @@ export function buildSubsidySchemas(params: {
     '@type': 'GovernmentService',
     name: 'ACA Marketplace — Advance Premium Tax Credit (APTC)',
     description:
-      'Federal subsidy program reducing marketplace health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL). Administered by CMS via HealthCare.gov.',
+      'Federal subsidy program reducing marketplace health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL). Administered via HealthCare.gov.',
     serviceType: 'Health Insurance Subsidy',
     provider: {
       '@type': 'GovernmentOrganization',
@@ -401,7 +401,7 @@ export function buildSbcProductSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: plan.plan_name,
-    description: `${plan.metal_level} ${plan.plan_type} health insurance plan offered by ${plan.issuer_name} in ${plan.state_code}. Plan year ${planYear}. Source: CMS BenCS PUF.`,
+    description: `${plan.metal_level} ${plan.plan_type} health insurance plan offered by ${plan.issuer_name} in ${plan.state_code}. Plan year ${planYear}. Source: federal plan benefit documents.`,
     brand: {
       '@type': 'Brand',
       name: plan.issuer_name,
@@ -442,7 +442,7 @@ export function buildRateVolatilityDatasetSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: `Health Insurance Rate Volatility — ${countyName}, ${record.state_code} (${record.plan_year})`,
-    description: `Premium rate analytics for ${countyName} county, ${record.state_code}. ${record.plan_count} plans across ${record.carrier_count} carriers. Source: CMS Rate Review PUF.`,
+    description: `Premium rate analytics for ${countyName} county, ${record.state_code}. ${record.plan_count} plans across ${record.carrier_count} carriers. Source: federal marketplace rate filings.`,
     url: `https://healthinsurancerenew.com/rates/${record.state_code.toLowerCase()}/${record.county_fips}`,
     creator: { '@type': 'Organization', name: 'HealthInsuranceRenew' },
     publisher: PUBLISHER,
@@ -456,12 +456,12 @@ export function buildRateVolatilityDatasetSchema(params: {
         '@type': 'DataDownload',
         encodingFormat: 'application/json',
         contentUrl: 'https://healthinsurancerenew.com/data/rate_volatility.json',
-        name: 'Rate Volatility Dataset (CMS-derived)',
+        name: 'Rate Volatility Dataset (federal data-derived)',
       },
     ],
     isBasedOn: {
       '@type': 'Dataset',
-      name: 'CMS Rate Review PUF',
+      name: 'Federal Marketplace Rate Filings',
       url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
   }
@@ -613,7 +613,7 @@ export function buildDentalPlanSchema(params: {
     '@context': 'https://schema.org',
     '@type': 'HealthInsurancePlan',
     name: dental.plan_name,
-    description: `${dental.metal_level} stand-alone dental plan (SADP) offered by ${dental.issuer_name} in ${dental.state_code}. Plan year ${planYear}. Source: CMS SADP PUF.`,
+    description: `${dental.metal_level} stand-alone dental plan (SADP) offered by ${dental.issuer_name} in ${dental.state_code}. Plan year ${planYear}. Source: federal dental plan data.`,
     identifier: dental.plan_id,
     healthPlanMarketingUrl: `https://healthinsurancerenew.com/dental/${dental.state_code.toLowerCase()}/${dental.plan_variant_id}`,
     healthPlanDrugOption: benefitOptions,
@@ -756,12 +756,12 @@ export function buildPolicyScenarioSchema(params: {
         '@type': 'DataDownload',
         encodingFormat: 'application/json',
         contentUrl: 'https://healthinsurancerenew.com/data/policy_scenarios.json',
-        name: 'Policy Scenarios Dataset (CMS + IRS-derived)',
+        name: 'Policy Scenarios Dataset (federal data + IRS-derived)',
       },
     ],
     isBasedOn: {
       '@type': 'Dataset',
-      name: 'CMS QHP Rate PUF + IRS Federal Poverty Level Tables',
+      name: 'Federal Marketplace Rate Data and IRS Income Guidelines',
       url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
   }

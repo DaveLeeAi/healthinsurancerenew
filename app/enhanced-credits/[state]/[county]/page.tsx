@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `Enhanced subsidies expired end of 2025. See how ${PLAN_YEAR} health insurance premiums changed ` +
     `in ${countyDisplay}, ${stateUpper} — dollar impact at every income level for ages 27–64. ` +
-    `Source: CMS benchmark premiums + IRS FPL tables.`
+    `Source: federal benchmark premiums and IRS income guidelines.`
 
   return {
     title,
@@ -102,9 +102,9 @@ export default function EnhancedCreditsPage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} — ${PLAN_YEAR} Analysis`,
-    description: `Enhanced credits expired end of 2025. See the ${PLAN_YEAR} premium increase in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: CMS Rate PUF + IRS FPL tables.`,
+    description: `Enhanced credits expired end of 2025. See the ${PLAN_YEAR} premium increase in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: federal marketplace rate data and IRS income guidelines.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS QHP Rate PUF + IRS Federal Poverty Level Tables',
+    dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -182,7 +182,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
         pageType="enhanced-credits-county"
         state={stateUpper}
         county={countyDisplay}
-        data="CMS-Rate-PUF-IRS-FPL"
+        data="federal-marketplace-rate-data-IRS-FPL"
         extra={{
           benchmark40: `$${scenario.benchmark_silver_premium_age40.toFixed(0)}`,
           monthlyIncrease: `$${headline.monthly_increase_at_expiration.toFixed(0)}`,
@@ -363,8 +363,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
             </div>
             <p className="text-xs text-neutral-400 mt-2">
               Net monthly premium after APTC subsidy. &ldquo;2026 (Standard)&rdquo; uses the
-              pre-ARP applicable percentage table per IRC &sect; 36B, now in effect. Source: CMS QHP Rate PUF +
-              IRS FPL tables, {PLAN_YEAR}.
+              pre-ARP applicable percentage table per IRC &sect; 36B, now in effect. Source: federal marketplace rate data and IRS income guidelines, {PLAN_YEAR}.
             </p>
           </section>
         )}
@@ -598,12 +597,12 @@ export default function EnhancedCreditsPage({ params }: Props) {
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
         {/* ── Byline ── */}
-        <GenericByline dataSource="CMS Rate PUF & IRS FPL Tables" />
+        <GenericByline dataSource="Federal Marketplace Rate Data and IRS Income Guidelines" />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            All premium amounts are estimates based on CMS benchmark data and IRS FPL tables for
+            All premium amounts are estimates based on federal benchmark data and IRS income guidelines for
             plan year {PLAN_YEAR}. Actual premiums depend on your specific plan selection, age,
             tobacco use, household size, and income. Enhanced credits expired at the end of 2025.
             Congress may act to restore them retroactively.
@@ -649,8 +648,8 @@ function buildFaqs(
     {
       question: `How much does a benchmark silver plan cost in ${countyDisplay}, ${stateUpper}?`,
       answer: scenario
-        ? `The ${PLAN_YEAR} second-lowest-cost Silver plan (SLCSP) benchmark premium for a 40-year-old in ${countyDisplay} is $${scenario.benchmark_silver_premium_age40.toFixed(2)}/month before subsidies. Source: CMS QHP Rate PUF.`
-        : `Benchmark silver plan premiums vary by county. Check the CMS QHP Rate PUF for current data.`,
+        ? `The ${PLAN_YEAR} second-lowest-cost Silver plan (SLCSP) benchmark premium for a 40-year-old in ${countyDisplay} is $${scenario.benchmark_silver_premium_age40.toFixed(2)}/month before subsidies. Source: federal marketplace rate filings.`
+        : `Benchmark silver plan premiums vary by county. Check federal marketplace rate filings for current data.`,
     },
     {
       question: `When did enhanced premium tax credits expire?`,

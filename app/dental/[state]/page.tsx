@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${stateName} Dental Plans ${PLAN_YEAR} — ${plans.length} Stand-Alone Options Compared`
   const description =
     `Compare all ${plans.length} stand-alone dental plans (SADPs) available in ${stateName} for ${PLAN_YEAR}. ` +
-    `Coverage percentages, annual maximums, waiting periods, and issuer details from CMS SADP PUF data.`
+    `Coverage percentages, annual maximums, waiting periods, and issuer details from federal dental plan data.`
 
   return {
     title,
@@ -103,9 +103,9 @@ export default function DentalStatePage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `${stateName} Stand-Alone Dental Plans for ${PLAN_YEAR}`,
-    description: `${plans.length} SADP dental plan variants from ${issuers.size} issuers in ${stateName}. Source: CMS SADP PUF.`,
+    description: `${plans.length} SADP dental plan variants from ${issuers.size} issuers in ${stateName}. Source: federal dental plan data.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS SADP PUF',
+    dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -119,7 +119,7 @@ export default function DentalStatePage({ params }: Props) {
         planCount={plans.length}
         carrierCount={issuers.size}
         year={PLAN_YEAR}
-        data="CMS-SADP-PUF"
+        data="federal-dental-plan-data"
       />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
@@ -246,7 +246,7 @@ export default function DentalStatePage({ params }: Props) {
           </div>
           <p className="text-xs text-neutral-400 mt-2">
             Coverage percentages = plan pays (%). Network types: {[...planTypes].join(', ')}.
-            Source: CMS SADP PUF + BenCS PUF, plan year {PLAN_YEAR}.
+            Source: federal dental plan data, plan year {PLAN_YEAR}.
           </p>
         </section>
 
@@ -273,7 +273,7 @@ export default function DentalStatePage({ params }: Props) {
           </div>
         </section>
 
-        <GenericByline dataSource="CMS SADP PUF" planYear={PLAN_YEAR} />
+        <GenericByline dataSource="federal dental plan data" planYear={PLAN_YEAR} />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>

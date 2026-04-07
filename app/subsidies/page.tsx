@@ -10,11 +10,11 @@ import { buildBreadcrumbSchema, buildDatasetSchema } from '@/lib/schema-markup'
 
 export const metadata: Metadata = {
   title: 'Health Insurance Subsidy Calculator — APTC by State & County (2026)',
-  description: 'Calculate your 2026 premium tax credit (APTC) by county. Based on CMS benchmark silver premium data for all 50 states. See how much you could save.',
+  description: 'Calculate your 2026 premium tax credit (APTC) by county. Based on federal benchmark silver premium data for all 50 states. See how much you could save.',
   alternates: { canonical: 'https://healthinsurancerenew.com/subsidies' },
   openGraph: {
     title: 'Health Insurance Subsidy Calculator — APTC by State & County (2026)',
-    description: 'Calculate your 2026 premium tax credit. Based on CMS benchmark silver premium data for all 50 states.',
+    description: 'Calculate your 2026 premium tax credit. Based on federal benchmark silver premium data for all 50 states.',
     url: 'https://healthinsurancerenew.com/subsidies',
     type: 'website',
     siteName: 'HealthInsuranceRenew',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Health Insurance Subsidy Calculator — APTC by State & County (2026)',
     description:
-      'Calculate your 2026 premium tax credit. Based on CMS benchmark silver premium data for all 50 states.',
+      'Calculate your 2026 premium tax credit. Based on federal benchmark silver premium data for all 50 states.',
   },
 }
 
@@ -74,7 +74,7 @@ export default function SubsidiesIndexPage() {
 
   const datasetSchema = buildDatasetSchema({
     name: 'ACA Subsidy & APTC Calculator Dataset',
-    description: `Premium tax credit (APTC) estimates by county for ${states.length} states and ${totalCounties} counties. Based on CMS benchmark silver premiums and IRS Federal Poverty Level tables for the 2026 plan year.`,
+    description: `Premium tax credit (APTC) estimates by county for ${states.length} states and ${totalCounties} counties. Based on federal benchmark silver premiums and IRS Federal Poverty Level tables for the 2026 plan year.`,
     url: `${SITE_URL}/subsidies`,
     year: '2026',
   })
@@ -86,7 +86,7 @@ export default function SubsidiesIndexPage() {
 
       <LlmComment
         pageType="subsidy-index"
-        data="CMS-Subsidy-Engine"
+        data="federal-subsidy-data"
         extra={{ counties: totalCounties, states: states.length }}
       />
 
@@ -106,7 +106,7 @@ export default function SubsidiesIndexPage() {
             The Advance Premium Tax Credit (APTC) is the federal subsidy that lowers your monthly health insurance premium on the ACA marketplace.
             How much you receive depends on your household income, household size, and the benchmark Silver plan premium in your county.
             Use this tool to look up APTC estimates for <strong>{totalCounties.toLocaleString()}</strong> counties
-            across <strong>{states.length}</strong> states, based on 2026 CMS benchmark data and IRS Federal Poverty Level tables.
+            across <strong>{states.length}</strong> states, based on 2026 federal benchmark data and IRS Federal Poverty Level tables.
           </p>
           <div className="bg-federal-50 border border-federal-200 rounded-xl p-4 text-sm text-federal-800">
             Select your state, then choose your county to see APTC estimates at each income level.
@@ -154,7 +154,7 @@ export default function SubsidiesIndexPage() {
         <PageFaq faqs={FAQ_ITEMS} />
 
         <GenericByline
-          dataSource="CMS Benchmark Silver Premiums + IRS FPL Tables"
+          dataSource="Federal Benchmark Silver Premiums and IRS Income Guidelines"
           planYear={2026}
         />
       </main>

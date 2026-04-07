@@ -236,10 +236,10 @@ export default function AuthorPage() {
         <p className="text-gray-700 leading-relaxed mb-4">
           I review every piece of content published on HealthInsuranceRenew.com
           for accuracy, regulatory compliance, and practical usefulness. My
-          review process checks all cost figures against CMS plan benefit
+          review process checks all cost figures against federal plan benefit
           filings, verifies eligibility rules against current HHS guidance,
           confirms formulary data matches published plan formularies, and
-          ensures all consumer-facing language meets CMS marketing compliance
+          ensures all consumer-facing language meets federal marketplace marketing compliance
           standards.
         </p>
         <p className="text-gray-700 leading-relaxed mb-4">

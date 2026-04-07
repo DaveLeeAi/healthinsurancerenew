@@ -84,7 +84,7 @@ export default function LifeEventsIndexPage() {
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <LlmComment pageType="life-events-index" year={2026} data="CMS-SEP-Rules" extra={{ events: events.length, categories: byCategory.size }} />
+      <LlmComment pageType="life-events-index" year={2026} data="federal-SEP-rules" extra={{ events: events.length, categories: byCategory.size }} />
 
       <main className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         {/* Breadcrumbs */}
@@ -199,7 +199,7 @@ export default function LifeEventsIndexPage() {
           </a>
         </div>
 
-        <GenericByline dataSource="CMS Special Enrollment Period Rules" planYear={2026} />
+        <GenericByline dataSource="federal special enrollment period rules" planYear={2026} />
 
         {/* Disclaimer */}
         <footer className="mt-8 pt-4 border-t border-neutral-100">

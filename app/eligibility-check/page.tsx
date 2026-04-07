@@ -70,7 +70,7 @@ const sources = [
   { title: 'Healthcare.gov - Eligibility', url: 'https://www.healthcare.gov/quick-guide/eligibility/' },
   { title: 'Healthcare.gov - Qualifying Life Events', url: 'https://www.healthcare.gov/glossary/qualifying-life-event/' },
   { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-  { title: 'CMS - Medicaid Expansion', url: 'https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-chip-enrollment-data/index.html' },
+  { title: 'Federal Medicaid Expansion Data', url: 'https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-chip-enrollment-data/index.html' },
 ]
 
 export default function EligibilityCheckPage() {

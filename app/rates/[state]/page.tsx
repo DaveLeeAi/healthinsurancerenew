@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `${stateName} manages rate data through ${stateEntry.exchange}. ` +
       `Learn about premium trends and where to compare rates for plan year ${PLAN_YEAR}.`
     : `Track ${PLAN_YEAR} marketplace premium rate changes across ${counties.length} counties in ${stateName}. ` +
-      `Compare year-over-year premium trends and carrier competition. Source: CMS Rate PUF.`
+      `Compare year-over-year premium trends and carrier competition. Source: federal marketplace rate filings.`
 
   return {
     title,
@@ -120,7 +120,7 @@ export default function RatesStatePage({ params }: Props) {
       <LlmComment
         pageType="rates-state"
         state={stateUpper}
-        data="CMS-Rate-Review-PUF"
+        data="federal-marketplace-rate-filings"
         extra={{ counties: counties.length, isSbm: isSbm }}
       />
 
@@ -148,7 +148,7 @@ export default function RatesStatePage({ params }: Props) {
                 <p className="text-neutral-700 leading-relaxed">
                   {stateName} files rate data with its own state exchange,{' '}
                   <strong>{stateEntry.exchange}</strong>, rather than with the federal CMS system.
-                  Premium rate data for {stateName} is not available in the CMS federal dataset
+                  Premium rate data for {stateName} is not available in the federal marketplace dataset
                   that powers this tracker.
                 </p>
               </div>
@@ -253,7 +253,7 @@ export default function RatesStatePage({ params }: Props) {
         )}
 
         {/* Byline */}
-        <GenericByline dataSource="CMS Rate Review PUF" />
+        <GenericByline dataSource="Federal Marketplace Rate Filings" />
 
         {/* Disclaimer */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400">
@@ -261,9 +261,9 @@ export default function RatesStatePage({ params }: Props) {
             {isSbm
               ? `${stateName} rate data is managed by ${stateEntry.exchange}. ` +
                 `Consult a licensed health insurance agent for current premium information.`
-              : `Rate data sourced from the CMS Rate Review Public Use File, plan year ${PLAN_YEAR}. ` +
+              : `Rate data sourced from federal marketplace rate filings, plan year ${PLAN_YEAR}. ` +
                 `Year-over-year changes reflect benchmark silver plan premium movements. ` +
-                `Source: CMS data.healthcare.gov.`
+                `Source: data.healthcare.gov.`
             }
           </p>
         </footer>

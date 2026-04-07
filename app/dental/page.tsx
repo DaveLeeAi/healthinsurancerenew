@@ -36,12 +36,12 @@ export const metadata: Metadata = {
   title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
   description:
     `Compare ${PLAN_YEAR} stand-alone dental plan (SADP) options across 30 states. ` +
-    `Annual maximums, coverage percentages, waiting periods, and issuer details from CMS SADP PUF data.`,
+    `Annual maximums, coverage percentages, waiting periods, and issuer details from federal dental plan data.`,
   alternates: { canonical: `${SITE_URL}/dental` },
   openGraph: {
     type: 'article',
     title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
-    description: `1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from CMS SADP PUF data.`,
+    description: `1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from federal dental plan data.`,
     url: `${SITE_URL}/dental`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State',
     description:
-      '1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from CMS SADP PUF data.',
+      '1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from federal dental plan data.',
   },
 }
 
@@ -77,9 +77,9 @@ export default function DentalIndexPage() {
 
   const articleSchema = buildArticleSchema({
     headline: `Stand-Alone Dental Plans for ${PLAN_YEAR}`,
-    description: `${dataset.data.length.toLocaleString()} dental plan variants across ${states.length} states. Source: CMS SADP PUF.`,
+    description: `${dataset.data.length.toLocaleString()} dental plan variants across ${states.length} states. Source: federal dental plan data.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS SADP PUF',
+    dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -90,7 +90,7 @@ export default function DentalIndexPage() {
 
       <LlmComment
         pageType="dental-index"
-        data="CMS-SADP-PUF"
+        data="federal-dental-plan-data"
         extra={{ plans: dataset.data.length, issuers: totalIssuers, states: states.length }}
       />
 
@@ -164,7 +164,7 @@ export default function DentalIndexPage() {
         <PageFaq faqs={FAQ_ITEMS} />
 
         <GenericByline
-          dataSource="CMS SADP Public Use File"
+          dataSource="federal dental plan data"
           planYear={PLAN_YEAR}
         />
 

@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `${PLAN_YEAR} health insurance premium rate trends for ${countyDisplay}, ${stateUpper}.` +
     ` ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''} competing.${yoyPhrase}` +
-    ` Source: CMS Rate PUF.`
+    ` Source: federal marketplace rate filings.`
 
   return {
     title,
@@ -115,9 +115,9 @@ export default function RatesPage({ params }: Props) {
 
   const articleSchema = buildArticleSchema({
     headline: `${countyDisplay}, ${stateUpper} Health Insurance Rate Changes for ${PLAN_YEAR}`,
-    description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers. Source: CMS Rate Review PUF.`,
+    description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers. Source: federal marketplace rate filings.`,
     dateModified: new Date().toISOString().slice(0, 10),
-    dataSourceName: 'CMS Rate Review PUF',
+    dataSourceName: 'Federal Marketplace Rate Filings',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -176,7 +176,7 @@ export default function RatesPage({ params }: Props) {
         county={countyDisplay}
         planCount={rates.plan_count}
         carrierCount={rates.carrier_count}
-        data="CMS-Rate-Review-PUF"
+        data="federal-marketplace-rate-filings"
         extra={{
           avgPremium40: `$${rates.avg_premium_age_40.toFixed(0)}`,
           yoyChange: rates.yoy_change_pct != null ? `${rates.yoy_change_pct.toFixed(1)}%` : 'N/A',
@@ -212,7 +212,7 @@ export default function RatesPage({ params }: Props) {
                 year-over-year
               </>
             )}
-            . Data sourced from CMS rate filings for plan year {rates.plan_year}.
+            . Data sourced from federal marketplace rate filings for plan year {rates.plan_year}.
           </p>
         </section>
 
@@ -337,7 +337,7 @@ export default function RatesPage({ params }: Props) {
               </table>
             </div>
             <p className="text-xs text-neutral-400 mt-2">
-              Premiums shown for age 40, before subsidy. Source: CMS QHP Landscape PUF{' '}
+              Premiums shown for age 40, before subsidy. Source: federal marketplace plan data{' '}
               {PLAN_YEAR}.
             </p>
           </section>
@@ -421,12 +421,12 @@ export default function RatesPage({ params }: Props) {
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
         {/* ── Byline ── */}
-        <GenericByline dataSource="CMS Rate Review PUF" />
+        <GenericByline dataSource="Federal Marketplace Rate Filings" />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Premium rate data sourced from the CMS Rate Review PUF, plan year {rates.plan_year}
+            Premium rate data sourced from federal marketplace rate filings, plan year {rates.plan_year}
             . All premium amounts are pre-subsidy and represent the unsubsidized rate. Actual
             premiums may vary based on age, tobacco use, household size, and applicable premium
             tax credits (APTC).

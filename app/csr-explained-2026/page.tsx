@@ -77,7 +77,7 @@ const faqs = [
 
 const sources = [
   { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
-  { title: 'CMS - Actuarial Value', url: 'https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/minimum-essential-coverage' },
+  { title: 'Federal Actuarial Value Standards', url: 'https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/minimum-essential-coverage' },
   { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
 ]
 
@@ -97,7 +97,7 @@ export default function CSRExplainedPage() {
     headline: 'Cost-Sharing Reductions (CSR) Explained for 2026',
     description: 'Plain-English explanation of cost-sharing reductions (CSR) for 2026.',
     dateModified: '2026-03-19',
-    dataSourceName: 'CMS Actuarial Value Standards',
+    dataSourceName: 'federal actuarial value standards',
     dataSourceUrl: 'https://www.healthcare.gov/choose-a-plan/plans-categories/',
   })
 
@@ -105,7 +105,7 @@ export default function CSRExplainedPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <LlmComment pageType="csr-guide" year={2026} data="CMS-CSR-tiers" />
+      <LlmComment pageType="csr-guide" year={2026} data="federal-CSR-tiers" />
       <Breadcrumbs items={breadcrumbs} />
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
         What Is Cost-Sharing Reduction (CSR) in 2026?

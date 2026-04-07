@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `Compare ${planCount} ${stateName} Marketplace (Obamacare) health insurance plans` +
     ` in ${countyDisplay} from ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}.` +
-    `${premiumRange} Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`
+    `${premiumRange} Source: federal marketplace plan data ${PLAN_YEAR}.`
 
   return {
     title,
@@ -184,9 +184,9 @@ export default function CountyPlansPage({ params }: Props) {
   // --- Schema ---
   const articleSchema = buildArticleSchema({
     headline: `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})`,
-    description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}. Source: CMS QHP Landscape PUF.`,
+    description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}. Source: federal marketplace plan data.`,
     dateModified: new Date().toISOString().slice(0, 7),
-    dataSourceName: 'CMS QHP Landscape PUF',
+    dataSourceName: 'Federal Marketplace Plan Data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
@@ -253,7 +253,7 @@ export default function CountyPlansPage({ params }: Props) {
                     <strong>${maxPremium.toFixed(0)}/mo</strong> before subsidy.
                   </>
                 )}{' '}
-                Data source: CMS QHP Landscape PUF · Plan Year {PLAN_YEAR}.
+                Data source: federal marketplace plan data · Plan Year {PLAN_YEAR}.
               </>
             ) : (
               <>No marketplace plans found for this county in the {PLAN_YEAR} dataset.</>
@@ -305,7 +305,7 @@ export default function CountyPlansPage({ params }: Props) {
               />
             </div>
             <p className="text-xs text-primary-600 mt-4">
-              Estimates based on CMS benchmark silver premium · Age 40 reference ·
+              Estimates based on federal benchmark silver premium · Age 40 reference ·
               Subsidy amounts may vary by income, household size, and plan choice.{' '}
               <a
                 href={`/subsidies/${stateCode.toLowerCase()}/${countyFips}`}
@@ -344,7 +344,7 @@ export default function CountyPlansPage({ params }: Props) {
               )}
             </div>
             <p className="text-xs text-neutral-400 mt-3">
-              Source: CMS Rate PUF · Plan Year {rates.plan_year} ·{' '}
+              Source: federal marketplace rate filings · Plan Year {rates.plan_year} ·{' '}
               <a href={`/rates/${stateCode.toLowerCase()}/${countyFips}`} className="underline">
                 View full rate analysis →
               </a>
@@ -450,7 +450,7 @@ export default function CountyPlansPage({ params }: Props) {
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
-            Premium data sourced from the CMS QHP Landscape PUF, plan year {PLAN_YEAR}. All
+            Premium data sourced from federal marketplace plan data, plan year {PLAN_YEAR}. All
             premium amounts are shown before applying any applicable premium tax credit (APTC)
             subsidy. Actual premiums, deductibles, and cost-sharing may vary based on enrollment
             date, household size, tobacco use, and rating area.
@@ -620,7 +620,7 @@ function buildCountyFaqs({
       question: `How many health insurance plans are available in ${countyDisplay}, ${stateName}?`,
       answer:
         `There are ${planCount} Marketplace (Obamacare) health insurance plans available in ${countyDisplay} for the ${PLAN_YEAR} plan year, offered by ${carrierCount} carrier${carrierCount !== 1 ? 's' : ''}. ` +
-        `Plans span all metal levels including Bronze, Silver, Gold, and Platinum. You can compare them on HealthCare.gov during Open Enrollment (November 1 – January 15). Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`,
+        `Plans span all metal levels including Bronze, Silver, Gold, and Platinum. You can compare them on HealthCare.gov during Open Enrollment (November 1 – January 15). Source: federal marketplace plan data ${PLAN_YEAR}.`,
     },
     {
       question: `What is the cheapest health insurance plan in ${countyDisplay}?`,
@@ -641,7 +641,7 @@ function buildCountyFaqs({
             (medianSubsidy
               ? `At 250% FPL, the estimated monthly subsidy (APTC) is $${medianSubsidy.monthly_aptc.toFixed(0)}, which can dramatically reduce your out-of-pocket premium. `
               : '') +
-            `Actual costs depend on age, income, household size, tobacco use, and the plan you select. Source: CMS QHP Landscape PUF ${PLAN_YEAR}.`
+            `Actual costs depend on age, income, household size, tobacco use, and the plan you select. Source: federal marketplace plan data ${PLAN_YEAR}.`
           : `Premium information for ${countyDisplay} is not yet available for ${PLAN_YEAR}. Check back during Open Enrollment or contact a licensed agent.`,
     },
     {

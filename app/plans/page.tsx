@@ -9,7 +9,7 @@ import LlmComment from '@/components/LlmComment'
 export const metadata: Metadata = {
   title: 'Compare Health Insurance Plans by State & County (2026) | HealthInsuranceRenew',
   description:
-    'Browse marketplace health insurance plans across 50 states. Compare premiums, deductibles, and carriers by county for plan year 2026. CMS QHP data for all federal and state exchanges.',
+    'Browse marketplace health insurance plans across 50 states. Compare premiums, deductibles, and carriers by county for plan year 2026. Federal marketplace plan data for all federal and state exchanges.',
   alternates: { canonical: 'https://healthinsurancerenew.com/plans' },
   openGraph: {
     title: 'Compare Health Insurance Plans by State & County (2026)',
@@ -135,7 +135,7 @@ export default function PlansIndexPage() {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: '2026 ACA Marketplace Plan Data by State and County',
-    description: 'County-level health insurance plan, premium, and carrier data from CMS QHP Public Use Files for plan year 2026.',
+    description: 'County-level health insurance plan, premium, and carrier data from federal marketplace plan data for plan year 2026.',
     url: 'https://healthinsurancerenew.com/plans',
     creator: { '@type': 'Organization', name: 'Centers for Medicare & Medicaid Services (CMS)' },
     distribution: {
@@ -321,12 +321,12 @@ export default function PlansIndexPage() {
       </section>
 
       {/* NOTE: No name/NPN on this page — generic byline only */}
-      <GenericByline dataSource="CMS QHP Landscape & Rate PUF" />
+      <GenericByline dataSource="Federal Marketplace Plan and Rate Data" />
 
       {/* Source citation */}
       <footer className="text-xs text-slate-400 border-t border-slate-100 pt-4">
         <p>
-          Data source: CMS QHP Landscape and Rate Public Use Files, plan year 2026.
+          Data source: federal marketplace plan and rate data, plan year 2026.
           Published by the Centers for Medicare &amp; Medicaid Services.
           Premium averages are unweighted means across all plans in a county for a 40-year-old non-tobacco user.
         </p>

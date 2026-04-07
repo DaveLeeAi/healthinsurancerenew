@@ -70,7 +70,7 @@ const faqs = [
 const sources = [
   { title: 'Healthcare.gov - Employer Coverage Affordability', url: 'https://www.healthcare.gov/have-job-based-coverage/if-its-unaffordable/' },
   { title: 'IRS - Employer Shared Responsibility', url: 'https://www.irs.gov/affordable-care-act/employers/employer-shared-responsibility-provisions' },
-  { title: 'CMS - Family Glitch Fix Rule', url: 'https://www.cms.gov/newsroom/fact-sheets/fact-sheet-2023-marketplace-related-rules' },
+  { title: 'Federal Family Glitch Fix Rule', url: 'https://www.cms.gov/newsroom/fact-sheets/fact-sheet-2023-marketplace-related-rules' },
   { title: 'Healthcare.gov - Premium Tax Credit', url: 'https://www.healthcare.gov/lower-costs/qualifying-for-lower-costs/' },
 ]
 
