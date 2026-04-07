@@ -21,7 +21,7 @@ export default function AeoBlock({
       >
         {label}
       </span>
-      <div className="text-ink font-medium" style={{ fontSize: '14px', lineHeight: 1.5 }}>
+      <div className="aeo-answer text-ink font-medium" style={{ fontSize: '14px', lineHeight: 1.5 }}>
         {answer}
       </div>
       {caveat && (
