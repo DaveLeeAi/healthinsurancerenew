@@ -166,3 +166,6 @@ data/processed/formulary_intelligence.json
 
 # Backup files
 *.bak
+
+# Phase 5: per-state formulary splits (generated from 4GB master file)
+data/processed/formulary/by-state/
