@@ -737,7 +737,8 @@ Run before every deploy. Every box must be checked.
 Primary question: Is my drug covered and what does it cost?
 Data: formulary_intelligence.json (13.2M+ records, 186 issuers, 4.0GB)
 **Status: LOCKED at 9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
-Template file: `app/formulary/[issuer]/[drug_name]/page.tsx` (brand/generic conditional rendering)
+Template file: `app/formulary/[issuer]/[drug_name]/page.tsx` (2,158 lines, brand/generic conditional rendering)
+Canonical URL: `/{state}/{drug}` — routed via middleware.ts rewrite
 Visual reference: V19 (ozempic_nc_formulary_v19.html)
 Content/schema reference: V35 (healthinsurancerenew_v35_formulary.html)
 
@@ -977,15 +978,15 @@ and validated against the YMYL checklist.
 Phase 1 — Foundation (formulary first) — COMPLETE
 Phase 2 — Sitewide fixes — COMPLETE
 Phase 3 — 2026 content + routing + differentiation + triple schema — COMPLETE
-Phase 4 — Page type by page type (validate each before next)
-  17. County hub pages
-  18. Rate volatility pages
-  19. Dental pages
-  20. Life events pages
-  21. Billing pages
-  22. State hub pages
-  23. SBC plan detail pages (most complex, handle last)
-  24. ISR configuration + phased indexing
+Phase 4 — Page type by page type (SERP-validated build order)
+  20. SBC plan detail pages — "does [plan] cover [drug]" (priority score: 96)
+  21. State hub pages — state + drug discovery, internal link equity
+  22. Life events pages — high standalone volume, evergreen SEP triggers
+  23. County hub pages — geo landing pages only, NO drug expansion at county level
+  24. Dental pages — standalone SADP demand
+  25. Rate volatility pages — seasonal (spikes Oct–Dec OE)
+  26. Billing pages — lowest priority
+  27. ISR configuration + phased indexing — always last
 ```
 
 ---
@@ -1000,7 +1001,7 @@ npx tsc --noEmit
 grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
-# MedicalWebPage audit — should ONLY appear in lib/schema-markup.ts
+# MedicalWebPage audit — should ONLY appear in app/formulary/[issuer]/[drug_name]/page.tsx
 grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
