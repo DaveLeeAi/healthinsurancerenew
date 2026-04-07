@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import PageFaq from '@/components/PageFaq'
 import SourcesBox from '../../../components/SourcesBox'
 import SchemaScript from '../../../components/SchemaScript'
 import GenericByline from '../../../components/GenericByline'
@@ -486,8 +485,34 @@ export default async function StateDetailPage({ params }: Props) {
       )}
 
       {/* ── 7. FAQ SECTION ── */}
-      <section id="hub-faqs" className="my-10">
-        <PageFaq faqs={allFaqs} includeSchema={false} />
+      <section id="hub-faqs" className="my-10" aria-labelledby="faq-heading">
+        <h2 id="faq-heading" className="text-2xl font-bold text-slate-900 mb-4">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-2">
+          {allFaqs.map((faq, i) => (
+            <details
+              key={i}
+              className="group border border-slate-200 rounded-xl overflow-hidden"
+            >
+              <summary className="flex items-center justify-between px-5 py-4 cursor-pointer text-slate-900 font-medium text-sm hover:bg-slate-50 transition-colors list-none [&::-webkit-details-marker]:hidden">
+                <span>{faq.question}</span>
+                <svg
+                  className="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-1 text-sm text-slate-600 leading-relaxed">
+                {faq.answer}
+              </div>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* ── 8. RELATED GUIDES & TOOLS ── */}
