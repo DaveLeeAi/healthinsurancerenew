@@ -20,9 +20,8 @@
 |------|---------|
 | `CLAUDE.md` | This file — master project instructions |
 | `DESIGN.md` | Single source of truth for every page type, component, schema, and copy rule |
-| `ozempic_nc_formulary_v19.html` | V19 approved visual/layout reference — all page types inherit this layout |
-| `healthinsurancerenew_v35_formulary.html` | V35 locked content, copy, and schema reference |
-| `PHASE1_PROMPTS.md` | Phase 1 implementation prompts and task tracking |
+| `healthinsurancerenew_v35_formulary.html` | V35 locked content, copy, schema, and tone reference |
+| `middleware.ts` | Route disambiguation — rewrites `/{state}/{drug}` → `/formulary/{state}/{drug}` |
 
 ---
 
@@ -41,36 +40,16 @@
 
 | # | Pillar | Primary Data Sources |
 |---|--------|---------------------|
-| 1 | **Plan & Premium Intelligence** | CMS QHP Landscape + Plan Attributes PUF + Rate PUF |
-| 2 | **Subsidy & Affordability Engine** | IRS FPL tables + CMS benchmark premiums + APTC formula |
+| 1 | **Plan & Premium Intelligence** | Federal marketplace plan data |
+| 2 | **Subsidy & Affordability Engine** | IRS FPL tables + federal benchmark premiums + APTC formula |
 | 3 | **SBC Decoded (Exclusions & Triggers)** | Carrier SBC PDFs → structured JSON |
-| 4 | **Rate Volatility Tracker** | CMS Rate Review PUF + URRT multi-year data |
+| 4 | **Rate Volatility Tracker** | Federal marketplace rate filings |
 | 5 | **Friction & Guidance Q&A** | Regulatory citations + real client experience scenarios |
-| 6 | **Formulary Intelligence** | CMS MR-PUF → carrier JSON formulary files (mandated by law) |
-| 7 | **Dental Coverage Reality** | SADP PUF + dental SBCs (waiting periods, coverage %, annual max) |
+| 6 | **Formulary Intelligence** | Federal plan benefit documents → carrier formulary files |
+| 7 | **Dental Coverage Reality** | Federal dental plan data (waiting periods, coverage %, annual max) |
 | 8 | **Billing Intelligence** | CPT/ICD-10 coding scenarios + visit limit data |
 | 9 | **Life Events & Transitions** | SEP rules, turning 26, Medicare at 65, immigration/DMI |
 | 10 | **Regulatory Risk & Policy Scenarios** | Enhanced credit expiration modeling, state mandates |
-
----
-
-## Data Coverage
-
-- **50 states + DC** — 320/320 ACA marketplace carriers = **100% carrier coverage**
-- **15,245,850 total formulary records** (14,854,187 FFE plan-level + 391,663 SBM drug-level)
-- **46 enrichment files** with PA/QL/ST restriction data (199,438 drugs)
-- Includes Selenium-scraped data: Presbyterian NM (16,561), Mountain Health CO-OP ID (33,862), Highmark PA (7,921)
-- **20,354+ SBC plan variants** (FFE + SBM)
-- Formulary URL registry: `data/config/formulary-url-registry-2026.json` (primary source of truth)
-- Carrier fact-check: `docs/aca_2026_ifp_carriers_fact_check.md` (320 carriers verified)
-- Formulary landing page: `docs/50-states-formulary.md` (complete audit)
-- Annual refresh scripts: `scripts/refresh/annual-formulary-refresh.py` and `scripts/refresh/annual-sbc-refresh.py`
-- Refresh calendar: `docs/annual-refresh-calendar.md`
-
-### SBM State List (22 + DC for PY2026)
-Full SBM (22): CA, CO, CT, DC, GA, ID, IL, KY, MA, MD, ME, MN, NJ, NM, NV, NY, OR, PA, RI, VA, VT, WA
-SBM-FP (2): AR, OR
-Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
 ---
 
@@ -78,7 +57,8 @@ Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
 - **Enhanced subsidies expired** end of 2025
 - **Subsidy cliff is back** at 400% FPL ($62,600 single / $128,600 family of 4)
-- All subsidy and enhanced-credits pages must reflect post-enhancement 2026 rules
+- Congress may still act to retroactively extend — check Healthcare.gov for latest
+- All subsidy and enhanced-credits pages reflect post-enhancement 2026 rules
 - Do NOT show 2021–2025 enhanced figures as current rates
 
 ---
@@ -87,58 +67,36 @@ Transitioning for PY2027: OR (full SBM), OK (SBM-FP)
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** — locked at 9.5/10 |
+| 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** |
 | 2 | Sitewide component migration (FAQ, AEO, schema fixes) | **COMPLETE** |
-| 3 | Critical 2026 content updates (subsidy cliff, enhanced credits) | Pending |
-| 4 | Page-type conversion + ISR + 15.2M drug/plan pages | Pending |
+| 3 | 2026 content + routing + differentiation + triple schema | **COMPLETE** |
+| 4 | Page-type conversion + ISR + phased indexing | Pending |
 
-**Phase 1 details:** Formulary template scored 9.5/10 by external LLM reviewers (ChatGPT, Gemini). Template file: `app/[state]/[drug]/page.tsx` (brand/generic conditional rendering). V19 remains the visual layout reference; V35 is the locked content, copy, and schema reference. V35 is the locked template for the ~37,500 drug-in-state page tier. Phase 4 drug+plan pages (`/[state]/[drug]/[plan-slug]/`) need their own simpler template.
-
----
-
-## Primary Data Source
-
-**data.healthcare.gov API** — CMS publishes 12 Exchange PUF (Public Use Files) as downloadable CSVs.
-
-- API base: `https://data.healthcare.gov/api/1/`
-- Dataset catalog: `https://data.healthcare.gov/api/1/metastore/schemas/dataset/items`
-- CMS PUF download page: `https://www.cms.gov/marketplace/resources/data/public-use-files`
-
-The MR-PUF contains URLs to every carrier's machine-readable formulary JSON files. All public domain, no scraping needed.
-
-### Key PUF Files
-
-| PUF File | Contents |
-|----------|----------|
-| Rate PUF | Premium rates by plan, age, tobacco, rating area |
-| Plan Attributes PUF | Benefits, cost-sharing, network, metal level details |
-| BenCS PUF | Benefits and Cost Sharing details |
-| MR-PUF | Machine-Readable URLs → formulary JSON files |
-| SADP PUF | Stand-Alone Dental Plan data |
-| QHP Landscape | Consumer-facing plan comparison data |
-| Service Area PUF | County-level service area mappings |
-| Rate Review PUF | Rate change justifications |
+**Formulary template:** `app/formulary/[issuer]/[drug_name]/page.tsx` (2,036 lines). Scored 9.5/10 by ChatGPT and Gemini. V35 is the locked content, copy, tone, and schema reference.
 
 ---
 
-## Coding Standards
+## Routing Architecture
 
-### TypeScript (Pages & Components)
-- **Framework:** Next.js 14 App Router — strict TypeScript, no `any`
-- **Styling:** Tailwind CSS
-- **Validation:** Zod for API routes
-- **Components:** Follow DESIGN.md component library (EvidenceBlock, AeoBlock, etc.)
+### Canonical public URLs (what Google sees):
+```
+/{state}/{drug}                    → formulary drug page (via middleware rewrite)
+/{state-slug}/{county-slug}        → county hub
+/{state-slug}/health-insurance-plans → state plans listing
+/formulary                         → drug lookup/search tool
+```
 
-### Python (Data Pipeline)
-- **Language:** Python 3.11+
-- **Type hints:** Required on all functions
-- **Docstrings:** Required on all public functions and classes
-- **Logging:** Use `logging` module — never `print()` for operational output
-- **API calls:** Retry 3x with exponential backoff
-- **Validation:** Validate all outputs against JSON schemas
-- **Scripts:** Atomic — each script does one thing, runnable standalone (`python scripts/fetch/fetch_puf.py`)
-- **Environment variables:** Use `.env` + `python-dotenv` for API keys
-- **Error handling:** Catch specific exceptions, log context, fail loudly on data corruption
+### How routing works:
+- `middleware.ts` intercepts `/{state}/{drug}` and rewrites to `/formulary/{state}/{drug}`
+- Formulary page renders at `app/formulary/[issuer]/[drug_name]/page.tsx`
+- Canonical tags emit `/{state}/{drug}` (not `/formulary/...`)
+- County slugs (ending in `-county`) pass through middleware
+- `/formulary/all/{drug}` is the non-state lookup — NOT a canonical SEO page
+
+### Legacy redirect shims (do not delete):
+- `/plans/[state]` → `redirect()` to `/{state-slug}/health-insurance-plans`
+- `/plans/[state]/[county]` → `redirect()` to `/{state-slug}/{county-slug}`
+- `/plan-details/[id]/[slug]` → `permanentRedirect()` to canonical plan URL
 
 ---
 
@@ -146,65 +104,60 @@ The MR-PUF contains URLs to every carrier's machine-readable formulary JSON file
 
 ```
 healthinsurancerenew/
-├── CLAUDE.md                          # This file — master instructions
-├── DESIGN.md                          # Page design framework (V19 standard)
-├── app/                               # Next.js App Router pages
-│   ├── layout.tsx                     # Root layout
-│   ├── page.tsx                       # Homepage
+├── CLAUDE.md
+├── DESIGN.md
+├── middleware.ts                       # /{state}/{drug} → /formulary/{state}/{drug}
+├── app/
 │   ├── [state-name]/                  # State/county/plan routes
-│   ├── [state]/                       # Formulary pages: /[state]/[drug]/page.tsx (brand/generic conditional)
-│   ├── formulary/                     # Legacy formulary routes (redirect to /[state]/[drug]/)
-│   ├── plans/                         # Plan listing pages
-│   ├── subsidies/                     # Subsidy calculator pages
-│   ├── rates/                         # Rate volatility pages
-│   ├── dental/                        # Dental coverage pages
-│   ├── drugs/                         # Drug index/category pages
-│   ├── enhanced-credits/              # Policy scenario pages
-│   ├── life-events/                   # Life event decision trees
-│   ├── billing/                       # CPT billing pages
-│   ├── states/                        # State hub pages
-│   ├── guides/                        # Editorial guides
-│   ├── faq/                           # FAQ pages
-│   ├── tools/                         # Interactive tools
-│   └── api/                           # API routes
-├── components/                        # React components
-│   ├── AnswerBox.tsx                  # → Being replaced by AeoBlock
-│   ├── Breadcrumbs.tsx
-│   ├── Disclaimer.tsx
-│   ├── FAQSection.tsx                 # → Being replaced by StaticFaq
-│   ├── Footer.tsx
+│   │   ├── [county-slug]/
+│   │   └── health-insurance-plans/
+│   ├── formulary/                     # Drug lookup + V35 drug coverage pages
+│   │   ├── page.tsx                  # Search interface
+│   │   └── [issuer]/[drug_name]/     # V35 template (2,036 lines)
+│   ├── plans/                         # Legacy redirect shims
+│   ├── subsidies/
+│   ├── rates/
+│   ├── dental/
+│   ├── enhanced-credits/
+│   ├── life-events/
+│   ├── billing/
+│   ├── states/
+│   ├── guides/
+│   ├── faq/
+│   ├── tools/
+│   └── api/
+├── components/
+│   ├── AeoBlock.tsx
+│   ├── EvidenceBlock.tsx
+│   ├── CostBlock.tsx
+│   ├── PlanRulesBlock.tsx
+│   ├── TimelineSteps.tsx
+│   ├── SavingsRows.tsx
+│   ├── LimitsBlock.tsx
+│   ├── AboutBlock.tsx
+│   ├── ProcessBar.tsx
+│   ├── GenericByline.tsx
+│   ├── SchemaScript.tsx
 │   ├── Header.tsx
+│   ├── Footer.tsx
 │   └── ...
-├── lib/                               # Shared utilities
-│   ├── formulary-helpers.ts           # Tier normalization
-│   ├── schema-markup.ts               # JSON-LD schema builders
-│   ├── content-templates.ts           # Content generation helpers
-│   ├── markdown.ts                    # Markdown collection helpers
+├── lib/
+│   ├── data-loader.ts
+│   ├── formulary-helpers.ts
+│   ├── formulary-insights.ts          # State-specific content differentiation
+│   ├── drug-linking.ts
+│   ├── entity-linker.ts
+│   ├── schema-markup.ts               # Triple schema builder (6-type @graph)
+│   ├── content-templates.ts
 │   └── ...
-├── content/                           # Markdown content files
-│   ├── guides/                        # Guide articles
-│   ├── states/                        # State data markdown
-│   └── faq/                           # FAQ entries
 ├── data/
-│   ├── raw/                           # ⚠️ GITIGNORED — large CMS files
-│   │   ├── puf/                       # Downloaded PUF CSVs
-│   │   ├── formulary_json/            # Carrier formulary JSON files
-│   │   └── sbc_pdfs/                  # SBC PDF documents
-│   ├── processed/                     # ✅ COMMITTED — structured datasets
-│   ├── config/                        # Configuration files
-│   │   ├── sbm-source-registry.json   # SBM issuer formulary URLs
-│   │   └── ...
-│   └── schema/                        # JSON schemas for validation
+│   ├── processed/                     # Committed datasets
+│   │   └── drug_national_baselines.json  # National drug baselines for differentiation
+│   └── config/
 ├── scripts/
-│   ├── fetch/                         # Data download scripts
-│   ├── etl/                           # Transform & normalize scripts
-│   └── generate/                      # Content generation scripts
-├── skills/                            # Claude Code skill definitions
-├── public/                            # Static assets
-├── docs/                              # Documentation & audits
-├── requirements.txt                   # Python dependencies
-├── package.json                       # Node dependencies
-└── .gitignore
+│   └── generate/
+│       └── generate_drug_baselines.py # Baseline generation script
+└── ...
 ```
 
 ---
@@ -218,134 +171,53 @@ healthinsurancerenew/
 "observed in"                   → "found in {N} of {total} plans"
 "most plans cover"              → "covered by {N} of {total} plans reviewed"
 "based on available data"       → "in our review of {N} plans"
-"estimated, per [unit]"         → remove inline — one disclaimer in footer
-"Plan benefit documents"        → "2026 plan benefit filings"
 "ACA" in hero/H1                → "health plan" or "Marketplace plan"
 "formulary" in H1               → "drug list" or "drug coverage"
 "patients"                      → "people" or "enrollees"
-"related conditions"            → remove
-"ACA guidelines"                → remove
-"FPL" in visible copy           → "income limit" (link to /fpl-2026)
-"coinsurance" in hero           → move below fold
-"Machine-Readable PUF"          → "plan benefit documents"
-"insurer" / "insurers"          → "insurance company" or "your plan" per actor rotation
+"insurer" / "insurers"          → "insurance company" or "your plan"
 "clinical situation"            → "your situation" or remove
-"plan filings" (consumer copy)  → "plan information" or "federal plan data"
-"provide the medication"        → "fill the prescription"
-"pick it up from the pharmacy"  → "fill the prescription" or "fill it"
-"your health plan" (overuse)    → rotate: "your plan" / "the plan" / "your insurance company"
-"clinical information"          → remove or rephrase
 "criteria"                      → "approval requirements"
-"negotiated rate"               → remove or rephrase
-"substantial"                   → remove or rephrase
-"claims data"                   → remove or rephrase
-"medically appropriate"         → avoid unless clinically necessary
 ```
 
-### Actor Rotation Rule (locked)
-
-Confirmed across Cigna, Prime Therapeutics, Florida Blue carrier research.
-
-| Context | Actor to use |
-|---|---|
-| Coverage rules / tiers / deductibles | `your plan` or `the plan` |
-| Approval / process steps | `the plan` or `your insurance company` |
-| Human institution clearly acting | `your insurance company` |
-
-- Never repeat the same actor phrase in adjacent sentences
-- Never use `insurer` anywhere
-- `your health plan` is permitted but must not be overused — rotate with above
-
-### Vocabulary — Always Use
-
-- `fill the prescription` / `fill it` — pharmacy actions only, NOT in summaries or structured sections
-- `tier` (not `formulary tier level`)
-- `approval` — plain English for prior authorization
-- `approval requirements` — not `criteria`
-- `federal plan data` — not `plan filings` in consumer copy
-- `drug list` — not `formulary` in consumer copy
-- `insurance company` OR `your plan` / `the plan` — by context per actor rotation
-
 ### Reading Level
-
-- Target: Grade 6–8 (Flesch-Kincaid), Flesch Reading Ease 60+
-- Active voice default
-- Consumer-first framing — `you/your` language throughout
+- Target: Grade 6–8, Flesch Reading Ease 60+
+- Active voice, consumer-first, `you/your` language
 
 ---
 
 ## Validation Commands
 
 ```bash
-# TypeScript
 npx tsc --noEmit
 
-# Forbidden phrases (MedicalWebPage/medicalAudience allowed in formulary pages only)
 grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
-# MedicalWebPage audit — should ONLY appear in app/[state]/[drug]/page.tsx
+# MedicalWebPage only in schema builder
 grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
-# <br> in headings
 grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 
-# JS-rendered FAQ (should return nothing after Phase 2)
-grep -r "getElementById.*faq\|\.forEach.*faq\|faq.*innerHTML" \
-  app/ --include="*.tsx"
+# No /drugs references
+grep -rn '"/drugs' app/ lib/ components/ --include="*.tsx" --include="*.ts" | grep -v node_modules
 
-# Meta description present on all pages
-grep -rL "meta name=\"description\"" app/ --include="*.tsx"
-
-# Schema/meta sync (manual)
-# WebPage description === <meta name="description"> in each page
-# FAQPage question names === visible <summary> text in each page
+# No bare /all/ links
+grep -rn '"\`/all/' app/ components/ --include="*.tsx" | grep -v "/formulary/all/"
 ```
-
----
-
-## Git Rules
-
-- `data/raw/*` is gitignored — CMS files are too large
-- `data/processed/` JSON files ARE committed — they are the dataset product
-- `data/schema/` JSON schemas ARE committed
-- `sbc_decoded.json` is gitignored (429 MB) — too large for Git
-- Never commit `.env` or API keys
-- Commit after each major step with a clear message
-
----
-
-## Safety & Content Rules
-
-- No DIY medical instructions on public pages
-- No full names/addresses on public pages
-- All generated content saves as draft — never auto-publish
-- Medical disclaimers required on every public page
-- Cost/premium data must cite source and plan year
-- HIPAA-safe: we use only public government data, never PII
-- Consumer tone, not clinician — decision support, not medical guidance
 
 ---
 
 ## NEVER Do This
 
-- Never use `MedicalWebPage` schema on any page EXCEPT formulary pages (triple schema — see DESIGN.md §7)
-- Never use `medicalAudience` in schema on any page EXCEPT formulary pages (`medicalAudience: Patient`)
-- Never use `insurer` or `insurers` anywhere — use `insurance company` or `your plan`
-- Never expose raw CMS issuer IDs (e.g., `77422`) in visible UI
+- Never use `MedicalWebPage` schema on any page EXCEPT formulary pages
+- Never use `insurer` or `insurers` — use `insurance company` or `your plan`
+- Never expose raw CMS issuer IDs in visible UI
 - Never add named author on inner pages (asset-sale constraint)
 - Never use `<br>` in headings
-- Never use "per fill" or "per pen" — always "per month"
-- Never use "Machine-Readable PUF" — use "plan benefit documents"
-- Never use "TL;DR" — use "Quick answer"
-- Never use "patients" — use "people" or "enrollees"
-- Never use "ACA" in H1 — use "health plan" or "Marketplace plan"
-- Never use "formulary" in H1 — use "drug list" or "drug coverage"
-- Never put caveat inside AEO block element
+- Never use specific CMS PUF file names in public-facing copy — use "federal marketplace plan data and plan benefit documents"
+- Never link to `/drugs` — removed
+- Never generate `/all/{drug}` links — always `/formulary/all/{drug}`
+- Never change V35 template layout without explicit approval
 - Never hardcode API keys or secrets
-- Never use `print()` for operational logging (Python)
-- Never skip validation after ETL
-- Never commit raw CMS data files (too large)
-- Never publish unsourced cost/premium claims
-- Never provide medical advice — always "consult a licensed agent"
+- Never commit raw CMS data files
