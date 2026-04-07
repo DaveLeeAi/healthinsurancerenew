@@ -686,7 +686,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
 
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: SITE_URL },
-    { name: 'Drug Coverage', url: `${SITE_URL}/drugs` },
+    { name: 'Drug Coverage', url: `${SITE_URL}/formulary` },
     { name: `${stateName} Health Insurance Plans`, url: `${SITE_URL}/${params['state-name']}/health-insurance-plans` },
     { name: countyDisplay, url: `${SITE_URL}/${params['state-name']}/${params['county-slug']}` },
     { name: drugName, url: canonicalUrl },
@@ -825,7 +825,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
             {category && (
               <p className="text-sm text-neutral-500 mb-4">
                 Other{' '}
-                <a href={`/drugs/categories/${category.id}`} className="text-primary-600 hover:underline font-medium">
+                <a href="/formulary" className="text-primary-600 hover:underline font-medium">
                   {category.label}
                 </a>{' '}
                 — check county-level coverage for each.

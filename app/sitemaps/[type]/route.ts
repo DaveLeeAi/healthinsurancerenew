@@ -21,8 +21,6 @@
  *   /sitemaps/life-events     — /life-events/[event_type]
  *   /sitemaps/guides          — /guides/[slug]
  *   /sitemaps/states          — /states/[state]
- *   /sitemaps/drugs           — /drugs/categories/[cat] + /drugs/compare/[comp]
- *                               + /drugs/[state]/[county]/[drug] (seed sample)
  */
 
 import {
@@ -39,7 +37,6 @@ import {
 import { stateCodeToSlug, getCountySlug } from '@/lib/county-lookup'
 import { generatePlanSlug } from '@/lib/plan-slug'
 import { getCollectionSlugs } from '@/lib/markdown'
-import { DRUG_TAXONOMY } from '@/lib/drug-linking'
 import allStatesData from '@/data/config/all-states.json'
 
 const BASE = 'https://healthinsurancerenew.com'
@@ -49,21 +46,6 @@ const DATA_LASTMOD = '2026-03-17'
 // Last site content update — update after content edits
 const STATIC_LASTMOD = '2026-03-15'
 
-const SEED_DRUGS = [
-  'metformin', 'lisinopril', 'atorvastatin', 'amlodipine', 'omeprazole',
-  'levothyroxine', 'albuterol', 'losartan', 'gabapentin', 'hydrochlorothiazide',
-  'sertraline', 'metoprolol', 'montelukast', 'escitalopram', 'rosuvastatin',
-  'bupropion', 'pantoprazole', 'duloxetine', 'furosemide', 'trazodone',
-]
-
-// Drug comparison seed slugs (must match app/drugs/compare/[comparison]/page.tsx SEED_PAIRS)
-const SEED_COMPARISONS = [
-  'metformin-vs-ozempic', 'metformin-vs-jardiance', 'ozempic-vs-wegovy',
-  'ozempic-vs-mounjaro', 'wegovy-vs-mounjaro', 'atorvastatin-vs-rosuvastatin',
-  'lisinopril-vs-losartan', 'sertraline-vs-escitalopram', 'eliquis-vs-xarelto',
-  'humira-vs-enbrel', 'ozempic-vs-trulicity', 'amlodipine-vs-lisinopril',
-  'levothyroxine-vs-synthroid', 'adderall-vs-vyvanse', 'jardiance-vs-farxiga',
-]
 
 interface StateEntry { slug: string; abbr: string; ownExchange?: boolean }
 
@@ -144,8 +126,6 @@ function buildEntries(type: string): SitemapEntry[] | null {
       return buildGuideEntries()
     case 'states':
       return buildStateEntries()
-    case 'drugs':
-      return buildDrugEntries()
     default:
       return null
   }
@@ -164,9 +144,8 @@ function buildStaticEntries(): SitemapEntry[] {
     { path: '/plans', priority: 0.9, changefreq: 'monthly' },
     { path: '/subsidies', priority: 0.9, changefreq: 'monthly' },
     { path: '/rates', priority: 0.7, changefreq: 'monthly' },
-    { path: '/drugs', priority: 0.9, changefreq: 'monthly' },
+    { path: '/formulary', priority: 0.9, changefreq: 'monthly' },
     { path: '/dental', priority: 0.7, changefreq: 'monthly' },
-    { path: '/drugs', priority: 0.8, changefreq: 'monthly' },
     { path: '/enhanced-credits', priority: 0.8, changefreq: 'monthly' },
     { path: '/faq', priority: 0.8, changefreq: 'monthly' },
     { path: '/billing', priority: 0.7, changefreq: 'monthly' },
@@ -449,44 +428,3 @@ function buildStateEntries(): SitemapEntry[] {
   }))
 }
 
-// ── Drugs — /drugs/categories/[cat] + /drugs/compare/[comp]
-//            + /drugs/[state]/[county]/[drug] (seed sample) ──────────────────
-
-function buildDrugEntries(): SitemapEntry[] {
-  const entries: SitemapEntry[] = []
-
-  // Drug category pages
-  for (const cat of DRUG_TAXONOMY) {
-    entries.push({
-      loc: `${BASE}/drugs/categories/${cat.id}`,
-      lastmod: DATA_LASTMOD,
-      changefreq: 'monthly' as const,
-      priority: 0.7,
-    })
-  }
-
-  // Drug comparison pages
-  for (const comp of SEED_COMPARISONS) {
-    entries.push({
-      loc: `${BASE}/drugs/compare/${comp}`,
-      lastmod: DATA_LASTMOD,
-      changefreq: 'yearly' as const,
-      priority: 0.7,
-    })
-  }
-
-  // County-level drug seed pages
-  const topCombos = getAllStateCountyCombos().slice(0, 50)
-  for (const { state, county } of topCombos) {
-    for (const drug of SEED_DRUGS.slice(0, 10)) {
-      entries.push({
-        loc: `${BASE}/drugs/${state}/${county}/${drug}`,
-        lastmod: DATA_LASTMOD,
-        changefreq: 'yearly' as const,
-        priority: 0.6,
-      })
-    }
-  }
-
-  return entries
-}

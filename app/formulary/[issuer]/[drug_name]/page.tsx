@@ -880,7 +880,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center text-faint" style={{ fontSize: '12px', gap: '4px', paddingTop: '20px' }}>
           <a href="/" className="text-vblue hover:underline">Home</a>
           <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
-          <a href="/drugs" className="text-vblue hover:underline">Drug Coverage</a>
+          <a href="/formulary" className="text-vblue hover:underline">Drug Coverage</a>
           <span className="text-rule" style={{ fontSize: '10px' }}>&rsaquo;</span>
           <a href={isState ? `/${canonicalIssuerParam}/health-insurance-plans` : `/${canonicalIssuerParam}/all`} className="text-vblue hover:underline">
             {isState ? stateName : issuerName}
@@ -1597,7 +1597,7 @@ function SBMExplanationPage({
           <ol className="flex flex-wrap items-center gap-1">
             <li><a href="/" className="hover:underline text-primary-600">Home</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
-            <li><a href="/drugs" className="hover:underline text-primary-600">Drug Coverage</a></li>
+            <li><a href="/formulary" className="hover:underline text-primary-600">Drug Coverage</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
             <li><a href={`/${stateSlug}/health-insurance-plans`} className="hover:underline text-primary-600">{stateName}</a></li>
             <li aria-hidden="true" className="text-neutral-300">&rsaquo;</li>
@@ -1659,7 +1659,7 @@ function SBMExplanationPage({
                 <> It is typically listed as a {humanizeTierForDrug(allResults[0].drug_tier, drugDisplay).shortLabel.toLowerCase()} drug.</>
               )}
             </p>
-            <a href="/drugs" className="text-sm text-primary-600 font-semibold hover:text-primary-700">
+            <a href="/formulary" className="text-sm text-primary-600 font-semibold hover:text-primary-700">
               View national coverage details &rarr;
             </a>
           </div>

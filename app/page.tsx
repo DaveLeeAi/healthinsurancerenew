@@ -68,7 +68,7 @@ const dataPillars = [
   { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. Federal marketplace plan data.' },
   { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. Federal marketplace rate filings.' },
   { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. Federal marketplace rate filings.' },
-  { title: 'Drug Formulary', url: '/drugs', description: '551,000+ drug coverage records. Tier placement and cost-sharing by plan.' },
+  { title: 'Drug Formulary', url: '/formulary', description: '15.2M+ drug coverage records. Tier placement and cost-sharing by plan.' },
   { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. Federal dental plan data.' },
   { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.' },
   { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.' },
@@ -87,7 +87,7 @@ const websiteSchema = {
     '@type': 'SearchAction',
     'target': {
       '@type': 'EntryPoint',
-      'urlTemplate': 'https://healthinsurancerenew.com/drugs?q={search_term_string}',
+      'urlTemplate': 'https://healthinsurancerenew.com/formulary?q={search_term_string}',
     },
     'query-input': 'required name=search_term_string',
   },

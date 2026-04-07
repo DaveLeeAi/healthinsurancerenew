@@ -265,7 +265,7 @@ export default function PlansIndexPage() {
                 <div className="text-xs text-primary-600 mt-0.5">Estimate your APTC premium tax credit before choosing a plan.</div>
               </div>
             </a>
-            <a href="/drugs" className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 bg-white hover:border-primary-300 transition-all">
+            <a href="/formulary" className="flex items-start gap-3 p-4 rounded-xl border border-slate-200 bg-white hover:border-primary-300 transition-all">
               <div>
                 <div className="font-semibold text-slate-800 text-sm">Drug Coverage Lookup</div>
                 <div className="text-xs text-slate-500 mt-0.5">Search which marketplace plans cover your medications.</div>

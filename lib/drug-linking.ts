@@ -510,7 +510,7 @@ export function getStatePlanLinks(
 
 /**
  * Returns the category hub page link for a drug.
- * e.g. metformin → { categoryId: "diabetes", label: "Diabetes Medications", href: "/drugs/categories/diabetes" }
+ * e.g. metformin → { categoryId: "diabetes", label: "Diabetes Medications", href: "/formulary" }
  */
 export function getCategoryHubLink(drugName: string): CategoryHubLink | null {
   const category = getDrugCategory(drugName)
@@ -518,7 +518,7 @@ export function getCategoryHubLink(drugName: string): CategoryHubLink | null {
   return {
     categoryId: category.id,
     label: category.label,
-    href: `/drugs/categories/${category.id}`,
+    href: `/formulary`,
   }
 }
 

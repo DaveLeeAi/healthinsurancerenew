@@ -270,7 +270,7 @@ export default function FormularyIndexPage() {
           </div>
           <p className="text-xs text-neutral-400 mt-4 text-center">
             Browse all drug categories &rarr;{' '}
-            <a href="/drugs" className="text-primary-600 hover:underline font-medium">
+            <a href="/formulary" className="text-primary-600 hover:underline font-medium">
               Drug Coverage Hub
             </a>
           </p>

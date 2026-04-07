@@ -20,19 +20,12 @@ const nextConfig = {
   // handled at the page level via permanentRedirect() in:
   //   app/plans/[state]/page.tsx
   //   app/plans/[state]/[county]/page.tsx
-  //   app/drugs/[state]/[county]/[drug]/page.tsx
   //   app/plan-details/[plan_id]/[slug]/page.tsx
   //
   // Static redirects below cover the top-level index pages that moved.
   // ---------------------------------------------------------------------------
   async redirects() {
     return [
-      // /drugs/:state → drug hub (legacy state-scoped drug index)
-      {
-        source: '/drugs/:state',
-        destination: '/drugs',
-        permanent: true,
-      },
       // /plan-details top-level index → states index
       // (individual plan URLs are handled dynamically in app/plan-details/[plan_id]/[slug]/page.tsx)
       {
