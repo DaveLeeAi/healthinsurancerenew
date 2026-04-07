@@ -470,9 +470,9 @@ export function buildRateVolatilityDatasetSchema(params: {
 // ─── Pillar 6: Formulary — Drug + HealthInsurancePlan ───────────────────────
 
 /**
- * Builds schema.org/Drug for a formulary drug detail page.
- * Links to HealthInsurancePlan via relatedDrug.
- * isAvailableGenerically is derived from drug_tier.
+ * @deprecated Use buildFormularyTripleSchema instead — emits a single @graph
+ * with Drug + MedicalWebPage + HealthInsurancePlan + Organization + Breadcrumb + FAQ.
+ * Kept temporarily in case Phase 4 drug+plan pages need a simpler schema variant.
  */
 export function buildFormularyDrugSchema(params: {
   drug: Pick<
