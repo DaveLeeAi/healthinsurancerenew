@@ -1,0 +1,13 @@
+query_bucket,best_page_class,serp_score,decision
+does [plan] cover [drug],Plan + drug page,96,Build now
+[drug] formulary,Drug page + formulary module,88,Build now
+[drug] coverage [state],State + drug page,75,Queue
+[drug] tier,Support module,74,Queue
+[drug] coverage,Drug page,71,Queue
+Marketplace plans that cover [drug],Drug page + support module,71,Queue
+[drug] prior authorization,Support module,71,Queue
+Obamacare coverage for [drug],Drug page,65,Module only
+[drug] step therapy,Support module,55,Module only
+[drug] quantity limits,Support module,55,Module only
+[drug] copay,Support module,47,Reject
+County + drug,No page,37,Reject
