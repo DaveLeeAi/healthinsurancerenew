@@ -9,10 +9,10 @@ import { getSiteWideSchema, schemaToJsonLd } from '@/lib/schema'
 export const metadata: Metadata = {
   title: {
     template: '%s | HealthInsuranceRenew',
-    default: 'HealthInsuranceRenew — ACA Health Insurance Intelligence',
+    default: 'HealthInsuranceRenew — Health Insurance Intelligence',
   },
   description:
-    'Compare ACA health insurance plans, calculate subsidies, and understand your coverage options. Data from federal marketplace sources for all 50 states.',
+    'Compare marketplace health insurance plans, calculate subsidies, and understand your coverage options. Data from federal marketplace sources for all 50 states.',
   metadataBase: new URL('https://healthinsurancerenew.com'),
   icons: {
     icon: [
