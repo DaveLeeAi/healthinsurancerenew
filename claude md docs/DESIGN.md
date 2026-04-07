@@ -7,7 +7,8 @@
 > V19 (ozempic_nc_formulary_v19.html) is the approved visual/layout reference.
 > V35 (healthinsurancerenew_v35_formulary.html) is the locked content, copy, and schema reference.
 > All page types inherit from V19 layout; formulary pages follow V35 content standard.
-> The formulary template (`app/[state]/[drug]/page.tsx`) is locked at **9.5/10**.
+> The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is locked at **9.5/10**.
+> Canonical public URL: `/{state}/{drug}` — routed via middleware.ts rewrite.
 > V35 is the locked template for ~37,500 drug-in-state pages. Phase 4 drug+plan pages need their own template.
 
 ---
@@ -274,9 +275,7 @@ BUILD NEW (Priority 2 — before other page types):
 |---|---|---|
 | `/{state}/{drug-name}/` | Formulary (drug in state) | Is my drug covered in my state? |
 | `/{state}/{drug-name}/{plan-slug}/` | Formulary (drug+plan) | Is my drug covered on this plan + cost? |
-| `/drugs` | Drug index | Browse drugs by category |
-| `/drugs/categories/{category}` | Drug hub | What drugs are in this class? |
-| `/drugs/compare/{a}-vs-{b}` | Comparison | Which is better covered? |
+| `/formulary` | Drug lookup | Search drug coverage by state |
 | `/{state-slug}/{county-slug}` | County hub | County insurance overview |
 | `/{state-slug}/{county-slug}/{plan-slug}-plan` | SBC | What does this plan cover? |
 | `/{state-slug}/{county-slug}/{drug-slug}-coverage` | County drug | Drug cost in my county? |
@@ -296,12 +295,11 @@ BUILD NEW (Priority 2 — before other page types):
 - State params: full slug (`north-carolina`) not abbreviation (`nc`)
 - Drug params: lowercase hyphenated (`ozempic` not `Ozempic`)
 - No trailing slashes
-- All existing 301 redirects must be maintained:
-  - `/plan-details/{id}/{slug}` → `/{state}/{county}/{plan}-plan`
-  - `/drugs/{state}/{county}/{drug}` → `/{state}/{county}/{drug}-coverage`
-  - `/formulary/{issuer}/{drug_name}` → `/{state}/{drug}/` (legacy redirect)
-  - `/plans/{state}` and `/plans/{state}/{county}` are currently stubs —
-    they need full page implementations (see Section 13)
+- Existing redirects (do not remove):
+  - `/plan-details/{id}/{slug}` → `/{state}/{county}/{plan}-plan` (permanentRedirect)
+  - `/plans/{state}` → `/{state-slug}/health-insurance-plans` (redirect, temporary for dev)
+  - `/plans/{state}/{county}` → `/{state-slug}/{county-slug}` (redirect, temporary for dev)
+- Routing: `middleware.ts` rewrites `/{state}/{drug}` → `/formulary/{state}/{drug}`
 
 ### Formulary URL conventions (locked)
 | Element | Rule |
@@ -326,7 +324,7 @@ Examples:
 - Links UP to brand pages
 - Must NOT duplicate brand page content
 
-Data source: keyword map `Type` column (`Brand`/`Generic`) → field in drug registry → conditional rendering in `app/[state]/[drug]/page.tsx`
+Data source: keyword map `Type` column (`Brand`/`Generic`) → field in drug registry → conditional rendering in `app/formulary/[issuer]/[drug_name]/page.tsx`
 
 HTML marker in template output:
 ```html
@@ -567,6 +565,20 @@ Homepage → State Hubs (50) → Drug Class in State (~750) → Drug in State (~
 
 ---
 
+## 8e. CONTENT DIFFERENTIATION (formulary pages)
+
+Each formulary page must help the user answer:
+- Is this drug easy or hard to get in my state?
+- Is this cheaper or more expensive than usual?
+- Is this more restrictive than other states?
+- What should I compare next?
+
+Data source: `data/processed/drug_national_baselines.json`
+Logic: `lib/formulary-insights.ts` → `generateStateInsights()`
+All new sentences match V35 tone. Falls back to V35 defaults if baseline unavailable.
+
+---
+
 ## 9. COPY RULES
 
 ### Forbidden phrases — search and replace before every PR
@@ -725,7 +737,8 @@ Run before every deploy. Every box must be checked.
 Primary question: Is my drug covered and what does it cost?
 Data: formulary_intelligence.json (13.2M+ records, 186 issuers, 4.0GB)
 **Status: LOCKED at 9.5/10** — scored by external LLM reviewers (ChatGPT, Gemini).
-Template file: `app/[state]/[drug]/page.tsx` (brand/generic conditional rendering)
+Template file: `app/formulary/[issuer]/[drug_name]/page.tsx` (2,158 lines, brand/generic conditional rendering)
+Canonical URL: `/{state}/{drug}` — routed via middleware.ts rewrite
 Visual reference: V19 (ozempic_nc_formulary_v19.html)
 Content/schema reference: V35 (healthinsurancerenew_v35_formulary.html)
 
@@ -940,19 +953,19 @@ answer the question directly), extended explanation, related questions
 
 ---
 
-## 13. STUB PAGES TO BUILD
+## 13. LEGACY ROUTES (redirect shims)
 
-These routes exist as stubs and need full implementations:
+These routes serve as redirects to canonical URLs. Do not delete.
 
-| Route | Current | Lines | Priority |
-|---|---|---|---|
-| `/plans/{state}` | Stub | 14 | High — heavily linked from nav |
-| `/plans/{state}/{county}` | Stub | 15 | High |
-| `/states/{state}/aca-2026` | Redirect | 28 | Medium |
+| Route | Target | Status |
+|---|---|---|
+| `/plans/{state}` | `/{state-slug}/health-insurance-plans` | redirect() |
+| `/plans/{state}/{county}` | `/{state-slug}/{county-slug}` | redirect() |
+| `/plan-details/{id}/{slug}` | `/{state}/{county}/{plan}-plan` | permanentRedirect() |
+| `/states/{state}/aca-2026` | `/{state}/health-insurance-plans` | permanentRedirect() |
 
-DO NOT change these routes (correct 301 redirects, leave as-is):
-- `/plan-details/{id}/{slug}` → canonical plan URL
-- `/drugs/{state}/{county}/{drug}` → county drug URL
+REMOVED:
+- `/drugs/*` — all routes deleted, not needed
 
 ---
 
@@ -964,39 +977,94 @@ and validated against the YMYL checklist.
 ```
 Phase 1 — Foundation (formulary first) — COMPLETE
   1. Build Priority 1 components (Section 5g) — DONE
-  2. Update app/[state]/[drug]/page.tsx to V35 standard — DONE
+  2. Update app/formulary/[issuer]/[drug_name]/page.tsx to V35 standard — DONE
   3. Update lib/schema-markup.ts (triple schema on formulary, remove MedicalWebPage elsewhere) — DONE
   4. Update lib/content-templates.ts (copy rules throughout) — DONE
   5. Validate formulary against full YMYL checklist — DONE
   6. Test on mobile real device — DONE
 
-Phase 2 — Sitewide fixes
-  7. Build Priority 2 components (Section 5g)
-  8. Convert all FAQSection/PageFaq → StaticFaq
-  9. Convert all AnswerBox → AeoBlock (except guides)
-  10. Add OG/Twitter meta tags to all pages missing them
-  11. Sync all schema descriptions to meta descriptions
-  12. Remove <br> from all H1s sitewide
+Phase 2 — Sitewide fixes — COMPLETE
+  7. Build Priority 2 components (Section 5g) — DONE
+  8. Convert all FAQSection/PageFaq → StaticFaq — DONE
+  9. Convert all AnswerBox → AeoBlock (except guides) — DONE
+  10. Add OG/Twitter meta tags to all pages missing them — DONE
+  11. Sync all schema descriptions to meta descriptions — DONE
+  12. Remove <br> from all H1s sitewide — DONE
 
-Phase 3 — Critical 2026 content updates
-  13. Update all subsidy pages for 2026 rules (cliff is back)
-  14. Update all enhanced-credits pages for post-enhancement reality
-  15. Build /plans/{state} full page (currently 14-line stub)
-  16. Build /plans/{state}/{county} full page (15-line stub)
+Phase 3 — Critical 2026 content + routing + content differentiation — COMPLETE
+  13. Update all subsidy pages for 2026 rules — DONE (already correct)
+  14. Update all enhanced-credits pages for post-enhancement reality — DONE
+  15. Routing restructure: middleware.ts + canonical alignment — DONE
+  16. Fix /all/{drug} 404s (restore /formulary prefix for non-state links) — DONE
+  17. Remove /drugs (deprecated, broken) — DONE
+  18. Content differentiation: national baselines + state-specific interpretive sentences — DONE
+  19. Triple schema: Drug + MedicalWebPage + HealthInsurancePlan @graph — DONE
 
-Phase 4 — Page type by page type (validate each before next)
-  17. County hub pages
-  18. Rate volatility pages
-  19. Dental pages
-  20. Life events pages
-  21. Billing pages
-  22. State hub pages
-  23. SBC plan detail pages (most complex — 1,095 lines, handle last)
+Phase 4 — Page type by page type (SERP-validated order) — COMPLETE
+  20. SBC plan detail pages — DONE (schema ID fix, 16/16 V35 audit pass)
+  21. State hub pages — DONE (PageFaq→inline, WebPage+FAQPage schema)
+  22. Life events pages — DONE (WebPage+FAQPage schema)
+  23. County hub pages — DONE (WebPage+SpeakableSpecification, FAQ inline)
+  24. Dental pages — DONE (WebPage schema)
+  25. Rate volatility pages — DONE (WebPage schema)
+  26. Billing pages — DONE (WebPage schema)
+  27. ISR config + phased indexing — DONE (revalidate=86400, dynamic sitemap, robots.ts)
+  Build order resequenced by SERP research (Manus 2026-04-07):
+  SBC plan detail first (score 96), county hubs deprioritized (score 37).
+
+Phase 5 — Plan + drug template (15.2M page tier) — PENDING
+  28. Template design for plan+drug pages (/{state}/{drug}/{plan})
+  29. Data pipeline: plan-level formulary → structured answer fields
+  30. Schema: WebPage + FAQPage + BreadcrumbList (NOT MedicalWebPage)
+  31. Answer fields: coverage status, tier, PA, ST, QL, cost range
+  32. Phased rollout: top 50K combinations first, expand progressively
+  33. Segmented sitemaps: sitemap-drug-plan-{state}.xml per state
 ```
 
 ---
 
-## 15. VALIDATION COMMANDS
+## 15. PAGE-CLASS GOVERNANCE
+
+Route existence is NOT page-class approval. Only APPROVED page classes may be scaled, indexed, or linked prominently.
+
+### Approved page classes (build + index)
+| Page class | Route pattern | SERP score | Status |
+|---|---|---|---|
+| Formulary drug page (state + drug) | `/{state}/{drug}` | 88 | LIVE — V35 locked |
+| SBC plan detail page | `/{state}/{county}/{plan}-plan` | 96 | LIVE — V35 standard |
+| State hub page | `/states/{state}` | 75 | LIVE — V35 standard |
+| Life events page | `/life-events/{event}` | — | LIVE — V35 standard |
+| Dental page | `/dental/{state}/{plan}` | — | LIVE — V35 standard |
+| Subsidy page | `/subsidies/*` | — | LIVE — V35 standard |
+| Rate volatility page | `/rates/{state}/{county}` | — | LIVE — V35 standard |
+| Billing page | `/billing/{cpt}` | — | LIVE — V35 standard |
+| Guide page | `/guides/{slug}` | — | LIVE |
+| County hub page (geo landing ONLY) | `/{state}/{county}` | 37 (drug) | LIVE — NO drug expansion |
+
+### Queued page classes (build after validation)
+| Page class | Route pattern | SERP score | Condition |
+|---|---|---|---|
+| Plan + drug page | `/{state}/{drug}/{plan}` | 96 | Phase 5 — needs new template |
+| Drug class hub | `/{state}/drug-class/{class}` | — | After plan+drug proven |
+
+### REJECTED page classes (do NOT build)
+| Page class | Reason | Source |
+|---|---|---|
+| County + drug page | SERP intent unstable, collapses to state/generic. Score: 37 | Manus SERP research 2026-04-07 |
+| Drug copay standalone page | SERP dominated by manufacturer coupons/savings cards. Score: 47 | Manus SERP research 2026-04-07 |
+| Drug step therapy standalone page | Too thin as standalone. Score: 55 | Manus SERP research 2026-04-07 |
+| Drug quantity limits standalone page | Too thin as standalone. Score: 55 | Manus SERP research 2026-04-07 |
+
+### Rules
+- NEVER build or index a page for a REJECTED class
+- NEVER scale a QUEUED class without explicit approval and SERP validation
+- County hub pages are geo landing pages for plan discovery ONLY — no drug coverage modules
+- Step therapy, quantity limits, tier, and copay data belong as MODULES within approved pages, not standalone
+- Any new page class proposal requires SERP validation before approval
+
+---
+
+## 16. VALIDATION COMMANDS
 
 ```bash
 # TypeScript
@@ -1006,7 +1074,7 @@ npx tsc --noEmit
 grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
-# MedicalWebPage audit — should ONLY appear in app/[state]/[drug]/page.tsx
+# MedicalWebPage audit — should ONLY appear in app/formulary/[issuer]/[drug_name]/page.tsx
 grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
@@ -1027,7 +1095,7 @@ grep -rL "meta name=\"description\"" app/ --include="*.tsx"
 
 ---
 
-## 16. REFERENCE FILES
+## 17. REFERENCE FILES
 
 - `formulary-mock-up.html` — legacy V12 visual reference (superseded by V19)
 - `ozempic_nc_formulary_v19.html` — V19 approved visual/layout reference

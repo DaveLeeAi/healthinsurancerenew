@@ -6,6 +6,7 @@ description: Parses Summary of Benefits and Coverage (SBC) PDFs into structured 
 # Skill: SBC Parser
 
 > Parses Summary of Benefits and Coverage (SBC) PDFs into structured JSON data.
+> In consumer-facing copy, use "federal marketplace plan data and plan benefit documents" — never specific PUF file names.
 
 ---
 
@@ -13,10 +14,11 @@ description: Parses Summary of Benefits and Coverage (SBC) PDFs into structured 
 
 See **DESIGN.md Section 12b** for the SBC plan detail page specification.
 
-- URL pattern: `/{state}/{county}/{plan}-plan`
+- URL pattern: `/{state-slug}/{county-slug}/{plan}-plan`
 - Schema: `WebPage` + `HealthInsurancePlan` + `FAQPage` + `BreadcrumbList`
 - **Never** use `MedicalWebPage` — insurance decision-support is not clinical content
-- **Note:** `/plan-details/{id}/{slug}` is a correct 301 redirect to the canonical plan URL. Do not change the routing logic.
+- **Note:** `/plan-details/{id}/{slug}` is a correct `permanentRedirect()` to the canonical plan URL. Do not change the routing logic.
+- Page-class status: **APPROVED** (SERP score: 96 — highest priority page class)
 
 ---
 
@@ -64,15 +66,7 @@ Every ACA-compliant health plan must publish an SBC in a **mandated 4-page forma
   "copay_urgent_care": 75,
   "copay_generic_rx": 15,
   "copay_preferred_brand_rx": 50,
-  "copay_specialty_rx": "30% after deductible",
-  "coinsurance_hospital_inpatient": "20% after deductible",
-  "coinsurance_outpatient_surgery": "20% after deductible",
-  "coinsurance_imaging": "20% after deductible",
-  "coinsurance_mental_health_outpatient": 30,
-  "coinsurance_mental_health_inpatient": "20% after deductible",
-  "preventive_care": "No charge (in-network)",
-  "maternity_prenatal": 30,
-  "maternity_delivery": "20% after deductible"
+  "copay_specialty_rx": "30% after deductible"
 }
 ```
 
@@ -80,33 +74,8 @@ Every ACA-compliant health plan must publish an SBC in a **mandated 4-page forma
 
 ```json
 {
-  "coverage_example_baby": {
-    "total_cost": 12700,
-    "plan_pays": 9400,
-    "you_pay": 3300
-  },
-  "coverage_example_diabetes": {
-    "total_cost": 5600,
-    "plan_pays": 3500,
-    "you_pay": 2100
-  }
-}
-```
-
-### Exclusions (from page 4)
-
-```json
-{
-  "exclusions": [
-    "cosmetic_surgery",
-    "bariatric_surgery",
-    "infertility_treatment",
-    "dental_adult",
-    "vision_adult",
-    "hearing_aids",
-    "private_nursing",
-    "non_emergency_transport"
-  ]
+  "coverage_example_baby": { "total_cost": 12700, "plan_pays": 9400, "you_pay": 3300 },
+  "coverage_example_diabetes": { "total_cost": 5600, "plan_pays": 3500, "you_pay": 2100 }
 }
 ```
 
@@ -118,7 +87,7 @@ Every ACA-compliant health plan must publish an SBC in a **mandated 4-page forma
 |---|-------------|-------------|
 | 1 | `cosmetic` | Cosmetic surgery and procedures |
 | 2 | `experimental` | Experimental or investigational treatments |
-| 3 | `bariatric` | Weight loss surgery (bariatric) |
+| 3 | `bariatric` | Weight loss surgery |
 | 4 | `fertility` | Infertility treatment (IVF, IUI, etc.) |
 | 5 | `dental_adult` | Adult dental services |
 | 6 | `vision_adult` | Adult vision services |
@@ -139,40 +108,18 @@ Every ACA-compliant health plan must publish an SBC in a **mandated 4-page forma
 
 ---
 
-## SBC Bulk Source
-
-Centene/Ambetter SBC PDFs available at `https://api.centene.com/SBC/2026/` (open directory, no auth). See `sbc_bulk_sources` in `data/config/sbm-source-registry.json`.
-
----
-
-## Claim Trigger Keywords
-
-| Trigger | Keywords to Match |
-|---------|-------------------|
-| `preauthorization` | "preauthorization", "prior authorization", "pre-authorization", "advance approval" |
-| `referral_required` | "referral required", "referral needed", "PCP referral" |
-| `step_therapy` | "step therapy", "fail first", "try first" |
-| `quantity_limit` | "quantity limit", "supply limit", "dispensing limit" |
-| `waiting_period` | "waiting period", "elimination period" |
-| `medical_necessity` | "medically necessary", "medical necessity determination" |
-| `network_restriction` | "in-network only", "no out-of-network", "network restriction" |
-
----
-
 ## QA Process
 
-After parsing a batch of SBCs:
-
-1. **Spot-check 50 plans** — manually compare parsed JSON against source PDF
-2. **Cross-validate** — check parsed deductibles/OOP max against Plan Attributes PUF values (should match within $1)
-3. **Completeness check** — every parsed SBC must have: deductible, OOP max, at least 5 copay fields, at least 1 exclusion
-4. **Flag anomalies** — deductible > OOP max, $0 deductible on non-CSR Silver, negative values, OOP max > federal limit
+1. Spot-check 50 plans — compare parsed JSON against source PDF
+2. Cross-validate deductibles/OOP max against Plan Attributes PUF (should match within $1)
+3. Completeness: every parsed SBC must have deductible, OOP max, at least 5 copay fields, at least 1 exclusion
+4. Flag anomalies: deductible > OOP max, $0 deductible on non-CSR Silver, OOP max > federal limit
 
 ---
 
 ## Environment
 
 - **PDF extraction:** `pdfplumber` (primary), `PyMuPDF` (fallback)
-- **Claude API:** Required for intelligent SBC parsing (env var: `ANTHROPIC_API_KEY`)
-- **Rate limit:** Max 10 SBC parsing calls per minute to Claude API
+- **Claude API:** For intelligent SBC parsing (env var: `ANTHROPIC_API_KEY`)
+- **Rate limit:** Max 10 SBC parsing calls per minute
 - **Storage:** Raw PDFs in `data/raw/sbc_pdfs/`, parsed JSON in `data/processed/sbc/`

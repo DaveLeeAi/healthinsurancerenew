@@ -1,134 +1,103 @@
 ---
 name: page-redesign
-description: Converts existing pages to V19 design standard. Triggers on V19, redesign, design audit, component migration, DESIGN.md compliance, above-fold pattern, or visual conversion.
+description: Converts pages to V35 design standard or creates new page types. Triggers on V35, redesign, design audit, component migration, DESIGN.md compliance, or visual conversion.
 ---
 
-# Skill: Page Redesign (V19 Conversion)
+# Skill: Page Redesign (V35 Standard)
 
-> Converts existing pages to the V19 design standard defined in DESIGN.md.
+> All existing page types are at V35 standard (Phase 4 complete 2026-04-07).
+> This skill is now primarily for NEW page types (e.g., Phase 5 plan+drug template).
 
 ---
 
 ## Before Touching Any File
 
-1. Read `DESIGN.md` — the single source of truth for page structure
-2. Read `ozempic_nc_formulary_v19.html` — the approved visual mockup
-3. Identify which page type you're converting (DESIGN.md Section 12a–12m)
+1. Read `CLAUDE.md` — master project instructions
+2. Read `DESIGN.md` — the single source of truth for page structure
+3. Read `healthinsurancerenew_v35_formulary.html` — the V35 locked content/schema reference
+4. Identify which page type (DESIGN.md Section 12a–12m)
+5. Check DESIGN.md §15 — Page-Class Governance. Do NOT build REJECTED page classes.
 
 ---
 
-## V19 Above-Fold Pattern (exact structure)
+## V35 Standard Checklist (every page must pass all)
 
-```html
-<main>
-  <nav aria-label="Breadcrumb">
-    <Breadcrumbs items={breadcrumbs} />
-  </nav>
+1. **YMYL checklist** (DESIGN.md §11) — every item passes
+2. **V35 component library** — AeoBlock, EvidenceBlock, GenericByline, AboutBlock, SchemaScript, Breadcrumbs, LimitsBlock
+3. **Copy rules** — grade 6-8, active voice, consumer-first, answer-first, "you/your" language
+4. **Schema** — WebPage primary + FAQPage + BreadcrumbList in `@graph` (formulary pages additionally get Drug + MedicalWebPage + HealthInsurancePlan)
+5. **OG/Twitter meta tags** — present on every page
+6. **Canonical tags** — correct, matching the public URL
+7. **No forbidden phrases** — full list in CLAUDE.md and DESIGN.md §9
+8. **No `<br>` in headings**
+9. **Static FAQ** — `<details>/<summary>`, never JS-rendered
+10. **GenericByline** on every page ("Licensed ACA Agent" — never Dave's name/NPN on inner pages)
+11. **CMS disclaimer** on every page
+12. **Data attribution** — "federal marketplace plan data and plan benefit documents" (never specific PUF file names)
+13. **Actor rotation** — "your plan" / "the plan" / "your insurance company" by context, never "insurer"
+14. **No MedicalWebPage schema** except on formulary pages
 
-  <article>
-    <!-- H1: human, specific, keyword-present, NO <br> tags -->
-    <h1 className="font-serif text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
-      {title}
-    </h1>
+---
 
-    <!-- Date line: visible <time>, max 2 segments -->
-    <div className="flex items-center gap-2 text-sm text-slate-500 mt-2">
-      <time dateTime="{ISO_date}">Data reviewed {Month Year}</time>
-      <span>·</span>
-      <span>{N} plans analyzed</span>
-    </div>
+## Above-Fold Pattern (exact structure — DESIGN.md §4)
 
-    <!-- Lede: 2–3 sentences, answer-first -->
-    <p className="text-lg text-slate-700 mt-4 leading-relaxed">
-      {answer-first lede}
-    </p>
-
-    <!-- Evidence block -->
-    <EvidenceBlock title="..." meta="..." stats={stats} rows={rows} note="..." />
-
-    <!-- AEO block — caveat OUTSIDE -->
-    <div className="aeo-block">
-      <span className="aeo-label">Quick answer</span>
-      <div className="aeo-answer">{single extractable sentence}</div>
-    </div>
-    <p className="aeo-caveat-note">{disclaimer}</p>
-
-    <!-- Snapshot grid: 4 cells, $/month not $/fill -->
-    <SnapshotGrid cells={cells} qualifier="..." />
-
-    <!-- Primary CTA (green) -->
-    <div className="cta-primary bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-      ...
-    </div>
+```
+1.  Breadcrumb nav
+2.  H1          — human, specific, keyword-present, NO <br> tags
+3.  Date line   — visible <time> element, max 2 segments
+4.  Lede        — 2–3 sentences, answer-first
+5.  Evidence block — data proving the lede
+6.  AEO block   — single extractable sentence, caveat OUTSIDE
+7.  Snapshot grid — 4 cells, $/month not $/fill
+8.  Primary CTA — green, above fold
 ```
 
 ---
 
-## Required Component Checklist (9 components)
-
-Every data page converted to V19 must include:
-
-- [ ] `Breadcrumbs` — with `aria-label="Breadcrumb"`
-- [ ] `EvidenceBlock` — 3 stats + 3–5 rows proving claims
-- [ ] `AeoBlock` — single extractable sentence, caveat OUTSIDE
-- [ ] `SnapshotGrid` — 4 cells, new info (not lede repeat)
-- [ ] `LimitsBlock` — "Before you make a decision, keep in mind"
-- [ ] `StaticFaq` — `<details>/<summary>`, first item `open`
-- [ ] `AboutBlock` — data source + methodology
-- [ ] `GenericByline` — "Reviewed by a licensed health insurance professional"
-- [ ] Three CTAs — green (top), blue (mid), navy (bottom)
-
----
-
-## 7-Step Conversion Process
+## Conversion Process for New Page Types
 
 ### Step 1: Audit
-- Read the existing page file
+- Read the existing page file (if updating) or design from scratch
+- Verify page class is APPROVED in DESIGN.md §15
 - Note current components, data loading, and schema
-- Identify what's V19-compliant vs what needs changing
 
 ### Step 2: Schema
-- Remove `MedicalWebPage` → use `WebPage`
-- Remove `medicalAudience`
-- Remove raw issuer IDs from schema
-- Ensure `dateModified` matches visible `<time>` element
-- Ensure schema `description` matches `<meta name="description">`
+- WebPage primary (NOT MedicalWebPage — that's formulary-only)
+- Add FAQPage + BreadcrumbList
+- `dateModified` matches visible `<time>`
+- Schema `description` matches `<meta name="description">`
 
 ### Step 3: Structure
 - Wrap editorial content in `<article>`
-- Add `role="complementary"` trust bar outside `<main>` if needed
-- Move related/supporting content outside `<article>`
+- Trust bar `role="complementary"` outside `<main>`
+- Related/supporting content outside `<article>`
 
 ### Step 4: Above-fold
-- Apply exact V19 order: breadcrumb → H1 → date → lede → evidence → AEO → snapshot → CTA
-- Remove `<br>` from headings
-- Add visible `<time>` element
-- Build EvidenceBlock with real data
+- Apply V35 order: breadcrumb → H1 → date → lede → evidence → AEO → snapshot → CTA
+- No `<br>` in headings
+- Visible `<time>` element
+- EvidenceBlock with real data
 
 ### Step 5: Below-fold
-- Apply DESIGN.md Section 4 below-fold order
-- Add LimitsBlock
-- Convert FAQ to static `<details>/<summary>`
-- Add AboutBlock
+- Apply DESIGN.md §4 below-fold order
+- LimitsBlock required
+- Static FAQ with `<details>/<summary>`
+- AboutBlock
 
 ### Step 6: Copy sweep
-- Run forbidden phrases check (DESIGN.md Section 9)
-- Replace "per fill"/"per pen" → "per month"
-- Replace "TL;DR" → "Quick answer"
-- Replace "patients" → "people" or "enrollees"
-- Remove "ACA" from H1, remove "formulary" from H1
-- Ensure cost disclaimers use "2026 plan benefit filings"
+- Run forbidden phrases check
+- Ensure "federal marketplace plan data and plan benefit documents" (never PUF names)
+- Grade 6-8 reading level, active voice, consumer-first
 
 ### Step 7: Validate
 ```bash
 npx tsc --noEmit
-grep -r "MedicalWebPage\|medicalAudience\|per fill\|per pen\|TL;DR" app/ --include="*.tsx"
-grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
+# Full validation suite from CLAUDE.md
 ```
 
 ---
 
-## V19 Color Tokens (mapped to Tailwind)
+## V35 Color Tokens (Tailwind)
 
 | Token | Use | Tailwind |
 |-------|-----|----------|
@@ -143,88 +112,19 @@ grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 
 ## Typography
 
-| Element | Font | Weight | Tailwind |
-|---------|------|--------|----------|
-| H1 | Lora (serif) | Bold | `font-serif text-3xl md:text-4xl font-bold` |
-| H2 | DM Sans | Semibold | `text-2xl font-semibold` |
-| Body | DM Sans | Regular | `text-base text-slate-700` |
-| Lede | DM Sans | Regular | `text-lg text-slate-700 leading-relaxed` |
-| Labels | DM Sans | Medium | `text-sm font-medium text-slate-500` |
-| AEO label | DM Sans | Semibold | `text-xs font-semibold uppercase tracking-wide` |
-
----
-
-## Per-Page-Type Conversion Notes
-
-### Formulary (`/formulary/{state}/{drug}`)
-- Full V19 spec in DESIGN.md Section 12a
-- Most complex conversion — 14 required sections
-- Snapshot cells: Plans covering drug | Typical tier | After deductible/month | Before deductible/month
-
-### SBC Plan Detail (`/{state}/{county}/{plan}-plan`)
-- DESIGN.md Section 12b
-- Keep existing SBCGrid component for cost-sharing table
-- `/plan-details/{id}/{slug}` is a 301 redirect — don't touch routing
-
-### County Hub (`/{state}/{county}`)
-- DESIGN.md Section 12c
-- Primary updates: AnswerBox → AeoBlock, JS FAQ → StaticFaq
-
-### Subsidy (`/subsidies/{state}/{county}`)
-- DESIGN.md Section 12d
-- CRITICAL: Enhanced subsidies expired — show 2026 cliff rules
-
-### Enhanced Credits (`/enhanced-credits/{state}/{county}`)
-- DESIGN.md Section 12i
-- CRITICAL: All figures must reflect post-enhancement 2026 reality
-
----
-
-## Reference Template: Formulary (locked at 9.5/10)
-
-The formulary template is the locked reference at 9.5/10. All other page types should aim to match this quality. The actual built section order (not the original DESIGN.md 12a spec — the improved version):
-
-```
-1. Hero (H1 + date line) → AEO block → Evidence block → Plain-English takeaway → Editorial insight box
-2. Primary CTA (green)
-3. Cost section with interpretation lines + vary block
-4. Mid CTA (blue accent)
-5. Plan rules with observation counts + cross-links
-6. Prior authorization timeline (conditional)
-7. Savings rows (drug-class-aware)
-8. "What to do if you run into a problem" scenario guidance
-9. Limits block
-10. FAQ (7 items, before related drugs)
-11. About block + education links
-12. Related drugs (pills) — outside article
-13. Insurer table with insight intro — outside article
-14. State nav — outside article
-15. Bottom CTA (navy, specific to cost+access)
-```
-
-### Data Contradiction Checklist (verify before shipping any page)
-- Evidence block tier MUST match FAQ tier
-- FAQ tier MUST match cost section tiers
-- Cost section tiers MUST match insurer table tiers
-- FAQ deductible answer MUST use `beforeDeductibleRange`, not `dominantHumanTier.costRange`
-- No Preventive/$0 for non-preventive drugs (check biologic blocklist)
-
-### Drug-Aware Functions (MUST use instead of base functions)
-- `humanizeTierForDrug()` not `humanizeTier()` — handles insulin IRA, biologic blocklist
-- `getDominantTierGroupForDrug()` not `getDominantTierGroup()`
-- `humanizeTiersForDrug()` not `humanizeTiers()`
-
-### Required Editorial Intelligence Sections
-- **Editorial insight box** — conditional content by tier/PA combination
-- **Scenario guidance** — "What to do if you run into a problem" with conditional steps
-- **Drug-class savings variation** — different savings copy per drug class
+| Element | Font | Tailwind |
+|---------|------|----------|
+| H1 | Lora (serif) | `font-serif text-3xl md:text-4xl font-bold` |
+| H2 | DM Sans | `text-2xl font-semibold` |
+| Body | DM Sans | `text-base text-slate-700` |
+| Lede | DM Sans | `text-lg text-slate-700 leading-relaxed` |
 
 ---
 
 ## What NOT to Change
 
-- **Data loading logic** — keep existing data file reads and transformations
-- **Route structure** — don't change URL patterns or dynamic segments
-- **Helper functions** — `lib/formulary-helpers.ts`, `lib/schema-markup.ts` internals
-- **301 redirects** — existing redirects are correct, don't modify
-- **API routes** — `app/api/` endpoints are not part of the visual redesign
+- **V35 formulary template** — locked at 9.5/10, never modify without explicit approval
+- **Data loading logic** — keep existing data file reads
+- **Route structure** — don't change URL patterns
+- **301 redirects** — existing redirects are correct
+- **API routes** — not part of visual work

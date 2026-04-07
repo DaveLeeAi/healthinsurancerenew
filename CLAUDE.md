@@ -53,6 +53,17 @@
 
 ---
 
+## Data Coverage
+
+- **50 states + DC** — 320/320 ACA marketplace carriers = **100% carrier coverage**
+- **15,245,850 total formulary records** (14,854,187 FFE plan-level + 391,663 SBM drug-level)
+- **46 enrichment files** with PA/QL/ST restriction data (199,438 drugs)
+- **20,354+ SBC plan variants** (FFE + SBM)
+- Formulary URL registry: `data/config/formulary-url-registry-2026.json`
+- Carrier fact-check: `docs/aca_2026_ifp_carriers_fact_check.md` (320 carriers verified)
+
+---
+
 ## 2026 Rules (Critical)
 
 - **Enhanced subsidies expired** end of 2025
@@ -70,19 +81,25 @@
 | 1 | Formulary page redesign — V35 locked as content/schema standard | **COMPLETE** |
 | 2 | Sitewide component migration (FAQ, AEO, schema fixes) | **COMPLETE** |
 | 3 | 2026 content + routing + differentiation + triple schema | **COMPLETE** |
-| 4 | Page-type conversion + ISR + phased indexing | **IN PROGRESS** |
+| 4 | Page-type V35 conversion + ISR + sitemap (SERP-validated order) | **COMPLETE** |
+| 5 | Plan + drug template (15.2M page tier) — "does [plan] cover [drug]" | Pending |
 
-**Formulary template:** `app/formulary/[issuer]/[drug_name]/page.tsx` (2,036 lines). Scored 9.5/10 by ChatGPT and Gemini. V35 is the locked content, copy, tone, and schema reference.
+**Formulary template:** `app/formulary/[issuer]/[drug_name]/page.tsx` (2,158 lines). Scored 9.5/10 externally. V35 is the locked content, copy, tone, and schema reference. Phase 3 added ~122 lines (triple schema, content differentiation, /drugs removal).
 
-### Phase 4 substatus (SERP-validated build order):
-- ✅ 20. SBC plan detail pages — V35 standard confirmed, schema ID fix
-- ✅ 21. State hub pages — PageFaq → inline static FAQ
-- ✅ 22. Life events pages — added WebPage + FAQPage schema
-- ✅ 23. County hub pages — PageFaq → inline, added WebPage + FAQPage schema
-- ✅ 24. Dental pages — added WebPage schema
-- ✅ 25. Rate volatility pages — added WebPage schema
-- ✅ 26. Billing pages — added WebPage schema
-- ✅ 27. ISR configuration + phased indexing
+### Phase 4 completion summary (2026-04-07):
+- ✅ 20. SBC plan detail pages — schema ID fix, passed 16/16 V35 audit
+- ✅ 21. State hub pages — PageFaq → inline static, WebPage + FAQPage schema added
+- ✅ 22. Life events pages — WebPage + FAQPage schema added
+- ✅ 23-26. County/dental/rates/billing — WebPage schema + SpeakableSpecification added, county FAQ inline conversion
+- ✅ 27. ISR config — revalidate=86400 on 6 page types, dynamic sitemap, robots.ts, priority-weighted sitemap
+- ✅ Copy audit — "patients"→"people", "negotiated rate" replaced, "criteria"→"approval requirements"
+- Build order was resequenced based on SERP research (Manus 2026-04-07): SBC first (score 96), county hubs deprioritized (score 37)
+
+### Phase 5 scope (pending):
+- Plan + drug page template — answers "does [plan] cover [drug]?" (SERP score: 96)
+- 15.2M page tier: `/{state}/{drug}/{plan}`
+- Needs new template design, data pipeline, URL structure
+- SERP research: see `docs/serp-validation-2026-04-07.md`
 
 ---
 
@@ -91,7 +108,9 @@
 ### Canonical public URLs (what Google sees):
 ```
 /{state}/{drug}                    → formulary drug page (via middleware rewrite)
+/{state}/{drug}/{plan}             → plan + drug page (Phase 5 — not yet built)
 /{state-slug}/{county-slug}        → county hub
+/{state-slug}/{county-slug}/{plan}-plan → SBC plan detail
 /{state-slug}/health-insurance-plans → state plans listing
 /formulary                         → drug lookup/search tool
 ```
@@ -107,68 +126,7 @@
 - `/plans/[state]` → `redirect()` to `/{state-slug}/health-insurance-plans`
 - `/plans/[state]/[county]` → `redirect()` to `/{state-slug}/{county-slug}`
 - `/plan-details/[id]/[slug]` → `permanentRedirect()` to canonical plan URL
-
----
-
-## Folder Structure
-
-```
-healthinsurancerenew/
-├── CLAUDE.md
-├── DESIGN.md
-├── middleware.ts                       # /{state}/{drug} → /formulary/{state}/{drug}
-├── app/
-│   ├── [state-name]/                  # State/county/plan routes
-│   │   ├── [county-slug]/
-│   │   └── health-insurance-plans/
-│   ├── formulary/                     # Drug lookup + V35 drug coverage pages
-│   │   ├── page.tsx                  # Search interface
-│   │   └── [issuer]/[drug_name]/     # V35 template (2,036 lines)
-│   ├── plans/                         # Legacy redirect shims
-│   ├── subsidies/
-│   ├── rates/
-│   ├── dental/
-│   ├── enhanced-credits/
-│   ├── life-events/
-│   ├── billing/
-│   ├── states/
-│   ├── guides/
-│   ├── faq/
-│   ├── tools/
-│   └── api/
-├── components/
-│   ├── AeoBlock.tsx
-│   ├── EvidenceBlock.tsx
-│   ├── CostBlock.tsx
-│   ├── PlanRulesBlock.tsx
-│   ├── TimelineSteps.tsx
-│   ├── SavingsRows.tsx
-│   ├── LimitsBlock.tsx
-│   ├── AboutBlock.tsx
-│   ├── ProcessBar.tsx
-│   ├── GenericByline.tsx
-│   ├── SchemaScript.tsx
-│   ├── Header.tsx
-│   ├── Footer.tsx
-│   └── ...
-├── lib/
-│   ├── data-loader.ts
-│   ├── formulary-helpers.ts
-│   ├── formulary-insights.ts          # State-specific content differentiation
-│   ├── drug-linking.ts
-│   ├── entity-linker.ts
-│   ├── schema-markup.ts               # Triple schema builder (6-type @graph)
-│   ├── content-templates.ts
-│   └── ...
-├── data/
-│   ├── processed/                     # Committed datasets
-│   │   └── drug_national_baselines.json  # National drug baselines for differentiation
-│   └── config/
-├── scripts/
-│   └── generate/
-│       └── generate_drug_baselines.py # Baseline generation script
-└── ...
-```
+- `/states/[state]/aca-2026` → `permanentRedirect()` to `/{state}/health-insurance-plans`
 
 ---
 
@@ -187,6 +145,8 @@ healthinsurancerenew/
 "insurer" / "insurers"          → "insurance company" or "your plan"
 "clinical situation"            → "your situation" or remove
 "criteria"                      → "approval requirements"
+"negotiated rate"               → remove or rephrase
+"claims data"                   → remove or rephrase
 ```
 
 ### Reading Level
@@ -198,8 +158,10 @@ healthinsurancerenew/
 ## Validation Commands
 
 ```bash
+# TypeScript
 npx tsc --noEmit
 
+# Forbidden phrases
 grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
@@ -207,13 +169,20 @@ grep -r "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related con
 grep -r "MedicalWebPage\|medicalAudience" \
   app/ components/ lib/ --include="*.tsx" --include="*.ts"
 
+# <br> in headings
 grep -r "<h1.*<br\|<h2.*<br" app/ --include="*.tsx"
 
 # No /drugs references
 grep -rn '"/drugs' app/ lib/ components/ --include="*.tsx" --include="*.ts" | grep -v node_modules
 
 # No bare /all/ links
-grep -rn '"\`/all/' app/ components/ --include="*.tsx" | grep -v "/formulary/all/"
+grep -rn '`/all/' app/ components/ --include="*.tsx" | grep -v "/formulary/all/"
+
+# No unauthorized components
+ls components/CoverageStatusBlock.tsx components/ConfirmsBlock.tsx 2>/dev/null && echo "FAIL" || echo "OK"
+
+# Sitemap returns index, not flat list
+curl -s http://localhost:3000/sitemap.xml | head -5
 ```
 
 ---
@@ -231,3 +200,6 @@ grep -rn '"\`/all/' app/ components/ --include="*.tsx" | grep -v "/formulary/all
 - Never change V35 template layout without explicit approval
 - Never hardcode API keys or secrets
 - Never commit raw CMS data files
+- Never build or index a REJECTED page class (see DESIGN.md §15 — Page-Class Governance)
+- Never use `new Date()` or current timestamp for sitemap lastmod — use actual data/edit dates
+- Never let an external LLM (ChatGPT, Gemini, etc.) orchestrate Claude Code on this repo — it will bypass CLAUDE.md constraints
