@@ -1,0 +1,87 @@
+name: V35 Validation Suite
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: TypeScript compile check
+        run: npx tsc --noEmit
+
+      - name: Forbidden phrases
+        run: |
+          RESULT=$(grep -rn "per pen\|per fill\|prior auth[^o]\|TL;DR\|most plans cover\|related conditions\|insurer\b\|insurers\b\|clinical situation\|provide the medication\|pick it up from" \
+            app/ components/ lib/ --include="*.tsx" --include="*.ts" \
+            | grep -v "// \|/\*\|editorial-standards\|\.d\.ts" || true)
+          if [ -n "$RESULT" ]; then
+            echo "::error::Forbidden phrases found:"
+            echo "$RESULT"
+            exit 1
+          fi
+
+      - name: MedicalWebPage only in formulary
+        run: |
+          RESULT=$(grep -rn "MedicalWebPage\|medicalAudience" \
+            app/ --include="*.tsx" || true)
+          if [ -n "$RESULT" ]; then
+            echo "::error::MedicalWebPage found outside schema-markup.ts:"
+            echo "$RESULT"
+            exit 1
+          fi
+
+      - name: No br in headings
+        run: |
+          RESULT=$(grep -rn "<h1.*<br\|<h2.*<br" app/ --include="*.tsx" || true)
+          if [ -n "$RESULT" ]; then
+            echo "::error::Found <br> in headings:"
+            echo "$RESULT"
+            exit 1
+          fi
+
+      - name: No /drugs references
+        run: |
+          RESULT=$(grep -rn '"/drugs' app/ lib/ components/ --include="*.tsx" --include="*.ts" | grep -v node_modules || true)
+          if [ -n "$RESULT" ]; then
+            echo "::error::Found /drugs references:"
+            echo "$RESULT"
+            exit 1
+          fi
+
+      - name: No bare /all/ links
+        run: |
+          RESULT=$(grep -rn '"/all/' app/ components/ --include="*.tsx" | grep -v "/formulary/all/" || true)
+          if [ -n "$RESULT" ]; then
+            echo "::error::Found bare /all/ links:"
+            echo "$RESULT"
+            exit 1
+          fi
+
+      - name: No unauthorized components
+        run: |
+          for FILE in components/CoverageStatusBlock.tsx components/ConfirmsBlock.tsx; do
+            if [ -f "$FILE" ]; then
+              echo "::error::Unauthorized component exists: $FILE"
+              exit 1
+            fi
+          done
+
+      - name: V35 template line count check
+        run: |
+          LINES=$(wc -l < "app/formulary/[issuer]/[drug_name]/page.tsx")
+          echo "V35 template: $LINES lines"
+          if [ "$LINES" -gt 2300 ]; then
+            echo "::warning::V35 template has grown beyond expected range ($LINES lines)"
+          fi
