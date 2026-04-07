@@ -913,6 +913,141 @@ export function buildFinancialProductSchema(params: {
 }
 
 
+// ─── Pillar 6b: Formulary Triple Schema — @graph with 6 types ─────────────────
+
+/**
+ * Builds a single @graph JSON-LD block for formulary pages containing:
+ * Drug, MedicalWebPage, HealthInsurancePlan, Organization, BreadcrumbList, FAQPage.
+ *
+ * Matches V35 reference schema structure exactly. Single <script> block output.
+ */
+export function buildFormularyTripleSchema(params: {
+  drugName: string
+  drugSlug: string
+  nonProprietaryName?: string
+  rxcui?: string
+  drugClass?: string
+  stateSlug: string
+  stateName: string
+  canonical: string
+  pageTitle: string
+  metaDescription: string
+  planYear: number
+  hasPriorAuth: boolean
+  hasStepTherapy: boolean
+  hasQuantityLimit: boolean
+  planCount: number
+  costSharingSpecs: Array<{
+    tierCategory: string
+    copayRange: string
+    copayOption: string
+  }>
+  breadcrumbItems: Array<{ name: string; url?: string }>
+  faqItems: Array<{ question: string; answer: string }>
+}): object {
+  const {
+    drugName, drugSlug, nonProprietaryName, rxcui, drugClass,
+    stateSlug, stateName, canonical, pageTitle, metaDescription,
+    planYear, hasPriorAuth, hasStepTherapy, hasQuantityLimit,
+    costSharingSpecs, breadcrumbItems, faqItems,
+  } = params
+
+  const today = new Date().toISOString().split('T')[0]
+  const orgId = 'https://healthinsurancerenew.com/#organization'
+
+  // 1. Drug
+  const drugNode: Record<string, unknown> = {
+    '@type': 'Drug',
+    '@id': `${canonical}#drug`,
+    'name': drugName,
+    'additionalProperty': [
+      { '@type': 'PropertyValue', name: 'priorAuthorizationRequired', value: String(hasPriorAuth) },
+      { '@type': 'PropertyValue', name: 'stepTherapyRequired', value: String(hasStepTherapy) },
+      { '@type': 'PropertyValue', name: 'quantityLimitApplies', value: String(hasQuantityLimit) },
+    ],
+    'includedInHealthInsurancePlan': { '@id': `${canonical}#healthplan` },
+  }
+  if (nonProprietaryName) drugNode['nonProprietaryName'] = nonProprietaryName
+  if (rxcui) drugNode['rxcui'] = rxcui
+  if (drugClass) {
+    drugNode['drugClass'] = { '@type': 'DrugClass', name: drugClass }
+  }
+
+  // 2. MedicalWebPage
+  const medicalWebPage: Record<string, unknown> = {
+    '@type': 'MedicalWebPage',
+    '@id': `${canonical}#webpage`,
+    'name': pageTitle,
+    'description': metaDescription,
+    'url': canonical,
+    'inLanguage': 'en-US',
+    'lastReviewed': today,
+    'datePublished': `${planYear}-01-15`,
+    'dateModified': today,
+    'medicalAudience': { '@type': 'MedicalAudience', audienceType: 'Patient' },
+    'speakable': { '@type': 'SpeakableSpecification', cssSelector: '.aeo-answer' },
+    'about': { '@id': `${canonical}#drug` },
+    'reviewedBy': { '@id': orgId },
+    'author': { '@id': orgId },
+    'publisher': { '@id': orgId },
+  }
+
+  // 3. HealthInsurancePlan → HealthPlanFormulary → HealthPlanCostSharingSpecification
+  const healthPlan: Record<string, unknown> = {
+    '@type': 'HealthInsurancePlan',
+    '@id': `${canonical}#healthplan`,
+    'name': `${stateName} ACA Marketplace Plans (${planYear})`,
+    'healthPlanDrugOption': {
+      '@type': 'HealthPlanFormulary',
+      offersPrescriptionByMail: true,
+      healthPlanCostSharingSpecification: costSharingSpecs.map(spec => ({
+        '@type': 'HealthPlanCostSharingSpecification',
+        healthPlanPharmacyCategory: spec.tierCategory,
+        healthPlanCopay: spec.copayRange,
+        healthPlanCopayOption: spec.copayOption,
+      })),
+    },
+  }
+
+  // 4. Organization
+  const organization = {
+    '@type': 'Organization',
+    '@id': orgId,
+    'name': 'HealthInsuranceRenew',
+    'url': 'https://healthinsurancerenew.com',
+    'description': 'ACA health insurance data and decision support',
+  }
+
+  // 5. BreadcrumbList
+  const breadcrumb = {
+    '@type': 'BreadcrumbList',
+    'itemListElement': breadcrumbItems.map((item, index) => {
+      const entry: Record<string, unknown> = {
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+      }
+      if (item.url) entry['item'] = item.url
+      return entry
+    }),
+  }
+
+  // 6. FAQPage
+  const faqPage = {
+    '@type': 'FAQPage',
+    'mainEntity': faqItems.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [drugNode, medicalWebPage, healthPlan, organization, breadcrumb, faqPage],
+  }
+}
+
 // ─── WebApplication (DESIGN.md Section 7 — Tools) ─────────────────────────────
 
 /**
