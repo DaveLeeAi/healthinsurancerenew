@@ -40,6 +40,7 @@ import type {
   LifeEventRecord,
   PolicyScenarioRecord,
   PlanRecord,
+  DrugBaseline,
 } from './types'
 import type { SbcIndex, FormularyBlockIndex } from './data-index-builder'
 
@@ -1040,4 +1041,38 @@ export function getSbmPlansForStaticParams(
     }
   }
   return result
+}
+
+// ---------------------------------------------------------------------------
+// Pillar 6b — Drug National Baselines (content differentiation)
+// ---------------------------------------------------------------------------
+
+interface DrugBaselinesFile {
+  metadata: { generated_at: string; drug_count: number }
+  data: Record<string, DrugBaseline>
+}
+
+let drugBaselinesCache: Record<string, DrugBaseline> | null = null
+
+/**
+ * Returns national + per-state baseline stats for a drug, or null if the
+ * baselines file hasn't been generated yet or the drug isn't in it.
+ *
+ * drugName is the raw display name — it will be normalised to lowercase for lookup.
+ */
+export function getDrugBaseline(drugName: string): DrugBaseline | null {
+  if (!drugBaselinesCache) {
+    const filepath = path.join(DATA_DIR, 'drug_national_baselines.json')
+    if (!fs.existsSync(filepath)) {
+      return null
+    }
+    try {
+      const file = JSON.parse(fs.readFileSync(filepath, 'utf-8')) as DrugBaselinesFile
+      drugBaselinesCache = file.data ?? {}
+    } catch {
+      return null
+    }
+  }
+  const key = drugName.trim().toLowerCase()
+  return drugBaselinesCache[key] ?? null
 }

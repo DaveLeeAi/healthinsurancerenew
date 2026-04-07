@@ -8,6 +8,7 @@ import {
   getPlanById,
   getTopIssuerIds,
   getIssuerStateMap,
+  getDrugBaseline,
 } from '@/lib/data-loader'
 import type { FormularyDrug } from '@/lib/types'
 import {
@@ -21,6 +22,7 @@ import EntityLinkCard from '@/components/EntityLinkCard'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
 import { generateFormularyContent } from '@/lib/content-templates'
+import { generateStateInsights } from '@/lib/formulary-insights'
 import ProcessBar from '@/components/ProcessBar'
 import AeoBlock from '@/components/AeoBlock'
 import EvidenceBlock from '@/components/EvidenceBlock'
@@ -673,6 +675,19 @@ export default async function FormularyDrugPage({ params }: Props) {
     ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName })
     : null
 
+  // --- State-specific content insights ---
+  const baseline = getDrugBaseline(drugSlug)
+  const stateInsights =
+    baseline && isState && results.length > 0
+      ? generateStateInsights({
+          drugName: drugDisplay,
+          stateName: stateName ?? '',
+          stateCode: stateCode ?? '',
+          stateResults: results,
+          baseline,
+        })
+      : null
+
   // --- Entity links ---
   const relatedPlans = results
     .map((r) => r.plan_id)
@@ -825,7 +840,14 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 3. AeoBlock ── */}
           {results.length > 0 && (
             <AeoBlock
-              answer={`${titleCase(drugDisplay)} was on most of the ${isState ? stateName : 'Marketplace'} health plans we reviewed \u2014 ${results.length} of them for ${PLAN_YEAR}.${hasPriorAuth ? ` Prior approval is a common requirement on plans that include it \u2014 found in ${priorAuthCount} of ${results.length} plans we reviewed.` : ' Prior approval was not required on the plans we reviewed.'} What you pay can vary quite a bit depending on your plan\u2019s tier placement and where you are in your deductible year.`}
+              answer={[
+                `${titleCase(drugDisplay)} was on most of the ${isState ? stateName : 'Marketplace'} health plans we reviewed \u2014 ${results.length} of them for ${PLAN_YEAR}.`,
+                hasPriorAuth
+                  ? ` Prior approval is a common requirement on plans that include it \u2014 found in ${priorAuthCount} of ${results.length} plans we reviewed.`
+                  : ' Prior approval was not required on the plans we reviewed.',
+                ' What you pay can vary quite a bit depending on your plan\u2019s tier placement and where you are in your deductible year.',
+                stateInsights?.accessQualifier ? ` ${stateInsights.accessQualifier}` : '',
+              ].join('')}
               caveat={`Based on ${PLAN_YEAR} federal plan data. Actual cost depends on your plan, pharmacy, and deductible status.`}
             />
           )}
@@ -844,9 +866,18 @@ export default async function FormularyDrugPage({ params }: Props) {
                     : dominantGroup === 'non-preferred-brand' ? 'Higher-cost brand tier'
                     : dominantGroup === 'specialty' ? 'Highest cost tier'
                     : dominantHumanTier.shortLabel,
-                  sub: `Plan term: ${dominantHumanTier.shortLabel} · ${dominantHumanTier.costRange}`,
+                  sub: [
+                    `Plan term: ${dominantHumanTier.shortLabel} · ${dominantHumanTier.costRange}`,
+                    stateInsights?.tierComparison ? ` ${stateInsights.tierComparison}` : '',
+                  ].join(''),
                 },
-                { label: 'Prior authorization', value: hasPriorAuth ? `${priorAuthCount} plans` : 'Not required', sub: hasPriorAuth ? 'require approval' : 'on plans reviewed' },
+                {
+                  label: 'Prior authorization',
+                  value: hasPriorAuth ? `${priorAuthCount} plans` : 'Not required',
+                  sub: hasPriorAuth
+                    ? ['require approval', stateInsights?.paComparison ? ` ${stateInsights.paComparison}` : ''].join('')
+                    : 'on plans reviewed',
+                },
               ]}
               rows={[
                 ...(hasStepTherapy
@@ -886,13 +917,15 @@ export default async function FormularyDrugPage({ params }: Props) {
                 What matters most for {titleCase(drugDisplay)} in {isState ? stateName : 'Marketplace plans'}
               </p>
               <p className="text-ink" style={{ fontSize: '14px', lineHeight: 1.6 }}>
-                {hasPriorAuth && (dominantGroup === 'specialty' || dominantGroup === 'non-preferred-brand')
-                  ? `Coverage alone doesn\u2019t tell the full story. For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, the biggest cost differences between plans show up in deductible timing, tier placement, and whether prior approval is required. If ${titleCase(drugDisplay)} access matters to you, compare plans based on cost-sharing and access hurdles \u2014 not just whether the drug appears on the drug list.`
-                  : !hasPriorAuth && dominantGroup === 'generic'
-                    ? `${titleCase(drugDisplay)} is widely available across ${isState ? stateName : 'Marketplace'} plans at low cost. The main thing to compare is pharmacy choice and whether your plan covers it before or after the deductible.`
-                    : hasPriorAuth && (dominantGroup === 'preferred-brand' || dominantGroup === 'generic')
-                      ? `Most ${isState ? stateName : 'Marketplace'} plans cover ${titleCase(drugDisplay)}, but prior approval adds a step before your first fill. Plans differ most in how quickly they process approvals and what tier they assign \u2014 both directly affect what you pay.`
-                      : `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, plans vary most in tier placement and whether prior approval is required. Comparing these two factors across plans is the best way to estimate your real monthly cost.`
+                {stateInsights?.insightBody ||
+                  (hasPriorAuth && (dominantGroup === 'specialty' || dominantGroup === 'non-preferred-brand')
+                    ? `Coverage alone doesn\u2019t tell the full story. For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, the biggest cost differences between plans show up in deductible timing, tier placement, and whether prior approval is required. If ${titleCase(drugDisplay)} access matters to you, compare plans based on cost-sharing and access hurdles \u2014 not just whether the drug appears on the drug list.`
+                    : !hasPriorAuth && dominantGroup === 'generic'
+                      ? `${titleCase(drugDisplay)} is widely available across ${isState ? stateName : 'Marketplace'} plans at low cost. The main thing to compare is pharmacy choice and whether your plan covers it before or after the deductible.`
+                      : hasPriorAuth && (dominantGroup === 'preferred-brand' || dominantGroup === 'generic')
+                        ? `Most ${isState ? stateName : 'Marketplace'} plans cover ${titleCase(drugDisplay)}, but prior approval adds a step before your first fill. Plans differ most in how quickly they process approvals and what tier they assign \u2014 both directly affect what you pay.`
+                        : `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, plans vary most in tier placement and whether prior approval is required. Comparing these two factors across plans is the best way to estimate your real monthly cost.`
+                  )
                 }
               </p>
             </div>
@@ -939,13 +972,15 @@ export default async function FormularyDrugPage({ params }: Props) {
                 </span>
               </div>
               <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.65, marginBottom: '14px' }}>
-                Two things drive your cost: whether your deductible is met, and which tier your plan puts this drug on. The gap between tiers is bigger than most people expect.
+                {stateInsights?.costContext ||
+                  'Two things drive your cost: whether your deductible is met, and which tier your plan puts this drug on. The gap between tiers is bigger than most people expect.'
+                }
               </p>
               <CostBlock
                 rows={costRows}
                 note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
                 varyRows={[
-                  { key: 'Tier placement matters', value: `Preferred and non-preferred tiers can differ by $40\u2013$80 per month or more, based on what we found in reviewed plans. Tier placement is one of the more impactful things to check when comparing options.` },
+                  { key: 'Tier placement matters', value: stateInsights?.tierBreakdown || `Preferred and non-preferred tiers can differ by $40\u2013$80 per month or more, based on what we found in reviewed plans. Tier placement is one of the more impactful things to check when comparing options.` },
                   { key: 'Pharmacy choice', value: `Your plan\u2019s negotiated rate varies by pharmacy. Preferred pharmacies and mail-order often come in lower \u2014 worth checking before your first fill.` },
                   { key: 'How your deductible works', value: `Some plans have a separate drug deductible; others combine it with your medical one. That structure determines when your lower monthly copay kicks in.` },
                 ]}
@@ -998,7 +1033,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                       ? `${priorAuthCount} of ${results.length} plans we reviewed`
                       : 'not found in plans we reviewed',
                     body: hasPriorAuth
-                      ? `Before your pharmacy can fill ${titleCase(drugDisplay)}, most plans require your doctor to submit documentation to the plan first. Your doctor\u2019s office typically handles this. The criteria, process, and timelines vary by plan \u2014 check your benefit documents for the specifics that apply to yours. If a request is denied, your plan will have an appeal process you can use.`
+                      ? [
+                          `Before your pharmacy can fill ${titleCase(drugDisplay)}, most plans require your doctor to submit documentation to the plan first. Your doctor\u2019s office typically handles this. The approval requirements, process, and timelines vary by plan \u2014 check your benefit documents for the specifics that apply to yours. If a request is denied, your plan will have an appeal process you can use.`,
+                          stateInsights?.paNote ? ` ${stateInsights.paNote}` : '',
+                        ].join('')
                       : `Your doctor can prescribe ${titleCase(drugDisplay)} directly. Your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year \u2014 always confirm current coverage with your plan.`,
                   },
                   {
@@ -1187,6 +1225,15 @@ export default async function FormularyDrugPage({ params }: Props) {
             ))}
           </div>
         </section>
+
+        {/* ── Educational explainers (bodyHtml — tightened, below unique content) ── */}
+        {editorial?.bodyHtml && (
+          <div
+            className="content-formulary"
+            style={{ marginTop: '44px', fontSize: '13.5px', lineHeight: 1.7, color: 'var(--ink)' }}
+            dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }}
+          />
+        )}
 
         {/* ── AboutBlock ── */}
         <div style={{ marginTop: '44px' }}>

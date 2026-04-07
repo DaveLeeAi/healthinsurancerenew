@@ -190,6 +190,29 @@ export interface FormularySearchParams {
   plan_id?: string
 }
 
+// --- Pillar 6b: Drug National Baselines (for content differentiation) ---
+export interface DrugStateBaseline {
+  plan_count: number
+  prior_auth_pct: number
+  dominant_tier: string
+  /** 1 = highest PA rate among all states with coverage */
+  pa_rank_among_states: number
+  total_states: number
+}
+
+export interface DrugBaseline {
+  drug_name: string
+  total_plans_national: number
+  total_states_with_coverage: number
+  /** Normalised tier keys → percentage of plans nationally */
+  tier_distribution_pct: Record<string, number>
+  dominant_tier_national: string
+  prior_auth_pct_national: number
+  step_therapy_pct_national: number
+  quantity_limit_pct_national: number
+  per_state: Record<string, DrugStateBaseline>
+}
+
 // --- Pillar 7: Dental Coverage ---
 export interface DentalCostSharing {
   individual_in_network: number | null

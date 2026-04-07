@@ -852,76 +852,45 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
     `Source: ${planYear} federal plan data.`
 
   const bodyHtml = `<section class="content-formulary">
-  <h2>Understanding Formulary Tier Structure</h2>
+  <h2>How drug tiers affect what you pay</h2>
   <p>
-    Marketplace plans organize covered medications into tiers. While exact tier names vary
-    by carrier, the standard structure from lowest to highest cost-sharing is:
-  </p>
-  <ol class="formulary-tiers">
-    <li><strong>Tier 1 — Generic:</strong> The lowest-cost tier. Generic drugs have the same active ingredients, safety, and efficacy as brand-name drugs and carry your plan's lowest copay or coinsurance.</li>
-    <li><strong>Tier 2 — Preferred Brand:</strong> Brand-name drugs with carrier-negotiated preferred pricing. Higher cost-sharing than generics, but lower than non-preferred brands.</li>
-    <li><strong>Tier 3 — Non-Preferred Brand:</strong> Brand-name drugs not on the carrier's preferred list. Higher cost-sharing than Tier 2.</li>
-    <li><strong>Tier 4 — Specialty:</strong> High-cost or complex medications, including biologics. Typically the highest cost-sharing, often coinsurance-based (e.g., 25–33% of cost).</li>
-    <li><strong>Preventive ($0):</strong> Medications required to be covered at no cost-sharing under the federal preventive services mandate (USPSTF Grade A/B recommendations).</li>
-  </ol>
-  <p>
-    For ${planYear}, ${drugName} is most commonly classified as <strong>${topTier}</strong>
-    on the plans in this dataset.
-    ${genericCount > 0 ? `${genericCount} plan${genericCount !== 1 ? 's' : ''} classify it as a generic. ` : ''}
-    Your actual copay or coinsurance depends on your specific plan's Evidence of Coverage document.
+    Plans group covered drugs into tiers — lower tiers mean lower cost-sharing for you.
+    The most common tiers from lowest to highest cost are generic, preferred brand,
+    non-preferred brand, and specialty. For ${planYear}, ${drugName} is most commonly
+    classified as <strong>${topTier}</strong>.${genericCount > 0 ? ` ${genericCount} plan${genericCount !== 1 ? 's' : ''} place it on a generic tier.` : ''}
+    Your actual copay depends on your specific plan documents.
   </p>
 
-  <h2>Prior Authorization — What It Means and How to Navigate It</h2>
+  <h2>What prior approval means for you</h2>
   <p>
-    Prior authorization (PA) means the carrier requires advance approval before covering a
-    medication. Of the ${planCount} plans showing ${drugName} in this dataset,
     ${
       priorAuthCount > 0
-        ? `<strong>${priorAuthCount}</strong> require prior authorization. Your prescribing doctor must submit clinical documentation showing medical necessity before the plan will cover the medication.`
-        : 'none currently require prior authorization, though this can change at annual formulary updates.'
+        ? `${priorAuthCount} of the ${planCount} plans we reviewed require your doctor to submit documentation before your plan will cover ${drugName}. Your doctor handles the request — you don\u2019t file it yourself. If the plan denies it, you have the right to appeal. For urgent situations, plans must respond within 72 hours.`
+        : `None of the ${planCount} plans we reviewed required prior approval for ${drugName} — though this can change at annual drug list updates. Confirm with your specific plan before assuming it applies.`
     }
-  </p>
-  <p>
-    If your PA request is denied, you have the right to appeal. The ACA requires carriers to
-    maintain an internal appeals process and, if that fails, an external independent review.
-    For urgent medical needs, expedited appeals must be decided within 72 hours. Keep
-    copies of all documentation and denial notices you submit.
   </p>
 
 ${
   stepTherapyCount > 0
-    ? `  <h2>Step Therapy — "Fail First" Requirements</h2>
+    ? `  <h2>Step therapy — trying alternatives first</h2>
   <p>
-    Step therapy requires you to try a lower-cost drug before the carrier will authorize the
-    prescribed medication. ${stepTherapyCount} plan${stepTherapyCount !== 1 ? 's' : ''} in this
-    dataset apply step therapy to ${drugName}. If your doctor believes step therapy is
-    medically inappropriate, they can file a step therapy exception request with clinical
-    documentation.
+    ${stepTherapyCount} plan${stepTherapyCount !== 1 ? 's' : ''} we reviewed apply step therapy to ${drugName} — meaning you may need to try a lower-cost alternative before the plan covers it. If your doctor believes that\u2019s not appropriate for your situation, they can file an exception request with supporting documentation.
   </p>`
     : ''
 }
 
 ${
   quantityLimitCount > 0
-    ? `  <h2>Quantity Limits</h2>
+    ? `  <h2>Supply limits</h2>
   <p>
-    ${quantityLimitCount} plan${quantityLimitCount !== 1 ? 's' : ''} in this dataset apply a
-    quantity limit to ${drugName}, restricting the amount dispensed per month.
-    If your prescribed quantity exceeds the limit, your doctor can request a quantity limit
-    exception.
+    ${quantityLimitCount} plan${quantityLimitCount !== 1 ? 's' : ''} we reviewed limit how much ${drugName} you can fill at a time — typically one monthly supply. Your doctor can request an exception if your prescribed amount exceeds the limit.
   </p>`
     : ''
 }
 
-  <h2>How to Request a Formulary Exception</h2>
+  <h2>How to request a drug list exception</h2>
   <p>
-    If your prescribed medication is not on your plan's formulary, or is placed on a high-cost
-    tier, you can request a formulary exception. Your doctor submits a written request with
-    clinical documentation explaining why the formulary alternative is not medically appropriate.
-    The carrier must respond within 72 hours (24 hours for urgent requests). If denied, you have
-    the right to appeal through internal and external review. The ACA prohibits carriers from
-    placing all drugs for a specific condition on specialty tiers in a way that discriminates
-    against enrollees with that condition.
+    If your drug is not covered or sits on a high-cost tier, your doctor can request an exception. They submit documentation explaining why the covered alternative isn\u2019t appropriate for you. Your plan must respond within 72 hours (24 hours for urgent cases). If denied, you can appeal — including an independent external review if the internal appeal fails.
   </p>
 </section>`.trim()
 
