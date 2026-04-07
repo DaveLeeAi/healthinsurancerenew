@@ -335,7 +335,7 @@ async function CountyPlanDetailPage({ params }: Props) {
     <>
       <SchemaScript schema={breadcrumbSchema} id="schema-breadcrumb" />
       <SchemaScript schema={articleSchema} id="schema-article" />
-      <SchemaScript schema={medicalWebPageSchema} id="schema-medical-web-page" />
+      <SchemaScript schema={medicalWebPageSchema} id="schema-web-page" />
       <SchemaScript schema={financialProductSchema} id="schema-financial-product" />
       <SchemaScript schema={faqSchema} id="schema-faq" />
       {sbcSchemas.map((schema, i) => (
