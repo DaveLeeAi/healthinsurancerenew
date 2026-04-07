@@ -41,10 +41,11 @@ import allStatesData from '@/data/config/all-states.json'
 
 const BASE = 'https://healthinsurancerenew.com'
 
-// Last data pipeline run — update when datasets are refreshed
-const DATA_LASTMOD = '2026-03-17'
-// Last site content update — update after content edits
-const STATIC_LASTMOD = '2026-03-15'
+// Honest lastmod dates — reflect actual data/content dates, NEVER new Date()
+const DATA_LASTMOD = '2026-01-15'       // Plan year data reviewed date
+const PLAN_YEAR_LASTMOD = '2026-01-01'  // Subsidy/enhanced-credits plan year start
+const EDITORIAL_LASTMOD = '2026-03-15'  // Last editorial review date
+const STATIC_LASTMOD = '2026-03-15'     // Last site content edit date
 
 
 interface StateEntry { slug: string; abbr: string; ownExchange?: boolean }
@@ -91,7 +92,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
 // Entry builders by type
 // ---------------------------------------------------------------------------
 
-const MAX_URLS_PER_SITEMAP = 50_000
+const MAX_URLS_PER_SITEMAP = 30_000
 
 function buildEntries(type: string): SitemapEntry[] | null {
   // Handle formulary-N sub-sitemaps (formulary-1, formulary-2, etc.)
@@ -231,14 +232,14 @@ function buildSubsidyEntries(): SitemapEntry[] {
 
   const stateIndexes: SitemapEntry[] = uniqueStates.map((state) => ({
     loc: `${BASE}/subsidies/${state}`,
-    lastmod: DATA_LASTMOD,
+    lastmod: PLAN_YEAR_LASTMOD,
     changefreq: 'monthly' as const,
     priority: 0.8,
   }))
 
   const countyPages: SitemapEntry[] = combos.map(({ state, county }) => ({
     loc: `${BASE}/subsidies/${state}/${county}`,
-    lastmod: DATA_LASTMOD,
+    lastmod: PLAN_YEAR_LASTMOD,
     changefreq: 'monthly' as const,
     priority: 0.9,
   }))
@@ -277,14 +278,14 @@ function buildEnhancedCreditEntries(): SitemapEntry[] {
 
   const stateIndexes: SitemapEntry[] = uniqueStates.map((state) => ({
     loc: `${BASE}/enhanced-credits/${state}`,
-    lastmod: DATA_LASTMOD,
+    lastmod: PLAN_YEAR_LASTMOD,
     changefreq: 'monthly' as const,
     priority: 0.6,
   }))
 
   const countyPages: SitemapEntry[] = combos.map(({ state, county }) => ({
     loc: `${BASE}/enhanced-credits/${state}/${county}`,
-    lastmod: DATA_LASTMOD,
+    lastmod: PLAN_YEAR_LASTMOD,
     changefreq: 'monthly' as const,
     priority: 0.5,
   }))
@@ -400,7 +401,7 @@ function buildBillingEntries(): SitemapEntry[] {
 function buildLifeEventEntries(): SitemapEntry[] {
   return getAllLifeEventParams().map(({ event_type }) => ({
     loc: `${BASE}/life-events/${event_type}`,
-    lastmod: STATIC_LASTMOD,
+    lastmod: EDITORIAL_LASTMOD,
     changefreq: 'yearly' as const,
     priority: 0.5,
   }))
@@ -411,7 +412,7 @@ function buildLifeEventEntries(): SitemapEntry[] {
 function buildGuideEntries(): SitemapEntry[] {
   return getCollectionSlugs('guides').map((slug) => ({
     loc: `${BASE}/guides/${slug}`,
-    lastmod: STATIC_LASTMOD,
+    lastmod: EDITORIAL_LASTMOD,
     changefreq: 'monthly' as const,
     priority: 0.8,
   }))

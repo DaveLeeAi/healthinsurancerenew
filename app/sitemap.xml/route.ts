@@ -10,7 +10,7 @@ import { loadFormularySitemapIndex } from '@/lib/data-loader'
 
 const BASE = 'https://healthinsurancerenew.com'
 
-const MAX_URLS_PER_SITEMAP = 50_000
+const MAX_URLS_PER_SITEMAP = 30_000
 
 const FIXED_SITEMAP_TYPES = [
   'static',
@@ -25,13 +25,13 @@ const FIXED_SITEMAP_TYPES = [
   'life-events',
   'guides',
   'states',
-  'drugs',
 ] as const
 
 export const revalidate = 86400
 
 export async function GET() {
-  const lastmod = new Date().toISOString().slice(0, 10)
+  // Honest lastmod — reflects last data pipeline run, NOT current time
+  const lastmod = '2026-01-15'
 
   // Calculate how many formulary sub-sitemaps are needed
   const formularyIndex = loadFormularySitemapIndex()
