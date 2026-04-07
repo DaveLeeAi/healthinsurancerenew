@@ -12,9 +12,8 @@ import {
 } from '@/lib/data-loader'
 import type { FormularyDrug } from '@/lib/types'
 import {
-  buildFormularyDrugSchema,
+  buildFormularyTripleSchema,
   buildBreadcrumbSchema,
-  buildFAQSchema,
 } from '@/lib/schema-markup'
 import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
@@ -622,22 +621,6 @@ export default async function FormularyDrugPage({ params }: Props) {
   // --- Other issuers covering this drug ---
   const otherIssuers = getUniqueIssuers(allResults, stateCode).filter((i) => i.id !== issuer)
 
-  // --- Schema.org ---
-  const drugSchema = buildFormularyDrugSchema({
-    drug: {
-      drug_name: drugDisplay,
-      rxnorm_id: rxnormId,
-      drug_tier: tiers[0],
-      issuer_name: issuerName,
-      plan_id: results[0]?.plan_id,
-      prior_authorization: hasPriorAuth,
-      step_therapy: hasStepTherapy,
-      quantity_limit: hasQuantityLimit,
-    },
-    issuerName,
-    planYear: PLAN_YEAR,
-  })
-
   const canonicalIssuerParam = stateSlug ?? issuer
   const breadcrumbItems = isState
     ? [
@@ -652,8 +635,6 @@ export default async function FormularyDrugPage({ params }: Props) {
         { name: issuerName, url: `${SITE_URL}/${canonicalIssuerParam}/all` },
         { name: titleCase(drugDisplay), url: `${SITE_URL}/${canonicalIssuerParam}/${drugSlug}` },
       ]
-  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems)
-
   // Plain-English tier label for interpretive sentences
   const tierPlain = (() => {
     const g = dominantGroup
@@ -723,7 +704,48 @@ export default async function FormularyDrugPage({ params }: Props) {
       answer: `Prior authorization requires your doctor to document medical necessity before your plan will cover a drug — it is about getting coverage activated. A coverage exception asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or getting coverage for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`,
     },
   ]
-  const faqSchema = buildFAQSchema(formularyFaqs)
+  // --- Triple schema (@graph) ---
+  const canonical = `${SITE_URL}/${canonicalIssuerParam}/${drugSlug}`
+  const stateConf = stateInfo
+    ? (allStatesData.states as { abbr: string; name: string; exchange: string; ownExchange: boolean }[])
+        .find(s => s.abbr === stateInfo.stateCode)
+    : undefined
+  const schemaTitle = isState
+    ? `${titleCase(drugDisplay)} in ${stateName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans | HealthInsuranceRenew`
+    : `${titleCase(drugDisplay)} — ${issuerName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans | HealthInsuranceRenew`
+  const schemaDescription = isState
+    ? stateConf?.ownExchange
+      ? `${titleCase(drugDisplay)} is covered by most ${stateName} health plans for ${PLAN_YEAR}. ${stateName} uses ${stateConf.exchange} for enrollment. See coverage details.`
+      : `${titleCase(drugDisplay)} is covered by most ${stateName} health plans for ${PLAN_YEAR}. Prior authorization typically required. Typical copay after deductible: see plan details.`
+    : `${titleCase(drugDisplay)} is covered by most ${issuerName} health plans for ${PLAN_YEAR}. Prior authorization typically required. Typical copay after deductible: see plan details.`
+
+  const costSharingSpecs = humanTiers.map(tier => ({
+    tierCategory: tier.shortLabel,
+    copayRange: tier.costRange,
+    copayOption: 'After deductible',
+  }))
+
+  const clinicalData = DRUG_CLINICAL_DATA[drugSlug.toLowerCase()]
+  const tripleSchema = buildFormularyTripleSchema({
+    drugName: titleCase(drugDisplay),
+    drugSlug,
+    nonProprietaryName: GENERIC_NAME_MAP[drugSlug.toLowerCase()],
+    rxcui: rxnormId,
+    drugClass: clinicalData?.drugClass,
+    stateSlug: canonicalIssuerParam,
+    stateName: stateName ?? 'Marketplace',
+    canonical,
+    pageTitle: schemaTitle,
+    metaDescription: schemaDescription,
+    planYear: PLAN_YEAR,
+    hasPriorAuth,
+    hasStepTherapy,
+    hasQuantityLimit,
+    planCount: results.length,
+    costSharingSpecs,
+    breadcrumbItems,
+    faqItems: formularyFaqs,
+  })
 
   // --- Editorial content ---
   const editorial = results.length > 0
@@ -834,9 +856,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
   return (
     <>
-      <SchemaScript schema={drugSchema} id="drug-schema" />
-      <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <SchemaScript schema={faqSchema} id="faq-schema" />
+      <SchemaScript schema={tripleSchema} id="formulary-schema" />
       <LlmComment
         pageType="formulary-drug"
         state={stateCode}
