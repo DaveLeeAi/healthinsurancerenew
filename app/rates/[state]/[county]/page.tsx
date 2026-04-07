@@ -9,6 +9,7 @@ import {
   buildRateVolatilityDatasetSchema,
   buildBreadcrumbSchema,
   buildArticleSchema,
+  buildWebPageSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
@@ -125,12 +126,21 @@ export default function RatesPage({ params }: Props) {
     ? buildRateVolatilityDatasetSchema({ record: rates, countyName: countyDisplay })
     : undefined
 
+  const webPageSchema = buildWebPageSchema({
+    name: `Health Insurance Rate Changes in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR}`,
+    description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers.`,
+    url: canonicalUrl,
+    dateModified: new Date().toISOString().split('T')[0],
+    speakableCssSelectors: ['h1', '#key-stats-heading'],
+  })
+
   // --- No data fallback ---
   if (!rates) {
     return (
       <>
         <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
         <SchemaScript schema={articleSchema} id="article-schema" />
+        <SchemaScript schema={webPageSchema} id="webpage-schema" />
         <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
           <Breadcrumbs
             state={params.state}
@@ -170,6 +180,7 @@ export default function RatesPage({ params }: Props) {
       <SchemaScript schema={articleSchema} id="article-schema" />
       {datasetSchema && <SchemaScript schema={datasetSchema} id="dataset-schema" />}
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <LlmComment
         pageType="rates-county"
         state={stateUpper}

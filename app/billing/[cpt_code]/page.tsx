@@ -7,6 +7,7 @@ import {
   buildBreadcrumbSchema,
   buildArticleSchema,
   buildFAQSchema,
+  buildWebPageSchema,
   extractCptCodes,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
@@ -223,10 +224,19 @@ export default function BillingScenarioPage({ params }: Props) {
   const billingSchema = buildBillingProcedureSchema({ scenario })
   const faqSchema = buildFAQSchema(faqs)
 
+  const webPageSchema = buildWebPageSchema({
+    name: `${scenario.title}${cptLabel} — Insurance Billing Guide`,
+    description: scenario.description.slice(0, 160),
+    url: canonicalUrl,
+    dateModified: new Date().toISOString().split('T')[0],
+    speakableCssSelectors: ['h1', '#coverage-heading', '#faq-heading'],
+  })
+
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <SchemaScript schema={billingSchema} id="billing-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <LlmComment

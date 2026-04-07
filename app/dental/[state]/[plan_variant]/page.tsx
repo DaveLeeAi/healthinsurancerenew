@@ -7,6 +7,7 @@ import {
   buildBreadcrumbSchema,
   buildArticleSchema,
   buildFAQSchema,
+  buildWebPageSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
@@ -205,10 +206,19 @@ export default function DentalPlanPage({ params }: Props) {
   const dentalSchema = buildDentalPlanSchema({ dental: plan, planYear: PLAN_YEAR })
   const faqSchema = buildFAQSchema(faqs)
 
+  const webPageSchema = buildWebPageSchema({
+    name: `${plan.plan_name} Dental Coverage ${PLAN_YEAR}`,
+    description: `Stand-alone dental plan from ${plan.issuer_name} in ${stateName}. Coverage percentages, annual max, waiting periods.`,
+    url: canonicalUrl,
+    dateModified: new Date().toISOString().split('T')[0],
+    speakableCssSelectors: ['h1', '#key-stats-heading', '#faq-heading'],
+  })
+
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
       <SchemaScript schema={articleSchema} id="article-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <SchemaScript schema={dentalSchema} id="dental-schema" />
       <SchemaScript schema={faqSchema} id="faq-schema" />
       <LlmComment

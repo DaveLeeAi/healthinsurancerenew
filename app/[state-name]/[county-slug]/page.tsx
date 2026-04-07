@@ -11,11 +11,12 @@ import {
   buildArticleSchema,
   buildBreadcrumbSchema,
   buildPlansProductSchema,
+  buildWebPageSchema,
+  buildFAQSchema,
 } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import PlanComparisonTable from '@/components/PlanComparisonTable'
 import EntityLinkCard from '@/components/EntityLinkCard'
-import PageFaq from '@/components/PageFaq'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
 import { generatePlanComparisonContent } from '@/lib/content-templates'
@@ -203,11 +204,35 @@ export default function CountyPlansPage({ params }: Props) {
     { name: countyDisplay, url: canonicalUrl },
   ])
 
+  const webPageSchema = buildWebPageSchema({
+    name: `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})`,
+    description: `Compare ${planCount} Marketplace plans in ${countyDisplay}, ${stateName} from ${carrierCount} carriers.`,
+    url: canonicalUrl,
+    dateModified: new Date().toISOString().split('T')[0],
+    speakableCssSelectors: ['h1', '#plans-table-heading', '#faq-heading'],
+  })
+
+  const countyFaqs = buildCountyFaqs({
+    countyDisplay,
+    stateName,
+    stateCode,
+    planCount,
+    carrierCount,
+    minPremium,
+    maxPremium,
+    premiums40,
+    subsidy,
+    plans,
+  })
+  const faqSchema = countyFaqs.length > 0 ? buildFAQSchema(countyFaqs) : null
+
   return (
     <>
       <SchemaScript schema={articleSchema} id="article-schema" />
       <SchemaScript schema={productSchema} id="product-schema" />
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
+      {faqSchema && <SchemaScript schema={faqSchema} id="faq-schema" />}
       <LlmComment pageType="county" state={stateCode} county={countyDisplay} planCount={planCount} carrierCount={carrierCount} exchange="FFM" />
 
       <main className="max-w-6xl mx-auto px-4 py-10 space-y-10">
@@ -425,21 +450,35 @@ export default function CountyPlansPage({ params }: Props) {
         />
 
         {/* ── FAQ section ── */}
-        <PageFaq
-          faqs={buildCountyFaqs({
-            countyDisplay,
-            stateName,
-            stateCode,
-            planCount,
-            carrierCount,
-            minPremium,
-            maxPremium,
-            premiums40,
-            subsidy,
-            plans,
-          })}
-          sectionTitle={`${countyDisplay} Health Insurance: Frequently Asked Questions`}
-        />
+        <section aria-labelledby="faq-heading">
+          <h2 id="faq-heading" className="text-xl font-semibold text-navy-800 mb-4">
+            {countyDisplay} Health Insurance: Frequently Asked Questions
+          </h2>
+          <div className="space-y-2">
+            {countyFaqs.map((faq, i) => (
+              <details
+                key={i}
+                className="group border border-neutral-200 rounded-xl overflow-hidden"
+              >
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer text-navy-900 font-medium text-sm hover:bg-neutral-50 transition-colors list-none [&::-webkit-details-marker]:hidden">
+                  <span>{faq.question}</span>
+                  <svg
+                    className="w-4 h-4 text-neutral-400 shrink-0 transition-transform group-open:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 pt-1 text-sm text-neutral-600 leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
