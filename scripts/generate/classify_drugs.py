@@ -92,11 +92,157 @@ ACUTE_NAMES = [
     "oseltamivir", "tamiflu",
 ]
 
+# ── New archetype name lists (must mirror lib/drug-archetype.ts) ─────────────
+
+ANTICOAGULANT_NAMES = [
+    "warfarin", "coumadin", "jantoven",
+    "heparin", "enoxaparin", "lovenox", "dalteparin", "fragmin",
+    "fondaparinux", "arixtra",
+    "rivaroxaban", "xarelto",
+    "apixaban", "eliquis",
+    "dabigatran", "pradaxa",
+    "edoxaban", "savaysa", "lixiana",
+    "betrixaban", "bevyxxa",
+]
+
+CONTRACEPTIVE_NAMES = [
+    "ethinyl-estradiol", "ethinyl estradiol",
+    "norethindrone", "norgestimate", "norgestrel", "norelgestromin",
+    "levonorgestrel", "desogestrel", "drospirenone", "etonogestrel",
+    "medroxyprogesterone", "depo-provera", "depo-subq",
+    "segesterone", "ulipristal",
+    "sprintec", "tri-sprintec", "mononessa", "tri-previfem", "previfem",
+    "ortho-cyclen", "ortho-tri-cyclen", "ortho-novum", "ortho-evra",
+    "yasmin", "yaz", "beyaz", "gianvi", "loryna", "syeda", "ocella",
+    "loestrin", "lo loestrin", "junel", "microgestin",
+    "lutera", "lessina", "aviane", "orsythia", "sronyx",
+    "seasonique", "lo seasonique", "amethia", "camrese", "daysee",
+    "kariva", "mircette", "azurette",
+    "estarylla", "estradiol-norethindrone",
+    "jolessa", "introvale", "quartette",
+    "nuvaring", "eluryng", "annovera", "xulane", "twirla",
+    "nexplanon", "implanon",
+    "mirena", "kyleena", "skyla", "liletta",
+    "plan b", "plan-b", "ella",
+]
+
+OPHTHALMIC_NAMES = [
+    "latanoprost", "xalatan", "travoprost", "travatan", "bimatoprost", "lumigan",
+    "tafluprost", "zioptan", "latanoprostene", "vyzulta",
+    "brimonidine", "alphagan", "apraclonidine", "iopidine",
+    "timolol-mal", "timolol maleate", "betaxolol", "betoptic",
+    "levobunolol", "betagan", "carteolol", "metipranolol",
+    "dorzolamide", "trusopt", "brinzolamide", "azopt",
+    "cosopt", "combigan", "simbrinza", "rocklatan", "netarsudil",
+    "pilocarpine", "isopto carpine",
+    "cyclosporine ophthalmic", "restasis", "cequa",
+    "lifitegrast", "xiidra", "varenicline ophthalmic", "tyrvaya",
+    "perfluorohexyloctane", "miebo",
+    "olopatadine", "patanol", "pataday", "pazeo",
+    "ketotifen ophthalmic", "alaway", "zaditor",
+    "azelastine ophthalmic", "optivar",
+    "epinastine", "elestat", "bepotastine", "bepreve",
+    "moxifloxacin ophthalmic", "vigamox", "gatifloxacin ophthalmic", "zymaxid",
+    "besifloxacin", "besivance",
+    "difluprednate", "durezol", "loteprednol", "lotemax", "alrex",
+    "bromfenac", "prolensa", "nepafenac", "nevanac", "ilevro",
+]
+
+DERMATOLOGY_TOPICAL_NAMES = [
+    "clobetasol", "temovate", "olux", "cormax", "clodan", "impeklo",
+    "halobetasol", "ultravate", "lexette", "bryhali",
+    "betamethasone-dip", "betamethasone dipropionate", "diprolene", "diprosone",
+    "augmented betamethasone", "sernivo",
+    "fluocinonide", "lidex", "vanos",
+    "halcinonide", "halog",
+    "amcinonide", "cyclocort",
+    "desoximetasone", "topicort",
+    "mometasone topical", "mometasone furoate cream", "elocon",
+    "fluticasone topical", "cutivate",
+    "triamcinolone topical", "triamcinolone acetonide cream", "kenalog cream",
+    "hydrocortisone", "cortizone", "cortaid", "westcort", "locoid",
+    "desonide", "desowen", "verdeso", "tridesilon",
+    "alclometasone", "aclovate",
+    "prednicarbate", "dermatop",
+    "fluocinolone", "capex", "derma-smoothe", "synalar",
+    "tretinoin", "retin-a", "renova", "avita", "altreno", "atralin",
+    "adapalene", "differin", "epiduo",
+    "tazarotene", "tazorac", "arazlo", "fabior",
+    "trifarotene", "aklief",
+    "isotretinoin", "accutane", "absorica", "claravis", "amnesteem", "myorisan",
+    "tacrolimus topical", "protopic",
+    "pimecrolimus", "elidel",
+    "crisaborole", "eucrisa",
+    "ruxolitinib topical", "opzelura",
+    "calcipotriene", "dovonex", "sorilux", "enstilar", "taclonex",
+    "calcitriol topical", "vectical",
+    "anthralin", "dritho-creme",
+    "mupirocin", "bactroban", "centany",
+    "retapamulin", "altabax",
+    "metronidazole topical", "metrogel", "metrocream", "noritate", "rosadan",
+    "azelaic acid", "finacea", "azelex",
+    "clindamycin topical", "cleocin t", "clindagel", "evoclin",
+    "erythromycin topical", "erygel",
+    "dapsone topical", "aczone",
+    "sulfacetamide topical", "klaron",
+    "minocycline topical", "amzeeq", "zilxi",
+    "ketoconazole topical", "nizoral cream", "extina", "xolegel",
+    "ciclopirox", "loprox", "penlac",
+    "econazole", "spectazole", "ecoza",
+    "oxiconazole", "oxistat",
+    "sulconazole", "exelderm",
+    "naftifine", "naftin",
+    "butenafine", "mentax",
+    "imiquimod", "aldara", "zyclara",
+    "podofilox", "condylox",
+    "sinecatechins", "veregen",
+    "permethrin", "elimite", "nix", "acticin",
+    "lindane",
+    "spinosad", "natroba",
+    "ivermectin topical", "sklice", "soolantra",
+    "malathion", "ovide",
+    "benzoyl peroxide", "epiduo forte", "duac", "benzaclin",
+    "fluorouracil topical", "efudex", "carac", "tolak", "fluoroplex",
+    "glycopyrronium topical", "qbrexza",
+    "eflornithine", "vaniqa",
+    "hydroquinone", "tri-luma",
+    "selenium sulfide", "selsun", "selrx",
+    "salicylic acid topical", "salex",
+    "urea topical", "kerafoam", "umecta", "rea lo",
+    "lactic acid topical", "lac-hydrin", "amlactin",
+    "pramoxine topical",
+    "lidocaine topical", "lidoderm", "zingo",
+    "capsaicin topical",
+    "doxepin topical", "prudoxin", "zonalon",
+]
+
 # ── Helpers ─────────────────────────────────────────────────────────────────
 
 def name_matches(drug_name, names):
+    """
+    Match drug_name against a list of needles.
+
+    For needles >= 5 chars, plain substring matching is used.
+    For shorter needles, the match must be word-bounded so that 'ella'
+    (the contraceptive ulipristal) does NOT match 'savella', 'bordetella',
+    'ocella', etc., and 'yaz' does not match 'dyazide'.
+    """
     n = drug_name.lower().strip()
-    return any(n == needle or needle in n for needle in names)
+    for needle in names:
+        if n == needle:
+            return True
+        idx = n.find(needle)
+        if idx == -1:
+            continue
+        if len(needle) >= 5:
+            return True
+        # Short needle: require non-alphanumeric on both sides
+        before_ok = idx == 0 or not n[idx - 1].isalnum()
+        end = idx + len(needle)
+        after_ok = end == len(n) or not n[end].isalnum()
+        if before_ok and after_ok:
+            return True
+    return False
 
 
 def normalize_tier(tier):
@@ -175,7 +321,35 @@ def classify_drug(drug_name, dominant_tier, national_pa_pct, national_ql_pct,
             chronicOrAcute="chronic", typicalFriction="low",
             costSensitivity="low", qlLikelihood="low")
 
-    # 8 — Specialty biologic (signal-driven)
+    # 8 — Anticoagulant (DOACs + warfarin)
+    if name_matches(name, ANTICOAGULANT_NAMES):
+        return base_profile("anticoagulant", tier,
+            isBrand=tier != "generic",
+            chronicOrAcute="chronic", typicalFriction="moderate",
+            costSensitivity="low" if tier == "generic" else "high",
+            qlLikelihood="low")
+
+    # 9 — Contraceptive (oral/ring/patch/implant/hormonal IUD)
+    if name_matches(name, CONTRACEPTIVE_NAMES):
+        return base_profile("contraceptive", tier,
+            chronicOrAcute="chronic", typicalFriction="low",
+            costSensitivity="low",  # ACA $0 mandate
+            qlLikelihood="low")
+
+    # 10 — Ophthalmic (eye drops, gels, suspensions)
+    if name_matches(name, OPHTHALMIC_NAMES):
+        return base_profile("ophthalmic", tier,
+            chronicOrAcute="chronic", typicalFriction="low",
+            costSensitivity="high" if tier == "specialty" else "low",
+            qlLikelihood="low")
+
+    # 11 — Dermatology topical (non-specialty only — biologics stay in specialty)
+    if tier != "specialty" and name_matches(name, DERMATOLOGY_TOPICAL_NAMES):
+        return base_profile("dermatology", tier,
+            chronicOrAcute="both", typicalFriction="low",
+            costSensitivity="low", qlLikelihood="low")
+
+    # 12 — Specialty biologic (signal-driven)
     if tier == "specialty" and national_pa_pct > 50 and total_plans < median_total_plans:
         return base_profile("specialty-biologic", tier,
             isSpecialty=True, chronicOrAcute="chronic",

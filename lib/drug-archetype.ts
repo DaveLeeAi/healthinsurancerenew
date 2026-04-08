@@ -20,6 +20,10 @@ export type DrugArchetype =
   | 'thyroid-hormone'             // levothyroxine, Synthroid
   | 'controlled-substance'        // Adderall, Xanax, Vyvanse
   | 'statin-cholesterol'          // atorvastatin, rosuvastatin
+  | 'anticoagulant'               // warfarin, Eliquis, Xarelto, Pradaxa
+  | 'contraceptive'               // ethinyl estradiol, levonorgestrel, NuvaRing
+  | 'ophthalmic'                  // latanoprost, timolol drops, Restasis
+  | 'dermatology'         // clobetasol, triamcinolone, tretinoin
   | 'other'                       // fallback
 
 export interface DrugClassification {
@@ -64,11 +68,14 @@ export type SectionId =
   | 'refill-rules'
   | 'pharmacy-choice'
   | 'deductible-context'
-  | 'ira-cap-callout'        // insulin only
-  | 'biosimilar-callout'     // specialty biologic only
-  | 'parity-callout'         // mental health only
-  | 'device-note'            // inhaler only
-  | 'brand-vs-generic'       // thyroid only
+  | 'ira-cap-callout'         // insulin only
+  | 'biosimilar-callout'      // specialty biologic only
+  | 'parity-callout'          // mental health only
+  | 'device-note'             // inhaler only
+  | 'brand-vs-generic'        // thyroid + anticoagulant
+  | 'aca-preventive-callout'  // contraceptive only
+  | 'monitoring-note'         // anticoagulant only (INR)
+  | 'formulation-note'        // dermatology + ophthalmic (cream vs ointment, drops vs gel)
 
 export interface ArchetypeProfile {
   archetype: DrugArchetype
@@ -95,6 +102,9 @@ export interface ArchetypeProfile {
     | 'verify-device-coverage'    // inhalers: device-specific coverage
     | 'brand-vs-generic-matters'  // thyroid: substitution may not be 1:1
     | 'compare-tier-and-pa'       // brand chronic: tier + PA both matter
+    | 'verify-aca-preventive'     // contraceptive: should be $0 under ACA
+    | 'doac-vs-warfarin'          // anticoagulant: huge cost gap, switching has risk
+    | 'check-formulation-coverage' // dermatology + ophthalmic: cream vs ointment differs
     | 'data-driven'               // fallback: report what data shows
 }
 
@@ -296,6 +306,77 @@ export const ARCHETYPE_PROFILES: Record<DrugArchetype, ArchetypeProfile> = {
     ctaAngle: 'plan-shopping-critical',
   },
 
+  'anticoagulant': {
+    archetype: 'anticoagulant',
+    leadIssue: 'cost',
+    copyLength: 'medium',
+    sectionPriority: [
+      'quick-answer',
+      'brand-vs-generic',     // warfarin vs DOAC is the central decision
+      'cost-context',
+      'tier-breakdown',
+      'pa-section',
+      'monitoring-note',      // INR for warfarin
+      'pharmacy-choice',
+      'deductible-context',
+    ],
+    suppressSections: [],
+    requireConditionalBlocks: true,
+    maxConditionalBlocks: 2,
+    ctaAngle: 'doac-vs-warfarin',
+  },
+
+  'contraceptive': {
+    archetype: 'contraceptive',
+    leadIssue: 'coverage',
+    copyLength: 'short',
+    sectionPriority: [
+      'quick-answer',
+      'aca-preventive-callout', // ACA mandates $0 — lead with it
+      'tier-breakdown',
+      'cost-context',
+      'pharmacy-choice',
+    ],
+    suppressSections: ['pa-section', 'supply-limits', 'deductible-context'],
+    requireConditionalBlocks: false,
+    maxConditionalBlocks: 1,
+    ctaAngle: 'verify-aca-preventive',
+  },
+
+  'ophthalmic': {
+    archetype: 'ophthalmic',
+    leadIssue: 'cost',
+    copyLength: 'short',
+    sectionPriority: [
+      'quick-answer',
+      'cost-context',
+      'tier-breakdown',
+      'formulation-note',  // drops vs gel vs suspension differ
+      'pharmacy-choice',
+    ],
+    suppressSections: ['supply-limits', 'deductible-context'],
+    requireConditionalBlocks: false,
+    maxConditionalBlocks: 1,
+    ctaAngle: 'check-formulation-coverage',
+  },
+
+  'dermatology': {
+    archetype: 'dermatology',
+    leadIssue: 'cost',
+    copyLength: 'short',
+    sectionPriority: [
+      'quick-answer',
+      'cost-context',
+      'tier-breakdown',
+      'formulation-note',  // cream vs ointment vs lotion
+      'pharmacy-choice',
+    ],
+    suppressSections: ['supply-limits', 'deductible-context'],
+    requireConditionalBlocks: false,
+    maxConditionalBlocks: 1,
+    ctaAngle: 'check-formulation-coverage',
+  },
+
   'other': {
     archetype: 'other',
     leadIssue: 'coverage',
@@ -382,6 +463,158 @@ const THYROID_NAMES = [
   'methimazole', 'tapazole', 'propylthiouracil',
 ]
 
+// ─── Anticoagulants ─────────────────────────────────────────────────────────
+// Warfarin generics + the four DOACs. Cost gap is enormous and clinically
+// switching is non-trivial — distinct narrative from generic chronic.
+const ANTICOAGULANT_NAMES = [
+  'warfarin', 'coumadin', 'jantoven',
+  'heparin', 'enoxaparin', 'lovenox', 'dalteparin', 'fragmin',
+  'fondaparinux', 'arixtra',
+  'rivaroxaban', 'xarelto',
+  'apixaban', 'eliquis',
+  'dabigatran', 'pradaxa',
+  'edoxaban', 'savaysa', 'lixiana',
+  'betrixaban', 'bevyxxa',
+]
+
+// ─── Contraceptives (oral / ring / implant / IUD hormonal) ──────────────────
+// ACA mandates $0 cost-share for at least one product per FDA category.
+// Lead with that, not with tier breakdowns.
+const CONTRACEPTIVE_NAMES = [
+  // Generic active ingredients
+  'ethinyl-estradiol', 'ethinyl estradiol',
+  'norethindrone', 'norgestimate', 'norgestrel', 'norelgestromin',
+  'levonorgestrel', 'desogestrel', 'drospirenone', 'etonogestrel',
+  'medroxyprogesterone', 'depo-provera', 'depo-subq',
+  'segesterone', 'ulipristal',
+  // Branded oral combinations
+  'sprintec', 'tri-sprintec', 'mononessa', 'tri-previfem', 'previfem',
+  'ortho-cyclen', 'ortho-tri-cyclen', 'ortho-novum', 'ortho-evra',
+  'yasmin', 'yaz', 'beyaz', 'gianvi', 'loryna', 'syeda', 'ocella',
+  'loestrin', 'lo loestrin', 'junel', 'microgestin',
+  'lutera', 'lessina', 'aviane', 'orsythia', 'sronyx',
+  'seasonique', 'lo seasonique', 'amethia', 'camrese', 'daysee',
+  'kariva', 'mircette', 'azurette',
+  'estarylla', 'estradiol-norethindrone',
+  'jolessa', 'introvale', 'quartette',
+  // Branded ring / patch
+  'nuvaring', 'eluryng', 'annovera', 'xulane', 'twirla',
+  // Implant / IUD (hormonal)
+  'nexplanon', 'implanon',
+  'mirena', 'kyleena', 'skyla', 'liletta',
+  // Emergency contraception
+  'plan b', 'plan-b', 'ella',
+]
+
+// ─── Ophthalmic (eye drops, gels, suspensions) ──────────────────────────────
+// Glaucoma + dry eye + allergic conjunctivitis. Formulation matters
+// (gel vs solution vs suspension can differ on the formulary).
+const OPHTHALMIC_NAMES = [
+  // Glaucoma (prostaglandin analogs)
+  'latanoprost', 'xalatan', 'travoprost', 'travatan', 'bimatoprost', 'lumigan',
+  'tafluprost', 'zioptan', 'latanoprostene', 'vyzulta',
+  // Glaucoma (alpha agonists / beta blockers / CAIs)
+  'brimonidine', 'alphagan', 'apraclonidine', 'iopidine',
+  'timolol-mal', 'timolol maleate', 'betaxolol', 'betoptic',
+  'levobunolol', 'betagan', 'carteolol', 'metipranolol',
+  'dorzolamide', 'trusopt', 'brinzolamide', 'azopt',
+  'cosopt', 'combigan', 'simbrinza', 'rocklatan', 'netarsudil',
+  'pilocarpine', 'isopto carpine',
+  // Dry eye
+  'cyclosporine ophthalmic', 'restasis', 'cequa',
+  'lifitegrast', 'xiidra', 'varenicline ophthalmic', 'tyrvaya',
+  'perfluorohexyloctane', 'miebo',
+  // Allergic conjunctivitis
+  'olopatadine', 'patanol', 'pataday', 'pazeo',
+  'ketotifen ophthalmic', 'alaway', 'zaditor',
+  'azelastine ophthalmic', 'optivar',
+  'epinastine', 'elestat', 'bepotastine', 'bepreve',
+  // Ophthalmic anti-infectives + steroids (specific to eye)
+  'moxifloxacin ophthalmic', 'vigamox', 'gatifloxacin ophthalmic', 'zymaxid',
+  'besifloxacin', 'besivance',
+  'difluprednate', 'durezol', 'loteprednol', 'lotemax', 'alrex',
+  'bromfenac', 'prolensa', 'nepafenac', 'nevanac', 'ilevro',
+]
+
+// ─── Dermatology (TOPICAL only — not biologics like Humira/Dupixent) ────────
+// Biologics for psoriasis/eczema stay in specialty-biologic via PA signals.
+// This list catches topical steroids, retinoids, and topical immunomodulators.
+const DERMATOLOGY_TOPICAL_NAMES = [
+  // Topical corticosteroids — high to low potency
+  'clobetasol', 'temovate', 'olux', 'cormax', 'clodan', 'impeklo',
+  'halobetasol', 'ultravate', 'lexette', 'bryhali',
+  'betamethasone-dip', 'betamethasone dipropionate', 'diprolene', 'diprosone',
+  'augmented betamethasone', 'sernivo',
+  'fluocinonide', 'lidex', 'vanos',
+  'halcinonide', 'halog',
+  'amcinonide', 'cyclocort',
+  'desoximetasone', 'topicort',
+  'mometasone topical', 'mometasone furoate cream', 'elocon',
+  'fluticasone topical', 'cutivate',
+  'triamcinolone topical', 'triamcinolone acetonide cream', 'kenalog cream',
+  'hydrocortisone', 'cortizone', 'cortaid', 'westcort', 'locoid',
+  'desonide', 'desowen', 'verdeso', 'tridesilon',
+  'alclometasone', 'aclovate',
+  'prednicarbate', 'dermatop',
+  'fluocinolone', 'capex', 'derma-smoothe', 'synalar',
+  // Topical retinoids
+  'tretinoin', 'retin-a', 'renova', 'avita', 'altreno', 'atralin',
+  'adapalene', 'differin', 'epiduo',
+  'tazarotene', 'tazorac', 'arazlo', 'fabior',
+  'trifarotene', 'aklief',
+  'isotretinoin', 'accutane', 'absorica', 'claravis', 'amnesteem', 'myorisan',
+  // Topical immunomodulators
+  'tacrolimus topical', 'protopic',
+  'pimecrolimus', 'elidel',
+  'crisaborole', 'eucrisa',
+  'ruxolitinib topical', 'opzelura',
+  // Topical psoriasis
+  'calcipotriene', 'dovonex', 'sorilux', 'enstilar', 'taclonex',
+  'calcitriol topical', 'vectical',
+  'anthralin', 'dritho-creme',
+  // Topical antibiotics for skin
+  'mupirocin', 'bactroban', 'centany',
+  'retapamulin', 'altabax',
+  'metronidazole topical', 'metrogel', 'metrocream', 'noritate', 'rosadan',
+  'azelaic acid', 'finacea', 'azelex',
+  'clindamycin topical', 'cleocin t', 'clindagel', 'evoclin',
+  'erythromycin topical', 'erygel',
+  'dapsone topical', 'aczone',
+  'sulfacetamide topical', 'klaron',
+  'minocycline topical', 'amzeeq', 'zilxi',
+  // Topical antifungals
+  'ketoconazole topical', 'nizoral cream', 'extina', 'xolegel',
+  'ciclopirox', 'loprox', 'penlac',
+  'econazole', 'spectazole', 'ecoza',
+  'oxiconazole', 'oxistat',
+  'sulconazole', 'exelderm',
+  'naftifine', 'naftin',
+  'butenafine', 'mentax',
+  // Antiviral / antiparasitic topicals
+  'imiquimod', 'aldara', 'zyclara',
+  'podofilox', 'condylox',
+  'sinecatechins', 'veregen',
+  'permethrin', 'elimite', 'nix', 'acticin',
+  'lindane',
+  'spinosad', 'natroba',
+  'ivermectin topical', 'sklice', 'soolantra',
+  'malathion', 'ovide',
+  // Misc topical Rx (acne, skin cancer, hyperhidrosis)
+  'benzoyl peroxide', 'epiduo forte', 'duac', 'benzaclin',
+  'fluorouracil topical', 'efudex', 'carac', 'tolak', 'fluoroplex',
+  'glycopyrronium topical', 'qbrexza',
+  'eflornithine', 'vaniqa',
+  'hydroquinone', 'tri-luma',
+  'selenium sulfide', 'selsun', 'selrx',
+  'salicylic acid topical', 'salex',
+  'urea topical', 'kerafoam', 'umecta', 'rea lo',
+  'lactic acid topical', 'lac-hydrin', 'amlactin',
+  'pramoxine topical',
+  'lidocaine topical', 'lidoderm', 'zingo',
+  'capsaicin topical',
+  'doxepin topical', 'prudoxin', 'zonalon',
+]
+
 // ─── Antibiotic/acute name hints (for common-generic-acute detection) ───────
 
 const ACUTE_NAMES = [
@@ -403,8 +636,22 @@ const ACUTE_NAMES = [
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function nameMatches(drugName: string, list: string[]): boolean {
+  // For needles >= 5 chars, plain substring matching is used.
+  // For shorter needles, the match must be word-bounded so that 'ella' (the
+  // contraceptive ulipristal) does NOT match savella, bordetella, ocella,
+  // pirmella, etc., and 'yaz' does not match dyazide.
   const n = drugName.toLowerCase().trim()
-  return list.some(needle => n === needle || n.includes(needle))
+  for (const needle of list) {
+    if (n === needle) return true
+    const idx = n.indexOf(needle)
+    if (idx === -1) continue
+    if (needle.length >= 5) return true
+    const before = idx === 0 ? '' : n[idx - 1]
+    const after = n[idx + needle.length] ?? ''
+    const isAlnum = (c: string) => /[a-z0-9]/.test(c)
+    if (!isAlnum(before) && !isAlnum(after)) return true
+  }
+  return false
 }
 
 function normalizeTier(tier: string): string {
@@ -524,7 +771,61 @@ export function classifyDrug(params: ClassifyParams): DrugClassification {
     })
   }
 
-  // Rule 8 — Specialty biologic (data-signal driven)
+  // Rule 8 — Anticoagulant (DOACs + warfarin)
+  // Brand DOACs (Eliquis, Xarelto, Pradaxa) and generic warfarin have very
+  // different cost profiles but identical clinical purpose. The page should
+  // lead with the DOAC-vs-warfarin tradeoff, not the tier breakdown.
+  if (nameMatches(name, ANTICOAGULANT_NAMES)) {
+    return baseProfile('anticoagulant', {
+      tier,
+      isBrand: tier !== 'generic',
+      chronicOrAcute: 'chronic',
+      typicalFriction: 'moderate',
+      costSensitivity: tier === 'generic' ? 'low' : 'high',
+      qlLikelihood: 'low',
+    })
+  }
+
+  // Rule 9 — Contraceptive (oral, ring, patch, implant, hormonal IUD)
+  // ACA mandates $0 cost-share for at least one product per FDA category.
+  // The page should lead with the ACA preventive callout, not tier or PA.
+  if (nameMatches(name, CONTRACEPTIVE_NAMES)) {
+    return baseProfile('contraceptive', {
+      tier,
+      chronicOrAcute: 'chronic',
+      typicalFriction: 'low',
+      costSensitivity: 'low',  // ACA $0 mandate
+      qlLikelihood: 'low',
+    })
+  }
+
+  // Rule 10 — Ophthalmic (eye drops, gels, suspensions)
+  // Glaucoma, dry eye, and allergic conjunctivitis Rx. Formulation
+  // (drops vs gel vs suspension) can differ on the formulary.
+  if (nameMatches(name, OPHTHALMIC_NAMES)) {
+    return baseProfile('ophthalmic', {
+      tier,
+      chronicOrAcute: 'chronic',
+      typicalFriction: 'low',
+      costSensitivity: tier === 'specialty' ? 'high' : 'low',
+      qlLikelihood: 'low',
+    })
+  }
+
+  // Rule 11 — Dermatology topical (steroids, retinoids, immunomodulators)
+  // Restricted to non-specialty so biologics (Humira, Dupixent, Cosentyx,
+  // Skyrizi) continue to fall through to specialty-biologic via PA signals.
+  if (tier !== 'specialty' && nameMatches(name, DERMATOLOGY_TOPICAL_NAMES)) {
+    return baseProfile('dermatology', {
+      tier,
+      chronicOrAcute: 'both',
+      typicalFriction: 'low',
+      costSensitivity: 'low',
+      qlLikelihood: 'low',
+    })
+  }
+
+  // Rule 12 — Specialty biologic (data-signal driven)
   if (tier === 'specialty' && nationalPaPct > 50 && totalPlans < medianTotalPlans) {
     return baseProfile('specialty-biologic', {
       tier,
@@ -548,7 +849,7 @@ export function classifyDrug(params: ClassifyParams): DrugClassification {
     })
   }
 
-  // Rule 9 — Brand chronic (data-signal driven)
+  // Rule 13 — Brand chronic (data-signal driven)
   if (
     (tier === 'preferred-brand' || tier === 'non-preferred-brand') &&
     nationalPaPct > 30
@@ -563,7 +864,7 @@ export function classifyDrug(params: ClassifyParams): DrugClassification {
     })
   }
 
-  // Rule 10 — Common generic acute
+  // Rule 14 — Common generic acute
   if (
     tier === 'generic' &&
     nationalPaPct < 20 &&
@@ -580,7 +881,7 @@ export function classifyDrug(params: ClassifyParams): DrugClassification {
     })
   }
 
-  // Rule 11 — Common generic chronic
+  // Rule 15 — Common generic chronic
   if (tier === 'generic' && totalPlans > medianTotalPlans) {
     return baseProfile('common-generic-chronic', {
       tier,
@@ -592,7 +893,7 @@ export function classifyDrug(params: ClassifyParams): DrugClassification {
     })
   }
 
-  // Rule 12 — Fallback
+  // Rule 16 — Fallback
   // Even fallback gets reasonable profile flags from tier signals.
   return baseProfile('other', {
     tier,

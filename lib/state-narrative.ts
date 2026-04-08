@@ -262,6 +262,25 @@ function archetypeOpener(data: NarrativeData, pattern: NarrativePattern): string
       }
       return `${drug} is a specialty biologic covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a specialty tier with prior approval required. Cost ranges are wide, so plan selection has an outsized financial impact.`
 
+    case 'anticoagulant':
+      // Brand-vs-generic gap is the central decision.
+      if (tier === 'generic') {
+        return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a low-cost generic tier. The bigger decision is whether your doctor wants you on a generic blood thinner or a brand-name option — the cost gap can be hundreds of dollars per month.`
+      }
+      return `${drug} is a brand-name blood thinner covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Brand blood thinners cost much more than generic warfarin, but switching between them is not always straightforward — talk with your doctor before letting cost drive the choice.`
+
+    case 'contraceptive':
+      // ACA preventive — lead with the $0 mandate.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Affordable Care Act, marketplace plans must cover at least one form of FDA-approved birth control with no out-of-pocket cost — confirm whether the specific brand or method you want is the one your plan covers at $0.`
+
+    case 'ophthalmic':
+      // Cost-first, formulation-aware.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Eye drops, gels, and suspensions can be listed differently on the same formulary, so check whether the exact form your doctor prescribes is the one your plan covers — not just the active ingredient.`
+
+    case 'dermatology':
+      // Cost-first, formulation-aware (cream vs ointment vs lotion).
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, usually on a low-cost generic tier. For topical drugs, the cream, ointment, and lotion versions can be priced differently — check that your plan covers the exact form your doctor prescribed.`
+
     case 'other':
       return null
   }
@@ -292,6 +311,12 @@ function archetypeCta(data: NarrativeData): string | null {
       return `If your doctor prescribes a specific brand, check whether the plan covers it or only the generic substitute.`
     case 'compare-tier-and-pa':
       return `Compare both tier placement and prior approval policy — for brand drugs, both affect your monthly cost.`
+    case 'verify-aca-preventive':
+      return `Marketplace plans must cover at least one FDA-approved birth control method at $0 — confirm the specific product you want is on your plan's preventive list before enrolling.`
+    case 'doac-vs-warfarin':
+      return `The cost gap between generic warfarin and brand blood thinners is large — talk with your doctor about whether either option fits your situation, then compare plans on that basis.`
+    case 'check-formulation-coverage':
+      return `Check the exact formulation your doctor prescribed — cream versus ointment, drops versus gel — because the same drug can be tiered differently on the same formulary.`
     case 'data-driven':
     default:
       return null
