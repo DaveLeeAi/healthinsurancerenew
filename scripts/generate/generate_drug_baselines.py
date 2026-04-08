@@ -517,16 +517,30 @@ def build_issuer_state_map() -> dict[str, set[str]]:
 
     log.info("Building issuer → state map …")
 
-    # Source 1: plan_intelligence.json
-    with PLAN_INTEL_FILE.open("r", encoding="utf-8") as fh:
-        pi = json.load(fh)
-
+    # Source 1: plan_intelligence.json — streamed via ijson so we don't load
+    # the full ~36 MB file (and ~300 MB of parser overhead) into memory just
+    # to extract two fields per plan. The full json.load path was OOMing on
+    # this Windows box under memory pressure from other processes.
     issuer_map: dict[str, set[str]] = {}
-    for plan in pi.get("data", []):
-        iid = str(plan.get("issuer_id", "")).strip()
-        state = (plan.get("state_code") or "").upper().strip()
-        if iid and state and len(state) == 2:
-            issuer_map.setdefault(iid, set()).add(state)
+    try:
+        import ijson
+        with PLAN_INTEL_FILE.open("rb") as fh:
+            for plan in ijson.items(fh, "data.item"):
+                iid = str(plan.get("issuer_id", "")).strip()
+                state = (plan.get("state_code") or "").upper().strip()
+                if iid and state and len(state) == 2:
+                    issuer_map.setdefault(iid, set()).add(state)
+    except ImportError:
+        # ijson not installed — fall back to full json.load (may OOM on
+        # memory-constrained systems but works on most boxes).
+        log.warning("  ijson not available; falling back to json.load")
+        with PLAN_INTEL_FILE.open("r", encoding="utf-8") as fh:
+            pi = json.load(fh)
+        for plan in pi.get("data", []):
+            iid = str(plan.get("issuer_id", "")).strip()
+            state = (plan.get("state_code") or "").upper().strip()
+            if iid and state and len(state) == 2:
+                issuer_map.setdefault(iid, set()).add(state)
     pi_count = len(issuer_map)
     log.info("  %d issuers from plan_intelligence.json", pi_count)
 
@@ -682,6 +696,92 @@ def process_sbm_files(accums: dict[str, dict[str, DrugStateAccum]]) -> int:
     return total
 
 
+# ── Slug-collision merge ──────────────────────────────────────────────────────
+
+# Slug rules must match scripts/etl/build_formulary_sitemap_index.py exactly so
+# the same canonical names collide here that would collide there. The two files
+# need to agree on slug semantics — if you change one, change the other.
+_SLUG_NON_ALNUM = re.compile(r"[^a-z0-9]+")
+_SLUG_MULTI_HYPHEN = re.compile(r"-+")
+
+
+def _drug_name_to_slug(name: str) -> str:
+    """URL slug for a canonical drug name. Mirrors build_formulary_sitemap_index.py."""
+    s = name.strip().strip('"').lower()
+    if not s:
+        return ""
+    s = _SLUG_NON_ALNUM.sub("-", s)
+    s = _SLUG_MULTI_HYPHEN.sub("-", s)
+    return s.strip("-")
+
+
+def merge_slug_collisions(
+    accums: dict[str, dict[str, DrugStateAccum]],
+) -> int:
+    """
+    Merge accumulator entries whose canonical names collapse to the same URL slug.
+
+    The canonicaliser doesn't normalise every separator variant — e.g.
+    "gonal f" and "gonal-f" both stay as distinct dict keys, but they slug
+    to the same "gonal-f" URL. Without this merge:
+
+      - Baselines would have two entries for the same slug, with split data.
+      - The sitemap correctly emits one URL per slug (its set() dedupes), but
+        the runtime page lookup at lib/data-loader.ts:getDrugBaseline() uses
+        a raw key lookup with no separator normalisation, so it would only
+        see ONE of the two collisions on /california/gonal-f and the other
+        entry's plan counts and per-state stats would be silently dropped.
+
+    Fix: post-process accums by grouping entries with the same slug and
+    merging them. The "primary" name (longest, then lexicographically first)
+    keeps all the merged data; the others are removed from accums.
+
+    Returns the number of merges performed (0 if no collisions).
+    """
+    slug_to_names: dict[str, list[str]] = defaultdict(list)
+    for name in accums.keys():
+        slug = _drug_name_to_slug(name)
+        if slug:
+            slug_to_names[slug].append(name)
+
+    collisions = {s: names for s, names in slug_to_names.items() if len(names) > 1}
+    if not collisions:
+        return 0
+
+    log.info("Merging %d slug collisions in accums …", len(collisions))
+
+    merge_count = 0
+    pairs_merged_total = 0
+    for slug, names in collisions.items():
+        # Primary = longest name; tiebreak alphabetically. Longer canonical
+        # forms tend to be more descriptive (e.g. "amiloride-hydrochlorothiazide"
+        # over the shorter "amiloride & hydrochlorothiazide" which would
+        # canonicalise to "amiloride-hydrochlorothiazide" anyway).
+        primary = max(names, key=lambda n: (len(n), n))
+        primary_states = accums[primary]
+        for other in names:
+            if other == primary:
+                continue
+            other_states = accums.pop(other)
+            for state_code, other_acc in other_states.items():
+                # Merge other_acc into primary_states[state_code]
+                target = primary_states[state_code]
+                target.plan_count += other_acc.plan_count
+                target.pa_count += other_acc.pa_count
+                target.st_count += other_acc.st_count
+                target.ql_count += other_acc.ql_count
+                for tier, n in other_acc.tier_counts.items():
+                    target.tier_counts[tier] = target.tier_counts.get(tier, 0) + n
+                pairs_merged_total += 1
+            merge_count += 1
+
+    log.info(
+        "  merged %d duplicate drug entries across %d slugs (%d state-level merges)",
+        merge_count, len(collisions), pairs_merged_total,
+    )
+    return merge_count
+
+
 # ── Compute baselines from accumulators ────────────────────────────────────────
 
 def compute_baselines(
@@ -774,7 +874,12 @@ def main() -> None:
     sbm_count = process_sbm_files(accums)
 
     log.info("Total records: %d FFE + %d SBM = %d", ffe_count, sbm_count, ffe_count + sbm_count)
-    log.info("Unique drugs (all): %d", len(accums))
+    log.info("Unique drugs (all, pre-collision-merge): %d", len(accums))
+
+    # Merge canonical-name entries that collapse to the same URL slug.
+    # See merge_slug_collisions() docstring for the rationale.
+    merge_slug_collisions(accums)
+    log.info("Unique drugs (post-collision-merge): %d", len(accums))
 
     # Compute baselines (min 3 states)
     log.info("Computing national baselines (min 3 states) …")
