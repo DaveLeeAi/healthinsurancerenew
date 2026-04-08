@@ -11,6 +11,8 @@
  */
 
 import type { DrugBaseline, FormularyDrug } from './types'
+import type { DrugArchetype, DrugClassification } from './drug-archetype'
+import { getArchetypeProfile } from './drug-archetype'
 
 // ─── Narrative patterns ──────────────────────────────────────────────────────
 
@@ -44,6 +46,9 @@ export interface NarrativeData {
   tierSpread: number
   medianPlansPerState: number
   hasPriorAuth: boolean
+  /** Drug archetype — drives voice, emphasis, and section priority. */
+  archetype: DrugArchetype
+  classification: DrugClassification
 }
 
 // ─── Tier label helpers ──────────────────────────────────────────────────────
@@ -120,9 +125,11 @@ export function buildNarrativeData(params: {
   stepTherapyCount: number
   quantityLimitCount: number
   hasPriorAuth: boolean
+  classification: DrugClassification
 }): NarrativeData {
   const { drugName, stateName, stateCode, results, baseline, dominantTier,
-          priorAuthCount, stepTherapyCount, quantityLimitCount, hasPriorAuth } = params
+          priorAuthCount, stepTherapyCount, quantityLimitCount, hasPriorAuth,
+          classification } = params
   const stateUpper = stateCode.toUpperCase()
   const stateData = baseline.per_state[stateUpper]
 
@@ -142,6 +149,8 @@ export function buildNarrativeData(params: {
     tierSpread: computeTierSpread(results),
     medianPlansPerState: computeMedianPlans(baseline),
     hasPriorAuth,
+    archetype: classification.archetype,
+    classification,
   }
 }
 
@@ -185,6 +194,156 @@ export function detectNarrativePattern(data: NarrativeData): NarrativePattern {
   return 'tier-dominant'
 }
 
+// ─── Archetype-aware voice helpers ───────────────────────────────────────────
+
+/**
+ * Produces an archetype-flavored opener sentence that combines drug-class
+ * voice with state pattern context. Returns null for the 'other' archetype
+ * (which falls back to the pattern-only voice).
+ */
+function archetypeOpener(data: NarrativeData, pattern: NarrativePattern): string | null {
+  const { archetype, drugName, stateName, totalPlans, priorAuthPct,
+          quantityLimitPct, dominantTier } = data
+  const drug = titleCase(drugName)
+  const tier = tierLabel(dominantTier)
+  const YEAR = 2026
+
+  switch (archetype) {
+    case 'common-generic-chronic':
+      // Cost-first, reassuring, brief.
+      if (totalPlans >= data.medianPlansPerState) {
+        return `${drug} is one of the most widely covered drugs in ${stateName} — ${totalPlans} of the marketplace plans for ${YEAR} include it, almost always on a ${tier} tier.`
+      }
+      return `${drug} is a widely used generic, covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Cost depends mainly on which tier your plan assigns.`
+
+    case 'common-generic-acute':
+      // Brief, simple, near-universal.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR} — coverage is near-universal, and out-of-pocket cost is typically minimal for a short course.`
+
+    case 'statin-cholesterol':
+      // Very brief, "tier is the only question".
+      return `Statins like ${drug} are among the most broadly covered drugs nationwide. In ${stateName}, ${totalPlans} marketplace plans include it for ${YEAR}, almost always on a low-cost tier.`
+
+    case 'thyroid-hormone':
+      // Brand vs generic substitution matters.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Because thyroid drugs have a narrow therapeutic range, brand-versus-generic substitution can matter — check whether your plan covers the specific version your doctor prescribes.`
+
+    case 'mental-health':
+      // Respectful, parity-aware.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Mental health medication coverage is protected by federal parity law — plans must cover it comparably to physical health drugs.`
+
+    case 'inhaler-respiratory':
+      // Device-focused.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. For inhalers, the device type your doctor prescribes affects coverage — check whether your plan covers the exact form, not just the active ingredient.`
+
+    case 'controlled-substance':
+      // Refill-rules-first, no judgment.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Because it is a controlled substance, refill rules and quantity limits are tighter than other drugs — most plans cap fills at a 30-day supply.`
+
+    case 'injectable-diabetes':
+      // IRA $35 cap is the lead story.
+      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Inflation Reduction Act, your insulin copay is capped at $35 per month on every marketplace plan — regardless of tier placement.`
+
+    case 'brand-chronic':
+      // Cost + PA-aware.
+      return `${drug} is a brand-name drug covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. ${Math.round(priorAuthPct)}% require prior approval, and tier placement varies widely by carrier — both factors affect what you pay.`
+
+    case 'glp1-weight-diabetes':
+      // Access-first, three-things framing.
+      if (priorAuthPct >= 70) {
+        return `${drug} access in ${stateName} is restricted — ${totalPlans} marketplace plans cover it for ${YEAR}, and ${Math.round(priorAuthPct)}% require prior approval. Coverage alone does not guarantee easy access.`
+      }
+      return `${drug} access in ${stateName} depends on three things: whether the plan covers it (${totalPlans} of the marketplace plans for ${YEAR} do), whether it requires prior approval (${Math.round(priorAuthPct)}%), and what the supply limits look like (${Math.round(quantityLimitPct)}% of plans cap monthly fills).`
+
+    case 'specialty-biologic':
+      // Serious, plan-shopping-critical.
+      if (priorAuthPct >= 80) {
+        return `${drug} is a specialty biologic covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR} — but ${Math.round(priorAuthPct)}% require prior approval and nearly all assign it to a specialty tier. If you take ${drug}, plan selection is one of the most consequential healthcare decisions you make this year.`
+      }
+      return `${drug} is a specialty biologic covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a specialty tier with prior approval required. Cost ranges are wide, so plan selection has an outsized financial impact.`
+
+    case 'other':
+      return null
+  }
+}
+
+/**
+ * Returns the archetype-specific shopper guidance line. Used at the end
+ * of cost-context and insight blocks. Returns null for 'other'.
+ */
+function archetypeCta(data: NarrativeData): string | null {
+  const profile = getArchetypeProfile(data.archetype)
+  switch (profile.ctaAngle) {
+    case 'compare-tier':
+      return `Compare tier placement across plans — that is where the cost difference lives.`
+    case 'check-three-things':
+      return `Check three things on every plan: does it cover the drug, does it require prior approval, and what are the supply limits.`
+    case 'plan-shopping-critical':
+      return `For specialty drugs, plan selection has an outsized impact on your annual cost — compare formulary placement and prior approval timelines side by side.`
+    case 'verify-parity-coverage':
+      return `Federal parity law requires plans to cover mental health medications comparably to physical health drugs — verify that your plan applies the same tier and approval rules.`
+    case 'check-quantity-rules':
+      return `Confirm the plan's monthly supply limit, refill timing, and whether prior approval applies before you enroll.`
+    case 'cap-applies-everywhere':
+      return `Your insulin copay is capped at $35 per month on every marketplace plan — focus your comparison on premium and deductible instead.`
+    case 'verify-device-coverage':
+      return `For inhalers, confirm your plan covers the specific device your doctor prescribes — generic substitution is not always 1:1.`
+    case 'brand-vs-generic-matters':
+      return `If your doctor prescribes a specific brand, check whether the plan covers it or only the generic substitute.`
+    case 'compare-tier-and-pa':
+      return `Compare both tier placement and prior approval policy — for brand drugs, both affect your monthly cost.`
+    case 'data-driven':
+    default:
+      return null
+  }
+}
+
+/**
+ * State-pattern tail sentence that follows an archetype opener. Keeps the
+ * state pattern signal alive without restating drug class context.
+ */
+function quickAnswerPatternTail(data: NarrativeData, pattern: NarrativePattern): string {
+  const { stateName, totalPlans, priorAuthPct, nationalPaPct,
+          quantityLimitCount, tierSpread } = data
+  const profile = getArchetypeProfile(data.archetype)
+
+  // Common-generic and statin: skip the tail when copy length is 'short'
+  // and the pattern is broad/easy. Brevity is the point.
+  if (profile.copyLength === 'short' &&
+      (pattern === 'broad-low-friction' || pattern === 'large-market-advantage')) {
+    return ''
+  }
+
+  switch (pattern) {
+    case 'broad-low-friction':
+      return `Most ${stateName} carriers also keep prior approval rates low — easier than the national average.`
+    case 'broad-high-friction':
+      return `${stateName} sits well above the national average for prior approval — ${Math.round(priorAuthPct)}% vs. ${Math.round(nationalPaPct)}% nationally.`
+    case 'narrow-high-friction':
+      return `Few ${stateName} plans cover it, and most of those that do require prior approval — every plan rule has a bigger impact in a market this small.`
+    case 'narrow-low-friction':
+      return `${stateName} has fewer plans than average, but the ones that cover it tend to have lower approval barriers.`
+    case 'tier-dominant':
+      return `${stateName} carriers cluster on a single tier — that placement drives most of what you pay here.`
+    case 'issuer-variation':
+      return `${stateName} carriers split across ${tierSpread} different tier levels, so carrier choice matters as much as metal level.`
+    case 'supply-limits-standout':
+      return `${quantityLimitCount} of ${totalPlans} ${stateName} plans cap the monthly fill — supply limits are the hidden friction here.`
+    case 'small-market':
+      return `With only ${totalPlans} ${stateName} plans, every formulary decision has outsized impact on your options.`
+    case 'large-market-advantage':
+      return `${stateName}'s broad selection gives you room to compare and shop for favorable terms.`
+    case 'outlier':
+      if (priorAuthPct > nationalPaPct + 25) {
+        return `${stateName} stands out nationally — ${Math.round(priorAuthPct)}% prior approval vs. ${Math.round(nationalPaPct)}% nationally.`
+      }
+      if (priorAuthPct < nationalPaPct - 25) {
+        return `${stateName} is unusually permissive — only ${Math.round(priorAuthPct)}% of plans require prior approval, well below the national norm.`
+      }
+      return `${stateName} offers an unusually large plan selection — far more comparison room than a typical state.`
+  }
+}
+
 // ─── Quick Answer generator (AEO block) ──────────────────────────────────────
 
 export function generateQuickAnswer(data: NarrativeData, pattern: NarrativePattern): string {
@@ -195,6 +354,14 @@ export function generateQuickAnswer(data: NarrativeData, pattern: NarrativePatte
   const paDiff = Math.abs(priorAuthPct - nationalPaPct)
   const paDirection = priorAuthPct > nationalPaPct ? 'above' : 'below'
   const YEAR = 2026
+
+  // Archetype-aware voice — when an opener is available, combine it with a
+  // state-pattern context tail. Otherwise fall back to pattern-only voice.
+  const opener = archetypeOpener(data, pattern)
+  if (opener) {
+    const tail = quickAnswerPatternTail(data, pattern)
+    return tail ? `${opener} ${tail}` : opener
+  }
 
   switch (pattern) {
     case 'broad-low-friction':
@@ -240,6 +407,58 @@ export function generateQuickAnswer(data: NarrativeData, pattern: NarrativePatte
 // ─── Editorial insight box ───────────────────────────────────────────────────
 
 export function generateInsightBody(data: NarrativeData, pattern: NarrativePattern): string {
+  const { drugName, stateName, totalPlans, priorAuthPct, dominantTier } = data
+  const drug = titleCase(drugName)
+  const tier = tierLabel(dominantTier)
+  const profile = getArchetypeProfile(data.archetype)
+  const cta = archetypeCta(data)
+
+  // Short-copy archetypes (statins, common generic acute) get a compressed
+  // insight body — one pattern sentence + CTA. Skip the long pattern body.
+  if (profile.copyLength === 'short' &&
+      (pattern === 'broad-low-friction' || pattern === 'large-market-advantage' ||
+       pattern === 'tier-dominant')) {
+    const lead = pattern === 'broad-low-friction' || pattern === 'large-market-advantage'
+      ? `${drug} is one of the easier drugs to access in ${stateName}. With ${totalPlans} plans covering it and prior approval needed on just ${Math.round(priorAuthPct)}%, the main decision is which plan places it on the most favorable tier.`
+      : `For ${drug} in ${stateName}, tier placement is the main cost variable — most plans assign a ${tier} tier.`
+    return cta ? `${lead} ${cta}` : lead
+  }
+
+  // Long-copy archetypes (specialty biologic, GLP-1) get a leading archetype
+  // sentence prepended to the pattern body, plus CTA appended.
+  if (profile.copyLength === 'long') {
+    const archetypeLead = archetypeLongLead(data)
+    const patternBody = generatePatternInsightBody(data, pattern)
+    return cta ? `${archetypeLead} ${patternBody} ${cta}` : `${archetypeLead} ${patternBody}`
+  }
+
+  // Medium archetypes — pattern body + CTA tail.
+  const body = generatePatternInsightBody(data, pattern)
+  return cta ? `${body} ${cta}` : body
+}
+
+/**
+ * Archetype-specific leading sentence for long-form insight bodies.
+ */
+function archetypeLongLead(data: NarrativeData): string {
+  const { archetype, drugName, stateName, priorAuthPct, quantityLimitPct } = data
+  const drug = titleCase(drugName)
+
+  switch (archetype) {
+    case 'specialty-biologic':
+      return `${drug} sits in the highest-cost drug category for ${stateName} marketplace plans. Specialty drugs almost always require prior approval and are placed on the highest tier — meaning your out-of-pocket cost can range from $80 to several hundred dollars per month depending on the plan you choose.`
+    case 'glp1-weight-diabetes':
+      return `${drug} has become one of the most-requested drugs in the marketplace, but coverage in ${stateName} is uneven. ${Math.round(priorAuthPct)}% of plans require prior approval, ${Math.round(quantityLimitPct)}% cap monthly fills, and weight-loss versus diabetes coverage is treated differently by carrier.`
+    default:
+      return ''
+  }
+}
+
+/**
+ * Pattern-only insight body (the original switch logic, kept intact for
+ * medium and long archetypes that still need state-pattern variation).
+ */
+function generatePatternInsightBody(data: NarrativeData, pattern: NarrativePattern): string {
   const { drugName, stateName, totalPlans, priorAuthCount, priorAuthPct, nationalPaPct,
           dominantTier, quantityLimitCount, quantityLimitPct, tierSpread } = data
   const drug = titleCase(drugName)
@@ -304,10 +523,31 @@ export function generateInsightBody(data: NarrativeData, pattern: NarrativePatte
 // ─── Cost section intro ──────────────────────────────────────────────────────
 
 export function generateCostContext(data: NarrativeData, pattern: NarrativePattern): string {
-  const { drugName, stateName, totalPlans, priorAuthPct, dominantTier, tierSpread } = data
+  const { drugName, stateName, totalPlans, priorAuthPct, dominantTier, tierSpread, archetype } = data
   const drug = titleCase(drugName)
   const tier = tierLabel(dominantTier)
   const natTier = tierLabel(data.nationalDominantTier)
+
+  // Archetype-specific overrides — these take precedence over the pattern voice
+  // when the cost story is dominated by drug-class economics.
+  if (archetype === 'injectable-diabetes') {
+    return `Insulin cost in ${stateName} is capped at $35 per month on every marketplace plan thanks to the Inflation Reduction Act. That cap applies regardless of tier placement or deductible — focus your plan comparison on premium and overall benefits instead of insulin copay.`
+  }
+  if (archetype === 'specialty-biologic') {
+    return `${drug} is almost always placed on a specialty tier in ${stateName} — the highest cost tier most plans use. Out-of-pocket costs typically run $80 to several hundred dollars per month, and most plans require you to meet your full deductible before coinsurance kicks in. The plan you choose can move your annual cost by thousands of dollars.`
+  }
+  if (archetype === 'glp1-weight-diabetes') {
+    return `${drug} pricing in ${stateName} varies dramatically by plan. Carriers split it across tier levels, and prior approval requirements add a step before your first fill. Compare both the tier placement and the approval timeline — and confirm that the version your doctor prescribes (diabetes vs. weight loss) is the one your plan covers.`
+  }
+  if (archetype === 'controlled-substance') {
+    return `${drug} cost in ${stateName} is straightforward — most plans place it on a generic or preferred-brand tier — but refill rules and quantity limits matter more than the per-fill copay. Plans cap monthly fills, and some require new prescriptions each refill. Your annual cost depends on whether the supply rules match your prescription pattern.`
+  }
+  if (archetype === 'statin-cholesterol') {
+    return `Statins like ${drug} are nearly always on a low-cost generic tier in ${stateName} — your monthly cost is typically a small copay. Tier placement is the only meaningful cost variable.`
+  }
+  if (archetype === 'common-generic-acute') {
+    return `${drug} is a short-term generic with near-universal coverage in ${stateName}. A typical course costs only the generic copay — usually a few dollars after deductible.`
+  }
 
   switch (pattern) {
     case 'broad-low-friction':
@@ -469,8 +709,32 @@ export function generateLocalizedSections(data: NarrativeData, pattern: Narrativ
 // ─── Insight box heading (varies by pattern) ─────────────────────────────────
 
 export function getInsightHeading(data: NarrativeData, pattern: NarrativePattern): string {
-  const { drugName, stateName } = data
+  const { drugName, stateName, archetype } = data
   const drug = titleCase(drugName)
+
+  // Archetype-specific headings — used when the drug-class story dominates.
+  switch (archetype) {
+    case 'injectable-diabetes':
+      return `What the $35 insulin cap means for ${stateName} shoppers`
+    case 'glp1-weight-diabetes':
+      return `What ${stateName} shoppers should check before assuming coverage`
+    case 'specialty-biologic':
+      return `Why plan choice matters most for ${drug} in ${stateName}`
+    case 'controlled-substance':
+      return `Refill rules and quantity limits for ${drug} in ${stateName}`
+    case 'mental-health':
+      return `What federal parity law means for ${drug} in ${stateName}`
+    case 'inhaler-respiratory':
+      return `Why device coverage matters for ${drug} in ${stateName}`
+    case 'thyroid-hormone':
+      return `Brand vs. generic for ${drug} in ${stateName}`
+    case 'statin-cholesterol':
+    case 'common-generic-acute':
+      // Brief headings for short-copy archetypes.
+      return `What to know about ${drug} in ${stateName}`
+    default:
+      break
+  }
 
   switch (pattern) {
     case 'small-market':
@@ -520,14 +784,80 @@ export function getConditionalBlocks(
     priorAuthCount, priorAuthPct, nationalPaPct,
     dominantTier, nationalDominantTier,
     quantityLimitCount, quantityLimitPct,
-    tierSpread,
+    tierSpread, archetype,
   } = data
   const drug = titleCase(drugName)
   const tier = tierLabel(dominantTier)
   const natTier = tierLabel(nationalDominantTier)
   const paDiff = priorAuthPct - nationalPaPct
+  const profile = getArchetypeProfile(archetype)
 
   const candidates: ConditionalBlock[] = []
+
+  // ── Archetype-specific blocks (always-on for the matching drug class) ──
+
+  if (archetype === 'injectable-diabetes') {
+    candidates.push({
+      id: 'ira-insulin-cap',
+      heading: `Insulin is capped at $35/month on every ${stateName} marketplace plan`,
+      body: `Under the Inflation Reduction Act, every ACA marketplace plan in ${stateName} caps insulin copays at $35 per month — regardless of tier placement, deductible, or carrier. That means your insulin cost is the same on a Bronze plan as it is on a Platinum plan. Use the rest of your plan comparison (premium, deductible, network) to make your choice.`,
+      strength: 100,
+    })
+  }
+
+  if (archetype === 'mental-health') {
+    candidates.push({
+      id: 'parity-callout',
+      heading: `Federal parity law protects ${drug} coverage in ${stateName}`,
+      body: `The Mental Health Parity and Addiction Equity Act requires marketplace plans to cover mental health medications comparably to physical health drugs. That means plans cannot apply tougher tier placement, prior approval rules, or quantity limits to ${drug} than they apply to similar non-mental-health drugs. If a ${stateName} plan denies ${drug} coverage, you can appeal under federal parity rules.`,
+      strength: 80,
+    })
+  }
+
+  if (archetype === 'controlled-substance') {
+    candidates.push({
+      id: 'controlled-refill-rules',
+      heading: `Refill and quantity rules for ${drug} in ${stateName}`,
+      body: `As a controlled substance, ${drug} has tighter refill rules than most drugs. Most ${stateName} plans cap fills at a 30-day supply, do not allow automatic refills, and may require a new prescription each fill. ${quantityLimitCount} of ${totalPlans} plans here apply explicit quantity limits. Confirm the rules match your prescription pattern before enrolling.`,
+      strength: 90,
+    })
+  }
+
+  if (archetype === 'specialty-biologic') {
+    candidates.push({
+      id: 'specialty-plan-impact',
+      heading: `Why plan choice has outsized impact for ${drug} in ${stateName}`,
+      body: `Specialty drugs like ${drug} are placed on the highest cost tier on virtually every ${stateName} plan, and ${Math.round(priorAuthPct)}% require prior approval. The difference between the cheapest and most expensive plan for a specialty user can be thousands of dollars per year — significantly more than the difference for non-specialty drugs. Specialty users should compare formulary placement first, then evaluate everything else.`,
+      strength: 85,
+    })
+  }
+
+  if (archetype === 'glp1-weight-diabetes') {
+    candidates.push({
+      id: 'glp1-three-checks',
+      heading: `Three things to verify for ${drug} in ${stateName}`,
+      body: `Before assuming coverage means access, verify three things on each ${stateName} plan: (1) is ${drug} on the formulary, (2) does the plan require prior approval (${Math.round(priorAuthPct)}% do), and (3) what monthly supply limit applies (${Math.round(quantityLimitPct)}% of plans cap fills). Carriers also distinguish weight-loss versus diabetes coverage — make sure the version your doctor prescribes is the one your plan covers.`,
+      strength: 85,
+    })
+  }
+
+  if (archetype === 'inhaler-respiratory') {
+    candidates.push({
+      id: 'inhaler-device',
+      heading: `Device-specific coverage for ${drug} in ${stateName}`,
+      body: `For inhalers and respiratory devices, ${stateName} plans cover specific device formats — generic substitution is not always 1:1. If your doctor prescribes a particular brand-name inhaler or device, confirm the plan covers that exact form, not just the active ingredient. Switching device types can affect technique and dose delivery.`,
+      strength: 70,
+    })
+  }
+
+  if (archetype === 'thyroid-hormone') {
+    candidates.push({
+      id: 'thyroid-brand-generic',
+      heading: `Brand vs. generic substitution for ${drug} in ${stateName}`,
+      body: `Thyroid hormone replacement has a narrow therapeutic range, which means brand-versus-generic substitution can produce different clinical results for some people. If your doctor specifically prescribes a brand name, check whether your ${stateName} plan covers that brand or only the generic. Plans differ on whether they require step therapy through the generic first.`,
+      strength: 65,
+    })
+  }
 
   // ── Module 1: Small market effect ──
   // Boost: when this rare trigger fires, prioritize it strongly so similar
@@ -619,8 +949,10 @@ export function getConditionalBlocks(
     })
   }
 
-  // Sort by strength descending and return top 2
+  // Sort by strength descending and return top N per archetype profile.
+  // Short-copy archetypes (statin, common-generic-acute) cap at 1 block;
+  // long-copy archetypes (specialty, GLP-1) keep up to 2.
   return candidates
     .sort((a, b) => b.strength - a.strength)
-    .slice(0, 2)
+    .slice(0, profile.maxConditionalBlocks)
 }

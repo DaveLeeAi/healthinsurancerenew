@@ -33,6 +33,7 @@ import {
   getInsightHeading,
 } from '@/lib/state-narrative'
 import type { NarrativePattern, NarrativeData } from '@/lib/state-narrative'
+import { classifyDrug } from '@/lib/drug-archetype'
 import ProcessBar from '@/components/ProcessBar'
 import AeoBlock from '@/components/AeoBlock'
 import EvidenceBlock from '@/components/EvidenceBlock'
@@ -783,9 +784,20 @@ export default async function FormularyDrugPage({ params }: Props) {
         })
       : null
 
+  // --- Drug archetype classification (drives content voice + emphasis) ---
+  const drugClassification = baseline
+    ? classifyDrug({
+        drugName: drugDisplay,
+        dominantTier: baseline.dominant_tier_national ?? dominantGroup,
+        nationalPaPct: baseline.prior_auth_pct_national ?? 0,
+        nationalQlPct: baseline.quantity_limit_pct_national ?? 0,
+        totalPlans: baseline.total_plans_national ?? results.length,
+      })
+    : null
+
   // --- Narrative pattern engine (state-level content differentiation) ---
   const narrativeData: NarrativeData | null =
-    baseline && isState && results.length > 0
+    baseline && isState && results.length > 0 && drugClassification
       ? buildNarrativeData({
           drugName: drugDisplay,
           stateName: stateName ?? '',
@@ -797,6 +809,7 @@ export default async function FormularyDrugPage({ params }: Props) {
           stepTherapyCount,
           quantityLimitCount,
           hasPriorAuth,
+          classification: drugClassification,
         })
       : null
   const narrativePattern: NarrativePattern | null =
