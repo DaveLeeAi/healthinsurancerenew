@@ -5,9 +5,15 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
 
-# LLM and AI crawlers — explicitly permitted
+# LLM and AI crawlers — explicitly permitted on high-value routes
+# Selectively blocked on low-value routes (faq/category, billing, tools, glossary)
+
 User-agent: GPTBot
 Allow: /
+Disallow: /faq/category/
+Disallow: /billing/
+Disallow: /tools/
+Disallow: /glossary/
 
 User-agent: ChatGPT-User
 Allow: /
@@ -21,6 +27,13 @@ Allow: /
 User-agent: Claude-Web
 Allow: /
 
+User-agent: ClaudeBot
+Allow: /
+Disallow: /faq/category/
+Disallow: /billing/
+Disallow: /tools/
+Disallow: /glossary/
+
 User-agent: PerplexityBot
 Allow: /
 
@@ -29,6 +42,10 @@ Allow: /
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /faq/category/
+Disallow: /billing/
+Disallow: /tools/
+Disallow: /glossary/
 
 User-agent: Applebot-Extended
 Allow: /
