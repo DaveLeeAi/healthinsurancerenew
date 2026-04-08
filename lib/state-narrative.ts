@@ -943,7 +943,7 @@ export function getConditionalBlocks(
     candidates.push({
       id: 'supply-limits',
       heading: `Watch for supply limits in ${stateName}`,
-      body: `${quantityLimitCount} of ${totalPlans} ${stateName} plans limit how much ${drug} you can get per fill — typically a 30-day supply. If you need a larger quantity or use a higher dose, check whether your plan allows 90-day fills or mail-order options before enrolling.`,
+      body: `${quantityLimitCount} of ${totalPlans} ${stateName} plans limit how much ${drug} you can get per month — typically a 30-day supply. If you need a larger quantity or use a higher dose, check whether your plan allows 90-day refills or mail-order options before enrolling.`,
       // Strength scales with how high QL pct is
       strength: Math.round(quantityLimitPct / 5),
     })
