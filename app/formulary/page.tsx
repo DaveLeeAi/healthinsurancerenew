@@ -89,7 +89,7 @@ const FAQ_ITEMS = [
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
 
-const CANONICAL = 'https://healthinsurancerenew.com/drugs'
+const CANONICAL = 'https://healthinsurancerenew.com/formulary'
 
 export function generateMetadata(): Metadata {
   return {
@@ -247,7 +247,7 @@ export default function FormularyIndexPage() {
                     {cat.label}
                   </h3>
                   <a
-                    href={`/drugs/categories/${cat.hubId}`}
+                    href={`/formulary/categories/${cat.hubId}`}
                     className="text-xs text-primary-600 hover:underline font-medium"
                   >
                     See all &rarr;
