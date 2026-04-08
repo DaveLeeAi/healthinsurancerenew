@@ -305,11 +305,26 @@ export function getIssuerStateMap(): Map<string, Set<string>> {
 }
 
 // ---------------------------------------------------------------------------
-// Pillar 6 — Formulary Intelligence (7.2 GB on disk — block-range indexed)
+// Pillar 6 — Formulary Intelligence (4.2 GB on disk — block-range indexed)
 //
-// Index maps normalized drug_name → {offset, length} byte block.
-// We read only the relevant byte block, then parse each NDJSON line inside it.
+// Index maps normalized drug_name → Array<{offset, length}>. The same drug
+// name appears in multiple non-contiguous runs across fetch batches, so the
+// index value is an array of byte ranges (one per run), not a single range.
+// At query time we read up to MAX_BLOCKS_PER_KEY ranges per matching key,
+// largest first, to keep the per-query I/O cost bounded.
 // ---------------------------------------------------------------------------
+
+/**
+ * Max byte ranges to read per matching drug-name key during a formulary
+ * search. Caps the worst-case query cost on Vercel Blob Range requests:
+ *   10 keys (matchingKeys.slice(0, 10)) × MAX_BLOCKS_PER_KEY ranges
+ * = 50 HTTP requests max, further bounded by the 200-result cap.
+ *
+ * Tuned for: most drugs have <5 runs in the master file; popular drugs
+ * (insulins, COVID vaccines) can have 50+ runs but the 200-result cap
+ * kicks in long before we'd read them all anyway.
+ */
+const MAX_BLOCKS_PER_KEY = 5
 
 /**
  * Search formulary by drug name.
@@ -343,18 +358,29 @@ export async function searchFormulary(params: FormularySearchParams): Promise<Fo
     if (blobUrl) {
       results = await searchFormularyFromBlob(params, matchingKeys, index, blobUrl, issuerStateMap)
     } else {
-      // Local: random-access file read
+      // Local: random-access file read.
+      // Each key in the index now maps to an Array<{offset, length}> because
+      // the same drug name appears in multiple non-contiguous runs across
+      // fetch batches. We read up to MAX_BLOCKS_PER_KEY blocks per key,
+      // largest first (more records per read), to maximize record yield
+      // without exploding the per-query I/O cost.
       const filepath = path.join(DATA_DIR, 'formulary_intelligence.json')
       if (fs.existsSync(filepath)) {
         const fd = await fs.promises.open(filepath, 'r')
         try {
           for (const key of matchingKeys.slice(0, 10)) {
             if (results.length >= 200) break
-            const entry = index[key]
-            const buf = Buffer.alloc(entry.length)
-            await fd.read(buf, 0, entry.length, entry.offset)
-            const block = buf.toString('utf8')
-            parseFormularyBlock(block, params, results, issuerStateMap)
+            const entries = (index[key] ?? [])
+              .slice()
+              .sort((a, b) => b.length - a.length)
+              .slice(0, MAX_BLOCKS_PER_KEY)
+            for (const entry of entries) {
+              if (results.length >= 200) break
+              const buf = Buffer.alloc(entry.length)
+              await fd.read(buf, 0, entry.length, entry.offset)
+              const block = buf.toString('utf8')
+              parseFormularyBlock(block, params, results, issuerStateMap)
+            }
           }
         } finally {
           await fd.close()
@@ -421,21 +447,31 @@ async function searchFormularyFromBlob(
 ): Promise<FormularyDrug[]> {
   const results: FormularyDrug[] = []
 
+  // Each key now maps to an Array<{offset, length}>; iterate up to
+  // MAX_BLOCKS_PER_KEY ranges per key, largest first. Worst-case query
+  // cost: 10 keys × 5 ranges = 50 HTTP Range requests, capped further by
+  // the 200-result limit.
   for (const key of matchingKeys.slice(0, 10)) {
     if (results.length >= 200) break
-    const entry = index[key]
+    const entries = (index[key] ?? [])
+      .slice()
+      .sort((a, b) => b.length - a.length)
+      .slice(0, MAX_BLOCKS_PER_KEY)
 
-    try {
-      const res = await fetch(blobUrl, {
-        headers: {
-          Range: `bytes=${entry.offset}-${entry.offset + entry.length - 1}`,
-        },
-      })
-      if (!res.ok && res.status !== 206) continue
-      const block = await res.text()
-      parseFormularyBlock(block, params, results, issuerStateMap)
-    } catch {
-      // Skip failed range requests
+    for (const entry of entries) {
+      if (results.length >= 200) break
+      try {
+        const res = await fetch(blobUrl, {
+          headers: {
+            Range: `bytes=${entry.offset}-${entry.offset + entry.length - 1}`,
+          },
+        })
+        if (!res.ok && res.status !== 206) continue
+        const block = await res.text()
+        parseFormularyBlock(block, params, results, issuerStateMap)
+      } catch {
+        // Skip failed range requests
+      }
     }
   }
 

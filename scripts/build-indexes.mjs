@@ -121,7 +121,12 @@ async function buildSbcIndex() {
 
 // ---------------------------------------------------------------------------
 // Formulary Index
-// formulary_intelligence.json: NDJSON, one record per line, grouped by drug
+// formulary_intelligence.json: NDJSON, one record per line.
+// Records are NOT globally grouped by drug name — the same drug can appear
+// in multiple non-contiguous runs from different fetch batches. We index
+// drug_name_lower → Array<{offset, length}> with one array entry per run.
+// The pre-2026-04-08 indexer used a single-entry value and silently dropped
+// 904K of 959K runs (92% of file bytes unreachable via the index).
 // ---------------------------------------------------------------------------
 async function buildFormularyIndex() {
   const filepath = path.join(DATA_DIR, 'formulary_intelligence.json')
@@ -142,7 +147,21 @@ async function buildFormularyIndex() {
   let blockStart = -1
   let blockLastEnd = -1
   let lineCount = 0
-  let drugCount = 0
+  let runCount = 0
+  let uniqueDrugCount = 0
+
+  const flushCurrent = () => {
+    if (currentDrug !== null && blockStart !== -1) {
+      let bucket = index[currentDrug]
+      if (!bucket) {
+        bucket = []
+        index[currentDrug] = bucket
+        uniqueDrugCount++
+      }
+      bucket.push({ offset: blockStart, length: blockLastEnd - blockStart })
+      runCount++
+    }
+  }
 
   for await (const { line, startByte, endByte } of streamLines(filepath)) {
     if (!inDataArray) {
@@ -155,7 +174,7 @@ async function buildFormularyIndex() {
 
     lineCount++
     if (lineCount % 500_000 === 0) {
-      process.stdout.write(`\r  ${lineCount.toLocaleString()} lines, ${drugCount.toLocaleString()} drugs...`)
+      process.stdout.write(`\r  ${lineCount.toLocaleString()} lines, ${uniqueDrugCount.toLocaleString()} unique drugs / ${runCount.toLocaleString()} runs...`)
     }
 
     const match = drugNameRe.exec(line)
@@ -164,10 +183,7 @@ async function buildFormularyIndex() {
     const drugName = match[1].toLowerCase()
 
     if (drugName !== currentDrug) {
-      if (currentDrug !== null && blockStart !== -1) {
-        index[currentDrug] = { offset: blockStart, length: blockLastEnd - blockStart }
-        drugCount++
-      }
+      flushCurrent()
       currentDrug = drugName
       blockStart = startByte
     }
@@ -175,13 +191,18 @@ async function buildFormularyIndex() {
     blockLastEnd = endByte
   }
 
-  if (currentDrug !== null && blockStart !== -1) {
-    index[currentDrug] = { offset: blockStart, length: blockLastEnd - blockStart }
-    drugCount++
-  }
+  flushCurrent()
+
+  // Per-drug run statistics (helps catch regressions)
+  const runsPerDrug = Object.values(index).map((arr) => arr.length)
+  const maxRunsPerDrug = runsPerDrug.length > 0 ? Math.max(...runsPerDrug) : 0
+  const avgRunsPerDrug = runsPerDrug.length > 0 ? runCount / runsPerDrug.length : 0
 
   console.log(
-    `\n[Formulary] ${drugCount.toLocaleString()} drugs, ${lineCount.toLocaleString()} records in ${((Date.now() - t0) / 1000).toFixed(1)}s`
+    `\n[Formulary] ${uniqueDrugCount.toLocaleString()} unique drugs, ${runCount.toLocaleString()} runs, ${lineCount.toLocaleString()} records in ${((Date.now() - t0) / 1000).toFixed(1)}s`
+  )
+  console.log(
+    `[Formulary] Runs per drug: avg ${avgRunsPerDrug.toFixed(1)}, max ${maxRunsPerDrug}`
   )
   fs.mkdirSync(CACHE_DIR, { recursive: true })
   fs.writeFileSync(outputPath, JSON.stringify(index))
