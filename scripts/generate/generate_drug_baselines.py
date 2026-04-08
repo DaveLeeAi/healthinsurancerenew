@@ -99,6 +99,8 @@ _DOSAGE_FORM_WORDS = frozenset({
     "spray", "drops", "powder", "chewable", "extended-release", "er", "suspension",
     "dr", "sr", "hfa", "inhaler", "nebulizer", "ophthalmic", "otic",
     "nasal", "rectal", "topical", "transdermal", "suppository",
+    # Delivery system words (not drug names)
+    "system", "device", "kit", "pack", "blister",
     # Units that appear as standalone tokens
     "mg", "mcg", "ml", "mg/ml", "unit", "units", "dose", "gm", "g",
 })
@@ -108,6 +110,109 @@ _DOSAGE_PATTERN = re.compile(
     r"|^[\d.]+\s*(mg|mcg|ml|%|unit)"    # "500mg", "0.5 mg"
     r"|/\d"                             # "2mg/3ml"
 )
+
+
+# ── Salt / ester / formulation suffix stripping ──────────────────────────────
+
+# Order matters: longer suffixes first to avoid partial matches.
+# These are stripped from the END of the canonical name after initial normalisation.
+_SALT_SUFFIXES = [
+    "hydrochloride", "hydrobromide",
+    "hcl er tb24", "hcl er cp24", "hcl er", "hcl tb24", "hcl tabs", "hcl",
+    "sulfate er cp24", "sulfate er", "sulfate soln", "sulfate tabs", "sulfate",
+    "sodium", "potassium", "calcium", "magnesium",
+    "mesylate", "maleate", "fumarate", "tartrate", "besylate", "tosylate",
+    "acetate", "succinate", "phosphate", "citrate", "bromide", "nitrate",
+    "propanediol", "disoproxil", "alafenamide",
+    "sol", "soln", "tabs",
+]
+
+# Formulation suffixes (release-type modifiers) — stripped as trailing words
+_FORM_SUFFIXES = ["er", "sr", "xr", "xl", "dr", "ec", "cr", "la", "hfa", "cp24", "tb24"]
+
+# Combo-drug separator normalisation: "amphetamine- dextroamphetamine" and
+# "amphetamine-dextroamphetamine" and "amphetamine / dextroamphetamine" and
+# "amphetamine-dextroamphet er" should all become "amphetamine-dextroamphetamine"
+_COMBO_NORMALIZE = re.compile(
+    r"\s*/\s*"     # " / " or "/"
+    r"|\s*-\s+"    # "- " with trailing space (e.g. "amphetamine- dextro")
+    r"|\s+-\s*"    # " -" with leading space
+)
+
+# Known abbreviation expansions for combo merging
+_ABBREV_EXPAND: dict[str, str] = {
+    "dextroamphet": "dextroamphetamine",
+    "metform": "metformin",
+}
+
+
+def canonicalize_base_drug(name: str) -> str:
+    """
+    Given a normalised drug name (lowercase, dosage stripped), produce a
+    canonical base-drug key by stripping salt/ester suffixes and normalising
+    combo-drug separators.
+
+    Examples:
+      "metformin hcl"           → "metformin"
+      "metformin hydrochloride" → "metformin"
+      "metformin hcl er"        → "metformin"
+      "amphetamine-dextroamphet er" → "amphetamine-dextroamphetamine"
+      "amphetamine- dextroamphetamine" → "amphetamine-dextroamphetamine"
+      "dextroamphetamine sulfate er" → "dextroamphetamine"
+      "glipizide-metformin hcl" → "glipizide-metformin"
+    """
+    s = name.strip()
+    if not s:
+        return s
+
+    # 1. Fix escaped slashes from some SBM sources
+    s = s.replace("\\/", "/").replace("\\", "")
+
+    # 2. Normalise combo separators to hyphen (no spaces)
+    s = _COMBO_NORMALIZE.sub("-", s)
+
+    # 3. Expand known abbreviations
+    for abbrev, full in _ABBREV_EXPAND.items():
+        # Only replace as a whole word
+        s = re.sub(rf"\b{re.escape(abbrev)}\b", full, s)
+
+    # 4. Strip salt/ester suffixes (try longest first)
+    for suffix in _SALT_SUFFIXES:
+        if s.endswith(" " + suffix):
+            s = s[: -(len(suffix) + 1)].rstrip(" -")
+        elif s.endswith("-" + suffix):
+            s = s[: -(len(suffix) + 1)].rstrip(" -")
+
+    # 5. Strip trailing formulation modifiers (er, sr, xr, etc.)
+    tokens = s.split()
+    while tokens and tokens[-1] in _FORM_SUFFIXES:
+        tokens.pop()
+    s = " ".join(tokens) if tokens else s
+
+    # 6. Clean up stray trailing punctuation / hyphens
+    s = s.strip(" -,;")
+
+    # 7. Collapse duplicate-word combos: "amphetamine-dextroamphetamine amphetamine-dextroamphetamine"
+    if " " in s:
+        parts = s.split()
+        if len(parts) == 2 and parts[0] == parts[1]:
+            s = parts[0]
+
+    # 8. Reject non-drug tokens that survive stripping (delivery/form words)
+    _REJECT_WORDS = _DOSAGE_FORM_WORDS | {
+        "extended", "release", "delayed", "immediate", "modified",
+        "oral", "topical", "vaginal", "ophthalmic", "intravenous",
+        "tablet", "capsule", "injection", "solution", "suspension",
+        "agents", "disorders", "drugs", "products", "preparations",
+        "concentrate", "liquid", "elixir", "lotion", "emulsion",
+        "aerosol", "foam", "film", "granules", "lozenge", "troche",
+        "enema", "douche", "irrigant", "implant", "insert",
+    }
+    if s in _REJECT_WORDS:
+        # Return empty — caller will skip this record
+        return ""
+
+    return s if s else name.strip()
 
 
 def normalise_drug_name(name: str) -> str:
@@ -296,7 +401,7 @@ def stream_ffe_records(
             except json.JSONDecodeError:
                 continue
 
-            drug_name = normalise_drug_name(rec.get("drug_name") or "")
+            drug_name = canonicalize_base_drug(normalise_drug_name(rec.get("drug_name") or ""))
             if not drug_name:
                 continue
 
@@ -348,7 +453,7 @@ def process_sbm_files(accums: dict[str, dict[str, DrugStateAccum]]) -> int:
                 obj = json.load(fh)
             data = obj.get("data") or obj.get("records") or []
             for rec in data:
-                drug_name = normalise_drug_name(rec.get("drug_name") or rec.get("name") or "")
+                drug_name = canonicalize_base_drug(normalise_drug_name(rec.get("drug_name") or rec.get("name") or ""))
                 if not drug_name:
                     continue
                 accums[drug_name][state].add(
@@ -471,7 +576,8 @@ def main() -> None:
         "sbm_records": sbm_count,
         "drug_count": len(baselines),
         "min_states_required": 3,
-        "description": "National and per-state baseline stats per drug for content differentiation",
+        "description": "National and per-state baseline stats per drug for content differentiation. "
+                       "Salt/ester variants (hcl, hydrochloride, sulfate, etc.) merged into canonical base drug names.",
     }
     output_obj = {"metadata": metadata, "data": baselines}
 
