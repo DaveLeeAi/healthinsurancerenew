@@ -92,8 +92,102 @@ def normalise_tier(raw: str | None) -> str:
     return TIER_NORMALISE.get(upper, raw.strip().lower().replace("_", "-").replace(" ", "-"))
 
 
+_DOSAGE_FORM_WORDS = frozenset({
+    "inj", "sopn", "subcutaneous", "pen", "solution", "tablet", "tab",
+    "capsule", "cap", "cream", "ointment", "susp", "oral", "injection",
+    "injector", "pen-injector", "vial", "syringe", "patch", "gel",
+    "spray", "drops", "powder", "chewable", "extended-release", "er", "suspension",
+    "dr", "sr", "hfa", "inhaler", "nebulizer", "ophthalmic", "otic",
+    "nasal", "rectal", "topical", "transdermal", "suppository",
+    # Units that appear as standalone tokens
+    "mg", "mcg", "ml", "mg/ml", "unit", "units", "dose", "gm", "g",
+})
+
+_DOSAGE_PATTERN = re.compile(
+    r"^\d"                              # starts with digit
+    r"|^[\d.]+\s*(mg|mcg|ml|%|unit)"    # "500mg", "0.5 mg"
+    r"|/\d"                             # "2mg/3ml"
+)
+
+
 def normalise_drug_name(name: str) -> str:
-    return name.strip().lower()
+    """
+    Extract canonical brand/drug name, matching the formulary template's
+    slugification logic (lib/drug-linking.ts normalizeDrugName).
+
+    1. If CMS bracket format — "0.25 MG SEMAGLUTIDE [OZEMPIC]" → "ozempic"
+    2. CMS generic format (starts with number, no bracket) — "0.5 MG LISINOPRIL" →
+       extract the last non-dosage word(s) as the drug name
+    3. Brand-first format — "ozempic 0.25-0.5 mg/dose pen" → strip dosage suffix
+    """
+    raw = name.strip()
+    if not raw:
+        return ""
+
+    # Step 1: CMS bracket format — extract brand name inside [ ]
+    bracket = re.search(r"\[([^\]]+)\]", raw)
+    if bracket:
+        return bracket.group(1).strip().lower()
+
+    low = raw.lower().strip()
+
+    # Step 2: If name starts with a digit, it's likely CMS generic format
+    # e.g. "0.5 mg tablet lisinopril" or "10 mg/ml solution amoxicillin"
+    # Extract the rightmost non-dosage-form word(s) as the drug name
+    if re.match(r"^\d", low):
+        tokens = low.replace(",", " ").split()
+        # Walk from the right, collect drug-name tokens until we hit a dosage/form word
+        drug_tokens: list[str] = []
+        for tok in reversed(tokens):
+            tok_clean = tok.strip(".,;:-")
+            if (
+                _DOSAGE_PATTERN.match(tok_clean)
+                or tok_clean in _DOSAGE_FORM_WORDS
+                or re.match(r"^\d+\.?\d*$", tok_clean)
+            ):
+                break
+            drug_tokens.append(tok_clean)
+        if drug_tokens:
+            drug_tokens.reverse()
+            result = " ".join(drug_tokens)
+            if result and not re.match(r"^[\d.]+$", result):
+                return result
+        # Fallback: return the whole thing lowered (rare)
+        return low
+
+    # Step 3: Brand-first format — strip dosage/form suffixes
+    # Strip SBM "brand - generic form" suffix: "ozempic - semaglutide soln" → "ozempic"
+    if " - " in low:
+        low = low.split(" - ", 1)[0].strip()
+    # Remove all (...) parenthetical groups (dosage, generic names)
+    low = re.sub(r"\s*\([^)]*\)", "", low)
+
+    # Truncate at first dosage/form token
+    low = re.split(
+        r"\s+(?=\d)"               # space before a digit  — "ozempic 0.25..."
+        r"|\s+(?=inj\b)"           # "ozempic      inj 2mg"
+        r"|\s+(?=sopn\b)"          # "ozempic sopn 2mg"
+        r"|\s+(?=subcutaneous\b)"  # "ozempic subcutaneous pen"
+        r"|\s+(?=pen\b)"           # trailing "pen"
+        r"|\s+(?=solution\b)"
+        r"|\s+(?=tablet\b)"
+        r"|\s+(?=tab\b)"
+        r"|\s+(?=capsule\b)"
+        r"|\s+(?=cap\b)"
+        r"|\s+(?=cream\b)"
+        r"|\s+(?=ointment\b)"
+        r"|\s+(?=susp\b)"
+        r"|\s+(?=oral\b)"
+        r"|\s+(?=mg\b)"
+        r"|\s+(?=ml\b)"
+        r"|\s+(?=mcg\b)",
+        low,
+        maxsplit=1,
+    )[0]
+
+    # Collapse multiple spaces, strip trailing whitespace/punctuation
+    result = re.sub(r"\s+", " ", low).strip().rstrip("- ,;")
+    return result if result else name.strip().lower()
 
 
 # ── Per-drug state accumulator ─────────────────────────────────────────────────
