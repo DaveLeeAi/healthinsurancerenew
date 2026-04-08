@@ -1,38 +1,48 @@
 #!/usr/bin/env python3
 """
-Build a compact formulary sitemap index: all valid (state_slug, drug_slug) pairs.
+Build the formulary sitemap index — the list of every (state-slug, drug-slug)
+pair that should appear in the public XML sitemap.
 
-Reads:
-  - .cache/formulary_drug_index.json     (drug_name -> byte offset/length)
-  - data/processed/formulary_intelligence.json  (NDJSON blocks, 7+ GB)
-  - data/processed/plan_intelligence.json  (issuer_id -> state_code mapping)
-  - data/processed/formulary_sbm_*.json   (SBM issuer -> state mapping)
+Source of truth: data/processed/drug_national_baselines.json
 
-Writes:
-  - data/processed/formulary_sitemap_index.json
+Why this file (and not formulary_intelligence.json directly):
+  - Baselines is already canonicalised: salt/ester variants merged, dose-form
+    suffixes stripped. One row per real drug, not per NDC variant.
+  - Baselines already merges FFE + SBM coverage into a per_state map. The
+    previous sitemap builder only enumerated drugs from the FFE file and
+    missed every pure-SBM state (CA, MA, MN, NY, RI, VT) plus SD.
+  - The page route at app/formulary/[issuer]/[drug_name]/page.tsx already
+    uses these canonical names (see PRIORITY_DRUGS) — slugs round-trip
+    cleanly via slug.replace(/-/g, ' ').
 
-The output is a compact JSON: { metadata: {...}, pairs: ["state-slug/drug-slug", ...] }
-Each entry is a unique state-slug + drug-slug pair where at least one issuer in that
-state carries the drug.
+Output schema (consumed by lib/data-loader.ts loadFormularySitemapIndex
+and app/sitemaps/[type]/route.ts buildFormularyEntries):
+  {
+    "metadata": {
+      "description": "...",
+      "total_pairs": int,
+      "unique_drugs": int,
+      "unique_states": int,
+      "states": ["AK", "AL", ...],          # uppercase state codes
+      "generated_at": "YYYY-MM-DDTHH:MM:SS",
+      "source": "drug_national_baselines.json"
+    },
+    "pairs": ["state-slug/drug-slug", ...]  # one entry per valid combo
+  }
 """
 
 import json
 import os
 import re
-import sys
 import time
-from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data" / "processed"
-CACHE_DIR = ROOT / ".cache"
-INDEX_PATH = CACHE_DIR / "formulary_drug_index.json"
-FORMULARY_PATH = DATA_DIR / "formulary_intelligence.json"
-PLAN_INTEL_PATH = DATA_DIR / "plan_intelligence.json"
+BASELINE_PATH = DATA_DIR / "drug_national_baselines.json"
 OUTPUT_PATH = DATA_DIR / "formulary_sitemap_index.json"
 
-# State code -> slug mapping
+# State code -> URL slug. All 51 jurisdictions (50 states + DC).
 STATE_NAMES = {
     "AL": "alabama", "AK": "alaska", "AZ": "arizona", "AR": "arkansas",
     "CA": "california", "CO": "colorado", "CT": "connecticut", "DE": "delaware",
@@ -49,196 +59,146 @@ STATE_NAMES = {
     "WV": "west-virginia", "WI": "wisconsin", "WY": "wyoming",
 }
 
-SBM_STATES = ["NJ", "PA", "WA", "IL", "KY", "NV", "OR", "ID", "GA", "VA",
-              "ME", "CA", "CO", "CT", "DC", "MD", "NM"]
 
-
-def build_issuer_state_map() -> dict[str, set[str]]:
-    """Build issuer_id -> set of state codes from plan_intelligence + SBM files."""
-    issuer_states: dict[str, set[str]] = defaultdict(set)
-
-    # 1. FFM states from plan_intelligence.json
-    print("  Loading plan_intelligence.json for issuer->state mapping...")
-    with open(PLAN_INTEL_PATH, "r", encoding="utf-8") as f:
-        pi = json.load(f)
-    for plan in pi.get("data", []):
-        iid = plan.get("issuer_id")
-        sc = plan.get("state_code")
-        if iid and sc:
-            issuer_states[str(iid)].add(sc.upper())
-    print(f"    FFM: {len(issuer_states)} issuers across {len(set(s for ss in issuer_states.values() for s in ss))} states")
-
-    # 2. SBM states from per-state formulary files
-    sbm_count = 0
-    for state in SBM_STATES:
-        sbm_path = DATA_DIR / f"formulary_sbm_{state}.json"
-        if not sbm_path.exists():
-            continue
-        try:
-            with open(sbm_path, "r", encoding="utf-8") as f:
-                sbm_data = json.load(f)
-            for record in sbm_data.get("data", []):
-                for iid in record.get("issuer_ids", []):
-                    issuer_states[str(iid)].add(state)
-                    sbm_count += 1
-        except (json.JSONDecodeError, KeyError):
-            pass
-    print(f"    SBM: added {sbm_count} issuer-state mappings from {len(SBM_STATES)} state files")
-
-    return dict(issuer_states)
+_SLUG_NON_ALNUM = re.compile(r"[^a-z0-9]+")
+_SLUG_MULTI_HYPHEN = re.compile(r"-+")
 
 
 def drug_name_to_slug(name: str) -> str:
-    """Convert a CMS drug name to a URL-safe slug matching the site's convention.
-
-    The formulary page uses: drugSlug.replace(/-/g, ' ') to reconstruct the display name.
-    So the slug is just the lowercase, hyphenated version of the simplified drug name.
-
-    For CMS names like '"0.25 ML SEMAGLUTIDE 0.68 MG/ML PEN INJECTOR [OZEMPIC]"',
-    we extract the brand name from brackets if present, otherwise use the full name.
     """
-    # Strip surrounding quotes
-    name = name.strip().strip('"')
+    Convert a canonical drug name from baselines to a URL slug.
 
-    # Extract brand name from [BRACKETS] if present
-    bracket_match = re.search(r'\[([^\]]+)\]', name)
-    if bracket_match:
-        name = bracket_match.group(1)
+    Canonical names are already lowercase, hyphenated for combos
+    ("amphetamine-dextroamphetamine"), and have salt/ester suffixes stripped
+    by canonicalize_base_drug() in generate_drug_baselines.py. So in most
+    cases the slug is just the input. We still run it through the same
+    sanitiser the page route uses to be safe against any oddballs.
+    """
+    s = name.strip().strip('"').lower()
+    if not s:
+        return ""
+    s = _SLUG_NON_ALNUM.sub("-", s)
+    s = _SLUG_MULTI_HYPHEN.sub("-", s)
+    return s.strip("-")
 
-    # Lowercase, replace non-alphanumeric with hyphens, collapse
-    slug = re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
-    # Collapse multiple hyphens
-    slug = re.sub(r'-+', '-', slug)
-    return slug
+
+def is_publishable_slug(slug: str) -> bool:
+    """
+    Drop slugs that are NDC dose-form variants rather than real drug names.
+
+    The canonicaliser in generate_drug_baselines.py tries to merge dose-form
+    rows like "0.5 ML HEPARIN SODIUM 10000 UNT-ML PREFILLED SYRINGE" back into
+    "heparin", but it cannot collapse every CMS row (different strengths,
+    vaccines with per-strain breakdowns, combo injectables). Anything that
+    survives in baselines with a leading digit is a dose-form variant, not a
+    drug the public page can render usefully — slugs starting with a digit
+    are almost always garbage like "0-5-ml-...-prefilled-syringe".
+
+    Real canonical drugs (metformin, ozempic, amphetamine-dextroamphetamine,
+    abacavir-lamivudine, ...) always begin with a letter.
+    """
+    if not slug or len(slug) < 2:
+        return False
+    if slug[0].isdigit():
+        return False
+    return True
 
 
-def main():
+def main() -> None:
     t0 = time.time()
     print("=" * 60)
-    print("Building formulary sitemap index")
+    print("Building formulary sitemap index from drug_national_baselines.json")
     print("=" * 60)
 
-    # Step 1: Build issuer -> state mapping
-    print("\nStep 1: Building issuer->state mapping...")
-    issuer_states = build_issuer_state_map()
-    all_states = sorted(set(s for ss in issuer_states.values() for s in ss))
-    print(f"  Total: {len(issuer_states)} issuers, {len(all_states)} states")
+    if not BASELINE_PATH.exists():
+        raise SystemExit(
+            f"ERROR: {BASELINE_PATH} not found. Run "
+            f"scripts/generate/generate_drug_baselines.py first."
+        )
 
-    # Step 2: Load the byte-offset index
-    print("\nStep 2: Loading formulary drug index...")
-    with open(INDEX_PATH, "r", encoding="utf-8") as f:
-        drug_index = json.load(f)
-    print(f"  {len(drug_index)} drug name entries in index")
+    print(f"\nLoading {BASELINE_PATH.name} ...")
+    with open(BASELINE_PATH, "r", encoding="utf-8") as f:
+        baselines_obj = json.load(f)
+    raw = baselines_obj.get("data", baselines_obj)
+    print(f"  {len(raw):,} canonical drugs in baselines")
 
-    # Step 3: Stream through formulary file, reading each block
-    print("\nStep 3: Scanning formulary blocks for issuer_ids...")
-    # We'll collect: drug_slug -> set of state codes
-    drug_states: dict[str, set[str]] = defaultdict(set)
-    # Also track: drug_slug -> display name (shortest/simplest)
-    drug_display: dict[str, str] = {}
+    # ── Build pairs ────────────────────────────────────────────────────────
+    # Dedup with a set: multiple canonical drugs can slug to the same value
+    # after aggressive normalisation, so we keep each (state, slug) pair unique.
+    pair_set: set[str] = set()
+    states_seen: set[str] = set()
+    drugs_seen: set[str] = set()
+    skipped_no_slug = 0
+    skipped_dose_form = 0
+    skipped_no_state_slug = 0
 
-    total_entries = len(drug_index)
-    processed = 0
-    skipped_no_states = 0
+    for drug_name, entry in raw.items():
+        slug = drug_name_to_slug(drug_name)
+        if not slug or len(slug) < 2:
+            skipped_no_slug += 1
+            continue
+        if not is_publishable_slug(slug):
+            skipped_dose_form += 1
+            continue
 
-    with open(FORMULARY_PATH, "rb") as f:
-        for drug_name_key, block_info in drug_index.items():
-            processed += 1
-            if processed % 5000 == 0:
-                print(f"    Processed {processed}/{total_entries} drug entries "
-                      f"({len(drug_states)} unique slugs so far)...")
+        per_state = entry.get("per_state", {})
+        if not isinstance(per_state, dict) or not per_state:
+            continue
 
-            offset = block_info["offset"]
-            length = block_info["length"]
-
-            # Read the byte block
-            f.seek(offset)
-            block = f.read(length).decode("utf-8", errors="replace")
-
-            # Parse NDJSON lines in block
-            states_for_this_drug: set[str] = set()
-            for line in block.split("\n"):
-                line = line.strip().rstrip(",")
-                if not line.startswith("{"):
-                    continue
-                try:
-                    record = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-
-                issuer_ids = record.get("issuer_ids", [])
-                if not issuer_ids and record.get("issuer_id"):
-                    issuer_ids = [record["issuer_id"]]
-
-                for iid in issuer_ids:
-                    iid_str = str(iid)
-                    if iid_str in issuer_states:
-                        states_for_this_drug.update(issuer_states[iid_str])
-
-            if not states_for_this_drug:
-                skipped_no_states += 1
+        added_for_drug = False
+        for state_code in per_state.keys():
+            sc = state_code.upper().strip()
+            if sc not in STATE_NAMES:
+                skipped_no_state_slug += 1
                 continue
+            state_slug = STATE_NAMES[sc]
+            pair_set.add(f"{state_slug}/{slug}")
+            states_seen.add(sc)
+            added_for_drug = True
 
-            # Convert CMS drug name key to slug
-            # The key in the index is the raw drug_name (lowercase, with quotes)
-            slug = drug_name_to_slug(drug_name_key)
-            if not slug or len(slug) < 2:
-                continue
+        if added_for_drug:
+            drugs_seen.add(slug)
 
-            drug_states[slug].update(states_for_this_drug)
+    # Sort for deterministic output (helpful for diff-based code review)
+    pairs = sorted(pair_set)
 
-            # Track shortest display name for this slug
-            clean_name = drug_name_key.strip().strip('"')
-            bracket_match = re.search(r'\[([^\]]+)\]', clean_name)
-            display = bracket_match.group(1) if bracket_match else clean_name
-            if slug not in drug_display or len(display) < len(drug_display[slug]):
-                drug_display[slug] = display
+    print(f"\n  Built {len(pairs):,} (state, drug) pairs")
+    print(f"  {len(drugs_seen):,} unique drug slugs")
+    print(f"  {len(states_seen)} unique states")
+    if skipped_no_slug:
+        print(f"  Skipped {skipped_no_slug} drugs (could not generate slug)")
+    if skipped_dose_form:
+        print(f"  Skipped {skipped_dose_form} drugs (dose-form variants — leading digit)")
+    if skipped_no_state_slug:
+        print(f"  Skipped {skipped_no_state_slug} state references (unknown state code)")
 
-    print(f"\n  Scan complete:")
-    print(f"    {processed} index entries processed")
-    print(f"    {skipped_no_states} entries skipped (no state mapping)")
-    print(f"    {len(drug_states)} unique drug slugs with state data")
+    missing_states = sorted(set(STATE_NAMES.keys()) - states_seen)
+    if missing_states:
+        print(f"  WARNING: {len(missing_states)} states have no drugs: {missing_states}")
 
-    # Step 4: Build state-slug/drug-slug pairs
-    print("\nStep 4: Building state/drug pairs...")
-    pairs: list[str] = []
-    states_with_drugs: set[str] = set()
-    for drug_slug, state_codes in sorted(drug_states.items()):
-        for sc in sorted(state_codes):
-            state_slug = STATE_NAMES.get(sc)
-            if not state_slug:
-                continue
-            pairs.append(f"{state_slug}/{drug_slug}")
-            states_with_drugs.add(sc)
-
-    print(f"  {len(pairs)} total state/drug pairs")
-    print(f"  {len(states_with_drugs)} states with formulary data")
-    print(f"  {len(drug_states)} unique drug slugs")
-
-    # Step 5: Write output
-    print("\nStep 5: Writing formulary_sitemap_index.json...")
+    # ── Write output ───────────────────────────────────────────────────────
+    print(f"\nWriting {OUTPUT_PATH.name} ...")
     output = {
         "metadata": {
-            "description": "All valid (state-slug, drug-slug) pairs for formulary sitemap",
+            "description": "All canonical (state-slug, drug-slug) pairs for the formulary sitemap",
+            "source": "drug_national_baselines.json",
             "total_pairs": len(pairs),
-            "unique_drugs": len(drug_states),
-            "unique_states": len(states_with_drugs),
-            "states": sorted(states_with_drugs),
+            "unique_drugs": len(drugs_seen),
+            "unique_states": len(states_seen),
+            "states": sorted(states_seen),
             "generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         },
         "pairs": pairs,
     }
-
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, separators=(",", ":"))
 
-    file_size = os.path.getsize(OUTPUT_PATH)
+    file_mb = os.path.getsize(OUTPUT_PATH) / 1_048_576
     elapsed = time.time() - t0
-    print(f"  Written: {OUTPUT_PATH}")
-    print(f"  File size: {file_size / 1024 / 1024:.1f} MB")
+    print(f"  Wrote {OUTPUT_PATH} ({file_mb:.1f} MB)")
     print(f"  Elapsed: {elapsed:.1f}s")
     print(f"\n{'=' * 60}")
-    print(f"DONE — {len(pairs)} formulary sitemap URLs to generate")
+    print(f"DONE — {len(pairs):,} formulary URLs across {len(states_seen)} states")
     print(f"{'=' * 60}")
 
 
