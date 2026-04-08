@@ -88,7 +88,7 @@ export default function FormularySearch({ ffmStates, sbmStates }: FormularySearc
           </button>
         </div>
         <p className="text-xs text-neutral-500 mt-2">
-          Works for brand and generic names. Results based on 2026 plan data.
+          Works for brand and generic names. Based on 2026 plan data.
         </p>
       </form>
     </div>

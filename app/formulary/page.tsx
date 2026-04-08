@@ -214,10 +214,10 @@ export default function FormularyIndexPage() {
             <time dateTime="2026-04">March 2026</time> · 2026 plan year
           </p>
           <p className="text-base sm:text-lg text-neutral-700 leading-relaxed mb-4">
-            You can check right here. We reviewed drug coverage on marketplace
-            health plans across all 50 states and DC for 2026. Search below to
-            see if your medication is covered, what it might cost, and whether
-            your plan requires approval before you can fill it.
+            You can check right here. We looked at drug coverage on marketplace
+            health plans in all 50 states and DC for 2026 — which plans include
+            a drug, what cost tier it&apos;s on, and whether you need your
+            doctor&apos;s approval before you can fill it.
           </p>
         </div>
 
@@ -238,56 +238,41 @@ export default function FormularyIndexPage() {
           </p>
         </div>
         <p className="text-xs text-neutral-500 mb-10">
-          Drug lists can change during the plan year. Always confirm with your
-          plan before enrolling.
+          Drug lists can change during the plan year. Confirm with your plan
+          before enrolling.
         </p>
 
         {/* ── WHY CHECKING MATTERS (information gain + topical authority) ── */}
         <section className="mb-10">
           <h2 className="text-xl font-semibold text-navy-900 mb-3">
-            Why checking drug coverage matters before you pick a plan
+            Why it helps to check before you pick a plan
           </h2>
           <p className="text-base text-neutral-700 leading-relaxed mb-3">
-            Every marketplace health plan keeps a list of drugs it covers — and
-            the same medication can cost very different amounts depending on
-            which plan you choose. One plan might cover your drug at a low cost
-            with no extra steps. Another plan might cover it but put it on a
-            higher-cost tier, or require your doctor to get approval before you
-            can fill it.
+            Every marketplace health plan has its own drug list. The same
+            medication can be covered on one plan and not on another — or
+            covered on both but at very different prices. One plan might charge
+            you $15 a month for a drug. Another plan might charge $90 for the
+            same drug, or make you get your doctor&apos;s approval before it
+            will pay anything.
           </p>
           <p className="text-base text-neutral-700 leading-relaxed">
-            That&apos;s why it helps to search before you pick a plan — not
-            after. This tool pulls from the same data files that insurance
+            That&apos;s why checking before you enroll matters more than most
+            people realize. This tool pulls from the data files that insurance
             companies are required to publish for every marketplace plan.
-            You&apos;ll see how many plans in your state include your
-            medication, what tier most plans put it on, and whether extra steps
-            like prior approval or quantity limits are common.
+            You&apos;ll see how many plans in your state cover your drug, what
+            tier most of them put it on, and whether you&apos;re likely to run
+            into extra steps like prior approval or quantity limits.
           </p>
         </section>
 
         {/* ── WHAT YOU'LL SEE ──────────────────────────────────── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-          <PreviewCard
-            icon={<CheckCircleIcon />}
-            title="Is it covered?"
-            description="See how many plans in your state include your medication on their drug list"
-          />
-          <PreviewCard
-            icon={<TierIcon />}
-            title="What will it cost?"
-            description="Check the cost tier — lower tier means lower out-of-pocket cost for you"
-          />
-          <PreviewCard
-            icon={<ClipboardIcon />}
-            title="Any extra steps?"
-            description="Find out if plans require approval from your doctor before you can fill it"
-          />
-          <PreviewCard
-            icon={<BuildingIcon />}
-            title="Which insurance companies?"
-            description="See which carriers in your state cover it and compare their rules"
-          />
-        </div>
+        <p className="text-sm sm:text-base text-neutral-700 leading-relaxed mb-10">
+          <strong className="text-navy-900">What you&apos;ll see for each
+          drug:</strong>{' '}
+          Whether plans in your state include it &middot; What cost tier most
+          plans assign &middot; Whether prior approval is common &middot; Which
+          insurance companies cover it
+        </p>
 
         {/* ── COMMON MEDICATIONS ───────────────────────────────── */}
         <section className="mb-10">
@@ -316,8 +301,7 @@ export default function FormularyIndexPage() {
             ))}
           </div>
           <p className="text-sm text-neutral-600 mt-5">
-            Don&apos;t see your medication? Use the search above — it covers
-            over 15,000 drugs.
+            Don&apos;t see yours? The search covers over 15,000 medications.
           </p>
         </section>
 
@@ -343,62 +327,10 @@ export default function FormularyIndexPage() {
         <GenericByline
           dataSource="Federal plan benefit documents + carrier formulary filings"
           planYear={2026}
+          lastReviewed="April 2026"
         />
       </main>
     </>
   )
 }
 
-// ── Sub-components (server-rendered, no interactivity needed) ─────────────────
-
-function PreviewCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode
-  title: string
-  description: string
-}) {
-  return (
-    <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-3.5 text-center">
-      <div className="flex justify-center mb-2 text-primary-500">{icon}</div>
-      <p className="text-sm font-semibold text-navy-900 mb-0.5">{title}</p>
-      <p className="text-xs text-neutral-500 leading-snug">{description}</p>
-    </div>
-  )
-}
-
-// ── Icons ───────────────────────────────────────────────────────────────────
-
-function CheckCircleIcon() {
-  return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-  )
-}
-
-function TierIcon() {
-  return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
-    </svg>
-  )
-}
-
-function ClipboardIcon() {
-  return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"/>
-    </svg>
-  )
-}
-
-function BuildingIcon() {
-  return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/>
-    </svg>
-  )
-}
