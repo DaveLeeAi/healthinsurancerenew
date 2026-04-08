@@ -2,7 +2,8 @@
 import type { Metadata } from 'next'
 import FormularySearch from '@/components/FormularySearch'
 import allStatesData from '@/data/config/all-states.json'
-import { buildBreadcrumbSchema, buildDatasetSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildDatasetSchema, buildFAQSchema } from '@/lib/schema-markup'
+import Breadcrumbs from '@/components/Breadcrumbs'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
 import PageFaq from '@/components/PageFaq'
@@ -76,11 +77,31 @@ const DRUG_CATEGORIES = [
 // ── FAQ items ────────────────────────────────────────────────────────────────
 
 const FAQ_ITEMS = [
-  { question: 'What is a drug formulary?', answer: 'A drug formulary is a list of prescription medications covered by a health insurance plan. Each plan maintains its own formulary, which determines whether a drug is covered, what tier it falls under, and what cost-sharing (copay or coinsurance) applies. Formularies are updated annually and may change during the plan year.' },
-  { question: 'Why does drug coverage vary between health insurance plans?', answer: 'Each insurance issuer negotiates its own drug pricing with manufacturers and pharmacy benefit managers. These negotiations result in different formularies per plan. A drug that is Tier 1 (low cost) on one plan may be Tier 3 (higher cost) or not covered at all on another plan from a different issuer.' },
-  { question: 'What does "prior authorization" mean?', answer: 'Prior authorization means your doctor must get approval from the insurance company before the plan will cover the medication. The plan reviews whether the drug is medically necessary for your situation. Without prior authorization, the plan may deny coverage or require you to pay full price.' },
-  { question: 'What are drug tiers on a health insurance plan?', answer: 'Drug tiers are categories that determine your out-of-pocket cost for a medication. Most plans use 4 to 6 tiers: Tier 1 (preferred generic, lowest cost), Tier 2 (generic), Tier 3 (preferred brand), Tier 4 (non-preferred brand), Tier 5 (specialty). The higher the tier, the more you pay.' },
-  { question: 'How do I check if my medication is covered?', answer: 'Use this formulary lookup tool to search for your medication by name. Select your state and issuer to see whether the drug is covered, which tier it falls under, and whether it requires prior authorization, step therapy, or quantity limits. Always confirm coverage with your plan before filling a prescription.' },
+  {
+    question: 'What is a drug formulary?',
+    answer:
+      "A formulary is the list of prescription drugs that a health plan covers. Each marketplace plan has its own formulary, and the same drug can be on one plan's list but not another's. Formularies also group drugs into cost tiers — lower tiers cost you less out of pocket.",
+  },
+  {
+    question: 'Why does the same drug cost different amounts on different plans?',
+    answer:
+      "Plans put drugs on different cost tiers. A drug on Tier 1 (generic) might cost you $10–$20 a month, while the same drug on Tier 3 (non-preferred brand) could cost $60–$100 or more. The tier your plan assigns determines your price — not the drug's retail cost.",
+  },
+  {
+    question: 'What does prior authorization mean for my prescription?',
+    answer:
+      "It means your plan requires your doctor to submit paperwork explaining why you need the drug before the plan will agree to pay for it. Your doctor handles this — you don't have to do it yourself. Most documented requests are approved within a few business days.",
+  },
+  {
+    question: "Can my plan's drug list change during the year?",
+    answer:
+      "Yes. Plans can update their formulary during the plan year — adding drugs, removing drugs, or moving drugs to a different cost tier. That's why it's important to confirm coverage with your plan directly, especially if you're relying on coverage for an expensive or critical medication.",
+  },
+  {
+    question: 'How do I check if my specific plan covers a medication?',
+    answer:
+      'Start with the search tool above to see general coverage across marketplace plans in your state. For your specific plan, check the Summary of Benefits and Coverage (SBC) document or call the member services number on your insurance card.',
+  },
 ]
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
@@ -123,22 +144,32 @@ function getStructuredData(): object[] {
 
   const breadcrumbs = buildBreadcrumbSchema([
     { name: 'Home', url: 'https://healthinsurancerenew.com' },
-    { name: 'Formulary Lookup', url: CANONICAL },
+    { name: 'Drug Coverage Lookup', url: CANONICAL },
   ])
 
-  const speakable = {
+  const webPage = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'Health Insurance Drug Coverage Lookup',
+    name: 'Does Your Health Plan Cover Your Medication?',
     url: CANONICAL,
+    description: META_DESCRIPTION,
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: ['#formulary-bluf'],
     },
-    description: `Look up whether your medication is covered by your 2026 health plan. Drug coverage from ${ISSUER_COUNT} insurance companies in all 50 states and DC.`,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://healthinsurancerenew.com/formulary/all/{drug_name}',
+      },
+      'query-input': 'required name=drug_name',
+    },
   }
 
-  return [dataset, breadcrumbs, speakable]
+  const faqSchema = buildFAQSchema(FAQ_ITEMS)
+
+  return [dataset, breadcrumbs, webPage, faqSchema]
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
@@ -163,69 +194,98 @@ export default function FormularyIndexPage() {
         extra={{ drugs: DRUG_COUNT, issuers: ISSUER_COUNT, states: STATES_WITH_DATA.size }}
       />
 
-      <main className="mx-auto px-5 pt-10 pb-16" style={{ maxWidth: 800 }}>
+      <main className="mx-auto px-5 pt-6 pb-16" style={{ maxWidth: 800 }}>
+
+        {/* ── BREADCRUMB ───────────────────────────────────────── */}
+        <Breadcrumbs
+          items={[
+            { name: 'Home', url: '/' },
+            { name: 'Drug Coverage Lookup', url: '/formulary' },
+          ]}
+        />
 
         {/* ── HERO ─────────────────────────────────────────────── */}
-        <div className="text-center mb-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary-600 mb-3">
-            Marketplace Drug Coverage Tool
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-navy-900 leading-tight mb-3">
+        <div className="mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-navy-900 leading-tight mb-2">
             Does Your Health Plan Cover Your Medication?
           </h1>
-          <p id="formulary-bluf" className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Search by drug name to see which 2026 marketplace plans cover it,
-            what tier it&apos;s on, and whether you need prior approval.
+          <p className="text-xs text-neutral-500 mb-4">
+            Data reviewed{' '}
+            <time dateTime="2026-04">March 2026</time> · 2026 plan year
           </p>
-        </div>
-
-        {/* ── TRUST BAR ────────────────────────────────────────── */}
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mb-8 text-xs text-neutral-500">
-          <span className="inline-flex items-center gap-1.5">
-            <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Data source: federal marketplace data and issuer filings
-          </span>
-          <span className="hidden sm:inline text-neutral-300">|</span>
-          <span className="inline-flex items-center gap-1.5">
-            <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
-            Updated: 2026 plan year
-          </span>
-          <span className="hidden sm:inline text-neutral-300">|</span>
-          <span className="inline-flex items-center gap-1.5">
-            <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-            All 50 states and DC
-          </span>
-          <span className="hidden sm:inline text-neutral-300">|</span>
-          <span className="inline-flex items-center gap-1.5">
-            <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-            Reviewed by a licensed health insurance professional
-          </span>
+          <p className="text-base sm:text-lg text-neutral-700 leading-relaxed mb-4">
+            You can check right here. We reviewed drug coverage on marketplace
+            health plans across all 50 states and DC for 2026. Search below to
+            see if your medication is covered, what it might cost, and whether
+            your plan requires approval before you can fill it.
+          </p>
         </div>
 
         {/* ── SEARCH BOX (client component) ─────────────────────── */}
         <FormularySearch ffmStates={ffmStates} sbmStates={sbmStates} />
+
+        {/* ── AEO BLOCK (extractable answer for AI engines) ────── */}
+        <div
+          id="formulary-bluf"
+          className="bg-primary-50/60 border-l-4 border-primary-400 rounded-r-lg p-4 mb-3"
+        >
+          <p className="text-sm sm:text-base text-navy-900 leading-relaxed">
+            This tool checks drug coverage across marketplace health plans in
+            all 50 states and DC for 2026. It shows which plans include a
+            medication, what cost tier it&apos;s on, and whether prior approval
+            is required — using the same data insurance companies are required
+            to publish.
+          </p>
+        </div>
+        <p className="text-xs text-neutral-500 mb-10">
+          Drug lists can change during the plan year. Always confirm with your
+          plan before enrolling.
+        </p>
+
+        {/* ── WHY CHECKING MATTERS (information gain + topical authority) ── */}
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold text-navy-900 mb-3">
+            Why checking drug coverage matters before you pick a plan
+          </h2>
+          <p className="text-base text-neutral-700 leading-relaxed mb-3">
+            Every marketplace health plan keeps a list of drugs it covers — and
+            the same medication can cost very different amounts depending on
+            which plan you choose. One plan might cover your drug at a low cost
+            with no extra steps. Another plan might cover it but put it on a
+            higher-cost tier, or require your doctor to get approval before you
+            can fill it.
+          </p>
+          <p className="text-base text-neutral-700 leading-relaxed">
+            That&apos;s why it helps to search before you pick a plan — not
+            after. This tool pulls from the same data files that insurance
+            companies are required to publish for every marketplace plan.
+            You&apos;ll see how many plans in your state include your
+            medication, what tier most plans put it on, and whether extra steps
+            like prior approval or quantity limits are common.
+          </p>
+        </section>
 
         {/* ── WHAT YOU'LL SEE ──────────────────────────────────── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
           <PreviewCard
             icon={<CheckCircleIcon />}
             title="Is it covered?"
-            description="See which plans include your drug"
+            description="See how many plans in your state include your medication on their drug list"
           />
           <PreviewCard
             icon={<TierIcon />}
             title="What will it cost?"
-            description="Check the tier — lower tier means lower cost"
+            description="Check the cost tier — lower tier means lower out-of-pocket cost for you"
           />
           <PreviewCard
             icon={<ClipboardIcon />}
             title="Any extra steps?"
-            description="Find out if your plan needs prior approval first"
+            description="Find out if plans require approval from your doctor before you can fill it"
           />
           <PreviewCard
             icon={<BuildingIcon />}
-            title="Which companies?"
-            description="See which insurance companies cover it in your state"
+            title="Which insurance companies?"
+            description="See which carriers in your state cover it and compare their rules"
           />
         </div>
 
@@ -255,6 +315,10 @@ export default function FormularyIndexPage() {
               </div>
             ))}
           </div>
+          <p className="text-sm text-neutral-600 mt-5">
+            Don&apos;t see your medication? Use the search above — it covers
+            over 15,000 drugs.
+          </p>
         </section>
 
         {/* ── STATE DATA NOTICE ────────────────────────────────── */}
@@ -268,28 +332,13 @@ export default function FormularyIndexPage() {
           </p>
         </div>
 
-        {/* ── WHY TRUST THIS TOOL ──────────────────────────────── */}
-        <section className="border-t border-neutral-200 pt-8">
-          <h2 className="text-base font-semibold text-navy-900 mb-4">
-            Why trust this tool
+        {/* ── FAQ (schema emitted at page level — disable here to avoid dupes) ── */}
+        <section className="border-t border-neutral-200 pt-8 mb-8">
+          <h2 className="text-xl font-semibold text-navy-900 mb-4">
+            Common questions about drug coverage
           </h2>
-          <ul className="space-y-2.5 text-sm text-neutral-600">
-            <TrustBullet>
-              Uses the same data insurance companies are required to publish
-            </TrustBullet>
-            <TrustBullet>
-              Updated for 2026 plan year
-            </TrustBullet>
-            <TrustBullet>
-              Shows tier, cost range, and approval requirements &mdash; not just whether it&apos;s covered
-            </TrustBullet>
-            <TrustBullet>
-              Reviewed by a licensed health insurance agent
-            </TrustBullet>
-          </ul>
+          <PageFaq faqs={FAQ_ITEMS} includeSchema={false} />
         </section>
-
-        <PageFaq faqs={FAQ_ITEMS} />
 
         <GenericByline
           dataSource="Federal plan benefit documents + carrier formulary filings"
@@ -317,15 +366,6 @@ function PreviewCard({
       <p className="text-sm font-semibold text-navy-900 mb-0.5">{title}</p>
       <p className="text-xs text-neutral-500 leading-snug">{description}</p>
     </div>
-  )
-}
-
-function TrustBullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex items-start gap-2.5">
-      <svg className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-      <span>{children}</span>
-    </li>
   )
 }
 
