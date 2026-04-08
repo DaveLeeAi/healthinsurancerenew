@@ -56,40 +56,195 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Tier normalisation ─────────────────────────────────────────────────────────
+#
+# Maps every observed FFE + SBM tier label to one of 5 canonical buckets:
+#   generic | preferred-brand | non-preferred-brand | specialty | preventive
+# (plus 'unknown' for unmappable / empty values)
+#
+# Mapping rules:
+#   - tier-1, tier-one, preferred-generic, non-preferred-generic        → generic
+#     (non-preferred generics are still generic drugs — not brand)
+#   - tier-2, tier-two, preferred-brand, brand-preferred                → preferred-brand
+#   - tier-3, tier-three, non-preferred-brand, brand-non-preferred      → non-preferred-brand
+#   - tier-4/5/6, tier-four/five/six, specialty, medical-service        → specialty
+#     (medical-service-drugs are typically high-cost biologics/injectables)
+#   - any "preventive" / "zero-cost" variant                             → preventive
+#   - mixed-tier labels ("non-preferred-generic-non-preferred-brand")    → mapped to
+#     the more expensive bucket (non-preferred-brand) since dominant tier
+#     stats track cost-share, not chemistry
+#   - low-/moderate-/highest-cost-share                                  → generic / preferred / specialty
+#
+# Lookup is case-insensitive and whitespace/underscore tolerant.
+
+CANONICAL_TIERS = frozenset({
+    "generic", "preferred-brand", "non-preferred-brand", "specialty", "preventive", "unknown"
+})
+
 TIER_NORMALISE: dict[str, str] = {
-    "GENERIC": "generic",
-    "PREFERRED-BRAND": "preferred-brand",
-    "PREFERRED BRAND": "preferred-brand",
-    "PREFERRED-GENERICS": "generic",
-    "PREFERRED GENERICS": "generic",
-    "NON-PREFERRED-BRAND": "non-preferred-brand",
-    "NON-PREFERRED BRAND": "non-preferred-brand",
-    "NON PREFERRED BRAND": "non-preferred-brand",
-    "NON-PREFERRED-GENERICS": "generic",
-    "SPECIALTY": "specialty",
-    "ACA-PREVENTIVE-DRUGS": "preventive",
-    "PREVENT-DRUGS": "preventive",
-    "PREVENTIVE": "preventive",
-    "TIER 1": "generic",
-    "TIER 2": "preferred-brand",
-    "TIER 3": "non-preferred-brand",
-    "TIER 4": "specialty",
-    "TIER1": "generic",
-    "TIER2": "preferred-brand",
-    "TIER3": "non-preferred-brand",
-    "TIER4": "specialty",
-    "MEDICAL-SERVICE-DRUG": "specialty",
-    "MEDICAL-BENEFIT": "specialty",
-    "NON-FORMULARY-DRUGS": "non-preferred-brand",
-    "NON-FORMULARY": "non-preferred-brand",
+    # ── Generic ────────────────────────────────────────────────────────────────
+    "generic": "generic",
+    "generics": "generic",
+    "tier-1": "generic",
+    "tier-one": "generic",
+    "tier-one-a": "generic",
+    "tier-one-b": "generic",
+    "tier1": "generic",
+    "preferred-generic": "generic",
+    "preferred-generics": "generic",
+    "preferred-generic-drugs": "generic",
+    "preferredgeneric": "generic",
+    "two-preferred-generic": "generic",
+    "non-preferred-generic": "generic",
+    "non-preferred-generics": "generic",
+    "nonpreferredgeneric": "generic",
+    "high-cost-generic": "generic",
+    "low-cost-generic": "generic",
+    "low-cost-share": "generic",
+    "lower-cost-share": "generic",
+
+    # ── Preferred brand ────────────────────────────────────────────────────────
+    "preferred-brand": "preferred-brand",
+    "preferred-brands": "preferred-brand",
+    "preferred-brand-drugs": "preferred-brand",
+    "brand-preferred": "preferred-brand",
+    "preferredbrand": "preferred-brand",
+    "tier-2": "preferred-brand",
+    "tier-two": "preferred-brand",
+    "tier2": "preferred-brand",
+    "three-preferred-brand": "preferred-brand",
+    "preferred": "preferred-brand",
+    "brand": "preferred-brand",
+    "moderate-cost-share": "preferred-brand",
+    "generic-brand": "preferred-brand",            # mixed-chemistry combo tier
+    "generic-preferred-brand": "preferred-brand",  # mixed tier — lean preferred
+    "non-preferred-generic-and-preferred-brand": "preferred-brand",
+    "non-preferred-generic-preferred-brand": "preferred-brand",
+    "formulary-brands": "preferred-brand",         # "on formulary" brand bucket
+
+    # ── Non-preferred brand ────────────────────────────────────────────────────
+    "non-preferred-brand": "non-preferred-brand",
+    "non-preferred-brands": "non-preferred-brand",
+    "non-preferred-brand-drugs": "non-preferred-brand",
+    "brand-non-preferred": "non-preferred-brand",
+    "non-preferred": "non-preferred-brand",
+    "nonpreferred": "non-preferred-brand",
+    "nonpreferred-brand": "non-preferred-brand",
+    "nonpreferredbrand": "non-preferred-brand",
+    "nonpreferred-drugs": "non-preferred-brand",
+    "tier-3": "non-preferred-brand",
+    "tier-three": "non-preferred-brand",
+    "tier3": "non-preferred-brand",
+    "four-non-preferred-brand-and-generic": "non-preferred-brand",
+    "non-preferred-generic-non-preferred-brand": "non-preferred-brand",
+    "non-preferredgeneric-non-preferredbrand": "non-preferred-brand",
+    "non-preferred-generic-and-non-preferred-brand": "non-preferred-brand",
+    "non-formulary": "non-preferred-brand",
+    "non-formulary-drugs": "non-preferred-brand",
+    "non-formulary-brands": "non-preferred-brand",
+
+    # ── Specialty ──────────────────────────────────────────────────────────────
+    "specialty": "specialty",
+    "specialty-drug": "specialty",
+    "specialty-drugs": "specialty",
+    "specialtydrugs": "specialty",
+    "specialty-products": "specialty",
+    "specialty-and-other-high-cost-drugs": "specialty",
+    "specialty-high": "specialty",
+    "specialty-tier": "specialty",
+    "specialty-coinsurance": "specialty",
+    "specialty-brands": "specialty",
+    "specialty-generics": "specialty",
+    "preferred-specialty": "specialty",
+    "preferred-specialty-drugs": "specialty",
+    "preferred-brand-specialty": "specialty",
+    "non-preferred-specialty": "specialty",
+    "nonpreferred-specialty": "specialty",
+    "non-preferred-specialty-drugs": "specialty",
+    "nonpreferred-specialty-drugs": "specialty",
+    "non-preferred-brand-specialty": "specialty",
+    "non-preferred-brand-specialty-drugs": "specialty",
+    "non-formulary-specialty": "specialty",
+    "nonpreferred-brand-and-specialty": "specialty",
+    "brand-specialty": "specialty",
+    "value-specialty": "specialty",
+    "generic-specialty": "specialty",
+    "five-specialty": "specialty",
+    "highest-cost-share": "specialty",
+    "formulary-specialty": "specialty",
+    "zero-cost-share-specialty-drugs": "specialty",
+    "tier-4": "specialty",
+    "tier-four": "specialty",
+    "tier4": "specialty",
+    "tier-5": "specialty",
+    "tier-five": "specialty",
+    "tier5": "specialty",
+    "tier-6": "specialty",
+    "tier-six": "specialty",
+    "tier6": "specialty",
+    "tier-seven": "specialty",
+    "tier-7": "specialty",
+    "tier7": "specialty",
+    "medicalservicedrugs": "specialty",
+    "medical-service-drugs": "specialty",
+    "medical-service-drug": "specialty",
+    "medical-service": "specialty",
+    "medical-benefit": "specialty",
+    "medical-benefit-drugs": "specialty",
+    "oral-chemotherapy": "specialty",
+    "oral-chemotherapy-drugs": "specialty",
+
+    # ── Preventive ─────────────────────────────────────────────────────────────
+    "preventive": "preventive",
+    "preventive-drugs": "preventive",
+    "preventive-care": "preventive",
+    "preventive-generic": "preventive",       # zero-cost generic preventives
+    "preventative": "preventive",
+    "aca-preventive": "preventive",
+    "aca-preventive-drugs": "preventive",
+    "prevent-drugs": "preventive",
+    "one-preventive": "preventive",
+    "zero-cost-share-preventive": "preventive",
+    "zero-cost-share-preventive-drugs": "preventive",
+    "zero-cost-share-preventative-services": "preventive",
+    "zerocostsharepreventivedrugs": "preventive",
+    "zerocostsharepreventativedrugs": "preventive",
+    "zero-cost-preventive": "preventive",
+    "zero-cost-preventive-drugs": "preventive",
+    "zero-cost-preventative": "preventive",
+    "zero-cost-preventative-drugs": "preventive",
+    "zero-cost-sharing-preventive": "preventive",
+    "zero-dollar-preventive-medications": "preventive",
+    "insulin-discount": "preventive",         # zero-cost insulin programs
+
+    # ── Unknown / non-tier descriptors ────────────────────────────────────────
+    # These are cost-share formats, supply categories, or "on formulary" labels
+    # that don't actually identify a tier — kept as 'unknown' rather than guessing.
+    "unknown": "unknown",
+    "": "unknown",
+    "retail-and-mail-order-coinsurance": "unknown",
+    "formulary-drugs": "unknown",
+    "ancillary": "unknown",
+    "infertility": "unknown",
+    "diabetic-supplies": "unknown",
+    "9": "unknown",
 }
 
 
 def normalise_tier(raw: str | None) -> str:
+    """
+    Normalise any FFE/SBM tier label to one of the 5 canonical buckets.
+
+    Lookup key: lowercase, hyphens for spaces/underscores, stripped.
+    Anything not in the map falls through to 'unknown' so the dominant_tier
+    field can never contain non-canonical noise.
+    """
     if not raw:
         return "unknown"
-    upper = raw.strip().upper()
-    return TIER_NORMALISE.get(upper, raw.strip().lower().replace("_", "-").replace(" ", "-"))
+    key = raw.strip().lower().replace("_", "-").replace(" ", "-")
+    # Collapse repeated hyphens that can appear in source labels
+    while "--" in key:
+        key = key.replace("--", "-")
+    return TIER_NORMALISE.get(key, "unknown")
 
 
 _DOSAGE_FORM_WORDS = frozenset({
