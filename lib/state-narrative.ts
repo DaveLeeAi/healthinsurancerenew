@@ -240,7 +240,7 @@ export function generateQuickAnswer(data: NarrativeData, pattern: NarrativePatte
 // ─── Editorial insight box ───────────────────────────────────────────────────
 
 export function generateInsightBody(data: NarrativeData, pattern: NarrativePattern): string {
-  const { drugName, stateName, totalPlans, priorAuthPct, nationalPaPct,
+  const { drugName, stateName, totalPlans, priorAuthCount, priorAuthPct, nationalPaPct,
           dominantTier, quantityLimitCount, quantityLimitPct, tierSpread } = data
   const drug = titleCase(drugName)
   const tier = tierLabel(dominantTier)
@@ -253,8 +253,23 @@ export function generateInsightBody(data: NarrativeData, pattern: NarrativePatte
     case 'broad-high-friction':
       return `Even though ${totalPlans} ${stateName} plans include ${drug}, ${Math.round(priorAuthPct)}% of them require prior approval — ${Math.round(Math.abs(priorAuthPct - nationalPaPct))} percentage points above the national average. The high approval rate means your doctor will likely need to submit paperwork before your first fill. When choosing a plan, look for carriers with faster approval turnaround and lower tier placement.`
 
-    case 'narrow-high-friction':
-      return `With only ${totalPlans} plans covering ${drug} in ${stateName} and ${Math.round(priorAuthPct)}% requiring prior approval, your options are more constrained than in most states. Verify coverage, tier placement, and approval requirements before enrolling — switching plans mid-year is difficult, and each carrier's rules differ.`
+    case 'narrow-high-friction': {
+      // Vary by plan count + PA magnitude so similar narrow states diverge.
+      const planPhrase = totalPlans <= 6
+        ? `Just ${totalPlans} plans cover`
+        : totalPlans <= 9
+          ? `Only ${totalPlans} plans cover`
+          : `Fewer than a dozen plans (${totalPlans}) cover`
+      const paPhrase = priorAuthPct >= 85
+        ? `nearly all of them — ${Math.round(priorAuthPct)}% — require prior approval`
+        : priorAuthPct >= 75
+          ? `${Math.round(priorAuthPct)}% require prior approval`
+          : `${priorAuthCount} of those require prior approval`
+      const tail = totalPlans <= 6
+        ? `With this few options, every plan rule has a bigger impact on your access. Compare each plan's tier, approval policy, and quantity limits before enrolling.`
+        : `Verify coverage, tier placement, and approval requirements before enrolling — switching plans mid-year is difficult, and each carrier's rules differ.`
+      return `${planPhrase} ${drug} in ${stateName}, and ${paPhrase}, leaving fewer easy paths than in most states. ${tail}`
+    }
 
     case 'narrow-low-friction':
       return `${stateName} has fewer plans covering ${drug} than average, but the ones available tend to have lower approval barriers. The limited selection means your plan choice still matters — compare the ${totalPlans} available options on tier placement and how each handles your deductible for this drug.`
@@ -301,8 +316,19 @@ export function generateCostContext(data: NarrativeData, pattern: NarrativePatte
     case 'broad-high-friction':
       return `Most ${stateName} plans place ${drug} on a ${tier} tier, but ${Math.round(priorAuthPct)}% also require prior approval — adding a step before your first fill. Your out-of-pocket cost depends on both the tier and how quickly your plan processes the approval.`
 
-    case 'narrow-high-friction':
-      return `With only ${totalPlans} plans covering ${drug} in ${stateName}, your cost options are limited. Most assign a ${tier} tier, and prior approval is required on ${Math.round(priorAuthPct)}% of them. Compare all available plans before enrolling — small differences in tier or cost-sharing add up quickly with fewer choices.`
+    case 'narrow-high-friction': {
+      // Vary intro by market size so small narrow states diverge from larger ones.
+      const intro = totalPlans <= 6
+        ? `${stateName}'s ${totalPlans}-plan field for ${drug} leaves little room to shop on price.`
+        : totalPlans <= 9
+          ? `With only ${totalPlans} plans covering ${drug} in ${stateName}, you have a narrow set of cost options.`
+          : `${totalPlans} ${stateName} plans cover ${drug} — a tighter selection than most states.`
+      const tierLine = `Most assign a ${tier} tier, and prior approval applies on ${Math.round(priorAuthPct)}% of them.`
+      const tail = totalPlans <= 6
+        ? `Run the math on every plan you can — a single tier or copay difference can mean hundreds of dollars over the year.`
+        : `Compare all available plans before enrolling — small differences in tier or cost-sharing add up quickly with fewer choices.`
+      return `${intro} ${tierLine} ${tail}`
+    }
 
     case 'narrow-low-friction':
       return `${stateName}'s ${totalPlans} plans covering ${drug} generally assign a ${tier} tier with below-average approval requirements. Your main cost variable is deductible structure — check whether your plan applies a separate drug deductible or combines it with medical.`
@@ -361,7 +387,12 @@ export function generateLocalizedSections(data: NarrativeData, pattern: Narrativ
       break
     case 'narrow-high-friction':
     case 'narrow-low-friction':
-      tierBreakdown = `With ${totalPlans} plans available in ${stateName}, the typical placement for ${drug} is ${tier}. Fewer options means tier differences between plans have a bigger impact on your cost.`
+      // Vary tier breakdown by exact plan count band so similar narrow states diverge.
+      tierBreakdown = totalPlans <= 6
+        ? `Across ${stateName}'s ${totalPlans} plans, ${drug} most often lands on a ${tier} tier. In a market this tight, that single tier choice drives most of what you'll pay.`
+        : totalPlans <= 9
+          ? `${stateName}'s ${totalPlans} plans most commonly assign ${drug} to a ${tier} tier. With this few options, a one-tier difference between plans can swing your monthly cost noticeably.`
+          : `With ${totalPlans} plans available in ${stateName}, the typical placement for ${drug} is ${tier}. Fewer options means tier differences between plans have a bigger impact on your cost.`
       break
     case 'tier-dominant':
       tierBreakdown = `${stateName} plans most commonly assign ${drug} to a ${tier} tier — ${tier !== natTier ? `while nationally, ${natTier} is more typical` : 'in line with the national pattern'}. The tier your plan assigns is the biggest factor in what you pay each month.`
@@ -433,4 +464,163 @@ export function generateLocalizedSections(data: NarrativeData, pattern: Narrativ
   }
 
   return { tierBreakdown, pharmacyChoice, deductibleContext, paNote }
+}
+
+// ─── Insight box heading (varies by pattern) ─────────────────────────────────
+
+export function getInsightHeading(data: NarrativeData, pattern: NarrativePattern): string {
+  const { drugName, stateName } = data
+  const drug = titleCase(drugName)
+
+  switch (pattern) {
+    case 'small-market':
+      return `Why plan choice matters more in ${stateName}`
+    case 'broad-high-friction':
+      return `Where ${stateName} shoppers run into barriers`
+    case 'narrow-high-friction':
+      return `What limits access to ${drug} in ${stateName}`
+    case 'broad-low-friction':
+      return `What ${stateName} shoppers should still check`
+    case 'narrow-low-friction':
+      return `What to know about ${drug} access in ${stateName}`
+    case 'tier-dominant':
+      return `Why tier placement matters most in ${stateName}`
+    case 'issuer-variation':
+      return `Why your carrier choice matters in ${stateName}`
+    case 'supply-limits-standout':
+      return `The hidden cost factor for ${drug} in ${stateName}`
+    case 'large-market-advantage':
+      return `How to use ${stateName}'s plan options to your advantage`
+    case 'outlier':
+      return `What makes ${stateName} different for ${drug}`
+  }
+}
+
+// ─── Conditional pattern blocks ──────────────────────────────────────────────
+
+export interface ConditionalBlock {
+  id: string
+  heading: string
+  body: string
+  /** Strength score used to pick the top 2 blocks when multiple triggers fire. */
+  strength: number
+}
+
+/**
+ * Returns 0–2 conditional content blocks based on the narrative pattern + data.
+ * Each block must contain state-specific numbers. Blocks are scored by data
+ * deviation strength and the top 2 are returned. Returns [] if nothing fires.
+ */
+export function getConditionalBlocks(
+  data: NarrativeData,
+  pattern: NarrativePattern
+): ConditionalBlock[] {
+  const {
+    drugName, stateName, totalPlans,
+    priorAuthCount, priorAuthPct, nationalPaPct,
+    dominantTier, nationalDominantTier,
+    quantityLimitCount, quantityLimitPct,
+    tierSpread,
+  } = data
+  const drug = titleCase(drugName)
+  const tier = tierLabel(dominantTier)
+  const natTier = tierLabel(nationalDominantTier)
+  const paDiff = priorAuthPct - nationalPaPct
+
+  const candidates: ConditionalBlock[] = []
+
+  // ── Module 1: Small market effect ──
+  // Boost: when this rare trigger fires, prioritize it strongly so similar
+  // narrow-market states differentiate from one another (e.g. Iowa 6 vs Kansas 9).
+  if (pattern === 'small-market' || totalPlans <= 6) {
+    candidates.push({
+      id: 'small-market',
+      heading: `Why plan count matters in ${stateName}`,
+      body: `With only ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} in ${stateName}, each carrier's formulary decision has an outsized impact. If one carrier drops coverage or tightens restrictions, your options shrink fast. Compare ${totalPlans === 1 ? 'this plan' : `all ${totalPlans} plans`} carefully before enrolling.`,
+      strength: 30 + Math.max(0, 10 - totalPlans),
+    })
+  }
+
+  // ── Module 2: High approval friction warning ──
+  const isHighFrictionPattern =
+    pattern === 'broad-high-friction' ||
+    pattern === 'narrow-high-friction' ||
+    (pattern === 'outlier' && priorAuthPct > nationalPaPct + 25)
+  if (isHighFrictionPattern || priorAuthPct > 75) {
+    // Vary the sentence template by PA magnitude so similar high-PA states diverge.
+    let body: string
+    if (priorAuthPct >= 90) {
+      body = `Almost every ${stateName} plan — ${priorAuthCount} of ${totalPlans} — requires prior approval for ${drug}, far above the ${Math.round(nationalPaPct)}% national average. Plan on your doctor submitting paperwork before you can fill the prescription, and ask each plan how long approvals usually take.`
+    } else if (priorAuthPct >= 80) {
+      body = `In ${stateName}, ${Math.round(priorAuthPct)}% of plans require prior approval for ${drug} — well above the ${Math.round(nationalPaPct)}% national average. That extra step adds days or weeks before your first fill. Ask each plan about its approval timeline and whether expedited reviews are available.`
+    } else {
+      body = `Roughly ${priorAuthCount} of ${totalPlans} ${stateName} plans require prior approval for ${drug}, putting the state above the ${Math.round(nationalPaPct)}% national average. Build that paperwork step into your timeline, and ask the plan what documentation your doctor needs to submit.`
+    }
+    candidates.push({
+      id: 'high-pa-friction',
+      heading: `Prior approval is a bigger factor in ${stateName}`,
+      body,
+      strength: Math.max(Math.round(Math.abs(paDiff)), 5),
+    })
+  }
+
+  // ── Module 3: Tier-driven cost warning ──
+  const tierIsHigher = tier === 'specialty' || tier === 'non-preferred brand'
+  const tierDiffersFromNational = tier !== natTier
+  if (pattern === 'tier-dominant' || tierDiffersFromNational || tierIsHigher) {
+    const costWord = tier === 'generic' || tier === 'preferred brand' ? 'less' : 'more'
+    const range = tier === 'specialty' ? '$80–$300' : tier === 'non-preferred brand' ? '$30–$80' : '$15–$50'
+    const compareLine = tierDiffersFromNational
+      ? `In ${stateName}, most plans place ${drug} on a ${tier} tier, while the national average is ${natTier}. That tier gap alone can mean ${range} ${costWord} per month after your deductible.`
+      : `In ${stateName}, most plans place ${drug} on a ${tier} tier — the same as the national average — but tier placement still drives most of what you pay. Plans assigning ${drug} to a more favorable tier can save you ${range} per month after your deductible.`
+    candidates.push({
+      id: 'tier-driven-cost',
+      heading: `Tier placement drives most of the cost difference in ${stateName}`,
+      body: `${compareLine} When comparing plans, check the tier assignment first — it has the biggest impact on what you actually pay.`,
+      // Strength: higher when tier differs from national or is a higher-cost tier
+      strength: (tierDiffersFromNational ? 15 : 0) + (tierIsHigher ? 10 : 0) + 5,
+    })
+  }
+
+  // ── Module 4: Carrier comparison matters here ──
+  if (pattern === 'issuer-variation' || tierSpread >= 3) {
+    const tier1 = tier === 'generic' || tier === 'preferred brand' ? 'lower' : 'higher'
+    const tier2 = tier1 === 'lower' ? 'higher' : 'lower'
+    // Vary phrasing by tier-spread AND market size so similar-spread states diverge.
+    let body: string
+    const marketSize = totalPlans <= 6 ? 'tiny' : totalPlans <= 12 ? 'small' : 'broader'
+    if (tierSpread >= 5 && marketSize === 'tiny') {
+      body = `Even with only ${totalPlans} plans, ${stateName} carriers disagree sharply on ${drug} — ${tierSpread} different tier assignments show up across the ${totalPlans}-plan field. One carrier may put it on a ${tier1}-cost tier with no approval needed, while another places it on a ${tier2}-cost tier and requires prior approval. In a market this small, picking the right carrier shapes almost everything you'll pay.`
+    } else if (tierSpread >= 5 && marketSize === 'small') {
+      body = `${stateName}'s ${totalPlans} plans split ${drug} across ${tierSpread} tier levels — a wider spread than most small markets show. One plan might list it on a ${tier1}-cost tier with no approval needed; another puts it on a ${tier2}-cost tier with prior approval required. Carrier choice will move your monthly cost more than metal level here.`
+    } else if (tierSpread >= 5) {
+      body = `${stateName}'s ${totalPlans} plans place ${drug} on ${tierSpread} different tiers depending on the carrier. With this much variation, comparing carriers side by side matters more than picking a metal level — two plans at the same Silver tier can charge very different amounts.`
+    } else if (tierSpread === 4) {
+      body = `Across ${totalPlans} ${stateName} plans, ${drug} lands on ${tierSpread} different tier levels depending on the carrier. That spread alone can swing your monthly cost by $30 or more. Compare carriers side by side before locking in a plan — the metal level alone won't tell you the full story.`
+    } else {
+      body = `${stateName} plans split ${drug} across ${tierSpread} tier levels — fewer than the most fragmented states, but enough that two plans at the same metal level can charge meaningfully different amounts. Check each carrier's tier and approval rules before you decide.`
+    }
+    candidates.push({
+      id: 'carrier-comparison',
+      heading: `In ${stateName}, which carrier you choose matters most`,
+      body,
+      strength: tierSpread * 4,
+    })
+  }
+
+  // ── Module 5: Supply limits are the hidden friction ──
+  if (pattern === 'supply-limits-standout' || quantityLimitPct > 80) {
+    candidates.push({
+      id: 'supply-limits',
+      heading: `Watch for supply limits in ${stateName}`,
+      body: `${quantityLimitCount} of ${totalPlans} ${stateName} plans limit how much ${drug} you can get per fill — typically a 30-day supply. If you need a larger quantity or use a higher dose, check whether your plan allows 90-day fills or mail-order options before enrolling.`,
+      // Strength scales with how high QL pct is
+      strength: Math.round(quantityLimitPct / 5),
+    })
+  }
+
+  // Sort by strength descending and return top 2
+  return candidates
+    .sort((a, b) => b.strength - a.strength)
+    .slice(0, 2)
 }

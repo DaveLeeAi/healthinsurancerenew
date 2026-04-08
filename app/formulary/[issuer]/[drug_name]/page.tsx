@@ -29,6 +29,8 @@ import {
   generateInsightBody,
   generateCostContext,
   generateLocalizedSections,
+  getConditionalBlocks,
+  getInsightHeading,
 } from '@/lib/state-narrative'
 import type { NarrativePattern, NarrativeData } from '@/lib/state-narrative'
 import ProcessBar from '@/components/ProcessBar'
@@ -802,6 +804,12 @@ export default async function FormularyDrugPage({ params }: Props) {
   const localizedSections = narrativeData && narrativePattern
     ? generateLocalizedSections(narrativeData, narrativePattern)
     : null
+  const conditionalBlocks = narrativeData && narrativePattern
+    ? getConditionalBlocks(narrativeData, narrativePattern)
+    : []
+  const insightHeading = narrativeData && narrativePattern
+    ? getInsightHeading(narrativeData, narrativePattern)
+    : null
 
   // --- Entity links ---
   const relatedPlans = results
@@ -1023,7 +1031,8 @@ export default async function FormularyDrugPage({ params }: Props) {
               }}
             >
               <p className="text-ink font-medium" style={{ fontSize: '13.5px', marginBottom: '6px' }}>
-                What matters most for {titleCase(drugDisplay)} in {isState ? stateName : 'Marketplace plans'}
+                {insightHeading
+                  ?? `What matters most for ${titleCase(drugDisplay)} in ${isState ? stateName : 'Marketplace plans'}`}
               </p>
               <p className="text-ink" style={{ fontSize: '14px', lineHeight: 1.6 }}>
                 {narrativeData && narrativePattern
@@ -1032,6 +1041,30 @@ export default async function FormularyDrugPage({ params }: Props) {
                   || `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, plans vary most in tier placement and whether prior approval is required. Comparing these two factors is the best way to estimate your real monthly cost.`
                 }
               </p>
+            </div>
+          )}
+
+          {/* ── 4d. Conditional pattern blocks — render only when data triggers them ── */}
+          {results.length > 0 && conditionalBlocks.length > 0 && (
+            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {conditionalBlocks.map((block) => (
+                <div
+                  key={block.id}
+                  style={{
+                    background: '#f8fafc',
+                    borderLeft: '3px solid #64748b',
+                    borderRadius: '0 8px 8px 0',
+                    padding: '14px 18px',
+                  }}
+                >
+                  <p className="text-ink font-medium" style={{ fontSize: '13.5px', marginBottom: '4px' }}>
+                    {block.heading}
+                  </p>
+                  <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.6 }}>
+                    {block.body}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
 
