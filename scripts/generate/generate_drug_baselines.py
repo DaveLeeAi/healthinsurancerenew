@@ -40,8 +40,10 @@ from typing import Any
 # ── Paths ──────────────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_PROCESSED = REPO_ROOT / "data" / "processed"
+DATA_CONFIG = REPO_ROOT / "data" / "config"
 PLAN_INTEL_FILE = DATA_PROCESSED / "plan_intelligence.json"
 FORMULARY_FILE = DATA_PROCESSED / "formulary_intelligence.json"
+FORMULARY_URL_REGISTRY = DATA_CONFIG / "formulary-url-registry-2026.json"
 OUTPUT_FILE = DATA_PROCESSED / "drug_national_baselines.json"
 
 # SBM files are named formulary_sbm_XX.json (two-letter state codes only)
@@ -487,34 +489,88 @@ class DrugStateAccum:
 
 # ── Issuer → State map ────────────────────────────────────────────────────────
 
-def build_issuer_state_map() -> dict[str, str]:
+def build_issuer_state_map() -> dict[str, set[str]]:
     """
-    Returns {issuer_id_str: state_code} from plan_intelligence.json.
-    Each FFE issuer operates in exactly one state.
+    Returns {issuer_id_str: set_of_state_codes} merged from two sources:
+
+    1. data/processed/plan_intelligence.json — covers ~183 of the ~320 ACA
+       carriers. This used to be the only source. Missing carriers caused
+       234,952 FFE records to be silently skipped during baseline build,
+       which in turn caused per-drug state coverage gaps in baselines (see
+       the 2026-04-08 audit: drug `biorphen` had a CO record in the master
+       file that never reached baselines because the CO carrier wasn't in
+       plan_intelligence.json).
+
+    2. data/config/formulary-url-registry-2026.json — covers ~131 carriers
+       across all 51 jurisdictions, including SBM-side carriers that
+       plan_intelligence.json doesn't track.
+
+    After merging both sources we get ~305 of 320 carriers (the remaining
+    15 are still unmapped — typically tiny carriers without a known HIOS ID
+    in either source). The return type is `dict[str, set[str]]` because a
+    handful of multi-state carriers (e.g. Medica operates in 7 states)
+    legitimately appear in multiple states.
     """
     if not PLAN_INTEL_FILE.exists():
         log.error("plan_intelligence.json not found — cannot map issuers to states")
         return {}
 
-    log.info("Building issuer → state map from plan_intelligence.json …")
+    log.info("Building issuer → state map …")
+
+    # Source 1: plan_intelligence.json
     with PLAN_INTEL_FILE.open("r", encoding="utf-8") as fh:
         pi = json.load(fh)
 
-    issuer_map: dict[str, str] = {}
+    issuer_map: dict[str, set[str]] = {}
     for plan in pi.get("data", []):
         iid = str(plan.get("issuer_id", "")).strip()
         state = (plan.get("state_code") or "").upper().strip()
         if iid and state and len(state) == 2:
-            issuer_map[iid] = state  # last-wins is fine — each issuer has one state
+            issuer_map.setdefault(iid, set()).add(state)
+    pi_count = len(issuer_map)
+    log.info("  %d issuers from plan_intelligence.json", pi_count)
 
-    log.info("  %d issuers mapped to states", len(issuer_map))
+    # Source 2: formulary URL registry — walk all carrier dicts and pick up
+    # any digit-only ID-like values (HIOS IDs are typically 5 digits, but
+    # 4-6 covers known historical variants).
+    if FORMULARY_URL_REGISTRY.exists():
+        with FORMULARY_URL_REGISTRY.open("r", encoding="utf-8") as fh:
+            registry = json.load(fh)
+
+        def _walk(obj: Any, state_code: str) -> None:
+            if isinstance(obj, dict):
+                for k, v in obj.items():
+                    if isinstance(v, str) and v.isdigit() and 4 <= len(v) <= 6:
+                        issuer_map.setdefault(v, set()).add(state_code)
+                    elif isinstance(v, (dict, list)):
+                        _walk(v, state_code)
+            elif isinstance(obj, list):
+                for item in obj:
+                    _walk(item, state_code)
+
+        for state_code, state_data in registry.get("states", {}).items():
+            sc_up = state_code.upper().strip()
+            if len(sc_up) != 2:
+                continue
+            for carrier in state_data.get("carriers", []):
+                _walk(carrier, sc_up)
+        log.info("  %d issuers after merging formulary URL registry (+%d new)",
+                 len(issuer_map), len(issuer_map) - pi_count)
+    else:
+        log.warning(
+            "  formulary-url-registry-2026.json not found at %s — skipping merge",
+            FORMULARY_URL_REGISTRY,
+        )
+
+    multi_state = sum(1 for s in issuer_map.values() if len(s) > 1)
+    log.info("  %d total issuers, %d multi-state", len(issuer_map), multi_state)
     return issuer_map
 
 
 # ── Stream FFE records ─────────────────────────────────────────────────────────
 
 def stream_ffe_records(
-    issuer_map: dict[str, str],
+    issuer_map: dict[str, set[str]],
     accums: dict[str, dict[str, DrugStateAccum]],
 ) -> int:
     """
@@ -560,14 +616,16 @@ def stream_ffe_records(
             if not drug_name:
                 continue
 
-            # Resolve state from issuer_ids
+            # Resolve state from issuer_ids. Each issuer can map to multiple
+            # states (multi-state carriers like Medica), so we update() the
+            # set instead of add()ing a single state.
             issuer_ids = rec.get("issuer_ids") or []
             states_for_record: set[str] = set()
             for iid in issuer_ids:
                 iid_str = str(iid).strip()
-                state = issuer_map.get(iid_str)
-                if state:
-                    states_for_record.add(state)
+                states = issuer_map.get(iid_str)
+                if states:
+                    states_for_record.update(states)
 
             tier = rec.get("drug_tier")
             pa = bool(rec.get("prior_authorization"))
