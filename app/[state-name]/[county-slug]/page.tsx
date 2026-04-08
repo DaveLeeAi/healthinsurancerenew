@@ -186,7 +186,7 @@ export default function CountyPlansPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})`,
     description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}. Source: federal marketplace plan data.`,
-    dateModified: new Date().toISOString().slice(0, 7),
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Plan Data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
@@ -208,7 +208,7 @@ export default function CountyPlansPage({ params }: Props) {
     name: `${countyDisplay} Health Insurance Plans (${PLAN_YEAR})`,
     description: `Compare ${planCount} Marketplace plans in ${countyDisplay}, ${stateName} from ${carrierCount} carriers.`,
     url: canonicalUrl,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-01-15',
     speakableCssSelectors: ['h1', '#plans-table-heading', '#faq-heading'],
   })
 

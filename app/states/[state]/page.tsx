@@ -215,7 +215,7 @@ export default async function StateDetailPage({ params }: Props) {
     name: `Health Insurance in ${stateName} (${PLAN_YEAR} Guide)`,
     description: `Informational overview of health insurance options, subsidies, and marketplace resources in ${stateName} for ${PLAN_YEAR}.`,
     url: `${SITE_URL}/states/${slug}`,
-    dateModified: dateModified ?? new Date().toISOString().slice(0, 10),
+    dateModified: dateModified ?? '2026-01-15',
     speakableCssSelectors: ['h1', '#state-snapshot', '#hub-faqs'],
   })
 
@@ -303,7 +303,7 @@ export default async function StateDetailPage({ params }: Props) {
           )}
         </div>
         <p className="text-xs text-slate-400">
-          Last updated <time dateTime={dateModified ?? new Date().toISOString().slice(0, 10)}>{dateModified}</time> &middot; Plan year {PLAN_YEAR}
+          Last updated <time dateTime={dateModified ?? '2026-01-15'}>{dateModified}</time> &middot; Plan year {PLAN_YEAR}
         </p>
       </header>
 

@@ -117,7 +117,7 @@ export default function LifeEventPage({ params }: Props) {
     name: `${event.title} — Special Enrollment Period Guide 2026`,
     description: `${event.trigger_description} Step-by-step guide: documentation needed, key deadlines, decision tree.`,
     url: `https://healthinsurancerenew.com/life-events/${event.slug}`,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-03-15',
     speakableCssSelectors: ['h1', '#faq-heading'],
   })
 

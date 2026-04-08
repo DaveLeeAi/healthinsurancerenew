@@ -51,7 +51,7 @@ export default function EnhancedCreditsIndexPage() {
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis`,
     description: `Enhanced credits expired end of 2025. See the 2026 premium impact across ${policy.records.length} counties in ${stateCount} states.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-03-15',
     dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })

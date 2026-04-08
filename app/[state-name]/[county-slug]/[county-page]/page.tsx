@@ -292,7 +292,7 @@ async function CountyPlanDetailPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${plan.plan_name} — Summary of Benefits & Coverage ${PLAN_YEAR}`,
     description: `Detailed cost-sharing, deductible, OOP max, and exclusion data for ${plan.plan_name} by ${plan.issuer_name}.`,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Plan Data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
@@ -301,7 +301,7 @@ async function CountyPlanDetailPage({ params }: Props) {
     name: `${plan.plan_name} Benefits & Coverage ${PLAN_YEAR}`,
     description: `${plan.metal_level} health insurance plan by ${plan.issuer_name} in ${countyDisplay}, ${stateName}. Deductible, out-of-pocket maximum, cost-sharing grid, and exclusions sourced from federal plan benefit documents.`,
     url: canonicalUrl,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-01-15',
     // Signals to AI engines (Google AI Overviews, Perplexity, ChatGPT Browse)
     // which sections are the highest-signal standalone answer candidates.
     speakableCssSelectors: [
@@ -421,7 +421,7 @@ async function CountyPlanDetailPage({ params }: Props) {
           </p>
           <p className="text-xs text-neutral-400 mt-2">
             Last Updated:{' '}
-            {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} ·
+            January 2026 ·
             Federal marketplace plan data {PLAN_YEAR} · Plan Year: {PLAN_YEAR}
           </p>
         </header>
@@ -679,7 +679,7 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
   const articleSchema = buildArticleSchema({
     headline: `${drugName} Coverage in ${countyDisplay} (${PLAN_YEAR})`,
     description: `${drugName} formulary coverage across Marketplace plans in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}.`,
-    dateModified: new Date().toISOString().slice(0, 7),
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Formulary Data Files',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })

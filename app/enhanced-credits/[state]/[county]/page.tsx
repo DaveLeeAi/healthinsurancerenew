@@ -103,7 +103,7 @@ export default function EnhancedCreditsPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Premium Tax Credits in ${countyDisplay}, ${stateUpper} — ${PLAN_YEAR} Analysis`,
     description: `Enhanced credits expired end of 2025. See the ${PLAN_YEAR} premium increase in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: federal marketplace rate data and IRS income guidelines.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })

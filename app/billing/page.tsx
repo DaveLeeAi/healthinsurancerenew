@@ -100,7 +100,7 @@ export default function BillingIndexPage() {
   const articleSchema = buildArticleSchema({
     headline: 'Insurance Billing Guides — Common Billing Scenarios',
     description: `${dataset.data.length} common billing scenarios with CPT codes, consumer tips, and action steps.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-03-15',
     dataSourceName: 'AMA CPT codes and federal ACA regulations',
     dataSourceUrl: 'https://www.cms.gov/nosurprises',
   })

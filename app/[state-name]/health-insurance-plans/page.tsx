@@ -31,7 +31,7 @@ import {
 
 const PLAN_YEAR = 2026
 const SITE_URL = 'https://healthinsurancerenew.com'
-const BUILD_DATE = new Date().toISOString().slice(0, 10)
+const BUILD_DATE = '2026-01-15'
 
 interface StateEntry {
   name: string

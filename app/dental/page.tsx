@@ -78,7 +78,7 @@ export default function DentalIndexPage() {
   const articleSchema = buildArticleSchema({
     headline: `Stand-Alone Dental Plans for ${PLAN_YEAR}`,
     description: `${dataset.data.length.toLocaleString()} dental plan variants across ${states.length} states. Source: federal dental plan data.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-03-15',
     dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })

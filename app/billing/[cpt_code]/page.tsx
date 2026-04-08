@@ -218,7 +218,7 @@ export default function BillingScenarioPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${scenario.title}${cptLabel} — Insurance Billing Guide`,
     description: scenario.description,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-03-15',
     dataSourceName: 'AMA CPT codes and federal ACA regulations',
     dataSourceUrl: 'https://www.cms.gov/nosurprises',
   })
@@ -230,7 +230,7 @@ export default function BillingScenarioPage({ params }: Props) {
     name: `${scenario.title}${cptLabel} — Insurance Billing Guide`,
     description: scenario.description.slice(0, 160),
     url: canonicalUrl,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-03-15',
     speakableCssSelectors: ['h1', '#coverage-heading', '#faq-heading'],
   })
 

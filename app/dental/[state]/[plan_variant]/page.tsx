@@ -198,7 +198,7 @@ export default function DentalPlanPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${plan.plan_name} Dental Coverage in ${stateName} — ${PLAN_YEAR} Benefits`,
     description: `Stand-alone dental plan (SADP) from ${plan.issuer_name}. Coverage tiers, annual maximum, waiting periods, and what's included. Source: federal dental plan data.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-01-15',
     dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
@@ -210,7 +210,7 @@ export default function DentalPlanPage({ params }: Props) {
     name: `${plan.plan_name} Dental Coverage ${PLAN_YEAR}`,
     description: `Stand-alone dental plan from ${plan.issuer_name} in ${stateName}. Coverage percentages, annual max, waiting periods.`,
     url: canonicalUrl,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-01-15',
     speakableCssSelectors: ['h1', '#key-stats-heading', '#faq-heading'],
   })
 

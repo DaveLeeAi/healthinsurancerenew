@@ -117,7 +117,7 @@ export default function RatesPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${countyDisplay}, ${stateUpper} Health Insurance Rate Changes for ${PLAN_YEAR}`,
     description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers. Source: federal marketplace rate filings.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Rate Filings',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
@@ -130,7 +130,7 @@ export default function RatesPage({ params }: Props) {
     name: `Health Insurance Rate Changes in ${countyDisplay}, ${stateUpper} ${PLAN_YEAR}`,
     description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers.`,
     url: canonicalUrl,
-    dateModified: new Date().toISOString().split('T')[0],
+    dateModified: '2026-01-15',
     speakableCssSelectors: ['h1', '#key-stats-heading'],
   })
 

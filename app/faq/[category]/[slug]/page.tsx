@@ -115,7 +115,7 @@ export default function FAQDetailPage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: qa.question,
     description: qa.answer.slice(0, 155),
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-03-15',
     dataSourceName: 'ACA regulations & federal enrollment guidance',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources',
   })

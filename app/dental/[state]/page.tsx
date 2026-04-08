@@ -104,7 +104,7 @@ export default function DentalStatePage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `${stateName} Stand-Alone Dental Plans for ${PLAN_YEAR}`,
     description: `${plans.length} SADP dental plan variants from ${issuers.size} issuers in ${stateName}. Source: federal dental plan data.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-01-15',
     dataSourceName: 'federal dental plan data',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })

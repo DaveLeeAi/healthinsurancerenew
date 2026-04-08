@@ -75,7 +75,7 @@ export default function EnhancedCreditsStatePage({ params }: Props) {
   const articleSchema = buildArticleSchema({
     headline: `Enhanced Credit Expiration Impact — ${stateUpper} Counties`,
     description: `Enhanced credits expired end of 2025. County-level analysis of the 2026 premium increase in ${stateUpper}. ${records.length} counties modeled.`,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
     dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
