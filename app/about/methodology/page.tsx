@@ -263,7 +263,7 @@ export default function MethodologyPage() {
           While we strive for accuracy, government data sources occasionally
           contain errors or lag behind regulatory changes. Cost estimates on
           this site are based on published federal plan data and may not
-          reflect negotiated rates, manufacturer rebates, or individual
+          reflect actual plan pricing, manufacturer rebates, or individual
           circumstances. Subsidy estimates are for informational purposes and
           may differ from amounts determined by HealthCare.gov or the IRS.
           This site is not a substitute for professional tax or legal advice.

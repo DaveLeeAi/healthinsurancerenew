@@ -491,7 +491,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Plans in ${stateName}`
     : params.issuer !== 'all'
       ? (getIssuerName(params.issuer) ?? params.issuer)
-      : 'All Insurers'
+      : 'All Plans'
 
   const title = isState
     ? `${titleCase(drugDisplay)} in ${stateName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans | HealthInsuranceRenew`
@@ -596,7 +596,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     ? `Plans in ${stateName}`
     : isSpecificIssuer
       ? (results[0]?.issuer_name ?? getIssuerName(issuer) ?? `Issuer ${issuer}`)
-      : 'All Insurers'
+      : 'All Plans'
 
   // --- Derived coverage details ---
   const rawTiers = results.map((r) => r.drug_tier).filter(Boolean) as string[]

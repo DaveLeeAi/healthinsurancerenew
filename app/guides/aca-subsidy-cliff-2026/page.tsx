@@ -285,7 +285,7 @@ export default function AcaSubsidyCliff2026Page() {
         from healthier enrollees dropping coverage. The Urban Institute and Commonwealth
         Fund project approximately 4.8 million Americans may drop coverage entirely, with
         the Black uninsured population projected to increase by 30% (925,000 people).
-        Insurers proposed a median 18% premium increase specifically reflecting anticipated
+        Insurance companies proposed a median 18% premium increase specifically reflecting anticipated
         adverse selection from subsidy expiration.
       </p>
       <p className="text-gray-700 leading-relaxed mb-4">

@@ -338,7 +338,7 @@ export default function SubsidyCalculator({
             reference rate for {countyDisplay}. At age {age}, your actual silver plan premium is
             approximately{' '}
             <strong>${result.agePremium.toFixed(0)}/mo</strong> (×
-            {result.ageFactor.toFixed(3)} rating factor) before the tax credit. Insurers apply
+            {result.ageFactor.toFixed(3)} rating factor) before the tax credit. Insurance companies apply
             the APTC against your actual age-rated premium at enrollment.
           </div>
 
