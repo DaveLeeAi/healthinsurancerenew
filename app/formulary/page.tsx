@@ -2,7 +2,6 @@
 import type { Metadata } from 'next'
 import FormularySearch from '@/components/FormularySearch'
 import allStatesData from '@/data/config/all-states.json'
-import formularyMeta from '@/data/processed/formulary_intelligence.meta.json'
 import { buildBreadcrumbSchema, buildDatasetSchema } from '@/lib/schema-markup'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -37,42 +36,39 @@ const ffmStates = allStates.filter(s => FFM_STATES.has(s.abbr))
 const sbmStates = allStates.filter(s => SBM_STATES.has(s.abbr))
 const noDataStates = allStates.filter(s => !STATES_WITH_DATA.has(s.abbr))
 
-// ── Counts from formulary build metadata ─────────────────────────────────────
+// ── Counts from canonical drug baselines ─────────────────────────────────────
+// Source: data/processed/drug_national_baselines.json (2026-04-08)
+// 15,218 unique drugs across 14,851,095 FFE + 391,663 SBM records.
+// Carrier total = 320 (174 FFE + 146 SBM) covering all 50 states + DC.
 
-const DRUG_COUNT = formularyMeta.unique_drug_names.toLocaleString()
-const ISSUER_COUNT = formularyMeta.unique_issuer_ids_with_data
+const DRUG_COUNT = '15,000+'
+const ISSUER_COUNT = 320
 
 // ── Drug categories ──────────────────────────────────────────────────────────
 
 const DRUG_CATEGORIES = [
   {
     label: 'Diabetes',
-    hubId: 'diabetes',
     drugs: ['Metformin', 'Ozempic', 'Jardiance', 'Trulicity', 'Farxiga', 'Glipizide'],
   },
   {
     label: 'Blood Pressure',
-    hubId: 'blood-pressure',
     drugs: ['Lisinopril', 'Amlodipine', 'Losartan', 'Metoprolol', 'Hydrochlorothiazide', 'Atenolol'],
   },
   {
     label: 'Cholesterol',
-    hubId: 'cholesterol',
     drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin', 'Ezetimibe', 'Pravastatin', 'Fenofibrate'],
   },
   {
     label: 'Mental Health',
-    hubId: 'mental-health',
     drugs: ['Sertraline', 'Escitalopram', 'Bupropion', 'Trazodone', 'Fluoxetine', 'Buspirone'],
   },
   {
     label: 'Thyroid',
-    hubId: 'thyroid',
     drugs: ['Levothyroxine', 'Liothyronine', 'Methimazole', 'Propylthiouracil', 'Armour Thyroid', 'Cytomel'],
   },
   {
     label: 'Weight Loss / GLP-1',
-    hubId: 'weight-loss',
     drugs: ['Ozempic', 'Wegovy', 'Mounjaro', 'Saxenda', 'Qsymia', 'Contrave'],
   },
 ]
@@ -91,25 +87,26 @@ const FAQ_ITEMS = [
 
 const CANONICAL = 'https://healthinsurancerenew.com/formulary'
 
+const META_TITLE = 'Drug Coverage Lookup — All 2026 Marketplace Plans'
+const META_DESCRIPTION =
+  'Look up whether your medication is covered by your 2026 health plan. We reviewed drug coverage across 320 insurance companies in all 50 states and DC.'
+
 export function generateMetadata(): Metadata {
   return {
-    title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
-    description:
-      'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     alternates: { canonical: CANONICAL },
     openGraph: {
-      title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
-      description:
-        'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
+      title: META_TITLE,
+      description: META_DESCRIPTION,
       url: CANONICAL,
       type: 'website',
       siteName: 'HealthInsuranceRenew',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Drug Formulary Lookup — Search 200,000+ Covered Medications (2026)',
-      description:
-        'Search prescription drug coverage across all 2026 marketplace health plans. Find your medication\'s tier, copay, prior authorization, and step therapy requirements.',
+      title: META_TITLE,
+      description: META_DESCRIPTION,
     },
   }
 }
@@ -118,8 +115,8 @@ export function generateMetadata(): Metadata {
 
 function getStructuredData(): object[] {
   const dataset = buildDatasetSchema({
-    name: 'ACA Marketplace Formulary Intelligence Dataset',
-    description: `Prescription drug coverage data for ${DRUG_COUNT} unique medications across ${ISSUER_COUNT} insurance issuers on the ACA Marketplace. Includes drug tier, prior authorization, step therapy, and quantity limit flags. Source: federal plan benefit documents and carrier formulary filings.`,
+    name: 'ACA Marketplace Drug Coverage Dataset',
+    description: `Prescription drug coverage data for ${DRUG_COUNT} medications across ${ISSUER_COUNT} insurance companies on the ACA Marketplace in all 50 states and DC. Includes drug tier, prior authorization, step therapy, and quantity limit flags. Source: federal plan benefit documents and carrier formulary filings.`,
     url: CANONICAL,
     year: '2026',
   })
@@ -132,13 +129,13 @@ function getStructuredData(): object[] {
   const speakable = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'Health Insurance Formulary & Drug Coverage Lookup',
+    name: 'Health Insurance Drug Coverage Lookup',
     url: CANONICAL,
     speakable: {
       '@type': 'SpeakableSpecification',
       cssSelector: ['#formulary-bluf'],
     },
-    description: `Search ${DRUG_COUNT} prescription drugs across ${ISSUER_COUNT} insurance issuers for 2026. Compare drug tiers, copays, and prior authorization requirements by plan and state.`,
+    description: `Look up whether your medication is covered by your 2026 health plan. Drug coverage from ${ISSUER_COUNT} insurance companies in all 50 states and DC.`,
   }
 
   return [dataset, breadcrumbs, speakable]
@@ -174,13 +171,12 @@ export default function FormularyIndexPage() {
             Marketplace Drug Coverage Tool
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-navy-900 leading-tight mb-3">
-            Health Insurance Drug Coverage Lookup
+            Is Your Medication Covered?
           </h1>
           <p id="formulary-bluf" className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Search {DRUG_COUNT} prescription drugs across {ISSUER_COUNT} insurance issuers
-            for 2026. Compare drug tiers, copays, and prior authorization requirements
-            by plan and state. Data sourced from federal formulary data files
-            that insurance companies are required by law to publish.
+            Look up whether your medication is covered by your health plan.
+            We reviewed drug coverage across {ISSUER_COUNT} insurance companies in
+            all 50 states and DC for 2026.
           </p>
         </div>
 
@@ -198,7 +194,7 @@ export default function FormularyIndexPage() {
           <span className="hidden sm:inline text-neutral-300">|</span>
           <span className="inline-flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-            {STATES_WITH_DATA.size} states covered
+            All 50 states and DC
           </span>
           <span className="hidden sm:inline text-neutral-300">|</span>
           <span className="inline-flex items-center gap-1.5">
@@ -242,17 +238,9 @@ export default function FormularyIndexPage() {
           <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {DRUG_CATEGORIES.map((cat) => (
               <div key={cat.label} className="p-5 rounded-xl border border-neutral-200 h-full flex flex-col">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold tracking-wide text-neutral-500">
-                    {cat.label}
-                  </h3>
-                  <a
-                    href={`/formulary/categories/${cat.hubId}`}
-                    className="text-xs text-primary-600 hover:underline font-medium"
-                  >
-                    See all &rarr;
-                  </a>
-                </div>
+                <h3 className="text-sm font-semibold tracking-wide text-neutral-500 mb-3">
+                  {cat.label}
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {cat.drugs.map((d) => (
                     <a
@@ -268,12 +256,6 @@ export default function FormularyIndexPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-neutral-400 mt-4 text-center">
-            Browse all drug categories &rarr;{' '}
-            <a href="/formulary" className="text-primary-600 hover:underline font-medium">
-              Drug Coverage Hub
-            </a>
-          </p>
         </section>
 
         {/* ── STATE DATA NOTICE ────────────────────────────────── */}
