@@ -1,8 +1,11 @@
 """
 generate_drug_baselines.py
 ──────────────────────────
-Reads formulary_intelligence.json (via its drug index) and all SBM per-state
-formulary files, then produces data/processed/drug_national_baselines.json.
+Streams formulary_intelligence.json (4+ GB, ~14.8M records) line-by-line and
+reads all SBM per-state files to produce data/processed/drug_national_baselines.json.
+
+Uses plan_intelligence.json to build an issuer_id → state_code map so FFE
+records (which lack state_code) can be attributed to states.
 
 For each drug appearing in 3+ states, computes:
   - total_plans_national
@@ -15,7 +18,7 @@ For each drug appearing in 3+ states, computes:
   - per_state: {state_code: {plan_count, prior_auth_pct, dominant_tier,
                               pa_rank_among_states, total_states}}
 
-Run standalone:
+Run:
     python scripts/generate/generate_drug_baselines.py
 
 Outputs:
@@ -37,12 +40,11 @@ from typing import Any
 # ── Paths ──────────────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_PROCESSED = REPO_ROOT / "data" / "processed"
-CACHE_DIR = REPO_ROOT / ".cache"
+PLAN_INTEL_FILE = DATA_PROCESSED / "plan_intelligence.json"
 FORMULARY_FILE = DATA_PROCESSED / "formulary_intelligence.json"
-FORMULARY_INDEX = CACHE_DIR / "formulary_drug_index.json"
 OUTPUT_FILE = DATA_PROCESSED / "drug_national_baselines.json"
 
-# SBM files are named formulary_sbm_XX.json (two-letter state codes)
+# SBM files are named formulary_sbm_XX.json (two-letter state codes only)
 SBM_PATTERN = re.compile(r"^formulary_sbm_([A-Z]{2})\.json$")
 
 # ── Logging ────────────────────────────────────────────────────────────────────
@@ -58,11 +60,15 @@ TIER_NORMALISE: dict[str, str] = {
     "GENERIC": "generic",
     "PREFERRED-BRAND": "preferred-brand",
     "PREFERRED BRAND": "preferred-brand",
+    "PREFERRED-GENERICS": "generic",
+    "PREFERRED GENERICS": "generic",
     "NON-PREFERRED-BRAND": "non-preferred-brand",
     "NON-PREFERRED BRAND": "non-preferred-brand",
     "NON PREFERRED BRAND": "non-preferred-brand",
+    "NON-PREFERRED-GENERICS": "generic",
     "SPECIALTY": "specialty",
     "ACA-PREVENTIVE-DRUGS": "preventive",
+    "PREVENT-DRUGS": "preventive",
     "PREVENTIVE": "preventive",
     "TIER 1": "generic",
     "TIER 2": "preferred-brand",
@@ -72,6 +78,10 @@ TIER_NORMALISE: dict[str, str] = {
     "TIER2": "preferred-brand",
     "TIER3": "non-preferred-brand",
     "TIER4": "specialty",
+    "MEDICAL-SERVICE-DRUG": "specialty",
+    "MEDICAL-BENEFIT": "specialty",
+    "NON-FORMULARY-DRUGS": "non-preferred-brand",
+    "NON-FORMULARY": "non-preferred-brand",
 }
 
 
@@ -79,7 +89,7 @@ def normalise_tier(raw: str | None) -> str:
     if not raw:
         return "unknown"
     upper = raw.strip().upper()
-    return TIER_NORMALISE.get(upper, raw.strip().lower())
+    return TIER_NORMALISE.get(upper, raw.strip().lower().replace("_", "-").replace(" ", "-"))
 
 
 def normalise_drug_name(name: str) -> str:
@@ -100,13 +110,7 @@ class DrugStateAccum:
         self.ql_count: int = 0
         self.tier_counts: dict[str, int] = defaultdict(int)
 
-    def add(
-        self,
-        tier: str | None,
-        pa: bool,
-        st: bool,
-        ql: bool,
-    ) -> None:
+    def add(self, tier: str | None, pa: bool, st: bool, ql: bool) -> None:
         self.plan_count += 1
         if pa:
             self.pa_count += 1
@@ -127,179 +131,143 @@ class DrugStateAccum:
         return round(self.pa_count / self.plan_count * 100, 1)
 
 
-# ── Index-based FFE reader ─────────────────────────────────────────────────────
+# ── Issuer → State map ────────────────────────────────────────────────────────
 
-def load_index() -> dict[str, dict[str, int]]:
-    """Load drug → {offset, length} index.  Returns empty dict if absent."""
-    if not FORMULARY_INDEX.exists():
-        log.warning("Formulary index not found at %s — run: npm run build:indexes", FORMULARY_INDEX)
-        return {}
-    log.info("Loading formulary index …")
-    with FORMULARY_INDEX.open("r", encoding="utf-8") as fh:
-        return json.load(fh)
-
-
-def iter_ffe_records(
-    index: dict[str, dict[str, int]],
-    drug_name_lower: str,
-) -> list[dict[str, Any]]:
+def build_issuer_state_map() -> dict[str, str]:
     """
-    Reads the byte block for *drug_name_lower* from formulary_intelligence.json.
-    Returns a list of record dicts (may be empty if drug not in index).
+    Returns {issuer_id_str: state_code} from plan_intelligence.json.
+    Each FFE issuer operates in exactly one state.
+    """
+    if not PLAN_INTEL_FILE.exists():
+        log.error("plan_intelligence.json not found — cannot map issuers to states")
+        return {}
+
+    log.info("Building issuer → state map from plan_intelligence.json …")
+    with PLAN_INTEL_FILE.open("r", encoding="utf-8") as fh:
+        pi = json.load(fh)
+
+    issuer_map: dict[str, str] = {}
+    for plan in pi.get("data", []):
+        iid = str(plan.get("issuer_id", "")).strip()
+        state = (plan.get("state_code") or "").upper().strip()
+        if iid and state and len(state) == 2:
+            issuer_map[iid] = state  # last-wins is fine — each issuer has one state
+
+    log.info("  %d issuers mapped to states", len(issuer_map))
+    return issuer_map
+
+
+# ── Stream FFE records ─────────────────────────────────────────────────────────
+
+def stream_ffe_records(
+    issuer_map: dict[str, str],
+    accums: dict[str, dict[str, DrugStateAccum]],
+) -> int:
+    """
+    Streams formulary_intelligence.json line-by-line.
+    Each line after the metadata block is a JSON record (with trailing comma).
+    Returns the count of records processed.
     """
     if not FORMULARY_FILE.exists():
-        return []
+        log.warning("formulary_intelligence.json not found — skipping FFE")
+        return 0
 
-    records: list[dict[str, Any]] = []
+    log.info("Streaming FFE records from %s …", FORMULARY_FILE.name)
+    count = 0
+    skipped_no_state = 0
+    t0 = time.time()
 
-    # Find all index keys that contain the drug name
-    matching_keys = [k for k in index if drug_name_lower in k]
-    if not matching_keys:
-        return records
-
-    with FORMULARY_FILE.open("rb") as fh:
-        for key in matching_keys:
-            entry = index[key]
-            offset = entry.get("offset", 0)
-            length = entry.get("length", 0)
-            if length == 0:
+    with FORMULARY_FILE.open("r", encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
                 continue
-            fh.seek(offset)
-            block_bytes = fh.read(length)
-            block_text = block_bytes.decode("utf-8", errors="replace")
-            for line in block_text.splitlines():
-                line = line.strip().rstrip(",")
-                if not line or line in ("{", "}"):
-                    continue
-                try:
-                    rec = json.loads(line)
-                    records.append(rec)
-                except json.JSONDecodeError:
-                    continue
 
-    return records
+            # Skip metadata wrapper lines
+            if line.startswith("{\"metadata\""):
+                continue
+            if line in ("{", "}", "]", "]}"):
+                continue
+
+            # Strip trailing comma
+            if line.endswith(","):
+                line = line[:-1]
+
+            # Must start with { to be a record
+            if not line.startswith("{"):
+                continue
+
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+            drug_name = normalise_drug_name(rec.get("drug_name") or "")
+            if not drug_name:
+                continue
+
+            # Resolve state from issuer_ids
+            issuer_ids = rec.get("issuer_ids") or []
+            states_for_record: set[str] = set()
+            for iid in issuer_ids:
+                iid_str = str(iid).strip()
+                state = issuer_map.get(iid_str)
+                if state:
+                    states_for_record.add(state)
+
+            tier = rec.get("drug_tier")
+            pa = bool(rec.get("prior_authorization"))
+            st = bool(rec.get("step_therapy"))
+            ql = bool(rec.get("quantity_limit"))
+
+            if not states_for_record:
+                # Still count toward national totals under "XX"
+                accums[drug_name]["XX"].add(tier=tier, pa=pa, st=st, ql=ql)
+                skipped_no_state += 1
+            else:
+                # Add to each state the issuers operate in
+                for state in states_for_record:
+                    accums[drug_name][state].add(tier=tier, pa=pa, st=st, ql=ql)
+
+            count += 1
+            if count % 2_000_000 == 0:
+                elapsed = time.time() - t0
+                log.info("  FFE: %dM records (%.0fs)", count // 1_000_000, elapsed)
+
+    elapsed = time.time() - t0
+    log.info("FFE complete: %d records in %.0fs (%d without state)", count, elapsed, skipped_no_state)
+    return count
 
 
 # ── SBM reader ─────────────────────────────────────────────────────────────────
 
-def load_sbm_files() -> dict[str, list[dict[str, Any]]]:
-    """
-    Returns {state_code: [drug_records, ...]} for every formulary_sbm_XX.json
-    found in data/processed/.
-    """
-    sbm: dict[str, list[dict[str, Any]]] = {}
-    for fpath in DATA_PROCESSED.iterdir():
+def process_sbm_files(accums: dict[str, dict[str, DrugStateAccum]]) -> int:
+    """Reads all formulary_sbm_XX.json files. Returns total record count."""
+    total = 0
+    for fpath in sorted(DATA_PROCESSED.iterdir()):
         m = SBM_PATTERN.match(fpath.name)
         if not m:
             continue
         state = m.group(1)
-        log.info("Loading SBM file %s …", fpath.name)
         try:
             with fpath.open("r", encoding="utf-8") as fh:
                 obj = json.load(fh)
             data = obj.get("data") or obj.get("records") or []
-            sbm[state] = data
-            log.info("  %s: %d records", state, len(data))
+            for rec in data:
+                drug_name = normalise_drug_name(rec.get("drug_name") or rec.get("name") or "")
+                if not drug_name:
+                    continue
+                accums[drug_name][state].add(
+                    tier=rec.get("drug_tier") or rec.get("tier"),
+                    pa=bool(rec.get("prior_authorization") or rec.get("pa")),
+                    st=bool(rec.get("step_therapy") or rec.get("st")),
+                    ql=bool(rec.get("quantity_limit") or rec.get("ql")),
+                )
+            log.info("  SBM %s: %d records", state, len(data))
+            total += len(data)
         except Exception as exc:
             log.warning("  Failed to load %s: %s", fpath.name, exc)
-    return sbm
-
-
-# ── Build accumulator from all sources ────────────────────────────────────────
-
-def build_accumulators(
-    index: dict[str, dict[str, int]],
-    sbm_data: dict[str, list[dict[str, Any]]],
-) -> dict[str, dict[str, DrugStateAccum]]:
-    """
-    Returns {drug_name_lower: {state_code_upper: DrugStateAccum}}.
-
-    Processes:
-      1. FFE records from formulary_intelligence.json (index-based)
-      2. SBM records from per-state files
-    """
-    # drug → state → accum
-    accums: dict[str, dict[str, DrugStateAccum]] = defaultdict(lambda: defaultdict(DrugStateAccum))
-
-    # ── FFE ──
-    if index:
-        log.info("Processing FFE records …")
-        all_drug_keys = list(index.keys())
-        total_keys = len(all_drug_keys)
-        log.info("  Index has %d drug keys", total_keys)
-
-        # To avoid loading the whole 4 GB file repeatedly, we open it once and
-        # process all keys in sorted-offset order (minimises seek distance).
-        offset_sorted = sorted(all_drug_keys, key=lambda k: index[k].get("offset", 0))
-
-        processed = 0
-        t0 = time.time()
-
-        if FORMULARY_FILE.exists():
-            with FORMULARY_FILE.open("rb") as fh:
-                for drug_key in offset_sorted:
-                    entry = index[drug_key]
-                    offset = entry.get("offset", 0)
-                    length = entry.get("length", 0)
-                    if length == 0:
-                        continue
-                    fh.seek(offset)
-                    block_bytes = fh.read(length)
-                    block_text = block_bytes.decode("utf-8", errors="replace")
-
-                    for line in block_text.splitlines():
-                        line = line.strip().rstrip(",")
-                        if not line or line in ("{", "}"):
-                            continue
-                        try:
-                            rec = json.loads(line)
-                        except json.JSONDecodeError:
-                            continue
-
-                        drug_name = normalise_drug_name(rec.get("drug_name") or drug_key)
-                        state_code = (rec.get("state_code") or "").upper().strip()
-                        if not state_code:
-                            # Try to infer from issuer_id / plan_id (last resort)
-                            plan_id = rec.get("plan_id") or ""
-                            if len(plan_id) >= 5:
-                                state_code = plan_id[5:7].upper()
-
-                        if not state_code or len(state_code) != 2:
-                            state_code = "XX"  # unknown state — include in national but not per-state ranking
-
-                        accums[drug_name][state_code].add(
-                            tier=rec.get("drug_tier"),
-                            pa=bool(rec.get("prior_authorization")),
-                            st=bool(rec.get("step_therapy")),
-                            ql=bool(rec.get("quantity_limit")),
-                        )
-
-                    processed += 1
-                    if processed % 5000 == 0:
-                        elapsed = time.time() - t0
-                        log.info("  FFE: %d/%d keys processed (%.0fs)", processed, total_keys, elapsed)
-
-        log.info("FFE processing complete — %d drug names", len(accums))
-    else:
-        log.warning("No formulary index — skipping FFE records")
-
-    # ── SBM ──
-    log.info("Processing SBM records …")
-    for state_code, records in sbm_data.items():
-        state_upper = state_code.upper()
-        for rec in records:
-            drug_name = normalise_drug_name(rec.get("drug_name") or rec.get("name") or "")
-            if not drug_name:
-                continue
-            accums[drug_name][state_upper].add(
-                tier=rec.get("drug_tier") or rec.get("tier"),
-                pa=bool(rec.get("prior_authorization") or rec.get("pa")),
-                st=bool(rec.get("step_therapy") or rec.get("st")),
-                ql=bool(rec.get("quantity_limit") or rec.get("ql")),
-            )
-
-    log.info("SBM processing complete")
-    return accums
+    return total
 
 
 # ── Compute baselines from accumulators ────────────────────────────────────────
@@ -310,12 +278,12 @@ def compute_baselines(
 ) -> dict[str, Any]:
     """
     Produces the output dict keyed by drug_name (lowercase).
-    Only includes drugs with coverage in >= min_states states.
+    Only includes drugs with coverage in >= min_states known states.
     """
     output: dict[str, Any] = {}
 
     for drug_name, state_map in accums.items():
-        # Exclude placeholder / unknown state for ranking but include for national totals
+        # Exclude XX (unknown state) for per-state ranking
         known_states = {s: a for s, a in state_map.items() if s != "XX" and len(s) == 2}
 
         if len(known_states) < min_states:
@@ -339,25 +307,22 @@ def compute_baselines(
         }
         dominant_tier_national = max(tier_totals, key=lambda k: tier_totals[k]) if tier_totals else "unknown"
 
-        # Per-state stats
-        per_state: dict[str, Any] = {}
-        # Build PA rate list for ranking
+        # Per-state stats + PA ranking
         pa_rates = [(s, a.pa_pct()) for s, a in known_states.items()]
-        pa_rates_sorted = sorted(pa_rates, key=lambda x: x[1], reverse=True)  # highest first
+        pa_rates_sorted = sorted(pa_rates, key=lambda x: x[1], reverse=True)
         pa_rank_map = {s: rank + 1 for rank, (s, _) in enumerate(pa_rates_sorted)}
         total_states = len(known_states)
 
+        per_state: dict[str, Any] = {}
         for state_code, a in known_states.items():
             per_state[state_code] = {
                 "plan_count": a.plan_count,
                 "prior_auth_pct": a.pa_pct(),
                 "dominant_tier": a.dominant_tier(),
                 "pa_rank_among_states": pa_rank_map.get(state_code, total_states),
-                "total_states": total_states,
             }
 
         output[drug_name] = {
-            "drug_name": drug_name,
             "total_plans_national": total_plans,
             "total_states_with_coverage": total_states,
             "tier_distribution_pct": tier_dist_pct,
@@ -377,35 +342,39 @@ def main() -> None:
     log.info("=== generate_drug_baselines.py ===")
     log.info("REPO_ROOT: %s", REPO_ROOT)
 
-    # Validate paths
     if not DATA_PROCESSED.exists():
-        log.error("data/processed/ not found — run from repo root or check path")
+        log.error("data/processed/ not found — run from repo root")
         sys.exit(1)
 
-    # Load index
-    index = load_index()
-
-    # Load SBM files
-    sbm_data = load_sbm_files()
-
-    if not index and not sbm_data:
-        log.error("No data sources found — nothing to process")
+    # Build issuer → state map
+    issuer_map = build_issuer_state_map()
+    if not issuer_map:
+        log.error("No issuer→state mapping — cannot attribute FFE records to states")
         sys.exit(1)
 
-    # Build accumulators
-    t_start = time.time()
-    accums = build_accumulators(index, sbm_data)
-    log.info("Accumulation complete in %.1fs — %d unique drugs", time.time() - t_start, len(accums))
+    # Accumulators: drug_name → state → DrugStateAccum
+    accums: dict[str, dict[str, DrugStateAccum]] = defaultdict(lambda: defaultdict(DrugStateAccum))
 
-    # Compute baselines
+    # Stream FFE records (14.8M)
+    ffe_count = stream_ffe_records(issuer_map, accums)
+
+    # Process SBM files (~391K)
+    sbm_count = process_sbm_files(accums)
+
+    log.info("Total records: %d FFE + %d SBM = %d", ffe_count, sbm_count, ffe_count + sbm_count)
+    log.info("Unique drugs (all): %d", len(accums))
+
+    # Compute baselines (min 3 states)
     log.info("Computing national baselines (min 3 states) …")
     baselines = compute_baselines(accums, min_states=3)
-    log.info("Baselines computed: %d drugs", len(baselines))
+    log.info("Baselines computed: %d drugs qualify", len(baselines))
 
     # Write output
     metadata = {
         "generated_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
         "source": "CMS MR-PUF formulary_intelligence.json + SBM formulary files",
+        "ffe_records": ffe_count,
+        "sbm_records": sbm_count,
         "drug_count": len(baselines),
         "min_states_required": 3,
         "description": "National and per-state baseline stats per drug for content differentiation",
@@ -414,9 +383,10 @@ def main() -> None:
 
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with OUTPUT_FILE.open("w", encoding="utf-8") as fh:
-        json.dump(output_obj, fh, indent=2, ensure_ascii=False)
+        json.dump(output_obj, fh, ensure_ascii=False)
 
-    log.info("Written to %s (%.2f MB)", OUTPUT_FILE, OUTPUT_FILE.stat().st_size / 1_048_576)
+    file_mb = OUTPUT_FILE.stat().st_size / 1_048_576
+    log.info("Written to %s (%.1f MB)", OUTPUT_FILE, file_mb)
 
     # Summary stats
     pa_rates = [b["prior_auth_pct_national"] for b in baselines.values()]
@@ -427,6 +397,15 @@ def main() -> None:
             sum(pa_rates) / len(pa_rates),
             max(pa_rates),
         )
+
+    # Top drugs by plan count
+    top_drugs = sorted(baselines.items(), key=lambda x: x[1]["total_plans_national"], reverse=True)[:10]
+    log.info("Top 10 drugs by plan count:")
+    for name, d in top_drugs:
+        log.info("  %s — %d plans, %d states, PA=%.1f%%",
+                 name[:60], d["total_plans_national"],
+                 d["total_states_with_coverage"], d["prior_auth_pct_national"])
+
     log.info("Done.")
 
 

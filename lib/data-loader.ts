@@ -41,6 +41,7 @@ import type {
   PolicyScenarioRecord,
   PlanRecord,
   DrugBaseline,
+  DrugStateBaseline,
 } from './types'
 import type { SbcIndex, FormularyBlockIndex } from './data-index-builder'
 
@@ -1047,9 +1048,11 @@ export function getSbmPlansForStaticParams(
 // Pillar 6b — Drug National Baselines (content differentiation)
 // ---------------------------------------------------------------------------
 
-interface DrugBaselinesFile {
+interface DrugBaselinesFileRaw {
   metadata: { generated_at: string; drug_count: number }
-  data: Record<string, DrugBaseline>
+  data: Record<string, Omit<DrugBaseline, 'drug_name'> & {
+    per_state: Record<string, Omit<DrugStateBaseline, 'total_states'>>
+  }>
 }
 
 let drugBaselinesCache: Record<string, DrugBaseline> | null = null
@@ -1059,6 +1062,10 @@ let drugBaselinesCache: Record<string, DrugBaseline> | null = null
  * baselines file hasn't been generated yet or the drug isn't in it.
  *
  * drugName is the raw display name — it will be normalised to lowercase for lookup.
+ *
+ * The JSON file omits `drug_name` (redundant with dict key) and `total_states`
+ * (derivable from per_state size) to stay under GitHub's 100 MB limit.
+ * This loader reconstructs both fields on first read.
  */
 export function getDrugBaseline(drugName: string): DrugBaseline | null {
   if (!drugBaselinesCache) {
@@ -1067,8 +1074,18 @@ export function getDrugBaseline(drugName: string): DrugBaseline | null {
       return null
     }
     try {
-      const file = JSON.parse(fs.readFileSync(filepath, 'utf-8')) as DrugBaselinesFile
-      drugBaselinesCache = file.data ?? {}
+      const file = JSON.parse(fs.readFileSync(filepath, 'utf-8')) as DrugBaselinesFileRaw
+      const raw = file.data ?? {}
+      const hydrated: Record<string, DrugBaseline> = {}
+      for (const [key, entry] of Object.entries(raw)) {
+        const totalStates = Object.keys(entry.per_state).length
+        const perState: Record<string, DrugStateBaseline> = {}
+        for (const [st, stData] of Object.entries(entry.per_state)) {
+          perState[st] = { ...stData, total_states: totalStates }
+        }
+        hydrated[key] = { ...entry, drug_name: key, per_state: perState }
+      }
+      drugBaselinesCache = hydrated
     } catch {
       return null
     }
