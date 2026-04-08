@@ -58,8 +58,8 @@ export default function WhatIncomeCountsPage() {
     }
     contextText +=
       'The ACA uses MAGI to determine eligibility for premium tax credits and cost-sharing reductions. ' +
-      'Generally, MAGI between 100% and 400% of the Federal Poverty Level may indicate eligibility for financial assistance, ' +
-      'and under current extended subsidy provisions, assistance may be available at higher income levels as well.'
+      'Generally, MAGI between 100% and 400% of the Federal Poverty Level may qualify for premium tax credits. ' +
+      'For 2026, the enhanced subsidies that were available from 2021 through 2025 have expired, so the subsidy cliff at 400% FPL has returned.'
 
     setResult({ agi: agiVal, interest: interestVal, foreign: foreignVal, ss: ssVal, magi, contextText })
   }
