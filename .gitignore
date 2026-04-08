@@ -163,6 +163,9 @@ __pycache__/
 .venv/
 venv/
 data/processed/formulary_intelligence.json
+data/processed/formulary_intelligence.meta.json
+data/processed/formulary_intelligence.meta.json.tmp
+data/processed/formulary_intelligence.repair_audit.log
 
 # Backup files
 *.bak

@@ -9,18 +9,46 @@ in the original fetch_formulary_full.py run. This script:
   3. Appends new records to data/processed/formulary_intelligence.json
   4. Writes per-run results to data/processed/formulary_missing_ffe_results.json
   5. Updates data/processed/formulary_errors.json with any new failures
+  6. Updates data/processed/formulary_intelligence.meta.json (the SIDECAR — see below)
 
 Usage:
     cd healthinsurancerenew
     python scripts/fetch/fetch_formulary_missing_ffe.py
     python scripts/fetch/fetch_formulary_missing_ffe.py --dry-run   # test URLs only
     python scripts/fetch/fetch_formulary_missing_ffe.py --concurrency 3
+
+WARNING — DO NOT WRITE TO THE EMBEDDED METADATA OF formulary_intelligence.json.
+==============================================================================
+The master file's first ~2 KB used to contain the metadata block. An older
+version of this script tried to overwrite that block in place after each
+append (`update_metadata_record_count`). That approach corrupted the file at
+byte ~2599 because:
+
+  - Multiple writers (StreamingJsonWriter, dedupe_formulary, slim_formulary)
+    each used DIFFERENT byte layouts for the metadata block.
+  - The in-place writer assumed the StreamingJsonWriter layout (a 2048-byte
+    reserved block at a fixed offset). When it ran on a file that had since
+    been re-serialized by dedupe_formulary, the offsets were wrong and the
+    write clobbered record bytes.
+  - Windows text-mode writes (no `newline=''`) added \\r\\n translation that
+    shifted the offset by ±1 per newline, compounding the corruption.
+
+The fix (2026-04-08): the embedded metadata block in formulary_intelligence.json
+is treated as a FROZEN snapshot from the last full re-serialization. Live
+record counts and append history live in the sidecar
+data/processed/formulary_intelligence.meta.json, which is updated atomically
+(write-to-temp + rename) by `update_formulary_metadata_sidecar()` below.
+
+If you ever need to refresh the embedded metadata in the master file, do a
+FULL re-serialization via scripts/etl/repair_formulary_intelligence.py or an
+equivalent stream-rewrite tool. NEVER overwrite the metadata block in place.
 """
 
 import argparse
 import asyncio
 import json
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -31,6 +59,7 @@ logger = logging.getLogger(__name__)
 
 PROCESSED_DIR = Path("data/processed")
 OUT_PATH = PROCESSED_DIR / "formulary_intelligence.json"
+META_SIDECAR_PATH = PROCESSED_DIR / "formulary_intelligence.meta.json"
 RESULTS_PATH = PROCESSED_DIR / "formulary_missing_ffe_results.json"
 ERRORS_PATH = PROCESSED_DIR / "formulary_errors.json"
 
@@ -641,59 +670,79 @@ def append_records_to_formulary_intelligence(new_records: list[dict[str, Any]]) 
     return len(new_records)
 
 
-def update_metadata_record_count(added: int) -> None:
+def update_formulary_metadata_sidecar(
+    added_records: int,
+    successful_carriers: int,
+    batch_label: str,
+) -> None:
     """
-    Read the current metadata.total_drug_records from formulary_intelligence.json
-    and write the updated count back using the fixed-size reserved block.
+    Update the formulary metadata sidecar file atomically.
 
-    The StreamingJsonWriter reserves 2048 bytes at a fixed offset for metadata.
-    We locate it by reading the first 4096 bytes and finding the JSON object.
+    The sidecar (data/processed/formulary_intelligence.meta.json) is the
+    AUTHORITATIVE source of live metadata for formulary_intelligence.json.
+    The master file's embedded metadata is a frozen snapshot from the last
+    full re-serialization and is NOT updated by append scripts (see the
+    corruption history warning at the top of this file).
+
+    Atomic write: data is serialized to a `.tmp` file in the same directory,
+    then renamed over the target. On POSIX and modern Windows, rename is
+    atomic, so a partial write can never leave the sidecar in a half-written
+    state.
     """
-    path = OUT_PATH
-    METADATA_RESERVE = 2048
-
-    with open(path, "r+", encoding="utf-8") as f:
-        header = f.read(4096)
-
-    # Find the metadata JSON within the first 4096 bytes
-    prefix = '{\n  "metadata": '
-    start = header.find(prefix)
-    if start == -1:
-        logger.warning("Could not find metadata prefix — skipping metadata update")
+    if added_records <= 0:
         return
 
-    meta_start = start + len(prefix)
-    # The metadata block is METADATA_RESERVE bytes padded with spaces
-    meta_json_raw = header[meta_start: meta_start + METADATA_RESERVE].rstrip()
-    try:
-        meta = json.loads(meta_json_raw)
-    except json.JSONDecodeError as e:
-        logger.warning(f"Could not parse metadata JSON: {e} — skipping update")
-        return
+    # Load existing sidecar (or seed an empty one)
+    if META_SIDECAR_PATH.exists():
+        try:
+            with open(META_SIDECAR_PATH, encoding="utf-8") as f:
+                meta = json.load(f)
+        except json.JSONDecodeError as e:
+            logger.warning(
+                f"Sidecar {META_SIDECAR_PATH} is malformed ({e}); rebuilding from scratch"
+            )
+            meta = {}
+    else:
+        meta = {}
 
-    old_count = meta.get("total_drug_records", 0)
-    meta["total_drug_records"] = old_count + added
+    # Update / initialize the count fields. We track three names because
+    # different historical versions of the embedded metadata used different
+    # field names (raw_records vs deduped_records vs total_drug_records).
+    # Keep all three in sync for downstream readers.
+    prev_total = int(meta.get("total_drug_records") or meta.get("raw_records") or 0)
+    new_total = prev_total + added_records
+    meta["total_drug_records"] = new_total
+    meta["raw_records"] = new_total
+    meta["deduped_records"] = new_total
 
-    # Also update deduped_records if present
-    if "deduped_records" in meta:
-        meta["deduped_records"] = meta["total_drug_records"]
-    if "raw_records" in meta:
-        meta["raw_records"] = meta["total_drug_records"]
+    # Append a structured entry to the append history (capped at 50 entries
+    # to keep the sidecar from growing unbounded). The notes string in the
+    # embedded metadata used to grow without limit and contributed to the
+    # corruption — we explicitly avoid that pattern here.
+    history = meta.setdefault("append_history", [])
+    history.append({
+        "timestamp": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+        "added_records": added_records,
+        "successful_carriers": successful_carriers,
+        "batch_label": batch_label,
+        "running_total": new_total,
+    })
+    if len(history) > 50:
+        del history[: len(history) - 50]
 
-    new_meta_json = json.dumps(meta, default=str).ljust(METADATA_RESERVE)
-    if len(new_meta_json) > METADATA_RESERVE:
-        logger.warning("Updated metadata exceeds reserved block — writing sidecar")
-        sidecar = path.with_suffix(".meta.json")
-        with open(sidecar, "w", encoding="utf-8") as f:
-            json.dump(meta, f, indent=2)
-        return
+    meta["last_updated_at"] = __import__("datetime").datetime.utcnow().isoformat() + "Z"
+    meta["sidecar_schema_version"] = "1.0"
 
-    # Write back at the correct byte offset
-    with open(path, "r+", encoding="utf-8") as f:
-        f.seek(meta_start)
-        f.write(new_meta_json)
+    # Atomic write: write to .tmp, then os.replace (atomic on Windows + POSIX)
+    tmp_path = META_SIDECAR_PATH.with_suffix(".meta.json.tmp")
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, indent=2, default=str)
+    os.replace(tmp_path, META_SIDECAR_PATH)
 
-    logger.info(f"Updated metadata: total_drug_records {old_count} -> {meta['total_drug_records']}")
+    logger.info(
+        f"Sidecar updated: total_drug_records {prev_total:,} -> {new_total:,} "
+        f"(+{added_records:,} from {batch_label})"
+    )
 
 
 def update_errors_file(new_errors: list[dict[str, Any]]) -> None:
@@ -803,7 +852,11 @@ async def run(concurrency: int, dry_run: bool, skip_failed: bool = False) -> Non
 
     if not dry_run and all_new_records:
         added = append_records_to_formulary_intelligence(all_new_records)
-        update_metadata_record_count(added)
+        update_formulary_metadata_sidecar(
+            added_records=added,
+            successful_carriers=len(success),
+            batch_label=f"fetch_formulary_missing_ffe.py run {time.strftime('%Y-%m-%d')}",
+        )
 
     if failed:
         update_errors_file(failed)

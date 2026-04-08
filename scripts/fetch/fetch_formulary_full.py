@@ -325,6 +325,19 @@ class StreamingJsonWriter:
 
         Uses the reserved fixed-size block written by write_header() so we never
         need to read the entire multi-GB file back into memory.
+
+        WARNING: in-place metadata writes are ONLY safe in this single-use context
+        — right after StreamingJsonWriter has freshly written the file in this same
+        process, with the reserved 2048-byte block guaranteed to exist at the known
+        byte offset. NEVER call any in-place metadata-write logic on a file that has
+        been touched by another tool (dedupe_formulary, slim_formulary, append
+        scripts, etc.) — the byte layout assumptions break and the file gets
+        corrupted at byte ~2599. See the corruption history at the top of
+        scripts/fetch/fetch_formulary_missing_ffe.py for the full incident report.
+
+        For any post-creation metadata updates, use the sidecar
+        data/processed/formulary_intelligence.meta.json instead. See
+        update_formulary_metadata_sidecar() in fetch_formulary_missing_ffe.py.
         """
         self.f.write("\n  ]\n}\n")
         self.f.flush()
