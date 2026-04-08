@@ -22,6 +22,15 @@ import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
 import { generateFormularyContent } from '@/lib/content-templates'
 import { generateStateInsights } from '@/lib/formulary-insights'
+import {
+  buildNarrativeData,
+  detectNarrativePattern,
+  generateQuickAnswer,
+  generateInsightBody,
+  generateCostContext,
+  generateLocalizedSections,
+} from '@/lib/state-narrative'
+import type { NarrativePattern, NarrativeData } from '@/lib/state-narrative'
 import ProcessBar from '@/components/ProcessBar'
 import AeoBlock from '@/components/AeoBlock'
 import EvidenceBlock from '@/components/EvidenceBlock'
@@ -41,7 +50,6 @@ import {
   getDominantTierGroupForDrug,
   interpretCoverage,
 } from '@/lib/formulary-helpers'
-import type { HumanTier } from '@/lib/formulary-helpers'
 import {
   getDrugCategory,
   getRelatedDrugs,
@@ -674,15 +682,17 @@ export default async function FormularyDrugPage({ params }: Props) {
             : `${titleCase(drugDisplay)} appeared on only ${results.length} of the ${isState ? stateName : 'Marketplace'} plans we reviewed for ${PLAN_YEAR}. Coverage is limited \u2014 check your specific plan\u2019s drug list before enrolling, and ask about alternatives.`,
     },
     {
-      question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible?`,
-      answer: humanTiers.length > 0
-        ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills. Always check your Summary of Benefits and Coverage for exact cost-sharing.`
-        : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
+      question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible${isState ? ` on a ${stateName} plan` : ''}?`,
+      answer: humanTiers.length > 0 && isState
+        ? `In ${stateName}, most ${results.length === 1 ? 'plans' : `of the ${results.length} plans`} covering ${titleCase(drugDisplay)} place it on a ${dominantHumanTier.shortLabel.toLowerCase()} tier. Before your deductible is met, you typically pay the plan's full price — roughly ${beforeDeductibleRange} per month for ${titleCase(drugDisplay)}. After your deductible, your copay drops to around ${dominantHumanTier.costRange} per month. A 90-day mail-order supply often costs about 67% of three 30-day fills. Check your Summary of Benefits and Coverage for exact numbers.`
+        : humanTiers.length > 0
+          ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills.`
+          : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
     },
     {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
       answer: hasPriorAuth
-        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount === results.length ? 'all' : 'some'} plans${stateOrNational}. Your doctor submits a request with your diagnosis and clinical rationale. Your insurance company must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you have the right to a peer-to-peer review and then a formal appeal.`
+        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount} of ${results.length} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`
         : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
     {
@@ -692,16 +702,22 @@ export default async function FormularyDrugPage({ params }: Props) {
         : `Tier details for ${titleCase(drugDisplay)} vary across plans. Check your specific plan's drug list for tier placement. Drug lists are updated annually, so verify coverage each Open Enrollment period.`,
     },
     {
-      question: `What if my plan doesn't cover ${titleCase(drugDisplay)}?`,
-      answer: `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. Your insurance company must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review Organization (IRO) review — the IRO decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
+      question: `What if my ${isState ? stateName : 'Marketplace'} plan doesn't cover ${titleCase(drugDisplay)}?`,
+      answer: isState && results.length > 0
+        ? `Of the ${results.length} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan doesn't, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
+        : `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. The plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review — the decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
     },
     {
       question: `Can I switch plans to get ${titleCase(drugDisplay)} covered${isState ? ` in ${stateName}` : ''}?`,
-      answer: `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. If your current plan stops covering a drug mid-year or significantly raises its tier, that may qualify you for a Special Enrollment Period. Never enroll in a new plan without verifying that your specific drug is covered on the new drug list. Drug lists change every January 1, so check for the specific plan year you are enrolling in.`,
+      answer: isState && results.length > 0
+        ? `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. In ${stateName}, ${results.length} marketplace plan${results.length === 1 ? '' : 's'} include${results.length === 1 ? 's' : ''} ${titleCase(drugDisplay)} for ${PLAN_YEAR} — verify tier placement and approval rules on any plan before enrolling. If your current plan drops coverage or raises the tier mid-year, that may qualify you for a Special Enrollment Period.`
+        : `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. If your current plan stops covering a drug mid-year or significantly raises its tier, that may qualify you for a Special Enrollment Period. Verify that your specific drug is covered on any new drug list before enrolling.`,
     },
     {
-      question: `What's the difference between a coverage exception and prior approval?`,
-      answer: `Prior authorization requires your doctor to document medical necessity before your plan will cover a drug — it is about getting coverage activated. A coverage exception asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or getting coverage for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`,
+      question: `What's the difference between a coverage exception and prior approval for ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}?`,
+      answer: isState && hasPriorAuth
+        ? `Prior authorization applies when a plan covers ${titleCase(drugDisplay)} but requires your doctor to document medical necessity first — that's the case for ${priorAuthCount} of ${results.length} ${stateName} plans we reviewed. A coverage exception is different: it asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list at all. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`
+        : `Prior authorization requires your doctor to document medical necessity before your plan will cover a drug — it is about getting coverage activated. A coverage exception asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems.`,
     },
   ]
   // --- Triple schema (@graph) ---
@@ -749,7 +765,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
   // --- Editorial content ---
   const editorial = results.length > 0
-    ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName })
+    ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName, stateCode: isState ? stateName : undefined })
     : null
 
   // --- State-specific content insights ---
@@ -764,6 +780,28 @@ export default async function FormularyDrugPage({ params }: Props) {
           baseline,
         })
       : null
+
+  // --- Narrative pattern engine (state-level content differentiation) ---
+  const narrativeData: NarrativeData | null =
+    baseline && isState && results.length > 0
+      ? buildNarrativeData({
+          drugName: drugDisplay,
+          stateName: stateName ?? '',
+          stateCode: stateCode ?? '',
+          results,
+          baseline,
+          dominantTier: dominantGroup,
+          priorAuthCount,
+          stepTherapyCount,
+          quantityLimitCount,
+          hasPriorAuth,
+        })
+      : null
+  const narrativePattern: NarrativePattern | null =
+    narrativeData ? detectNarrativePattern(narrativeData) : null
+  const localizedSections = narrativeData && narrativePattern
+    ? generateLocalizedSections(narrativeData, narrativePattern)
+    : null
 
   // --- Entity links ---
   const relatedPlans = results
@@ -825,10 +863,10 @@ export default async function FormularyDrugPage({ params }: Props) {
   if (humanTiers.length > 0) {
     costRows.push({
       name: "Before you've met your deductible",
-      desc: 'Estimated from plan filings \u2014 varies by plan and pharmacy',
+      desc: `Estimated from ${results.length} ${isState ? stateName : 'Marketplace'} plan filing${results.length === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
       figure: beforeDeductibleRange,
       unit: 'month',
-      hint: 'This is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until the deductible is met.',
+      hint: `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, this is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until your deductible is met.`,
     })
     costRows.push({
       name: `After your deductible \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
@@ -836,8 +874,8 @@ export default async function FormularyDrugPage({ params }: Props) {
       figure: dominantHumanTier.costRange,
       unit: 'month',
       hint: dominantGroup === 'generic'
-        ? 'Generic tier drugs often have low copays even before your deductible is met on some plans.'
-        : 'Once your deductible is met, this is what most people pay on plans with favorable tier placement.',
+        ? `Generic tier drugs like ${titleCase(drugDisplay)} often have low copays even before your deductible is met on some ${isState ? stateName : 'Marketplace'} plans.`
+        : `Once your deductible is met, this is what most people pay for ${titleCase(drugDisplay)} on ${isState ? stateName : 'Marketplace'} plans with favorable tier placement.`,
     })
     if (humanTiers.length > 1) {
       const secondTier = humanTiers.find(ht => ht.group !== dominantGroup)
@@ -845,10 +883,10 @@ export default async function FormularyDrugPage({ params }: Props) {
         const secondTierCount = results.length - Math.round(results.length * 0.75)
         costRows.push({
           name: `After your deductible \u2014 ${secondTier.shortLabel.toLowerCase()} tier`,
-          desc: `A smaller number of plans placed ${titleCase(drugDisplay)} here (${secondTierCount} of ${results.length})`,
+          desc: `A smaller number of ${isState ? stateName : 'Marketplace'} plans placed ${titleCase(drugDisplay)} here (${secondTierCount} of ${results.length})`,
           figure: secondTier.costRange,
           unit: 'month',
-          hint: 'Plans that place this drug on a higher tier will cost more even after your deductible.',
+          hint: `${isState ? stateName : 'Marketplace'} plans that place ${titleCase(drugDisplay)} on a higher tier will cost more even after your deductible.`,
         })
       }
     }
@@ -915,14 +953,10 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 3. AeoBlock ── */}
           {results.length > 0 && (
             <AeoBlock
-              answer={[
-                `${titleCase(drugDisplay)} was on most of the ${isState ? stateName : 'Marketplace'} health plans we reviewed \u2014 ${results.length} of them for ${PLAN_YEAR}.`,
-                hasPriorAuth
-                  ? ` Prior approval is a common requirement on plans that include it \u2014 found in ${priorAuthCount} of ${results.length} plans we reviewed.`
-                  : ' Prior approval was not required on the plans we reviewed.',
-                ' What you pay can vary quite a bit depending on your plan\u2019s tier placement and where you are in your deductible year.',
-                stateInsights?.accessQualifier ? ` ${stateInsights.accessQualifier}` : '',
-              ].join('')}
+              answer={narrativeData && narrativePattern
+                ? generateQuickAnswer(narrativeData, narrativePattern)
+                : `${titleCase(drugDisplay)} is covered by ${results.length} ${isState ? stateName : 'Marketplace'} plans for ${PLAN_YEAR}. ${hasPriorAuth ? `${priorAuthCount} require prior approval.` : 'Prior approval is not required on reviewed plans.'}`
+              }
               caveat={`Based on ${PLAN_YEAR} federal plan data. Actual cost depends on your plan, pharmacy, and deductible status.`}
             />
           )}
@@ -992,15 +1026,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                 What matters most for {titleCase(drugDisplay)} in {isState ? stateName : 'Marketplace plans'}
               </p>
               <p className="text-ink" style={{ fontSize: '14px', lineHeight: 1.6 }}>
-                {stateInsights?.insightBody ||
-                  (hasPriorAuth && (dominantGroup === 'specialty' || dominantGroup === 'non-preferred-brand')
-                    ? `Coverage alone doesn\u2019t tell the full story. For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, the biggest cost differences between plans show up in deductible timing, tier placement, and whether prior approval is required. If ${titleCase(drugDisplay)} access matters to you, compare plans based on cost-sharing and access hurdles \u2014 not just whether the drug appears on the drug list.`
-                    : !hasPriorAuth && dominantGroup === 'generic'
-                      ? `${titleCase(drugDisplay)} is widely available across ${isState ? stateName : 'Marketplace'} plans at low cost. The main thing to compare is pharmacy choice and whether your plan covers it before or after the deductible.`
-                      : hasPriorAuth && (dominantGroup === 'preferred-brand' || dominantGroup === 'generic')
-                        ? `Most ${isState ? stateName : 'Marketplace'} plans cover ${titleCase(drugDisplay)}, but prior approval adds a step before your first fill. Plans differ most in how quickly they process approvals and what tier they assign \u2014 both directly affect what you pay.`
-                        : `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, plans vary most in tier placement and whether prior approval is required. Comparing these two factors across plans is the best way to estimate your real monthly cost.`
-                  )
+                {narrativeData && narrativePattern
+                  ? generateInsightBody(narrativeData, narrativePattern)
+                  : stateInsights?.insightBody
+                  || `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, plans vary most in tier placement and whether prior approval is required. Comparing these two factors is the best way to estimate your real monthly cost.`
                 }
               </p>
             </div>
@@ -1047,17 +1076,19 @@ export default async function FormularyDrugPage({ params }: Props) {
                 </span>
               </div>
               <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.65, marginBottom: '14px' }}>
-                {stateInsights?.costContext ||
-                  'Two things drive your cost: whether your deductible is met, and which tier your plan puts this drug on. The gap between tiers is bigger than most people expect.'
+                {narrativeData && narrativePattern
+                  ? generateCostContext(narrativeData, narrativePattern)
+                  : stateInsights?.costContext
+                  || `Your cost for ${titleCase(drugDisplay)} depends on which ${isState ? stateName : 'Marketplace'} plan you choose and what tier it assigns. Deductible structure also plays a role — check whether your plan has a separate drug deductible.`
                 }
               </p>
               <CostBlock
                 rows={costRows}
                 note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
                 varyRows={[
-                  { key: 'Tier placement matters', value: stateInsights?.tierBreakdown || `Preferred and non-preferred tiers can differ by $40\u2013$80 per month or more, based on what we found in reviewed plans. Tier placement is one of the more impactful things to check when comparing options.` },
-                  { key: 'Pharmacy choice', value: `Your plan\u2019s price varies by pharmacy. Preferred pharmacies and mail-order often come in lower \u2014 worth checking before your first fill.` },
-                  { key: 'How your deductible works', value: `Some plans have a separate drug deductible; others combine it with your medical one. That structure determines when your lower monthly copay kicks in.` },
+                  { key: 'Tier placement matters', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you're considering.` },
+                  { key: 'Pharmacy choice', value: localizedSections?.pharmacyChoice ?? `Your plan's price for ${titleCase(drugDisplay)} varies by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill.` },
+                  { key: 'How your deductible works', value: localizedSections?.deductibleContext ?? `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${titleCase(drugDisplay)} kicks in.` },
                 ]}
               />
             </section>
@@ -1110,7 +1141,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                     body: hasPriorAuth
                       ? [
                           `Before your pharmacy can fill ${titleCase(drugDisplay)}, most plans require your doctor to submit documentation to the plan first. Your doctor\u2019s office typically handles this. The approval requirements, process, and timelines vary by plan \u2014 check your benefit documents for the specifics that apply to yours. If a request is denied, your plan will have an appeal process you can use.`,
-                          stateInsights?.paNote ? ` ${stateInsights.paNote}` : '',
+                          localizedSections?.paNote ? ` ${localizedSections.paNote}` : stateInsights?.paNote ? ` ${stateInsights.paNote}` : '',
                         ].join('')
                       : `Your doctor can prescribe ${titleCase(drugDisplay)} directly. Your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year \u2014 always confirm current coverage with your plan.`,
                   },
@@ -1133,7 +1164,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                       ? `found in ${quantityLimitCount} of ${results.length} plans`
                       : 'not found in plans reviewed',
                     body: hasQuantityLimit
-                      ? `Some plans limit how much you can pick up per month \u2014 typically one monthly supply at a time. Check your plan\u2019s benefit documents for the exact rule. Mail order is often an exception and can allow a larger supply at a lower per-dose cost.`
+                      ? `${quantityLimitCount} of ${results.length} ${isState ? stateName : 'Marketplace'} plans we reviewed limit how much ${titleCase(drugDisplay)} you can fill at a time \u2014 typically one monthly supply. Mail order is often an exception and can allow a larger supply at a lower per-dose cost. Your doctor can request an exception if your prescribed amount exceeds the plan's limit.`
                       : `No supply restrictions were found in the plans we reviewed. Your plan may still have fill-quantity guidelines \u2014 check your benefit documents for details.`,
                   },
                 ]}
@@ -1152,15 +1183,15 @@ export default async function FormularyDrugPage({ params }: Props) {
                 How the prior authorization process works
               </div>
               <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.65, marginBottom: '14px' }}>
-                If your plan requires it \u2014 and most do \u2014 your doctor handles the paperwork. Here\u2019s what the process typically looks like from start to finish.
+                If your {isState ? stateName : 'Marketplace'} plan requires prior approval for {titleCase(drugDisplay)}, your doctor handles the paperwork. The steps below outline how the process works.
               </p>
               <TimelineSteps
                 steps={[
-                  { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting clinical information directly to your health plan. The exact documentation required varies by plan.`, time: 'Day 1' },
-                  { title: 'Plan reviews the request', desc: `The plan checks the request against its coverage requirements. Your doctor and the plan\u2019s review team handle this \u2014 you don\u2019t need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
-                  { title: 'Decision issued', desc: `Response times vary by plan and urgency. Check your benefit documents or call member services for the timeline that applies to your specific coverage \u2014 urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
-                  { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Authorization periods vary by plan \u2014 check your benefit documents for how long yours is valid.`, time: 'After approval' },
-                  { title: 'If not approved \u2014 you have options', desc: `Most plans include an internal appeal process. If the appeal is also denied, you may be able to request an independent external review. Your plan\u2019s benefit documents will outline the steps and timelines that apply to your specific coverage.`, time: 'Review your plan documents for deadlines' },
+                  { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting information directly to your ${isState ? stateName + ' ' : ''}health plan. ${priorAuthCount > 0 ? `${priorAuthCount} of ${results.length} plans we reviewed require this step for ${titleCase(drugDisplay)}.` : 'The documentation required varies by plan.'}`, time: 'Day 1' },
+                  { title: 'Plan reviews the request', desc: `${isState ? stateName + ' ' : 'Your '}plan checks the request against its coverage requirements. Your doctor and the plan's review team handle this — you don't need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
+                  { title: 'Decision issued', desc: `Response times vary by plan and urgency. Your plan's benefit documents explain the timeline that applies to your coverage — urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
+                  { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Your plan's benefit documents explain how long the approval is valid.`, time: 'After approval' },
+                  { title: 'If not approved \u2014 you have options', desc: `Your plan has an appeal process you can use. If the appeal is also denied, you may be able to request an independent external review. Your plan's benefit documents outline the steps and deadlines.`, time: 'Review your plan documents for deadlines' },
                 ]}
               />
             </section>
@@ -1180,7 +1211,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 rows={
                   drugClass === 'injectable-glp1'
                     ? [
-                        { icon: '$', title: `${glp1Manufacturer ?? 'Manufacturer'} savings card`, desc: `${glp1Manufacturer ?? 'The manufacturer'} offers a savings card for ${titleCase(drugDisplay)} that can significantly reduce your monthly cost for commercially insured people. Eligibility and savings amounts change \u2014 ask your doctor\u2019s office or pharmacist for current details, and confirm you qualify before factoring it into your budget.` },
+                        { icon: '$', title: `${glp1Manufacturer ?? 'Manufacturer'} savings card`, desc: `${glp1Manufacturer ?? 'The manufacturer'} offers a savings card for ${titleCase(drugDisplay)} that can reduce your monthly cost if you have commercial insurance. ${isState ? `${stateName} residents with a marketplace plan generally qualify.` : ''} Eligibility and savings amounts change \u2014 ask your doctor's office or pharmacist for current details before factoring it into your budget.` },
                         ...(oralAlt ? [{ icon: '\u2192', title: `Ask about the oral version`, desc: `If injectable ${titleCase(drugDisplay)} is hard to access or too expensive, ask your doctor about <a href="/${canonicalIssuerParam}/${oralAlt.slug}" class="text-vblue hover:underline">${oralAlt.name}</a> \u2014 an oral option with the same active ingredient that may be on a different tier.` }] : []),
                         { icon: '\u2197', title: 'Compare plans by specialty tier', desc: `Specialty tier copays can vary by hundreds of dollars between ${isState ? stateName : 'Marketplace'} plans. Choosing a plan where ${titleCase(drugDisplay)} is on a more favorable tier can meaningfully reduce your monthly cost.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
                         { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some plans offer lower rates at preferred pharmacies or through mail-order benefits. Check your plan\u2019s pharmacy benefit summary to see whether this applies and how to use it.` },
@@ -1193,10 +1224,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                           ...(relatedDrugs.length > 0 ? [{ icon: '\u2192', title: 'Compare related medications', desc: `See how similar drugs compare on tier placement: <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a>.` }] : []),
                         ]
                       : [
-                          { icon: '$', title: 'Manufacturer copay card', desc: `The manufacturer of ${titleCase(drugDisplay)} may offer a copay assistance card for commercially insured people that can reduce your monthly cost. Eligibility and savings amounts vary \u2014 ask your doctor\u2019s office or pharmacist for current details.` },
-                          { icon: '\u2192', title: 'Check generic alternatives', desc: `Ask your doctor or pharmacist whether a generic equivalent or therapeutic alternative is available at a lower tier.${relatedDrugs.length > 0 ? ` For example, see <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> to compare.` : ''}` },
-                          { icon: '\u2197', title: 'Choose a plan with a more favorable tier', desc: `In our review, tier assignment ranged from ${dominantHumanTier.shortLabel.toLowerCase()} to other tiers across ${isState ? `${stateCode}` : 'Marketplace'} plans. Choosing a plan where ${titleCase(drugDisplay)} is on a preferred tier can reduce your monthly cost by $40\u2013$80 or more.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
-                          { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some plans offer lower rates at preferred pharmacies or through mail-order benefits. Check your plan\u2019s pharmacy benefit summary to see whether this applies and how to use it.` },
+                          { icon: '$', title: 'Manufacturer copay card', desc: `The manufacturer of ${titleCase(drugDisplay)} may offer a copay card for commercially insured ${isState ? stateName + ' residents' : 'patients'}. Eligibility and savings amounts vary \u2014 ask your doctor\u2019s office or pharmacist for current details.` },
+                          { icon: '\u2192', title: 'Check generic alternatives', desc: `Ask your doctor or pharmacist whether a generic equivalent or therapeutic alternative is on a lower tier on your ${isState ? stateName + ' ' : ''}plan.${relatedDrugs.length > 0 ? ` See <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> to compare.` : ''}` },
+                          { icon: '\u2197', title: 'Choose a plan with a more favorable tier', desc: `Across the ${results.length} ${isState ? stateName : 'Marketplace'} plan${results.length === 1 ? '' : 's'} we reviewed, tier assignment for ${titleCase(drugDisplay)} ranged from ${dominantHumanTier.shortLabel.toLowerCase()} to other tiers. Choosing a plan with a preferred tier can reduce your monthly cost by $40\u2013$80 or more.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
+                          { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some ${isState ? stateName : 'Marketplace'} plans offer lower rates at preferred pharmacies or through mail-order. Check your plan\u2019s pharmacy benefit summary to see whether this applies to ${titleCase(drugDisplay)}.` },
                         ]
                 }
                 note="Eligibility for savings programs varies. Check directly with the manufacturer or your plan."
@@ -1748,341 +1779,6 @@ function RestrictionBadge({ active }: { active?: boolean }) {
   )
 }
 
-// ---------------------------------------------------------------------------
-// Layer 2 — Drug Clinical Context
-// ---------------------------------------------------------------------------
-
-function DrugClinicalContext({
-  drugDisplay,
-  drugSlug,
-  issuer,
-}: {
-  drugDisplay: string
-  drugSlug: string
-  issuer: string
-}) {
-  const key = drugDisplay.toLowerCase().replace(/\s+/g, '-')
-  const data = DRUG_CLINICAL_DATA[key] ?? DRUG_CLINICAL_DATA[drugDisplay.toLowerCase()]
-
-  return (
-    <section aria-labelledby="clinical-context-heading" className="rounded-xl border border-neutral-200 bg-neutral-50/40 p-5">
-      <h2 id="clinical-context-heading" className="text-lg font-semibold text-navy-800 mb-4">
-        What Is {titleCase(drugDisplay)} Used For?
-      </h2>
-
-      {data ? (
-        <>
-          <div className="mb-4">
-            <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary-700 bg-primary-100 rounded-full px-3 py-1 mb-2">
-              {data.drugClass}
-            </span>
-            <p className="text-sm text-neutral-700 leading-relaxed">{data.indications}</p>
-          </div>
-
-          {(data.genericAlts.length > 0 || data.therapeuticAlts.length > 0 || data.otcAlts.length > 0) && (
-            <>
-              <h3 className="text-sm font-semibold text-navy-800 mb-3">
-                Common Alternatives to {titleCase(drugDisplay)}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {data.genericAlts.length > 0 && (
-                  <div className="rounded-lg border border-green-200 bg-green-50/50 p-3">
-                    <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Generic Alternatives</p>
-                    <div className="space-y-2">
-                      {data.genericAlts.map((alt) => (
-                        <div key={alt.name}>
-                          <a
-                            href={`/${issuer}/${alt.name.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="text-sm font-medium text-primary-700 hover:underline"
-                          >
-                            {alt.name}
-                          </a>
-                          <p className="text-xs text-green-700 font-medium">{alt.tier}</p>
-                          <p className="text-xs text-neutral-500">{alt.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {data.therapeuticAlts.length > 0 && (
-                  <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3">
-                    <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Therapeutic Alternatives</p>
-                    <div className="space-y-2">
-                      {data.therapeuticAlts.map((alt) => (
-                        <div key={alt.name}>
-                          <a
-                            href={`/${issuer}/${alt.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`}
-                            className="text-sm font-medium text-primary-700 hover:underline"
-                          >
-                            {alt.name}
-                          </a>
-                          <p className="text-xs text-blue-700 font-medium">{alt.tier}</p>
-                          <p className="text-xs text-neutral-500">{alt.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {data.otcAlts.length > 0 && (
-                  <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-3">
-                    <p className="text-xs font-semibold text-amber-700 uppercase tracking-wide mb-2">OTC Alternatives</p>
-                    <div className="space-y-2">
-                      {data.otcAlts.map((alt) => (
-                        <div key={alt.name}>
-                          <span className="text-sm font-medium text-neutral-700">{alt.name}</span>
-                          <p className="text-xs text-amber-700 font-medium">{alt.tier}</p>
-                          <p className="text-xs text-neutral-500">{alt.desc}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </>
-      ) : (
-        <p className="text-sm text-neutral-500 leading-relaxed">
-          Clinical details for {titleCase(drugDisplay)} are not yet indexed in our database.
-          A licensed agent can help you understand your coverage options and identify alternatives covered at a lower tier on your plan.{' '}
-          <a href="/contact" className="text-primary-600 hover:underline font-medium">Get help &rarr;</a>
-        </p>
-      )}
-    </section>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Layer 3 — Cash Price vs Insurance Comparison
-// ---------------------------------------------------------------------------
-
-function DrugCashPriceComparison({
-  drugDisplay,
-  dominantHumanTier,
-  dominantGroup,
-  beforeDeductibleRange,
-}: {
-  drugDisplay: string
-  dominantHumanTier: HumanTier
-  dominantGroup: string
-  beforeDeductibleRange: string
-}) {
-  // Estimate monthly copay midpoint for 90-day math
-  const copayRange = dominantHumanTier.costRange
-  const copayMidpoint = (() => {
-    const match = copayRange.match(/\$(\d+)/)
-    return match ? parseInt(match[1], 10) : null
-  })()
-
-  return (
-    <section aria-labelledby="cash-price-heading" className="rounded-xl border border-neutral-200 p-5">
-      <h2 id="cash-price-heading" className="text-lg font-semibold text-navy-800 mb-1">
-        What You Might Pay
-      </h2>
-      <p className="text-xs text-neutral-500 mb-4">
-        Insurance copays apply after your deductible. If you have not met your deductible, your actual cost may be higher.
-      </p>
-
-      <div className="overflow-x-auto rounded-lg border border-neutral-200">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="bg-neutral-50 text-left">
-              <th className="px-4 py-2.5 font-semibold text-navy-700">Payment method</th>
-              <th className="px-4 py-2.5 font-semibold text-navy-700">Estimated 30-day cost</th>
-              <th className="px-4 py-2.5 font-semibold text-navy-700 hidden sm:table-cell">Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t border-neutral-100 bg-primary-50/30">
-              <td className="px-4 py-2.5 font-medium">Insurance copay ({dominantHumanTier.shortLabel})</td>
-              <td className="px-4 py-2.5 font-semibold text-primary-700">{dominantHumanTier.costRange}</td>
-              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">After deductible is met; may be higher pre-deductible</td>
-            </tr>
-            <tr className="border-t border-neutral-100">
-              <td className="px-4 py-2.5 font-medium">Pharmacy cash price</td>
-              <td className="px-4 py-2.5 text-neutral-600">Varies by pharmacy</td>
-              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Ask your pharmacist — cash may be cheaper pre-deductible</td>
-            </tr>
-            <tr className="border-t border-neutral-100">
-              <td className="px-4 py-2.5 font-medium">90-day mail order</td>
-              <td className="px-4 py-2.5 text-neutral-600">~67% of 3× 30-day cost</td>
-              <td className="px-4 py-2.5 text-neutral-500 text-xs hidden sm:table-cell">Preferred pharmacy or mail-order program</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-        <p className="text-sm text-amber-800 leading-relaxed">
-          <strong>Pre-deductible reality check:</strong> If you have not met your deductible, you pay the plan&apos;s full allowed amount — not the copay.
-          For a {dominantHumanTier.shortLabel} drug with a {dominantHumanTier.costRange} listed copay, your pre-deductible cost may be {beforeDeductibleRange} depending on your plan&apos;s arrangement with the pharmacy.
-          In some cases, paying the pharmacy cash price is cheaper than using insurance before your deductible is met.
-        </p>
-      </div>
-
-      {copayMidpoint !== null && (
-        <p className="text-xs text-neutral-500 mt-3">
-          <strong>90-day supply math:</strong> If your 30-day copay is ~${copayMidpoint}, a mail-order 90-day supply typically
-          costs ~${Math.round(copayMidpoint * 2)} — saving ~${copayMidpoint} per quarter (${copayMidpoint * 4}/year).
-        </p>
-      )}
-    </section>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Layer 4 — Ways to Lower Your Prescription Cost
-// ---------------------------------------------------------------------------
-
-function DrugCostHelp({ drugDisplay }: { drugDisplay: string }) {
-  return (
-    <section aria-labelledby="cost-help-heading">
-      <h2 id="cost-help-heading" className="text-lg font-semibold text-navy-800 mb-3">
-        Ways to Lower Your Prescription Cost
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {/* Card 1 */}
-        <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
-          <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">Manufacturer Savings Card</p>
-          <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            Many brand-name drug makers offer savings cards that can reduce your out-of-pocket cost by $150–$200 per month.
-          </p>
-          <ul className="text-xs text-neutral-600 space-y-1 mb-3">
-            <li><strong>Who can use this:</strong> People with private insurance — this is not available for Medicare or Medicaid</li>
-            <li><strong>How to find one:</strong> Search &ldquo;{drugDisplay} savings card&rdquo; or call the drug manufacturer</li>
-          </ul>
-          <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
-            <strong>Heads up:</strong> Some plans have &ldquo;copay accumulator&rdquo; rules that prevent savings cards from counting toward your deductible. Check your plan details.
-          </p>
-        </div>
-
-        {/* Card 2 */}
-        <div className="rounded-xl border border-green-200 bg-green-50/50 p-4">
-          <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">Help If You Can&apos;t Afford It</p>
-          <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            If you are uninsured or your medication costs too much, the drug manufacturer may provide it free or at very low cost ($0–$10/month).
-          </p>
-          <ul className="text-xs text-neutral-600 space-y-1">
-            <li><strong>Who qualifies:</strong> People who are uninsured, underinsured, or whose income is below about 4× the Federal Poverty Level (roughly $62,400/year for one person in 2026)</li>
-            <li><strong>How to apply:</strong> Ask your doctor&apos;s office — they often handle the paperwork, or search the drug manufacturer&apos;s website for &ldquo;patient assistance&rdquo;</li>
-          </ul>
-        </div>
-
-        {/* Card 3 */}
-        <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-4">
-          <p className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-2">State Drug Assistance Programs</p>
-          <p className="text-sm text-neutral-700 leading-relaxed mb-2">
-            Many states run their own programs to help residents pay for prescriptions — especially seniors and lower-income adults.
-          </p>
-          <ul className="text-xs text-neutral-600 space-y-1">
-            <li><strong>Who qualifies:</strong> Varies by state — often seniors or adults with moderate income</li>
-            <li><strong>How to find out:</strong> Contact your state Medicaid or insurance department, or ask a licensed agent</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Layer 6 — Patient Action Guide
-// ---------------------------------------------------------------------------
-
-function DrugPatientActionGuide({
-  drugDisplay,
-  drugSlug,
-  stateCode,
-}: {
-  drugDisplay: string
-  drugSlug: string
-  stateCode?: string
-}) {
-  return (
-    <section aria-labelledby="patient-action-heading" className="rounded-xl border-2 border-primary-200 bg-primary-50/40 p-5 sm:p-6">
-      <h2 id="patient-action-heading" className="text-lg font-bold text-navy-900 mb-4">
-        Your Action Guide for {titleCase(drugDisplay)} Coverage
-      </h2>
-      <p className="text-xs text-neutral-500 mb-5">
-        A patient landing on this page with a coverage problem should be able to take action without Googling again.
-      </p>
-
-      <div className="space-y-4">
-        {/* Step 1 */}
-        <div className="flex gap-4">
-          <div className="flex-none w-8 h-8 rounded-full bg-primary-600 text-white text-sm font-bold flex items-center justify-center shrink-0">1</div>
-          <div>
-            <p className="text-sm font-semibold text-navy-800 mb-1">Confirm your coverage</p>
-            <p className="text-sm text-neutral-600 leading-relaxed">
-              Call the Member Services number on your insurance card and ask:{' '}
-              <em>&ldquo;Is {drugDisplay} covered on my formulary, and what tier is it assigned to? Is prior authorization required?&rdquo;</em>
-            </p>
-          </div>
-        </div>
-
-        {/* Step 2 */}
-        <div className="flex gap-4">
-          <div className="flex-none w-8 h-8 rounded-full bg-primary-600 text-white text-sm font-bold flex items-center justify-center shrink-0">2</div>
-          <div>
-            <p className="text-sm font-semibold text-navy-800 mb-1">If covered but expensive — options in priority order</p>
-            <ul className="text-sm text-neutral-600 space-y-1 mt-1">
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Ask your pharmacist about the cash price — it can be cheaper than insurance before your deductible is met</li>
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Request a 90-day supply via mail order — saves ~10–15% typically</li>
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Ask your doctor for a therapeutic alternative on a lower tier</li>
-              <li className="flex gap-2"><span className="text-primary-500 shrink-0">&rsaquo;</span> Check if the manufacturer offers a savings card (brand drugs only — not valid with Medicare/Medicaid)</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Step 3 */}
-        <div className="flex gap-4">
-          <div className="flex-none w-8 h-8 rounded-full bg-amber-500 text-white text-sm font-bold flex items-center justify-center shrink-0">3</div>
-          <div>
-            <p className="text-sm font-semibold text-navy-800 mb-1">If not covered (non-formulary) — three paths</p>
-            <div className="space-y-2 mt-1">
-              <p className="text-sm text-neutral-600"><strong className="text-navy-700">Path A — Exception/override:</strong> Your prescriber submits a letter of medical necessity documenting why formulary alternatives are inappropriate for your condition.</p>
-              <p className="text-sm text-neutral-600"><strong className="text-navy-700">Path B — Therapeutic substitution:</strong> Ask your doctor if a covered drug in the same class would work equally well for your diagnosis.</p>
-              <p className="text-sm text-neutral-600"><strong className="text-navy-700">Path C — Plan change:</strong> If you are in Open Enrollment or have a qualifying SEP, switch to a plan that covers this drug. Verify the specific formulary before enrolling.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Step 4 */}
-        <div className="flex gap-4">
-          <div className="flex-none w-8 h-8 rounded-full bg-primary-600 text-white text-sm font-bold flex items-center justify-center shrink-0">4</div>
-          <div>
-            <p className="text-sm font-semibold text-navy-800 mb-1">Find a plan that covers {titleCase(drugDisplay)}</p>
-            <p className="text-sm text-neutral-600 leading-relaxed mb-2">
-              Never enroll in a plan without checking the formulary. Tiers change every January 1 — always verify for the specific plan year.
-            </p>
-            <a
-              href={`/drugs?drug=${encodeURIComponent(drugSlug)}`}
-              className="inline-block text-sm font-semibold text-primary-700 hover:text-primary-900 hover:underline"
-            >
-              Search plans that cover {titleCase(drugDisplay)} &rarr;
-            </a>
-          </div>
-        </div>
-
-        {/* Step 5 */}
-        <div className="flex gap-4">
-          <div className="flex-none w-8 h-8 rounded-full bg-green-600 text-white text-sm font-bold flex items-center justify-center shrink-0">5</div>
-          <div>
-            <p className="text-sm font-semibold text-navy-800 mb-1">Get expert help at no cost</p>
-            <p className="text-sm text-neutral-600 leading-relaxed mb-2">
-              A licensed agent can search all available plans in your area for drug coverage — at no cost to you.
-            </p>
-            <a
-              href="/contact"
-              className="inline-block px-4 py-2 bg-primary-700 text-white text-sm font-semibold rounded-lg hover:bg-primary-800 transition-colors"
-            >
-              Connect with an agent &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 // ---------------------------------------------------------------------------
 // Helpers

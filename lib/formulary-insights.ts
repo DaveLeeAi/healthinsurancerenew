@@ -27,7 +27,7 @@ export interface StateInsights {
   paComparison: string
   /** Qualifier appended to the tier row in EvidenceBlock. */
   tierComparison: string
-  /** Replaces the hardcoded "Two things drive your cost" intro. */
+  /** Cost section intro with state-specific framing. */
   costContext: string
   /** Replaces generic varyRow[0] (tier placement matters). */
   tierBreakdown: string
@@ -93,10 +93,11 @@ export function generateStateInsights(params: {
   }
 
   // ── insightBody ─────────────────────────────────────────────────────────────
-  const openingSentence = `The plan you choose determines not just whether ${drugName} is covered, but what tier it sits on, what you pay each month, and whether you need approval before your first fill.`
-  const closingSentence = `Comparing plans on these details — not just coverage alone — is the most important step.`
+  const insightParts: string[] = []
 
-  const insightMiddleParts: string[] = []
+  insightParts.push(
+    `Your plan choice in ${stateName} determines the tier for ${drugName}, what you pay each month, and whether you need approval before your first fill.`
+  )
 
   if (Math.abs(paDiff) > 10) {
     const direction = paDiff > 0 ? 'higher' : 'lower'
@@ -104,31 +105,31 @@ export function generateStateInsights(params: {
       paDiff > 0
         ? 'That adds an extra step before your first fill.'
         : 'That means fewer access hurdles here than in most states.'
-    insightMiddleParts.push(
+    insightParts.push(
       `In ${stateName}, ${statePaPct}% of plans require prior approval — ${direction} than the ${nationalPaPct}% national average. ${consequence}`
     )
   }
 
   if (stateDominantTier !== nationalDominantTier) {
-    insightMiddleParts.push(
+    insightParts.push(
       `Most ${stateName} plans place ${drugName} on a ${tierLabel(stateDominantTier)} tier, while nationally the most common placement is ${tierLabel(nationalDominantTier)}. That difference directly affects your monthly cost.`
     )
   } else {
-    // Check for wide tier spread as a fallback differentiator
     const tierKeys = Object.keys(baseline.tier_distribution_pct).filter(
       (k) => (baseline.tier_distribution_pct[k] ?? 0) > 5
     )
     if (tierKeys.length > 2 && stateResults.length >= 5) {
-      insightMiddleParts.push(
+      insightParts.push(
         `Tier placement varies across ${stateName} plans — which means the plan you pick has a direct impact on what you pay each month.`
       )
     }
   }
 
-  const insightBody =
-    insightMiddleParts.length > 0
-      ? `${openingSentence} ${insightMiddleParts.slice(0, 2).join(' ')} ${closingSentence}`
-      : `${openingSentence} ${closingSentence}`
+  insightParts.push(
+    `Compare plans on tier assignment, approval requirements, and deductible structure to find the best fit.`
+  )
+
+  const insightBody = insightParts.join(' ')
 
   // ── paComparison ─────────────────────────────────────────────────────────────
   let paComparison = ''
@@ -147,16 +148,15 @@ export function generateStateInsights(params: {
   }
 
   // ── costContext ──────────────────────────────────────────────────────────────
-  let costContext = ''
-
-  // Check if state skews toward higher tiers
+  let costContext: string
   const highTiers = ['specialty', 'non-preferred-brand']
   if (highTiers.includes(stateDominantTier) && stateDominantTier !== nationalDominantTier) {
     costContext = `Most ${stateName} plans place ${drugName} on a ${tierLabel(stateDominantTier)} tier, which typically means higher monthly costs after your deductible. The plan you choose matters here — tier placement varies.`
   } else if (paDiff > 15) {
     costContext = `In ${stateName}, the most common access hurdle for ${drugName} is prior approval — required by ${statePaPct}% of plans we reviewed. Getting that step done before your first fill can affect both timing and cost.`
+  } else {
+    costContext = `In ${stateName}, most plans place ${drugName} on a ${tierLabel(stateDominantTier)} tier. Your actual cost depends on that tier assignment and where you are in your deductible year.`
   }
-  // else: fall back to V35 default
 
   // ── tierBreakdown ────────────────────────────────────────────────────────────
   let tierBreakdown = ''
@@ -187,14 +187,18 @@ export function generateStateInsights(params: {
   } else if (tierEntries.length === 1) {
     const [tier1Key] = tierEntries[0]
     tierBreakdown = `All ${stateName} plans we reviewed place ${drugName} on a ${tierLabel(tier1Key)} tier. Tier differences between plans can mean $40–$80 per month or more — worth checking when comparing options.`
+  } else {
+    tierBreakdown = `Tier placements for ${drugName} vary across ${stateName} plans. The plan you pick has a direct impact on what you pay each month.`
   }
 
   // ── paNote ───────────────────────────────────────────────────────────────────
-  let paNote = ''
+  let paNote: string
   if (paDiff > 10) {
     paNote = `Prior approval rates for ${drugName} in ${stateName} are above the national average — making it especially important to confirm requirements before choosing a plan.`
   } else if (paDiff < -10) {
     paNote = `${capitalize(stateName)} plans are less likely to require prior approval for ${drugName} than the national average.`
+  } else {
+    paNote = `Prior approval rates for ${drugName} in ${stateName} run close to the national average of ${nationalPaPct}%.`
   }
 
   return {
