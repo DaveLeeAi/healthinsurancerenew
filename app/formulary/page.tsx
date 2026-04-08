@@ -171,12 +171,11 @@ export default function FormularyIndexPage() {
             Marketplace Drug Coverage Tool
           </p>
           <h1 className="text-3xl sm:text-4xl font-bold text-navy-900 leading-tight mb-3">
-            Is Your Medication Covered?
+            Does Your Health Plan Cover Your Medication?
           </h1>
           <p id="formulary-bluf" className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-            Look up whether your medication is covered by your health plan.
-            We reviewed drug coverage across {ISSUER_COUNT} insurance companies in
-            all 50 states and DC for 2026.
+            Search by drug name to see which 2026 marketplace plans cover it,
+            what tier it&apos;s on, and whether you need prior approval.
           </p>
         </div>
 
@@ -210,30 +209,30 @@ export default function FormularyIndexPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
           <PreviewCard
             icon={<CheckCircleIcon />}
-            title="Coverage Status"
-            description="Covered, not covered, or varies by plan"
+            title="Is it covered?"
+            description="See which plans include your drug"
           />
           <PreviewCard
             icon={<TierIcon />}
-            title="Cost Tier"
-            description="Generic, preferred brand, specialty, etc."
+            title="What will it cost?"
+            description="Check the tier — lower tier means lower cost"
           />
           <PreviewCard
             icon={<ClipboardIcon />}
-            title="Restrictions"
-            description="Prior authorization, step therapy, quantity limits"
+            title="Any extra steps?"
+            description="Find out if your plan needs prior approval first"
           />
           <PreviewCard
             icon={<BuildingIcon />}
-            title="Plans & Issuers"
-            description="Which insurance companies include the drug"
+            title="Which companies?"
+            description="See which insurance companies cover it in your state"
           />
         </div>
 
         {/* ── COMMON MEDICATIONS ───────────────────────────────── */}
         <section className="mb-10">
           <h2 className="text-lg font-semibold text-navy-900 mb-4">
-            Common medications people check
+            Medications people search most
           </h2>
           <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {DRUG_CATEGORIES.map((cat) => (
@@ -276,19 +275,16 @@ export default function FormularyIndexPage() {
           </h2>
           <ul className="space-y-2.5 text-sm text-neutral-600">
             <TrustBullet>
-              Uses official federal marketplace data &mdash; the same data insurance companies are
-              required by law to publish
+              Uses the same data insurance companies are required to publish
             </TrustBullet>
             <TrustBullet>
-              Updated for the current 2026 plan year
+              Updated for 2026 plan year
             </TrustBullet>
             <TrustBullet>
-              Simplified into plain English &mdash; tier names, cost ranges, and restriction flags
-              explained for consumers, not just brokers
+              Shows tier, cost range, and approval requirements &mdash; not just whether it&apos;s covered
             </TrustBullet>
             <TrustBullet>
-              Reviewed by a licensed health insurance professional with CMS
-              Elite Circle of Champions recognition
+              Reviewed by a licensed health insurance agent
             </TrustBullet>
           </ul>
         </section>

@@ -78,16 +78,17 @@ export default function FormularySearch({ ffmStates, sbmStates }: FormularySearc
             value={drug}
             onChange={setDrug}
             onSubmit={() => handleSearch()}
+            placeholder="Type your medication name (e.g. Ozempic, Metformin, Adderall)"
           />
           <button
             type="submit"
             className="px-6 py-3 bg-primary-600 text-white rounded-xl text-sm font-semibold hover:bg-primary-700 active:bg-primary-800 transition-colors whitespace-nowrap shadow-sm"
           >
-            Look Up Drug
+            Search
           </button>
         </div>
-        <p className="text-xs text-neutral-400 mt-2">
-          You&apos;ll see coverage status, cost tier, and restrictions by plan.
+        <p className="text-xs text-neutral-500 mt-2">
+          Works for brand and generic names. Results based on 2026 plan data.
         </p>
       </form>
     </div>
