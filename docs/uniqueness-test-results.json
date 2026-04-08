@@ -1,283 +1,8 @@
 {
   "drug_summaries": [
     {
-      "drug": "heparin sodium pf injection",
-      "archetype": "anticoagulant",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "0.3 ml enoxaparin sodium 100 mg-ml prefilled syringe",
-      "archetype": "anticoagulant",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "2 ml heparin sodium, porcine 1000 unt-ml injection",
-      "archetype": "anticoagulant",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "fondaparinux sodium",
-      "archetype": "anticoagulant",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "doxycycline mono",
-      "archetype": "common-generic-acute",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "clindamycin phosphate external gel",
-      "archetype": "common-generic-acute",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "2 ml clindamycin 150 mg-ml injection",
-      "archetype": "common-generic-acute",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "junel fe 1-20 28 day",
+      "drug": "tri-estarylla 28 day",
       "archetype": "contraceptive",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "microgestin 1-20 21day",
-      "archetype": "contraceptive",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "medroxyprogesterone acetate",
-      "archetype": "contraceptive",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "buprenorphine hcl sublingual",
-      "archetype": "controlled-substance",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "24 hr methylphenidate hydrochloride 36 mg extended release oral tablet",
-      "archetype": "controlled-substance",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "dextroamphetamine sulfate",
-      "archetype": "controlled-substance",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "azelaic acid",
-      "archetype": "dermatology",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "desoximetasone external liquid",
-      "archetype": "dermatology",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "retin-a cre",
-      "archetype": "dermatology",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "halobetasol propionate topical",
-      "archetype": "dermatology",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "3 ml liraglutide 6 mg-ml pen injector",
-      "archetype": "glp1-weight-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "14 actuat fluticasone furoate 0.2 mg-actuat-vilanterol 0.025 mg-actuat dry powder inhaler",
-      "archetype": "inhaler-respiratory",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "ipratropium-albuterol nebu",
-      "archetype": "inhaler-respiratory",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "insulin syringe",
-      "archetype": "injectable-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "insulin lispro junior kwikpen",
-      "archetype": "injectable-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "3 ml insulin lispro 100 unt-ml pen injector",
-      "archetype": "injectable-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "3 ml insulin degludec 100 unt-ml pen injector",
-      "archetype": "injectable-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "insulin lispro prot & lispro",
-      "archetype": "injectable-diabetes",
-      "states": 0,
-      "pairs": 0,
-      "avg": 0,
-      "min": 0,
-      "max": 0,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "ibuprofen-famotidine",
-      "archetype": "brand-chronic",
       "states": 51,
       "pairs": 1275,
       "avg": 60.90509803921569,
@@ -287,8 +12,8 @@
       "under20": 0
     },
     {
-      "drug": "trandolapril-verapamil",
-      "archetype": "common-generic-chronic",
+      "drug": "insulin glargine-yfgn",
+      "archetype": "injectable-diabetes",
       "states": 51,
       "pairs": 1275,
       "avg": 60.90509803921569,
@@ -304,6 +29,17 @@
       "pairs": 1275,
       "avg": 61.285490196078435,
       "min": 47,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "insulin lispro",
+      "archetype": "injectable-diabetes",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 61.99843137254902,
+      "min": 46,
       "max": 99,
       "under30": 0,
       "under20": 0
@@ -331,11 +67,44 @@
       "under20": 0
     },
     {
+      "drug": "benzoyl peroxide",
+      "archetype": "dermatology",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 63.59607843137255,
+      "min": 45,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "insulin degludec",
+      "archetype": "injectable-diabetes",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 64.00470588235294,
+      "min": 46,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
       "drug": "albuterol",
       "archetype": "inhaler-respiratory",
       "states": 51,
       "pairs": 1275,
       "avg": 64.32627450980392,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "cefpodoxime",
+      "archetype": "common-generic-acute",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 64.34980392156862,
       "min": 48,
       "max": 99,
       "under30": 0,
@@ -353,6 +122,50 @@
       "under20": 0
     },
     {
+      "drug": "diazepam gel",
+      "archetype": "controlled-substance",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 64.60862745098039,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "pamidronate disodium",
+      "archetype": "common-generic-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 65.00156862745098,
+      "min": 47,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "fondaparinux",
+      "archetype": "anticoagulant",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 65.02509803921569,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "azurette",
+      "archetype": "contraceptive",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 65.12156862745098,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
       "drug": "hydrocortisone",
       "archetype": "dermatology",
       "states": 51,
@@ -364,33 +177,22 @@
       "under20": 0
     },
     {
+      "drug": "malathion",
+      "archetype": "dermatology",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 65.5678431372549,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
       "drug": "hydrochlorothiazide",
       "archetype": "common-generic-chronic",
       "states": 51,
       "pairs": 1275,
       "avg": 66.05411764705882,
-      "min": 46,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "cholestyramine",
-      "archetype": "common-generic-chronic",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 66.35450980392157,
-      "min": 48,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "advair",
-      "archetype": "inhaler-respiratory",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 66.55058823529411,
       "min": 46,
       "max": 99,
       "under30": 0,
@@ -408,23 +210,166 @@
       "under20": 0
     },
     {
-      "drug": "symbicort",
-      "archetype": "inhaler-respiratory",
+      "drug": "trulicity",
+      "archetype": "glp1-weight-diabetes",
       "states": 51,
       "pairs": 1275,
-      "avg": 67.0721568627451,
+      "avg": 66.73490196078431,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "zolpidem",
+      "archetype": "controlled-substance",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 66.79843137254902,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "rybelsus",
+      "archetype": "glp1-weight-diabetes",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 66.99686274509804,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "fragmin",
+      "archetype": "anticoagulant",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 67.17960784313725,
       "min": 49,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "xulane",
-      "archetype": "contraceptive",
+      "drug": "enoxaparin",
+      "archetype": "anticoagulant",
       "states": 51,
       "pairs": 1275,
-      "avg": 67.98509803921569,
+      "avg": 67.81960784313725,
       "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "rosadan",
+      "archetype": "dermatology",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.0564705882353,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "quetiapine",
+      "archetype": "mental-health",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.10196078431373,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "levalbuterol",
+      "archetype": "inhaler-respiratory",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.45333333333333,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "relistor",
+      "archetype": "brand-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.56470588235294,
+      "min": 47,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "risperidone",
+      "archetype": "mental-health",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.8313725490196,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "corlanor",
+      "archetype": "brand-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.97098039215686,
+      "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "alprazolam",
+      "archetype": "controlled-substance",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 68.9756862745098,
+      "min": 49,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "penicillin g",
+      "archetype": "common-generic-acute",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 69.08705882352942,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "cyclosporine",
+      "archetype": "common-generic-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 69.29725490196078,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "philith",
+      "archetype": "common-generic-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 69.74666666666667,
+      "min": 48,
       "max": 99,
       "under30": 0,
       "under20": 0
@@ -441,111 +386,166 @@
       "under20": 0
     },
     {
-      "drug": "zepbound",
-      "archetype": "glp1-weight-diabetes",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 70.36078431372549,
-      "min": 47,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "nurtec",
+      "drug": "nexlizet",
       "archetype": "brand-chronic",
       "states": 51,
       "pairs": 1275,
-      "avg": 71.39686274509803,
+      "avg": 70.0156862745098,
       "min": 48,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "ambien",
-      "archetype": "controlled-substance",
+      "drug": "stiolto",
+      "archetype": "inhaler-respiratory",
       "states": 51,
       "pairs": 1275,
-      "avg": 71.68549019607843,
+      "avg": 70.38666666666667,
       "min": 49,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "saxenda",
-      "archetype": "glp1-weight-diabetes",
+      "drug": "sronyx 28 day",
+      "archetype": "contraceptive",
       "states": 51,
       "pairs": 1275,
-      "avg": 74.02666666666667,
-      "min": 46,
+      "avg": 71.04156862745099,
+      "min": 45,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "oriahnn",
-      "archetype": "brand-chronic",
+      "drug": "wixela",
+      "archetype": "inhaler-respiratory",
       "states": 51,
       "pairs": 1275,
-      "avg": 74.17411764705882,
-      "min": 46,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "zyvox",
-      "archetype": "brand-chronic",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 76.84470588235294,
-      "min": 49,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "emoquette",
-      "archetype": "common-generic-chronic",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 78.7043137254902,
+      "avg": 71.97882352941177,
       "min": 50,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "toremifene",
-      "archetype": "common-generic-chronic",
-      "states": 51,
-      "pairs": 1275,
-      "avg": 78.88941176470588,
-      "min": 50,
-      "max": 99,
-      "under30": 0,
-      "under20": 0
-    },
-    {
-      "drug": "uzedy",
+      "drug": "odactra",
       "archetype": "brand-chronic",
       "states": 51,
       "pairs": 1275,
-      "avg": 78.90745098039216,
-      "min": 47,
+      "avg": 72.94196078431372,
+      "min": 48,
       "max": 99,
       "under30": 0,
       "under20": 0
     },
     {
-      "drug": "ciprofloxacn",
+      "drug": "doxycycline hyclate",
       "archetype": "common-generic-acute",
       "states": 51,
       "pairs": 1275,
-      "avg": 78.9113725490196,
+      "avg": 73.48705882352941,
+      "min": 45,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "avita",
+      "archetype": "dermatology",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 73.60078431372548,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "atgam",
+      "archetype": "brand-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 75.02666666666667,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "xarelto star",
+      "archetype": "anticoagulant",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 76.20470588235294,
+      "min": 49,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "nexplanon",
+      "archetype": "contraceptive",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 77.36235294117647,
+      "min": 46,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "bydureon",
+      "archetype": "glp1-weight-diabetes",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 77.36549019607843,
+      "min": 48,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "mycophenolate",
+      "archetype": "common-generic-chronic",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 78.16705882352942,
+      "min": 49,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "cephalexin",
+      "archetype": "common-generic-acute",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 78.38588235294118,
+      "min": 49,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "armodafinil",
+      "archetype": "controlled-substance",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 78.43921568627451,
       "min": 50,
+      "max": 99,
+      "under30": 0,
+      "under20": 0
+    },
+    {
+      "drug": "proair",
+      "archetype": "inhaler-respiratory",
+      "states": 51,
+      "pairs": 1275,
+      "avg": 79.94823529411765,
+      "min": 46,
       "max": 99,
       "under30": 0,
       "under20": 0
@@ -558,364 +558,364 @@
     "25_30": 0,
     "30_35": 0,
     "35_40": 0,
-    "40_50": 258,
-    "over_50": 31617,
-    "total": 31875
+    "40_50": 1443,
+    "over_50": 62307,
+    "total": 63750
   },
   "worst_30": [
     [
-      46,
-      "advair",
-      "inhaler-respiratory",
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "kentucky",
+      "nevada"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "kentucky",
+      "pennsylvania"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "kentucky",
+      "virginia"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "kentucky",
+      "washington"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "maine",
+      "district-of-columbia"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "maine",
+      "maryland"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "maryland",
+      "district-of-columbia"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "nevada",
+      "pennsylvania"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "nevada",
+      "virginia"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "nevada",
+      "washington"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "pennsylvania",
+      "virginia"
+    ],
+    [
+      45,
+      "benzoyl peroxide",
+      "dermatology",
+      "virginia",
+      "washington"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "colorado",
+      "connecticut"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "colorado",
+      "nevada"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "colorado",
+      "new-york"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "colorado",
+      "washington"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "connecticut",
+      "kentucky"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "connecticut",
+      "nevada"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "connecticut",
+      "new-york"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "connecticut",
+      "virginia"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "connecticut",
+      "washington"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "kentucky",
+      "nevada"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "kentucky",
+      "virginia"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "nevada",
+      "new-york"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "nevada",
+      "washington"
+    ],
+    [
+      45,
+      "doxycycline hyclate",
+      "common-generic-acute",
+      "new-york",
+      "washington"
+    ],
+    [
+      45,
+      "sronyx 28 day",
+      "contraceptive",
       "iowa",
       "nebraska"
     ],
     [
-      46,
-      "hydrochlorothiazide",
-      "common-generic-chronic",
+      45,
+      "sronyx 28 day",
+      "contraceptive",
       "maine",
       "new-york"
     ],
     [
       46,
-      "hydrocortisone",
+      "benzoyl peroxide",
       "dermatology",
-      "iowa",
-      "nebraska"
+      "california",
+      "georgia"
     ],
     [
       46,
-      "oriahnn",
-      "brand-chronic",
-      "alabama",
-      "iowa"
-    ],
-    [
-      46,
-      "oriahnn",
-      "brand-chronic",
-      "kansas",
-      "oklahoma"
-    ],
-    [
-      46,
-      "oriahnn",
-      "brand-chronic",
-      "kansas",
-      "tennessee"
-    ],
-    [
-      46,
-      "oriahnn",
-      "brand-chronic",
-      "oklahoma",
-      "tennessee"
-    ],
-    [
-      46,
-      "saxenda",
-      "glp1-weight-diabetes",
-      "arizona",
-      "texas"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "iowa"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "kansas"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "mississippi"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "nebraska"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "north-carolina"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "alabama",
-      "tennessee"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "iowa",
-      "kansas"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "iowa",
-      "mississippi"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "iowa",
-      "north-carolina"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "iowa",
-      "tennessee"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "kansas",
-      "mississippi"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "kansas",
-      "nebraska"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "kansas",
-      "north-carolina"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "kansas",
-      "tennessee"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "mississippi",
-      "nebraska"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "mississippi",
-      "north-carolina"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "mississippi",
-      "tennessee"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "nebraska",
-      "north-carolina"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "nebraska",
-      "tennessee"
-    ],
-    [
-      47,
-      "advair",
-      "inhaler-respiratory",
-      "north-carolina",
-      "tennessee"
-    ],
-    [
-      47,
-      "hydrocortisone",
+      "benzoyl peroxide",
       "dermatology",
-      "alabama",
-      "iowa"
-    ],
-    [
-      47,
-      "hydrocortisone",
-      "dermatology",
-      "alabama",
-      "mississippi"
+      "maine",
+      "pennsylvania"
     ]
   ],
   "same_archetype_worst": [
     [
-      46,
-      "brand-chronic",
-      "maryland",
-      "uzedy",
-      "nurtec"
-    ],
-    [
-      46,
-      "glp1-weight-diabetes",
-      "massachusetts",
-      "zepbound",
-      "saxenda"
-    ],
-    [
-      46,
-      "glp1-weight-diabetes",
-      "pennsylvania",
-      "zepbound",
-      "saxenda"
+      47,
+      "dermatology",
+      "west-virginia",
+      "rosadan",
+      "malathion"
     ],
     [
       47,
-      "brand-chronic",
+      "glp1-weight-diabetes",
       "new-mexico",
-      "nurtec",
-      "oriahnn"
+      "trulicity",
+      "ozempic"
+    ],
+    [
+      48,
+      "anticoagulant",
+      "maine",
+      "fragmin",
+      "enoxaparin"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "arkansas",
+      "corlanor",
+      "nexlizet"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "arkansas",
+      "odactra",
+      "atgam"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "delaware",
+      "odactra",
+      "atgam"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "kentucky",
+      "relistor",
+      "nexlizet"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "pennsylvania",
+      "odactra",
+      "atgam"
+    ],
+    [
+      48,
+      "brand-chronic",
+      "wyoming",
+      "corlanor",
+      "nexlizet"
+    ],
+    [
+      48,
+      "controlled-substance",
+      "connecticut",
+      "armodafinil",
+      "zolpidem"
+    ],
+    [
+      48,
+      "controlled-substance",
+      "hawaii",
+      "alprazolam",
+      "zolpidem"
     ],
     [
       48,
       "glp1-weight-diabetes",
-      "new-mexico",
-      "zepbound",
-      "saxenda"
+      "arkansas",
+      "rybelsus",
+      "bydureon"
     ],
     [
-      49,
-      "brand-chronic",
+      48,
+      "glp1-weight-diabetes",
+      "delaware",
+      "rybelsus",
+      "bydureon"
+    ],
+    [
+      48,
+      "glp1-weight-diabetes",
       "idaho",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      49,
-      "brand-chronic",
-      "new-jersey",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      49,
-      "common-generic-acute",
-      "hawaii",
-      "amoxicillin",
-      "ciprofloxacn"
-    ],
-    [
-      49,
-      "glp1-weight-diabetes",
-      "new-mexico",
-      "mounjaro",
+      "trulicity",
       "ozempic"
     ],
     [
-      49,
-      "inhaler-respiratory",
-      "hawaii",
-      "advair",
-      "symbicort"
-    ],
-    [
-      49,
-      "inhaler-respiratory",
-      "maine",
-      "advair",
-      "symbicort"
-    ],
-    [
-      50,
-      "brand-chronic",
-      "pennsylvania",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      50,
-      "brand-chronic",
-      "rhode-island",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      50,
+      48,
       "glp1-weight-diabetes",
+      "indiana",
+      "rybelsus",
+      "bydureon"
+    ],
+    [
+      48,
+      "glp1-weight-diabetes",
+      "louisiana",
+      "rybelsus",
+      "bydureon"
+    ],
+    [
+      48,
+      "glp1-weight-diabetes",
+      "new-hampshire",
+      "rybelsus",
+      "bydureon"
+    ],
+    [
+      48,
+      "injectable-diabetes",
       "california",
-      "zepbound",
-      "saxenda"
+      "insulin lispro",
+      "insulin degludec"
     ],
     [
-      50,
-      "glp1-weight-diabetes",
-      "new-mexico",
-      "mounjaro",
-      "zepbound"
+      48,
+      "injectable-diabetes",
+      "illinois",
+      "insulin lispro",
+      "insulin degludec"
     ],
     [
-      50,
-      "glp1-weight-diabetes",
-      "oregon",
-      "mounjaro",
-      "ozempic"
-    ],
-    [
-      50,
-      "glp1-weight-diabetes",
-      "utah",
-      "ozempic",
-      "saxenda"
-    ],
-    [
-      51,
-      "brand-chronic",
-      "maine",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      51,
-      "brand-chronic",
-      "minnesota",
-      "nurtec",
-      "oriahnn"
-    ],
-    [
-      51,
-      "brand-chronic",
-      "oregon",
-      "nurtec",
-      "oriahnn"
+      48,
+      "injectable-diabetes",
+      "pennsylvania",
+      "insulin lispro",
+      "insulin degludec"
     ]
   ],
-  "failed_count": 1275,
-  "fetched_count": 1275
+  "failed_count": 0,
+  "fetched_count": 2550
 }
