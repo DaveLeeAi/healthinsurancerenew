@@ -133,7 +133,7 @@ function getPersonSchema() {
     '@id': IDS.person,
     name: 'Dave Lee',
     url: `${SITE_URL}/about/author/`,
-    image: `${SITE_URL}/images/dave-lee-headshot.jpg`,
+    image: `${SITE_URL}/images/dave-lee-headshot-april-2026.png`,
     jobTitle: 'Licensed ACA Health Insurance Agent',
     worksFor: { '@id': IDS.organization },
     hasOccupation: {

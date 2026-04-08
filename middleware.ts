@@ -32,6 +32,8 @@ const STATE_SLUGS = new Set([
 function isKnownStateSubroute(segment: string): boolean {
   // Static route: /{state}/health-insurance-plans
   if (segment === 'health-insurance-plans') return true
+  // Iowa MVP compare tool
+  if (segment === 'compare-health-insurance') return true
   // County slugs always end with "-county" (from countyNameToSlug)
   if (segment.endsWith('-county')) return true
   // Fallback county format: "county-{fips}"

@@ -83,7 +83,7 @@ export default function AuthorPage() {
         {/* ── Author Header ── */}
         <div className="flex flex-col sm:flex-row gap-6 items-start mb-8">
           <img
-            src="/images/dave-lee-headshot.jpg"
+            src="/images/dave-lee-headshot-april-2026.png"
             alt="Dave Lee — Licensed ACA Health Insurance Agent"
             width={112}
             height={112}

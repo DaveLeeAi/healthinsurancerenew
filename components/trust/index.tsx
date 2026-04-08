@@ -171,7 +171,7 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
     <div className="flex gap-4 items-start border border-gray-200 rounded-lg p-5 mt-10 mb-6 bg-gray-50">
       <div className="shrink-0">
         <img
-          src="/images/dave-lee-headshot.jpg"
+          src="/images/dave-lee-headshot-april-2026.png"
           alt={showFullName ? 'Dave Lee — Licensed ACA Health Insurance Agent' : 'Licensed ACA Agent'}
           width={56}
           height={56}
