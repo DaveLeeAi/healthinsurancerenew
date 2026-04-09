@@ -284,6 +284,7 @@ function archetypeOpener(data: NarrativeData, pattern: NarrativePattern): string
     case 'other':
       return null
   }
+  return null
 }
 
 /**
