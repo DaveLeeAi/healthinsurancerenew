@@ -48,7 +48,7 @@ export default function PlanAuthorityBlock({ planYear = 2026 }: { planYear?: num
           and do not reflect Advance Premium Tax Credits (APTC) that may reduce your net monthly
           cost. To estimate your APTC, use the{' '}
           <a
-            href="/tools/subsidy-estimator"
+            href="/tools/income-savings-calculator"
             className="text-primary-600 hover:underline"
           >
             subsidy estimator
@@ -65,11 +65,11 @@ export default function PlanAuthorityBlock({ planYear = 2026 }: { planYear?: num
           Section&nbsp;1311(c) (actuarial value); 45 CFR §&nbsp;147.130 (preventive care); 45 CFR
           §&nbsp;156.122 (formulary exception process); IRS Rev. Proc. 2024-35 (FPL tables and
           applicable percentages, plan year {planYear}).{' '}
-          <a href="/about/editorial-policy" className="text-primary-500 hover:underline">
+          <a href="/about/editorial-standards" className="text-primary-500 hover:underline">
             Editorial policy →
           </a>
           {' · '}
-          <a href="/about/data-methodology" className="text-primary-500 hover:underline">
+          <a href="/data-methodology" className="text-primary-500 hover:underline">
             Data methodology →
           </a>
         </p>

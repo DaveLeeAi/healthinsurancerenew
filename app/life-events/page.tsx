@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: 'website',
     title: 'Life Events & Health Insurance — Special Enrollment Periods',
     description:
-      'Navigate health insurance coverage changes after major life events. SEP windows, deadlines, and required documentation.',
+      'Check SEP windows, deadlines, and documentation after job loss, marriage, turning 26, and other qualifying life events.',
     url: `${SITE_URL}/life-events`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Life Events & Health Insurance — Special Enrollment Periods',
     description:
-      'Navigate health insurance coverage changes after major life events. SEP windows, deadlines, and required documentation.',
+      'Check SEP windows, deadlines, and documentation after job loss, marriage, turning 26, and other qualifying life events.',
   },
 }
 

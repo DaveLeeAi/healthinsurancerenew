@@ -121,10 +121,30 @@ export default function LifeEventPage({ params }: Props) {
     speakableCssSelectors: ['h1', '#faq-heading'],
   })
 
-  const faqItems = (event.content_page_data?.faq_questions ?? []).map((q) => ({
-    question: q,
-    answer: 'For detailed guidance on this question, review the decision tree and timeline sections above, or contact a licensed agent for personalized assistance.',
-  }))
+  const sepWindow = windowDays ? `${windowDays}-day` : '7-month'
+  const coverageTypes = [
+    event.sep_details.marketplace_eligible !== false ? 'a marketplace plan' : '',
+    event.sep_details.medicaid_eligible !== false ? 'Medicaid' : '',
+  ].filter(Boolean).join(' or ')
+
+  const faqItems = (event.content_page_data?.faq_questions ?? []).map((q) => {
+    const lq = q.toLowerCase()
+    let answer: string
+    if (lq.includes('how long') || lq.includes('deadline') || lq.includes('window')) {
+      answer = `After ${event.title.toLowerCase()}, you have a ${sepWindow} Special Enrollment Period to enroll in or change your health coverage. Coverage can start as early as the first of the following month if you enroll by the 15th. Missing this window means waiting until Open Enrollment unless another qualifying event occurs.`
+    } else if (lq.includes('document') || lq.includes('proof') || lq.includes('what do i need')) {
+      answer = `To use the SEP triggered by ${event.title.toLowerCase()}, the marketplace may request documentation verifying the qualifying event — typically within 30 days of enrollment. Acceptable proof depends on the event: examples include employer termination letters, marriage certificates, birth records, or Medicaid denial notices. Submit documents promptly to avoid coverage gaps.`
+    } else if (lq.includes('medicaid')) {
+      answer = event.sep_details.medicaid_eligible !== false
+        ? `${event.title} may qualify you for Medicaid if your household income falls below 138% of the Federal Poverty Level and you live in a state that expanded Medicaid. Unlike marketplace SEPs, Medicaid applications are accepted year-round — coverage can begin the same month if you qualify. States without expansion use different income thresholds.`
+        : `${event.title} primarily triggers a marketplace Special Enrollment Period. Medicaid eligibility is separate and based on income — households below 138% FPL in expansion states can apply year-round. If you are above that threshold, use the marketplace SEP to enroll in a subsidized plan instead.`
+    } else if (lq.includes('cobra')) {
+      answer = `COBRA extends your former employer plan for up to 18 months (36 months in some situations), but you pay the full premium plus a 2% administrative fee — often $500–$800/month per person. A marketplace plan with premium tax credits is frequently less expensive. Both COBRA and marketplace enrollment windows open for 60 days after losing job-based coverage.`
+    } else {
+      answer = `${event.title} triggers a ${sepWindow} Special Enrollment Period to enroll in ${coverageTypes || 'coverage'} outside of Open Enrollment. The steps, required documents, and deadlines are outlined in the sections above. Enroll promptly — the SEP window starts on the date of the qualifying event, not when you report it.`
+    }
+    return { question: q, answer }
+  })
   const faqSchema = faqItems.length > 0 ? buildFAQSchema(faqItems) : null
 
   // Editorial content

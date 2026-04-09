@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import config from '../data/config/config.json'
 import SchemaScript from '../components/SchemaScript'
 import LlmComment from '../components/LlmComment'
@@ -42,7 +43,7 @@ const guides = [
 const tools = [
   { title: 'Estimate Your Savings', description: 'Calculate how much your income could reduce your monthly premiums.', url: '/tools/income-savings-calculator' },
   { title: 'Does My Employer Plan Count?', description: 'Check if your job-based coverage meets ACA affordability standards.', url: '/tools/job-plan-affordability' },
-  { title: 'What Income Counts?', description: 'Discover which earnings types affect your marketplace savings.', url: '/tools/what-income-counts' },
+  { title: 'What Income Counts?', description: 'Check which earnings types the marketplace counts when calculating your savings.', url: '/tools/what-income-counts' },
   { title: 'Compare Plan Levels', description: 'Compare Bronze, Silver, Gold, and Platinum coverage and costs.', url: '/tools/plan-comparison' },
   { title: 'Check for Extra Savings on Silver Plans', description: 'Determine your eligibility for reduced copays and deductibles.', url: '/tools/csr-estimator' },
   { title: "Estimate Your Family's Costs", description: "Project your family's monthly costs across all plan levels.", url: '/tools/family-coverage-estimator' },
@@ -65,16 +66,16 @@ const whoItsFor = [
 ]
 
 const dataPillars = [
-  { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. Federal marketplace plan data.' },
-  { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. Federal marketplace rate filings.' },
-  { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. Federal marketplace rate filings.' },
-  { title: 'Drug Formulary', url: '/formulary', description: '15.2M+ drug coverage records. Tier placement and cost-sharing by plan.' },
-  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. Federal dental plan data.' },
-  { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.' },
-  { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.' },
-  { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.' },
-  { title: 'FAQ', url: '/faq', description: '54 expert answers across 9 categories. Regulatory citations included.' },
-  { title: 'Plan Details / SBC', url: '/states', description: 'Full SBC data for individual plans. Select a state and county to view plan details, coverage, cost-sharing, and formulary.' },
+  { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. Federal marketplace plan data.', cta: 'Compare' },
+  { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. Federal marketplace rate filings.', cta: 'Calculate' },
+  { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. Federal marketplace rate filings.', cta: 'Track' },
+  { title: 'Drug Formulary', url: '/formulary', description: '15.2M+ drug coverage records. Tier placement and cost-sharing by plan.', cta: 'Look up' },
+  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. Federal dental plan data.', cta: 'Browse' },
+  { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.', cta: 'Check' },
+  { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.', cta: 'See' },
+  { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.', cta: 'Estimate' },
+  { title: 'FAQ', url: '/faq', description: '54 expert answers across 9 categories. Regulatory citations included.', cta: 'Read' },
+  { title: 'Plan Details / SBC', url: '/states', description: 'Full SBC data for individual plans. Select a state and county to view plan details, coverage, cost-sharing, and formulary.', cta: 'Find' },
 ]
 
 const websiteSchema = {
@@ -329,7 +330,7 @@ export default function HomePage() {
       {/* Section 5: Data Pillars */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h2 id="data-pillars-heading" className="text-2xl font-bold text-slate-900 mb-2 leading-heading">10 Data Pillars — Full Coverage of Marketplace Health Insurance</h2>
-        <p className="text-slate-600 mb-8">Explore the complete dataset. Each pillar is powered by a separate federal government dataset and updated annually.</p>
+        <p className="text-slate-600 mb-8">View the complete dataset. Each pillar is powered by a separate federal government dataset and updated annually.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {dataPillars.map((pillar) => (
             <a
@@ -340,7 +341,7 @@ export default function HomePage() {
               <h3 className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors mb-1.5">{pillar.title}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">{pillar.description}</p>
               <span className="inline-flex items-center text-xs text-primary-600 font-medium mt-3 group-hover:gap-1 transition-all">
-                Explore
+                {pillar.cta}
                 <svg className="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -408,9 +409,9 @@ export default function HomePage() {
 
         {/* Image grid */}
         <div className="grid grid-cols-2 gap-3">
-          <img src="/images/hero/hero-1.webp" alt="Family reviewing health insurance options together" className="rounded-2xl shadow-lg w-full h-48 object-cover" loading="lazy" />
-          <img src="/images/hero/hero-2.webp" alt="Person using a laptop to compare health plans" className="rounded-2xl shadow-lg w-full h-48 object-cover mt-6" loading="lazy" />
-          <img src="/images/hero/hero-3.webp" alt="Healthcare professional assisting a patient" className="rounded-2xl shadow-lg w-full h-48 object-cover col-span-2" loading="lazy" />
+          <Image src="/images/hero/hero-1.webp" alt="Family reviewing health insurance options together" width={600} height={192} className="rounded-2xl shadow-lg w-full h-48 object-cover" loading="lazy" />
+          <Image src="/images/hero/hero-2.webp" alt="Person using a laptop to compare health plans" width={600} height={192} className="rounded-2xl shadow-lg w-full h-48 object-cover mt-6" loading="lazy" />
+          <Image src="/images/hero/hero-3.webp" alt="Healthcare professional assisting a patient" width={1200} height={192} className="rounded-2xl shadow-lg w-full h-48 object-cover col-span-2" loading="lazy" />
         </div>
       </section>
 

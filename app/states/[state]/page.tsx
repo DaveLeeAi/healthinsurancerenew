@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { stateName } = entry.frontmatter
   const pageTitle = `Health Insurance in ${stateName} (${PLAN_YEAR} Guide, Costs, Coverage Options)`
-  const pageDescription = `Explore health insurance in ${stateName}, including marketplace coverage options, subsidy resources, premium rates, county-level plan data, and where to compare ${PLAN_YEAR} plans.`
+  const pageDescription = `Compare marketplace coverage options in ${stateName}: premium rates, subsidy estimates, county-level plan data, and carrier options for ${PLAN_YEAR}.`
   const canonicalUrl = `${SITE_URL}/states/${params.state}`
 
   return {
