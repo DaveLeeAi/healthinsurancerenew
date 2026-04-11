@@ -25,10 +25,10 @@ export function TrustBar({
   reviewedDateIso,
 }: TrustBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-gray-200 pb-3 mb-6 text-sm text-gray-600">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-slate-200 pb-3 mb-6 text-sm text-slate-600">
       <span className="flex items-center gap-1.5">
         <svg
-          className="h-4 w-4 text-gray-400"
+          className="h-4 w-4 text-slate-400"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
@@ -46,7 +46,7 @@ export function TrustBar({
         </span>
       </span>
 
-      <span className="hidden sm:inline text-gray-300" aria-hidden="true">
+      <span className="hidden sm:inline text-slate-300" aria-hidden="true">
         |
       </span>
 
@@ -80,7 +80,7 @@ export function TrustBar({
         </span>
       </a>
 
-      <span className="hidden sm:inline text-gray-300" aria-hidden="true">
+      <span className="hidden sm:inline text-slate-300" aria-hidden="true">
         |
       </span>
 
@@ -94,7 +94,7 @@ export function TrustBar({
         >
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
-        <span className="font-medium text-gray-700">
+        <span className="font-medium text-slate-700">
           CMS Elite Circle of Champions
         </span>
       </span>
@@ -113,7 +113,7 @@ export function CMSDisclaimer({
   agencyName = 'Dave Lee Agency',
 }: CMSDisclaimerProps) {
   return (
-    <p className="text-xs text-gray-500 border-t border-gray-200 pt-4 mt-8">
+    <p className="text-xs text-slate-500 border-t border-slate-200 pt-4 mt-8">
       This website is operated by {agencyName} and is not the Health Insurance
       Marketplace® website. In offering this website, {agencyName} is required
       to comply with all applicable federal laws, including the standards
@@ -147,7 +147,7 @@ interface BLUFBoxProps {
 export function BLUFBox({ children }: BLUFBoxProps) {
   return (
     <div className="bg-blue-50 border-l-4 border-blue-600 rounded-r-lg px-5 py-4 mb-8">
-      <p className="text-base leading-relaxed text-gray-800 font-medium">
+      <p className="text-base leading-relaxed text-slate-800 font-medium">
         {children}
       </p>
     </div>
@@ -168,7 +168,7 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
     : 'Licensed ACA Agent';
 
   return (
-    <div className="flex gap-4 items-start border border-gray-200 rounded-lg p-5 mt-10 mb-6 bg-gray-50">
+    <div className="flex gap-4 items-start border border-slate-200 rounded-lg p-5 mt-10 mb-6 bg-slate-50">
       <div className="shrink-0">
         <img
           src="/images/dave-lee-headshot-april-2026.png"
@@ -179,7 +179,7 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
         />
       </div>
       <div className="min-w-0">
-        <p className="font-semibold text-gray-900">
+        <p className="font-semibold text-slate-900">
           <a
             href="/about/author/"
             className="hover:text-blue-700 hover:underline"
@@ -187,10 +187,10 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
             {displayName}
           </a>
         </p>
-        <p className="text-sm text-gray-600 mt-0.5">
+        <p className="text-sm text-slate-600 mt-0.5">
           CMS Elite Circle of Champions · Licensed in 20+ states
         </p>
-        <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+        <p className="text-sm text-slate-600 mt-2 leading-relaxed">
           {showFullName
             ? 'Dave Lee is a licensed ACA health insurance agent recognized by the Centers for Medicare & Medicaid Services as an Elite Circle of Champions member for enrolling 100+ consumers through the Health Insurance Marketplace.'
             : 'Written by a licensed ACA health insurance agent and CMS Elite Circle of Champions member with direct experience helping consumers navigate marketplace enrollment.'}
@@ -215,11 +215,11 @@ export function DataSourceAttribution({
   sources,
 }: DataSourceAttributionProps) {
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 mt-6 mb-6">
-      <p className="text-sm font-semibold text-gray-700 mb-2">
+    <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mt-6 mb-6">
+      <p className="text-sm font-semibold text-slate-700 mb-2">
         Data Sources
       </p>
-      <ul className="text-sm text-gray-600 space-y-1.5">
+      <ul className="text-sm text-slate-600 space-y-1.5">
         {sources.map((source) => (
           <li key={source.url} className="flex items-start gap-2">
             <span className="text-blue-500 mt-1 shrink-0" aria-hidden="true">
@@ -235,7 +235,7 @@ export function DataSourceAttribution({
                 {source.name}
               </a>
               {source.description && (
-                <span className="text-gray-500"> — {source.description}</span>
+                <span className="text-slate-500"> — {source.description}</span>
               )}
             </span>
           </li>
@@ -262,8 +262,8 @@ export function SectionHeading({
   const Tag = `h${level}` as 'h2' | 'h3';
   const styles =
     level === 2
-      ? 'text-2xl font-bold text-gray-900 mt-10 mb-4'
-      : 'text-xl font-semibold text-gray-900 mt-8 mb-3';
+      ? 'text-2xl font-bold text-slate-900 mt-10 mb-4'
+      : 'text-xl font-semibold text-slate-900 mt-8 mb-3';
 
   return (
     <Tag id={id} className={styles}>
