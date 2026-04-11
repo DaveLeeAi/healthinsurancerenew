@@ -1,7 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { getDentalByState, loadDentalCoverage } from '@/lib/data-loader'
-import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import GlobalCTA from '@/components/GlobalCTA'
@@ -102,18 +102,18 @@ export default function DentalStatePage({ params }: Props) {
     { name: stateName, url: canonicalUrl },
   ])
 
-  const articleSchema = buildArticleSchema({
-    headline: `${stateName} Stand-Alone Dental Plans for ${PLAN_YEAR}`,
+  const webPageSchema = buildWebPageSchema({
+    name: `${stateName} Dental Plans — ${PLAN_YEAR}`,
     description: `${plans.length} SADP dental plan variants from ${issuers.size} issuers in ${stateName}. Source: federal dental plan data.`,
+    url: canonicalUrl,
     dateModified: '2026-01-15',
-    dataSourceName: 'federal dental plan data',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+    speakableCssSelectors: ['h1', '#plans-heading'],
   })
 
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
-      <SchemaScript schema={articleSchema} id="article-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <LlmComment
         pageType="dental-state"
         state={stateUpper}

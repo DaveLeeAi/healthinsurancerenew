@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
+import { buildBreadcrumbSchema, buildFAQSchema, buildWebPageSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
@@ -112,9 +112,18 @@ export default function ToolsIndexPage() {
     { name: 'Tools', url: `${SITE_URL}/tools` },
   ])
 
+  const webPageSchema = buildWebPageSchema({
+    name: 'Free Health Insurance Tools & Calculators',
+    description: 'Free tools to estimate your health insurance savings, check eligibility, compare employer plans to marketplace options, and understand COBRA vs. marketplace costs. No sign-up required.',
+    url: `${SITE_URL}/tools`,
+    dateModified: '2026-01-15',
+    speakableCssSelectors: ['h1'],
+  })
+
   return (
     <>
       <SchemaScript schema={breadcrumbSchema} id="breadcrumb-schema" />
+      <SchemaScript schema={webPageSchema} id="webpage-schema" />
       <LlmComment pageType="tools-index" year={2026} data="federal-FPL+IRS" />
 
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
