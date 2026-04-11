@@ -364,43 +364,6 @@ export default async function StateDetailPage({ params }: Props) {
         </p>
       </section>
 
-      {/* ── 3. WHAT THIS PAGE HELPS WITH ── */}
-      <section className="my-10">
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">
-          What This Page Helps With
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[
-            {
-              icon: '📋',
-              text: `Understanding how health insurance works in ${stateName}`,
-            },
-            {
-              icon: '💰',
-              text: 'Reviewing costs, subsidies, and financial assistance options',
-            },
-            {
-              icon: '🗺️',
-              text: 'Finding county-level plan and premium data',
-            },
-            {
-              icon: '🔗',
-              text: `Navigating to the ${stateName} plan comparison page`,
-            },
-          ].map((item) => (
-            <div
-              key={item.text}
-              className="flex items-start gap-3 bg-slate-50 rounded-xl p-4"
-            >
-              <span className="text-lg shrink-0" aria-hidden="true">
-                {item.icon}
-              </span>
-              <p className="text-sm text-slate-700">{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── 4. PRIMARY CTA TO COMMERCIAL PAGE ── */}
       <section className="my-10 rounded-2xl bg-primary-50 border border-primary-200 p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
