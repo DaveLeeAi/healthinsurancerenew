@@ -1,6 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadRateVolatility } from '@/lib/data-loader'
+import { getCountyName } from '@/lib/county-lookup'
 import allStatesData from '@/data/config/all-states.json'
 import { buildBreadcrumbSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
@@ -82,21 +83,23 @@ export default function RatesIndexPage() {
 
     <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-navy-900 mb-2">Health Insurance Rate Volatility</h1>
-        <p className="text-neutral-500">
-          {dataset.data.length.toLocaleString()} counties · Plan Year {dataset.metadata.plan_year} · Source: federal marketplace rate filings
+        <h1 className="text-3xl font-bold text-navy-900 mb-2">How Much Does Health Insurance Cost in Your Area?</h1>
+        <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
+          Premiums vary more than most people expect — by county, age, and which carrier you pick.
+          This page shows {dataset.metadata.plan_year} marketplace rates across {dataset.data.length.toLocaleString()} counties
+          using federal rate filing data.
         </p>
       </div>
 
       <section>
-        <h2 className="text-lg font-semibold text-navy-800 mb-3">Highest Age-64 Premium Shock</h2>
-        <p className="text-sm text-neutral-500 mb-4">Counties where age-64 premiums are highest relative to age-40 (3x cap = ACA limit)</p>
+        <h2 className="text-lg font-semibold text-navy-800 mb-3">Where Premiums Jump the Most as You Get Older</h2>
+        <p className="text-sm text-neutral-500 mb-4">ACA rules let plans charge people near 65 up to 3x more than a 40-year-old. These counties are closest to that limit.</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-neutral-50 text-left">
                 <th className="px-4 py-2 font-medium text-neutral-600">State</th>
-                <th className="px-4 py-2 font-medium text-neutral-600">County FIPS</th>
+                <th className="px-4 py-2 font-medium text-neutral-600">County</th>
                 <th className="px-4 py-2 font-medium text-neutral-600 text-right">Age 40 Avg</th>
                 <th className="px-4 py-2 font-medium text-neutral-600 text-right">Age 64 Avg</th>
                 <th className="px-4 py-2 font-medium text-neutral-600 text-right">Shock Ratio</th>
@@ -108,7 +111,7 @@ export default function RatesIndexPage() {
                   <td className="px-4 py-2">{r.state_code}</td>
                   <td className="px-4 py-2">
                     <a href={`/rates/${r.state_code.toLowerCase()}/${r.county_fips}`} className="text-primary-600 hover:underline">
-                      {r.county_fips}
+                      {getCountyName(r.county_fips) ?? '—'}
                     </a>
                   </td>
                   <td className="px-4 py-2 text-right font-mono">${r.avg_premium_age_40.toFixed(0)}</td>
@@ -143,9 +146,9 @@ export default function RatesIndexPage() {
 
       {sbmStates.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold text-navy-800 mb-2">State-Based Marketplace States</h2>
+          <h2 className="text-lg font-semibold text-navy-800 mb-2">States That Run Their Own Marketplace</h2>
           <p className="text-neutral-500 text-sm mb-4">
-            These states file rate data with their own exchanges, not with the federal CMS system.
+            These states run their own health insurance marketplace. Rate data comes directly from each state exchange.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {sbmStates.map((s) => (
