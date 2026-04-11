@@ -1,6 +1,7 @@
 // NOTE: No name/NPN on this page — generic byline only
 import type { Metadata } from 'next'
 import { loadPolicyScenarios } from '@/lib/data-loader'
+import { getCountyName } from '@/lib/county-lookup'
 import { buildBreadcrumbSchema, buildArticleSchema, buildFAQSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
@@ -130,7 +131,7 @@ export default function EnhancedCreditsIndexPage() {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            Enhanced Premium Tax Credits — {PLAN_YEAR} Expiration Analysis
+            What Happened to Your Subsidy in {PLAN_YEAR}?
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
             The Inflation Reduction Act enhanced marketplace premium subsidies through 2025. Those
@@ -215,7 +216,7 @@ export default function EnhancedCreditsIndexPage() {
                         href={`/enhanced-credits/${r.state_code.toLowerCase()}/${r.county_fips}`}
                         className="text-primary-600 hover:underline"
                       >
-                        {r.county_fips}
+                        {getCountyName(r.county_fips) ?? '—'}
                       </a>
                     </td>
                     <td className="py-3 px-4 text-right font-semibold text-green-700">

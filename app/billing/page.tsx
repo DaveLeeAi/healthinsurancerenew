@@ -138,18 +138,18 @@ export default function BillingIndexPage() {
         <section>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 rounded-xl bg-neutral-50">
-              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Scenarios</div>
+              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Billing situations covered</div>
               <div className="text-2xl font-bold text-navy-800">{dataset.data.length}</div>
             </div>
             <div className="p-4 rounded-xl bg-neutral-50">
-              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">High Risk</div>
+              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Common billing traps</div>
               <div className="text-2xl font-bold text-red-700">{highRiskCount}</div>
-              <div className="text-xs text-neutral-400 mt-0.5">most common traps</div>
+              <div className="text-xs text-neutral-400 mt-0.5">where people get surprised</div>
             </div>
             <div className="p-4 rounded-xl bg-neutral-50">
-              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">CPT Codes</div>
+              <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Procedure codes explained</div>
               <div className="text-2xl font-bold text-navy-800">{totalCptCodes}</div>
-              <div className="text-xs text-neutral-400 mt-0.5">referenced</div>
+              <div className="text-xs text-neutral-400 mt-0.5">in plain English</div>
             </div>
             <div className="p-4 rounded-xl bg-neutral-50">
               <div className="text-xs text-neutral-400 uppercase tracking-wide mb-1">Categories</div>

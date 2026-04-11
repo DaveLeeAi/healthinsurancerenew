@@ -107,13 +107,13 @@ export default function DentalIndexPage() {
         {/* ── H1 + intro ── */}
         <section>
           <h1 className="text-3xl font-bold text-navy-900 mb-3">
-            Stand-Alone Dental Plans — {PLAN_YEAR}
+            Dental Plans Through the Marketplace — {PLAN_YEAR}
           </h1>
           <p className="text-neutral-600 text-lg leading-relaxed max-w-3xl">
-            <strong>{dataset.data.length.toLocaleString()}</strong> dental plan variants from{' '}
-            <strong>{totalIssuers}</strong> issuers across <strong>{states.length}</strong> states
-            are available through the health insurance marketplace for {PLAN_YEAR}. Select a state to compare
-            coverage tiers, annual maximums, waiting periods, and issuer options.
+            Your medical plan does not cover adult dental. If you want dental coverage, you buy a
+            separate dental plan — called a stand-alone dental plan — through the marketplace or
+            directly from a carrier. Select a state below to compare {PLAN_YEAR} premiums, annual
+            maximums, and waiting periods.
           </p>
         </section>
 

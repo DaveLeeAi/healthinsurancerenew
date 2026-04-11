@@ -52,8 +52,8 @@ const tools = [
 
 const heroTools = [
   { title: 'Estimate Your Savings', description: 'Calculate personalized subsidy estimates based on your income.', url: '/tools/income-savings-calculator', icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
-  { title: 'Check If You Qualify', description: 'Assess your eligibility for marketplace coverage and assistance.', url: '/eligibility-check', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
-  { title: 'Find Your State', description: 'Get state-specific enrollment information and coverage details.', url: '/states', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
+  { title: 'Check If You Qualify', description: 'Find out if you qualify for marketplace coverage or Medicaid.', url: '/eligibility-check', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+  { title: 'Find Your State', description: 'See 2026 plans, premiums, and enrollment options in your state.', url: '/states', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
 ]
 
 const whoItsFor = [
@@ -69,12 +69,12 @@ const dataPillars = [
   { title: 'Plans', url: '/plans', description: 'Compare plans in every county. Premiums, metal levels, deductibles. Federal marketplace plan data.', cta: 'Compare' },
   { title: 'Subsidies', url: '/subsidies', description: 'Calculate your premium tax credit by county. Based on benchmark silver premiums. Federal marketplace rate filings.', cta: 'Calculate' },
   { title: 'Rates', url: '/rates', description: 'Track premium rate volatility. Age-rating ratios and carrier counts. Federal marketplace rate filings.', cta: 'Track' },
-  { title: 'Drug Formulary', url: '/formulary', description: '15.2M+ drug coverage records. Tier placement and cost-sharing by plan.', cta: 'Look up' },
-  { title: 'Dental Plans', url: '/dental', description: '942 stand-alone dental plans across 30 states. Federal dental plan data.', cta: 'Browse' },
-  { title: 'Billing', url: '/billing', description: 'Common billing scenarios. No Surprises Act protections and dispute guidance.', cta: 'Check' },
-  { title: 'Life Events', url: '/life-events', description: '8 qualifying life events with SEP windows, deadlines, and documentation.', cta: 'See' },
-  { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'County-level subsidy cliff modeling. IRA credit expiration impact.', cta: 'Estimate' },
-  { title: 'FAQ', url: '/faq', description: '54 expert answers across 9 categories. Regulatory citations included.', cta: 'Read' },
+  { title: 'Drug Formulary', url: '/formulary', description: 'See which drugs your plan covers — and what tier, restrictions, and costs apply.', cta: 'Look up' },
+  { title: 'Dental Plans', url: '/dental', description: 'Compare dental-only plans by state. Premiums, waiting periods, and annual maximums.', cta: 'Browse' },
+  { title: 'Billing', url: '/billing', description: 'Learn when surprise bills are illegal — and what to do if you get one.', cta: 'Check' },
+  { title: 'Life Events', url: '/life-events', description: 'Lost your job? Had a baby? You may be able to enroll outside open enrollment.', cta: 'See' },
+  { title: 'Enhanced Credits', url: '/enhanced-credits', description: 'See how much your monthly premium changed when enhanced credits expired in 2026.', cta: 'Estimate' },
+  { title: 'FAQ', url: '/faq', description: 'Plain-English answers to the most common questions about marketplace coverage.', cta: 'Read' },
   { title: 'Plan Details / SBC', url: '/states', description: 'Full SBC data for individual plans. Select a state and county to view plan details, coverage, cost-sharing, and formulary.', cta: 'Find' },
 ]
 
