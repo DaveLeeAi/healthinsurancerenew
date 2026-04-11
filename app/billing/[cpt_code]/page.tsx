@@ -379,30 +379,6 @@ export default function BillingScenarioPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ── Common Billing Surprises ── */}
-        <section aria-labelledby="surprises-heading">
-          <h2 id="surprises-heading" className="text-xl font-semibold text-navy-800 mb-4">
-            Common Billing Surprises
-          </h2>
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 space-y-4">
-            <SurpriseItem
-              title="Balance Billing"
-              text="If an out-of-network provider charges more than your plan's allowed amount, you may receive a 'balance bill' for the difference. The No Surprises Act protects against this for emergency services and certain in-facility scenarios, but gaps remain for non-emergency elective care."
-            />
-            <SurpriseItem
-              title="Out-of-Network Providers at In-Network Facilities"
-              text="Even at an in-network hospital, individual providers (anesthesiologists, radiologists, pathologists) may be out-of-network. The No Surprises Act requires these providers to bill at in-network rates when you had no choice, but always verify before scheduled procedures."
-            />
-            <SurpriseItem
-              title="Facility Fees"
-              text="Hospital-owned clinics and outpatient centers often add a separate facility fee on top of the physician's charge for the same service. This can double or triple your cost compared to an independent physician's office. Ask whether your provider's office charges a facility fee before scheduling."
-            />
-            <SurpriseItem
-              title="Coding Errors"
-              text="Up to 80% of medical bills contain errors according to industry estimates. Common errors include: upcoding (billing a more expensive code), unbundling (billing components separately instead of as one procedure), and duplicate charges. Always request an itemized bill."
-            />
-          </div>
-        </section>
 
         {/* ── What to Do If You Get This Bill ── */}
         <section aria-labelledby="action-heading">
@@ -538,18 +514,6 @@ export default function BillingScenarioPage({ params }: Props) {
 // ---------------------------------------------------------------------------
 // Local sub-components
 // ---------------------------------------------------------------------------
-
-function SurpriseItem({ title, text }: { title: string; text: string }) {
-  return (
-    <div className="flex gap-3">
-      <div className="flex-shrink-0 w-2 h-2 rounded-full bg-amber-400 mt-2" />
-      <div>
-        <h3 className="font-semibold text-amber-900 text-sm">{title}</h3>
-        <p className="text-sm text-neutral-700 leading-relaxed">{text}</p>
-      </div>
-    </div>
-  )
-}
 
 function ActionStep({
   number,
