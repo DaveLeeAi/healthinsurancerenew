@@ -1,27 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import config from '@/data/config/config.json'
 
-const licensedStates = [
-  { name: 'Alabama', abbr: 'AL', slug: 'alabama' },
-  { name: 'California', abbr: 'CA', slug: 'california' },
-  { name: 'Georgia', abbr: 'GA', slug: 'georgia' },
-  { name: 'Iowa', abbr: 'IA', slug: 'iowa' },
-  { name: 'Kansas', abbr: 'KS', slug: 'kansas' },
-  { name: 'Maryland', abbr: 'MD', slug: 'maryland' },
-  { name: 'Michigan', abbr: 'MI', slug: 'michigan' },
-  { name: 'Missouri', abbr: 'MO', slug: 'missouri' },
-  { name: 'Mississippi', abbr: 'MS', slug: 'mississippi' },
-  { name: 'New Mexico', abbr: 'NM', slug: 'new-mexico' },
-  { name: 'Ohio', abbr: 'OH', slug: 'ohio' },
-  { name: 'Oregon', abbr: 'OR', slug: 'oregon' },
-  { name: 'South Carolina', abbr: 'SC', slug: 'south-carolina' },
-  { name: 'Tennessee', abbr: 'TN', slug: 'tennessee' },
-  { name: 'Texas', abbr: 'TX', slug: 'texas' },
-  { name: 'Utah', abbr: 'UT', slug: 'utah' },
-  { name: 'Virginia', abbr: 'VA', slug: 'virginia' },
-  { name: 'Washington', abbr: 'WA', slug: 'washington' },
-]
+const licensedStates = config.licensedStates
 
 const categories = [
   {
