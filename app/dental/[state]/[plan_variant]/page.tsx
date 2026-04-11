@@ -12,6 +12,7 @@ import {
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import GenericByline from '@/components/GenericByline'
+import GlobalCTA from '@/components/GlobalCTA'
 import LlmComment from '@/components/LlmComment'
 import type { DentalRecord } from '@/lib/types'
 import { generateDentalContent } from '@/lib/content-templates'
@@ -577,6 +578,8 @@ export default function DentalPlanPage({ params }: Props) {
         <EntityLinkCard links={entityLinks} title="Related Pages" variant="bottom" />
 
         <GenericByline dataSource="federal dental plan data" planYear={PLAN_YEAR} />
+
+        <GlobalCTA />
 
         {/* ── Medical disclaimer ── */}
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">

@@ -6,6 +6,7 @@ import { buildFAQSchema, buildBreadcrumbSchema, buildArticleSchema } from '@/lib
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import GenericByline from '@/components/GenericByline'
+import GlobalCTA from '@/components/GlobalCTA'
 import LlmComment from '@/components/LlmComment'
 
 const SITE_URL = 'https://healthinsurancerenew.com'
@@ -248,6 +249,8 @@ export default function FAQDetailPage({ params }: Props) {
 
         {/* ── Entity links ── */}
         <EntityLinkCard links={entityLinks} title="Related Resources" variant="bottom" />
+
+        <GlobalCTA />
 
         <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 

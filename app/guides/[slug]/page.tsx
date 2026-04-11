@@ -6,6 +6,7 @@ import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../../components/GenericByline'
 import LlmComment from '../../../components/LlmComment'
 import SourcesBox from '../../../components/SourcesBox'
+import GlobalCTA from '@/components/GlobalCTA'
 import { getCollectionSlugs, getCollectionEntry } from '../../../lib/markdown'
 import type { GuideFrontmatter } from '../../../lib/markdown'
 import { buildArticleSchema, buildBreadcrumbSchema, buildFAQSchema } from '../../../lib/schema-markup'
@@ -141,6 +142,8 @@ export default async function GuideDetailPage({ params }: Props) {
         { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
         { title: 'IRS - Affordable Care Act', url: 'https://www.irs.gov/affordable-care-act' },
       ]} />
+
+      <GlobalCTA />
     </article>
   )
 }

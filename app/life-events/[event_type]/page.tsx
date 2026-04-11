@@ -7,6 +7,7 @@ import { getRelatedEntities } from '@/lib/entity-linker'
 import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import GenericByline from '@/components/GenericByline'
+import GlobalCTA from '@/components/GlobalCTA'
 import LlmComment from '@/components/LlmComment'
 import { generateLifeEventContent } from '@/lib/content-templates'
 import SEPDecisionTree from '@/components/SEPDecisionTree'
@@ -121,6 +122,7 @@ export default function LifeEventPage({ params }: Props) {
     speakableCssSelectors: ['h1', '#faq-heading'],
   })
 
+  const windowDays = event.sep_details.window_days
   const sepWindow = windowDays ? `${windowDays}-day` : '7-month'
   const coverageTypes = [
     event.sep_details.marketplace_eligible !== false ? 'a marketplace plan' : '',
@@ -162,8 +164,6 @@ export default function LifeEventPage({ params }: Props) {
   // Category styling
   const catColors = CATEGORY_COLORS[event.category] ?? { bg: 'bg-neutral-100', text: 'text-neutral-600' }
   const catLabel = CATEGORY_LABELS[event.category] ?? event.category.replace(/_/g, ' ')
-
-  const windowDays = event.sep_details.window_days
 
   return (
     <>
@@ -438,6 +438,8 @@ export default function LifeEventPage({ params }: Props) {
           title="Related Resources"
           variant="bottom"
         />
+
+        <GlobalCTA />
 
         <GenericByline dataSource="HealthInsuranceRenew editorial team" />
 

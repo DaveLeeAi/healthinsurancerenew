@@ -4,6 +4,7 @@ import { getDentalByState, loadDentalCoverage } from '@/lib/data-loader'
 import { buildBreadcrumbSchema, buildArticleSchema } from '@/lib/schema-markup'
 import SchemaScript from '@/components/SchemaScript'
 import GenericByline from '@/components/GenericByline'
+import GlobalCTA from '@/components/GlobalCTA'
 import LlmComment from '@/components/LlmComment'
 
 const PLAN_YEAR = 2026
@@ -274,6 +275,8 @@ export default function DentalStatePage({ params }: Props) {
         </section>
 
         <GenericByline dataSource="federal dental plan data" planYear={PLAN_YEAR} />
+
+        <GlobalCTA />
 
         <footer className="border-t border-neutral-200 pt-6 text-xs text-neutral-400 space-y-2">
           <p>
