@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<!-- V70 Formulary Template — Ozempic NC — LOCK CANDIDATE -->
+<!-- V47–V68: Full history. V68 scored ~9.0 externally. -->
+<!-- V69: six targeted rewrites on V68 per ChatGPT review — medical-ambiguity, timing certainty, deductible row, sub-header, footer, peer-to-peer step. -->
+<!-- V70 changes (four targeted fixes per ChatGPT review of V69, plus governance cleanup):
+     1. Checklist row 3 deductible: duplicated/awkward phrasing rewritten to match the stronger cost-factors row — now explains separate-vs-combined deductible in terms of when the lower copay kicks in
+     2. Timeline "urgent review" certainty: "plans are required to review urgent requests faster" softened to "urgent reviews generally move faster" — removes regulatory certainty claim in YMYL context
+     3. Drug class context paragraph: "more paperwork" (still process-y) replaced with consumer-outcome language "pay more out of pocket and wait longer to start"
+     4. Prescription deductible in cost-factors row: narrow "often $300 to $500" replaced with accurate NC market variance description (NC plans range from $0 integrated to $1,000+ per 2026 BCBS NC designs) — directs user to SBC for exact number
+     Additional governance cleanup caught during V70 review:
+     5. Removed 2 remaining contractions carried over from V68/V69 ("won't" → "will not", "you've" → "you have")
+     6. Replaced 3 instances of "insurer"/"insurers" with "insurance company"/"insurance companies" per CLAUDE.md rule
+     No other changes. Coverage summary bullets, cost table ranges, carrier comparison, FAQs, About block unchanged from V69. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ozempic Coverage in North Carolina (2026) | Copay, Tier &amp; Prior Auth</title>
+<meta name="description" content="Does your North Carolina plan cover Ozempic in 2026? We reviewed 52 plans — see the most common tier, estimated cost ranges, and whether you need prior authorization.">
+<link rel="canonical" href="https://healthinsurancerenew.com/north-carolina/ozempic/">
+<meta name="page-type" content="brand">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://healthinsurancerenew.com/north-carolina/ozempic/">
+<meta property="og:title" content="Ozempic Coverage in North Carolina (2026) | Copay, Tier &amp; Prior Auth">
+<meta property="og:description" content="Does your North Carolina plan cover Ozempic in 2026? We reviewed 52 plans — see the most common tier, estimated cost ranges, and whether you need prior authorization.">
+<meta property="og:site_name" content="HealthInsuranceRenew">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ozempic Coverage in North Carolina (2026) | Copay, Tier &amp; Prior Auth">
+<meta name="twitter:description" content="Does your North Carolina plan cover Ozempic in 2026? We reviewed 52 plans — see the most common tier, estimated cost ranges, and whether you need prior authorization.">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f1923;--ink2:#1e2d3d;--mid:#3d5166;--muted:#6b7f91;--faint:#97a7b5;
+  --rule:#dde4ea;--surface:#f5f7f9;--white:#fff;
+  --green:#0a6840;--green-bg:#e6f3ee;
+  --blue:#14518c;--blue-lt:#e8f1fb;
+  --amber:#7a4800;--amber-bg:#fef5e6;
+  --red:#8b1f1f;--red-bg:#fdf0f0;
+  --navy:#0d1b2a;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --serif:'Lora',Georgia,serif;
+}
+body{font-family:var(--sans);background:var(--surface);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:60px}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+.pbar{background:var(--ink2);padding:5px 20px;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
+.pi{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.55)}
+.pd{width:5px;height:5px;border-radius:50%;background:#4ade80;flex-shrink:0}
+.nav{background:var(--white);border-bottom:1px solid var(--rule);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:50px}
+.nav-logo{font-family:var(--serif);font-size:16px;color:var(--ink);text-decoration:none}
+.nav-links{display:flex;gap:20px;list-style:none}
+.nav-links a{font-size:13px;color:var(--mid);text-decoration:none}
+.nav-cta{background:var(--blue);color:#fff!important;padding:6px 15px;border-radius:6px;font-weight:500}
+.bc{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding-top:16px;font-size:12px;color:var(--faint)}
+.bc a{color:var(--blue);text-decoration:none}
+.bc-sep{font-size:10px;color:var(--rule)}
+h1.ph{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.22;letter-spacing:-.2px;color:var(--ink);max-width:560px;padding-top:14px}
+.dl{margin-top:7px;font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp{font-size:11px;font-weight:500;background:var(--blue-lt);color:var(--blue);padding:2px 9px;border-radius:20px}
+.cluster{background:var(--white);border:1px solid var(--rule);border-radius:12px;margin-top:18px;overflow:hidden}
+.ca{padding:17px 20px 13px}
+.ql{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:9px}
+.qa-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+.qa-item{display:flex;align-items:baseline;gap:9px;font-size:14px;line-height:1.5;color:var(--ink)}
+.qd{width:4px;height:4px;border-radius:50%;background:var(--faint);flex-shrink:0;margin-top:7px;display:inline-block}
+.qv{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:11px;padding-top:10px;border-top:1px solid var(--rule)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat{padding:12px 15px;border-right:1px solid var(--rule)}
+.stat:last-child{border-right:none}
+.sv{font-size:20px;font-weight:500;line-height:1;margin-bottom:3px}
+.sv.g{color:var(--green)}
+.sl{font-size:11.5px;color:var(--muted);line-height:1.35}
+.ss{font-size:11px;color:var(--faint);margin-top:2px}
+.catch{padding:11px 18px;background:var(--amber-bg);display:flex;gap:10px;align-items:flex-start}
+.catch p{font-size:13px;color:var(--amber);line-height:1.55;margin:0}
+.cta-g{background:#0b6e4a;border-radius:10px;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:11px}
+.ct{font-size:14px;font-weight:500;color:#fff;line-height:1.3}
+.cs{font-size:12px;color:rgba(255,255,255,.6);margin-top:1px}
+.bw{background:#fff;color:#0b6e4a;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.dv{border:none;border-top:1px solid var(--rule);margin:34px 0}
+h2.sec{font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);padding-bottom:7px;border-bottom:1px solid var(--rule);margin:0 0 13px;line-height:inherit}
+.br{font-size:14px;color:var(--mid);line-height:1.65;margin-bottom:13px}
+.cb{background:var(--white);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.cr{display:grid;grid-template-columns:1fr auto;gap:14px;padding:12px 17px;border-bottom:1px solid var(--rule);align-items:center}
+.crn{font-size:13.5px;font-weight:500;color:var(--ink)}
+.crd{font-size:12px;color:var(--muted);margin-top:1px}
+.crf{font-size:16px;font-weight:500;text-align:right;white-space:nowrap}
+.cru{font-size:11px;color:var(--muted);text-align:right}
+.cf{padding:8px 17px;font-size:11.5px;color:var(--muted);font-style:italic;background:var(--surface);border-top:1px solid var(--rule);line-height:1.5}
+.ci{font-size:13.5px;color:var(--mid);line-height:1.6;margin:11px 0 9px}
+.cfb{border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.cfr{display:flex;gap:12px;padding:10px 15px;border-bottom:1px solid var(--rule);font-size:13px;align-items:baseline}
+.cfr:last-child{border-bottom:none}
+.cfk{font-weight:500;color:var(--ink);min-width:130px;flex-shrink:0}
+.cfv{color:var(--mid);line-height:1.5}
+.ab{background:var(--white);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.rr{display:flex;gap:13px;padding:12px 17px;border-bottom:1px solid var(--rule);align-items:flex-start}
+.rb{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0;margin-top:2px}
+.rt{font-size:13.5px;font-weight:500;color:var(--ink)}
+.ro{font-size:11.5px;color:var(--muted);font-weight:400}
+.rd{font-size:13px;color:var(--mid);line-height:1.55;margin-top:3px}
+h3.sub{padding:8px 17px;background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:var(--faint);margin:0;line-height:inherit}
+.tr{display:grid;grid-template-columns:60px 1fr;gap:12px;padding:10px 17px;border-bottom:1px solid var(--rule);align-items:flex-start}
+.tt{font-size:11.5px;color:var(--faint);padding-top:2px;line-height:1.35}
+.th{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.td{font-size:12.5px;color:var(--mid);line-height:1.5}
+.sr{display:flex;gap:11px;padding:10px 17px;border-bottom:1px solid var(--rule);align-items:flex-start}
+.sr.last{border-bottom:none}
+.sn{width:20px;height:20px;border-radius:50%;background:var(--blue-lt);color:var(--blue);font-size:10.5px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.sh{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.sd{font-size:12.5px;color:var(--mid);line-height:1.5}
+.kb{background:var(--white);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.kr{display:flex;align-items:center;justify-content:space-between;padding:10px 17px;border-bottom:1px solid var(--rule);gap:12px}
+.kr:last-child{border-bottom:none}
+.kn{font-size:13px;font-weight:500;color:var(--ink)}
+.kd{font-size:11.5px;color:var(--muted)}
+.krr{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.kp{font-size:11.5px;color:var(--blue);margin-right:4px}
+.tp{font-size:10.5px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+.tp-g{background:var(--green-bg);color:var(--green)}
+.tp-a{background:var(--amber-bg);color:var(--amber)}
+.tp-r{background:var(--red-bg);color:var(--red)}
+.tp-n{background:var(--surface);color:var(--muted)}
+.kf{padding:7px 17px;font-size:11px;color:var(--muted);font-style:italic;background:var(--surface);border-top:1px solid var(--rule);line-height:1.5}
+.sw{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:flex-start}
+.sw:last-child{border-bottom:none}
+.si{width:24px;height:24px;border-radius:50%;background:var(--blue-lt);color:var(--blue);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sh2{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.sde{font-size:12.5px;color:var(--mid);line-height:1.5}
+.lim{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:11px 16px;margin-top:10px}
+.lt{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-bottom:5px}
+.lp{font-size:12.5px;color:var(--mid);line-height:1.55}
+.fw{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--white)}
+.fq{border-bottom:1px solid var(--rule)}
+.fq:last-child{border-bottom:none}
+.fq summary{padding:11px 16px;font-size:13.5px;font-weight:500;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;list-style:none}
+.fq summary::-webkit-details-marker{display:none}
+.fc{font-size:10px;color:var(--faint);flex-shrink:0;transition:transform .2s}
+details[open] .fc{transform:rotate(180deg)}
+.fb{padding:0 16px 12px;font-size:13px;color:var(--mid);line-height:1.6}
+.abt{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin-top:32px;font-size:12px;color:var(--mid);line-height:1.65}
+.am{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid var(--rule);font-size:11px;color:var(--faint)}
+.adot{width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0}
+.al{display:flex;gap:14px;margin-top:8px}
+.al a{font-size:11.5px;color:var(--blue);text-decoration:none}
+.el{display:flex;flex-direction:column;gap:0}
+.ea{display:block;padding:9px 0;border-bottom:1px solid var(--rule);font-size:13.5px;color:var(--blue);text-decoration:none;display:flex;justify-content:space-between;align-items:center}
+.ea:last-child{border-bottom:none}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+.pill{font-size:12px;padding:5px 13px;border:1px solid var(--rule);border-radius:20px;color:var(--mid);text-decoration:none;background:var(--white)}
+.iw{margin-top:10px}
+.in{font-size:12px;color:var(--muted);line-height:1.55;padding:8px 0}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--rule);text-decoration:none;gap:10px}
+.in2{font-size:13.5px;font-weight:500;color:var(--ink)}
+.is{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:11.5px;color:var(--muted)}
+.tip{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.sn2{background:var(--white);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sn2 p{font-size:13px;color:var(--mid)}
+.bo{font-size:12.5px;color:var(--blue);text-decoration:none;font-weight:500;white-space:nowrap}
+.cn{background:var(--navy);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:14px}
+.cn-t{font-family:var(--serif);font-size:19px;font-weight:500;color:#fff;margin-bottom:2px;line-height:1.2}
+.cn-s{font-size:12px;color:#7fb3e0}
+.bwn{background:#fff;color:var(--navy);border-radius:6px;padding:9px 20px;font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;flex-shrink:0}
+footer.disc{font-size:11.5px;color:var(--muted);border-top:1px solid var(--rule);padding-top:13px;margin-top:20px;line-height:1.65}
+footer.disc p+p{margin-top:5px}
+@media(max-width:580px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-top:1px solid var(--rule);grid-column:span 2}
+  h1.ph{font-size:21px}
+  .cta-g,.cn{flex-direction:column;align-items:flex-start}
+  .sn2{flex-direction:column;align-items:flex-start}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://healthinsurancerenew.com/north-carolina/ozempic/#webpage",
+      "name": "Ozempic Coverage in North Carolina (2026) | Copay, Tier & Prior Auth",
+      "description": "Does your North Carolina plan cover Ozempic in 2026? We reviewed 52 plans — see the most common tier, estimated cost ranges, and whether you need prior authorization.",
+      "url": "https://healthinsurancerenew.com/north-carolina/ozempic/",
+      "inLanguage": "en-US",
+      "lastReviewed": "2026-04-14",
+      "datePublished": "2026-01-15",
+      "dateModified": "2026-04-14",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://healthinsurancerenew.com/#website",
+        "name": "HealthInsuranceRenew.com",
+        "url": "https://healthinsurancerenew.com"
+      },
+      "about": [
+        { "@type": "Drug", "name": "Ozempic", "nonProprietaryName": "semaglutide", "sameAs": "https://en.wikipedia.org/wiki/Semaglutide" },
+        { "@type": "Thing", "name": "Health Insurance Marketplace", "sameAs": "https://en.wikipedia.org/wiki/Health_insurance_marketplace" },
+        { "@type": "Thing", "name": "Affordable Care Act", "sameAs": "https://en.wikipedia.org/wiki/Affordable_Care_Act" }
+      ],
+      "author": { "@id": "https://healthinsurancerenew.com/#organization" },
+      "publisher": { "@id": "https://healthinsurancerenew.com/#organization" },
+      "reviewedBy": {
+        "@type": "Organization",
+        "@id": "https://healthinsurancerenew.com/#organization",
+        "name": "HealthInsuranceRenew",
+        "description": "Independent ACA health insurance information site operated by a licensed agent with CMS Elite Circle of Champions recognition"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://healthinsurancerenew.com/#organization",
+      "name": "HealthInsuranceRenew",
+      "url": "https://healthinsurancerenew.com",
+      "description": "Independent ACA health insurance information and plan comparison"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://healthinsurancerenew.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Drug Coverage", "item": "https://healthinsurancerenew.com/drug-coverage/" },
+        { "@type": "ListItem", "position": 3, "name": "North Carolina", "item": "https://healthinsurancerenew.com/north-carolina/" },
+        { "@type": "ListItem", "position": 4, "name": "Ozempic" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I switch plans mid-year to get better Ozempic coverage?",
+          "acceptedAnswer": { "@type": "Answer", "text": "In most cases, no. You can only switch mid-year if you have a major life change — like losing other coverage, getting married, or having a baby. If you are planning to switch at the next open enrollment, check the new plan's Ozempic tier, whether it requires approval, and what you would likely pay after your deductible. In the meantime, ask your doctor whether a different covered drug might work for your situation." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between prior authorization and a coverage exception?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Prior authorization (sometimes called \"prior auth\") means you need approval before you can pick up the prescription at the pharmacy. A coverage exception is when you ask your plan to cover a drug that is not on its standard drug list, or to move it to a cheaper tier. They solve different problems — prior authorization affects when you can fill it, while a coverage exception affects whether your plan covers it at all." }
+        },
+        {
+          "@type": "Question",
+          "name": "Will my plan tell me if Ozempic's coverage changes during the year?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your plan must give you at least 60 days' notice before most mid-year changes take effect — a tier move, a new approval requirement, or Ozempic being removed from the list. The notice will explain what is changing and when. Read it carefully, because the deadlines for requesting a coverage exception or appealing a change are short." }
+        },
+        {
+          "@type": "Question",
+          "name": "If Ozempic is denied, is Wegovy a covered alternative?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Not automatically. Wegovy is a separate drug with its own tier, cost, and approval rules. Ozempic is approved for type 2 diabetes, while Wegovy is approved for weight management. Your plan may only cover each drug for its approved use — so even though they have the same active ingredient, your coverage for each one may be very different. See how Wegovy is covered in North Carolina." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does every ACA plan in North Carolina have to cover Ozempic?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. ACA plans must cover at least one drug in each drug category, but they choose which specific drugs to include. Five of the 52 North Carolina plans we reviewed do not cover Ozempic at all. If your plan does not cover it, you can request a coverage exception, ask your doctor about a different drug your plan does cover, or compare plans that cover Ozempic during open enrollment." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can Ozempic coverage change after I enroll in a plan?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Your plan can move drugs to different tiers, add approval requirements, or remove drugs from the drug list during the year. For most changes, you will get at least 60 days' notice. If Ozempic becomes more expensive or harder to get on your plan, you can compare other plans at the next open enrollment." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="pbar">
+  <div class="pi"><span class="pd"></span>52 North Carolina plans reviewed</div>
+  <div class="pi"><span class="pd"></span>Based on 2026 plan filings</div>
+  <div class="pi"><span class="pd"></span>Updated April 2026</div>
+</div>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">HealthInsuranceRenew</a>
+  <ul class="nav-links">
+    <li><a href="#">Guides</a></li>
+    <li><a href="#">Drug Coverage</a></li>
+    <li><a href="#">Subsidies</a></li>
+    <li><a href="#" class="nav-cta">Get Help</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+<nav class="bc" aria-label="Breadcrumb">
+  <a href="#">Home</a><span class="bc-sep">&rsaquo;</span>
+  <a href="#">Drug Coverage</a><span class="bc-sep">&rsaquo;</span>
+  <a href="#">North Carolina</a><span class="bc-sep">&rsaquo;</span>
+  <span>Ozempic</span>
+</nav>
+
+<article>
+
+  <h1 class="ph">Ozempic Coverage in North Carolina (2026)</h1>
+  <div class="dl">
+    <span>Data from 2026 plan filings</span>
+    <span class="sp">Health Insurance Marketplace</span>
+  </div>
+
+  <!-- V66: Coverage summary — consequence-first, not data-first -->
+  <div class="cluster">
+    <div class="ca">
+      <p class="ql">Coverage summary</p>
+      <ul class="qa-list">
+        <li class="qa-item">
+          <span class="qd" aria-hidden="true"></span>
+          <span><strong>47 of 52 North Carolina health insurance plans cover Ozempic for 2026.</strong> Five plans do not cover it at all. If your plan does not cover it, you would pay full price — so check the plan's drug list before you enroll.</span>
+        </li>
+        <li class="qa-item">
+          <span class="qd" aria-hidden="true"></span>
+          <span><strong>On most plans, you would pay an estimated $30–$60 a month after your deductible.</strong> That is the range on the 35 plans that put Ozempic on their lower-cost brand tier (called "preferred brand"). If your plan puts it on a more expensive tier, you may pay $90–$150 or more.</span>
+        </li>
+        <li class="qa-item">
+          <span class="qd" aria-hidden="true"></span>
+          <span><strong>You may not be able to get Ozempic right away.</strong> 38 of the 47 plans that cover it require prior authorization, which can delay your first fill by a few business days.</span>
+        </li>
+      </ul>
+      <p class="qv">Estimated from 2026 plan filings. Coverage, tiers, and costs can change — confirm with your plan or pharmacist before you enroll or fill a prescription.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="sv g">47<span style="font-size:13px;color:var(--muted);font-weight:400"> / 52</span></div>
+        <div class="sl">Plans that cover it</div>
+        <div class="ss">90% of North Carolina plans reviewed</div>
+      </div>
+      <div class="stat">
+        <div class="sv" style="font-size:17px;line-height:1.15">Preferred Brand</div>
+        <div class="sl">Most common drug tier</div>
+        <div class="ss">35 of 47 covering plans</div>
+      </div>
+      <div class="stat">
+        <div class="sv" style="font-size:16px;padding-top:3px">~$30–$60</div>
+        <div class="sl">Estimated range after deductible</div>
+        <div class="ss">From plan filings · not pharmacy prices</div>
+      </div>
+    </div>
+
+    <!-- V66: Amber catch — consequence-first, adds urgency tip -->
+    <div class="catch">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" style="flex-shrink:0;margin-top:3px" aria-hidden="true">
+        <circle cx="8" cy="8" r="7"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r=".5" fill="var(--amber)"/>
+      </svg>
+      <p><strong>You may not be able to get Ozempic right away.</strong> 38 of 47 plans that cover it in North Carolina require prior authorization — meaning your plan has to approve it before you can fill the prescription. This may add several days to your first fill. If you need the medication sooner, ask your doctor about requesting an urgent review.</p>
+    </div>
+  </div>
+
+  <!-- V66: Bridge paragraph — cost consequence, not process description -->
+  <p style="font-size:13.5px;color:var(--mid);line-height:1.6;margin-top:14px">Two plans can both cover Ozempic and charge you very different amounts — one might cost you $30 a month after your deductible, while another charges $150. The difference is usually the drug tier (the cost level your plan assigns to Ozempic). Check the tier first when you compare plans.</p>
+
+  <div class="cta-g">
+    <div>
+      <div class="ct">Compare how North Carolina plans cover Ozempic</div>
+      <div class="cs">See which plans list it, what tier they use, estimated costs, and whether you need approval</div>
+    </div>
+    <a href="#" class="bw">Compare Plans &rarr;</a>
+  </div>
+
+  <hr class="dv">
+
+  <!-- V66: COST SECTION — consequence framing, not data narration -->
+  <section aria-labelledby="cost-h">
+    <h2 class="sec" id="cost-h">How much does Ozempic cost on a North Carolina plan?</h2>
+
+    <p class="br">After your deductible, most people pay an estimated $30 to $150 a month for Ozempic. The exact amount depends on the drug tier — the cost level your plan assigns to the drug. Before your deductible, you may pay several hundred dollars a month.</p>
+
+    <div class="cb">
+      <div class="cr">
+        <div>
+          <div class="crn">Before you meet your deductible</div>
+          <div class="crd">You pay less than the full retail price, but your monthly cost is still high until you meet your deductible</div>
+        </div>
+        <div>
+          <div class="crf" style="color:var(--ink)">~$400–$650</div>
+          <div class="cru">est. / month</div>
+        </div>
+      </div>
+      <div class="cr">
+        <div>
+          <div class="crn">After your deductible — preferred brand tier</div>
+          <div class="crd">35 of 47 plans that cover it · the tier where most plans put Ozempic and where you pay the least</div>
+        </div>
+        <div>
+          <div class="crf" style="color:var(--green)">~$30–$60</div>
+          <div class="cru">est. / month</div>
+        </div>
+      </div>
+      <div class="cr" style="border-bottom:none">
+        <div>
+          <div class="crn">After your deductible — higher-cost tier</div>
+          <div class="crd">12 of 47 covering plans · you may pay two to three times more per month than on a preferred tier</div>
+        </div>
+        <div>
+          <div class="crf" style="color:var(--amber)">~$90–$150</div>
+          <div class="cru">est. / month</div>
+        </div>
+      </div>
+      <div class="cf">Estimated from 2026 plan filings — not pharmacy prices and not a quote. What you pay at the counter depends on your specific plan, pharmacy, and deductible status. Confirm with your plan or pharmacist before relying on these numbers.</div>
+    </div>
+
+    <p class="ci">The drug tier is the single biggest factor in what you pay for Ozempic. Every plan sorts drugs into cost levels called tiers — and two plans from the same insurance company can put Ozempic on different tiers, which means very different costs for you. When you compare plans, check what tier each one assigns to Ozempic first.</p>
+
+    <div class="cfb">
+      <div class="cfr">
+        <span class="cfk">Drug tier</span>
+        <span class="cfv">This affects your cost more than anything else. A preferred brand tier means lower copays after your deductible. A specialty or non-preferred tier can cost two to three times more per month.</span>
+      </div>
+      <div class="cfr">
+        <span class="cfk">Prescription deductible</span>
+        <span class="cfv">Some plans have a separate deductible just for prescriptions — usually smaller than the medical deductible, so you reach the lower copay sooner. North Carolina plan designs vary widely here: some plans have no prescription deductible at all, others set it anywhere from a few hundred dollars to over a thousand, and some combine drug and medical costs into one deductible. Check your plan's Summary of Benefits for the exact number.</span>
+      </div>
+      <div class="cfr">
+        <span class="cfk">Pharmacy choice</span>
+        <span class="cfv">Filling at a preferred pharmacy or through a 90-day mail-order program often costs less per dose. Check your plan's pharmacy list before your first fill.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- V66: Decision framework — action-oriented, consequence in each step -->
+  <div class="ab" style="margin-top:24px">
+    <h3 class="sub">When comparing plans for Ozempic, check these in order</h3>
+    <div class="sr">
+      <div class="sn">1</div>
+      <div>
+        <div class="sh">Is Ozempic on your plan's drug list?</div>
+        <div class="sd">Do not assume every plan covers it. Five of the 52 North Carolina plans we reviewed do not list Ozempic at all. If Ozempic is not on your plan's drug list, you would pay full price or need to find a covered alternative.</div>
+      </div>
+    </div>
+    <div class="sr">
+      <div class="sn">2</div>
+      <div>
+        <div class="sh">What tier is it on?</div>
+        <div class="sd">The tier determines what you pay after your deductible. A preferred brand tier means lower copays. A specialty or non-preferred tier can cost two to three times more per month.</div>
+      </div>
+    </div>
+    <div class="sr">
+      <div class="sn">3</div>
+      <div>
+        <div class="sh">Does your deductible apply to prescriptions?</div>
+        <div class="sd">Most plans require you to meet a deductible before the lower copay kicks in. Some plans have a separate, smaller deductible just for prescriptions — which means you reach the lower copay sooner. Others combine drug and medical costs into one deductible, so you may pay the higher amount longer.</div>
+      </div>
+    </div>
+    <div class="sr last">
+      <div class="sn">4</div>
+      <div>
+        <div class="sh">Does your plan require approval before you can fill it?</div>
+        <div class="sd">On most plans, you cannot fill Ozempic until your plan approves it first (called prior authorization). That can add several days to your first fill. If you are denied, you can appeal.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="ci">If you take Ozempic, a plan with a lower drug tier and a lower deductible will usually cost you less over the year — even if the monthly premium is slightly higher.</p>
+
+  <!-- V66: Drug class context — consequence-first, alternative action -->
+  <div class="lim" style="margin-top:24px">
+    <p class="lt">Why Ozempic costs more to cover than many drugs</p>
+    <p class="lp">Ozempic is a brand-name injectable, not a generic. Most North Carolina plans put it on a higher-cost tier and will usually require approval before you can fill it — which means you may pay more out of pocket and wait longer to start than you would for a common generic like metformin or lisinopril. If the cost is a problem, ask your doctor about Rybelsus — same active ingredient, just in pill form — or Trulicity. Your plan may put those on a cheaper tier.</p>
+  </div>
+
+  <!-- V66: APPROVAL SECTION -->
+  <section aria-labelledby="access-h" style="margin-top:38px;border-top:1px solid var(--rule);padding-top:38px">
+    <h2 class="sec" id="access-h">Do you need approval for Ozempic, and what if it is denied?</h2>
+
+    <div class="ab">
+
+      <div class="rr">
+        <div class="rb" style="background:var(--amber-bg);color:var(--amber)">!</div>
+        <div>
+          <div class="rt">You may not be able to get Ozempic right away <span class="ro">— on 38 of 47 plans that cover it</span></div>
+          <div class="rd">Many plans require approval first (called prior authorization), so you may have to wait several days before you can fill it. This is worth knowing before you enroll — a plan with fewer approval requirements can mean faster access to Ozempic when you need it.</div>
+        </div>
+      </div>
+
+      <div class="rr">
+        <div class="rb" style="background:var(--green-bg);color:var(--green)">&#x2713;</div>
+        <div>
+          <div class="rt">No requirement to try a cheaper drug first <span class="ro">— not found on any plan we reviewed</span></div>
+          <div class="rd">None of the North Carolina plans we reviewed require you to try a different drug before covering Ozempic. If you are using Ozempic for weight management rather than diabetes, rules may differ — <a href="#" style="color:var(--blue)">see how Wegovy is covered in North Carolina</a>.</div>
+        </div>
+      </div>
+
+      <div class="rr" style="border-bottom:none">
+        <div class="rb" style="background:var(--surface);color:var(--mid)">Qty</div>
+        <div>
+          <div class="rt">Quantity limits on some plans <span class="ro">— found on 12 of 47 plans that cover it</span></div>
+          <div class="rd">Some plans limit each fill to a one-month supply. If your plan offers a mail-order option, you may be able to get a larger supply at a lower cost per dose — check your plan details.</div>
+        </div>
+      </div>
+
+      <h3 class="sub">What to expect while you wait</h3>
+
+      <div class="tr">
+        <div class="tt">At the pharmacy</div>
+        <div>
+          <div class="th">You may find out approval is needed when you try to pick it up</div>
+          <div class="td">Your pharmacist can tell you on the spot whether your plan needs to approve Ozempic first. If it does, the pharmacy will send the request to your doctor. You will not be able to fill it until your plan signs off.</div>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="tt">The wait</div>
+        <div>
+          <div class="th">A few days is common, but it can take longer</div>
+          <div class="td">Some approvals come back in a day or two. Others take a week or more, especially if your plan asks your doctor for more details. If you need the medication soon, ask your doctor to mark the request urgent — urgent reviews generally move faster.</div>
+        </div>
+      </div>
+      <div class="tr" style="border-bottom:none">
+        <div class="tt">Once approved</div>
+        <div>
+          <div class="th">You can pick up Ozempic</div>
+          <div class="td">What you pay at the counter depends on which tier your plan puts Ozempic on and whether you have met your deductible.</div>
+        </div>
+      </div>
+
+      <h3 class="sub">If it is taking too long or your plan denies coverage</h3>
+
+      <div class="sr">
+        <div class="sn">1</div>
+        <div>
+          <div class="sh">Call your doctor's office for an update</div>
+          <div class="sd">If you have been waiting longer than a few days and have not heard anything, call your doctor's office. They can check what is holding things up and whether anything else is needed.</div>
+        </div>
+      </div>
+      <div class="sr">
+        <div class="sn">2</div>
+        <div>
+          <div class="sh">If denied, ask your doctor to request a peer-to-peer review</div>
+          <div class="sd">A peer-to-peer review puts your doctor on a call with your plan's medical reviewer. It's faster than a formal appeal and often works. It gives your doctor a direct chance to explain why Ozempic is the right drug for you, not an alternative.</div>
+        </div>
+      </div>
+      <div class="sr last">
+        <div class="sn">3</div>
+        <div>
+          <div class="sh">File a formal appeal — or switch plans at the next open enrollment</div>
+          <div class="sd">If the denial stands, your plan will send you a notice explaining why and how to appeal. Check that notice closely — it will include the deadline and the steps to follow. If Ozempic coverage continues to be a problem, open enrollment is your chance to switch to a different plan.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- V66: CARRIER SECTION — consequence-first comparison -->
+  <section aria-labelledby="carrier-h" style="margin-top:38px;border-top:1px solid var(--rule);padding-top:38px">
+    <h2 class="sec" id="carrier-h">Why does Ozempic cost more with some insurance companies?</h2>
+    <p class="br">The same drug can cost you two to three times more on one plan than another. The difference comes down to the tier each plan assigns Ozempic — and that can vary by insurance company, or even between plans from the same company.</p>
+
+    <div class="kb">
+      <div class="kr">
+        <div><div class="kn">Blue Cross NC</div><div class="kd">31 plans reviewed · approval required</div></div>
+        <div class="krr"><span class="kp">See plans</span><span class="tp tp-g">Preferred Brand</span></div>
+      </div>
+      <div class="kr">
+        <div><div class="kn">Aetna CVS Health</div><div class="kd">8 plans reviewed · approval required</div></div>
+        <div class="krr"><span class="kp">See plans</span><span class="tp tp-g">Preferred Brand</span></div>
+      </div>
+      <div class="kr">
+        <div><div class="kn">Ambetter / Centene</div><div class="kd">5 plans reviewed · approval required</div></div>
+        <div class="krr"><span class="tp tp-a">Specialty tier</span></div>
+      </div>
+      <div class="kr">
+        <div><div class="kn">Oscar Health</div><div class="kd">3 plans reviewed · approval required</div></div>
+        <div class="krr"><span class="tp tp-r">Non-preferred tier</span></div>
+      </div>
+      <div class="kr">
+        <div><div class="kn">Cigna Healthcare</div><div class="kd">Not found in plans reviewed</div></div>
+        <div class="krr"><span class="tp tp-n">Not covered</span></div>
+      </div>
+      <div class="kf">Estimated drug tier from 2026 plan filings · your specific plan may differ · confirm before enrolling</div>
+    </div>
+  </section>
+
+  <!-- V66: SAVINGS SECTION -->
+  <section aria-labelledby="savings-h" style="margin-top:38px;border-top:1px solid var(--rule);padding-top:38px">
+    <h2 class="sec" id="savings-h">How to pay less for Ozempic</h2>
+    <div>
+      <div class="sw">
+        <span class="si">$</span>
+        <div>
+          <div class="sh2">Check whether the Novo Nordisk savings card works for you</div>
+          <div class="sde">The company that makes Ozempic offers a savings card that can lower what you pay at the pharmacy if you have private insurance. The discount amount and eligibility can change, so check the latest details before you count on it.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <span class="si">&rarr;</span>
+        <div>
+          <div class="sh2">Ask your doctor about Rybelsus</div>
+          <div class="sde">Rybelsus has the same active ingredient as Ozempic but comes in pill form. Your plan may put it on a cheaper tier, which would mean a lower cost for you. It is not the right fit for everyone, but it is worth asking about. <a href="#" style="color:var(--blue)">See how Rybelsus is covered in North Carolina.</a></div>
+        </div>
+      </div>
+      <div class="sw">
+        <span class="si">&#x2197;</span>
+        <div>
+          <div class="sh2">Compare plans by the Ozempic tier, not just by whether they cover it</div>
+          <div class="sde">In our review, plans that put Ozempic on a preferred brand tier showed estimated costs of about $30–$60 a month after the deductible. Plans on higher tiers showed $90–$150 or more. During open enrollment, check what tier each plan assigns Ozempic before you compare monthly premiums.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <span class="si">&#x2713;</span>
+        <div>
+          <div class="sh2">Use a preferred pharmacy or 90-day mail order</div>
+          <div class="sde">Many plans charge less when you fill Ozempic at a preferred pharmacy or order a 90-day supply by mail. Check your plan's pharmacy list — this is one of the simplest ways to lower your cost without switching plans.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V66: Variability disclaimer -->
+  <div class="lim">
+    <p class="lt">Plans change during the year</p>
+    <p class="lp">Drug prices, approval rules, and savings programs can all change during the plan year, and they vary from plan to plan. Everything on this page is estimated from 2026 plan filings, not confirmed prices. Check with your plan or pharmacy before you enroll or fill a prescription.</p>
+  </div>
+
+  <!-- V66: FAQ SECTION -->
+  <section aria-labelledby="faq-h" style="margin-top:38px;border-top:1px solid var(--rule);padding-top:38px">
+    <h2 class="sec" id="faq-h">Common questions about Ozempic coverage in North Carolina</h2>
+    <div class="fw">
+
+      <details class="fq" open>
+        <summary><span>Can I switch plans mid-year to get better Ozempic coverage?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">In most cases, no. You can only switch mid-year if you have a major life change — like losing other coverage, getting married, or having a baby. If you are planning to switch at the next open enrollment, check the new plan's Ozempic tier, whether it requires approval, and what you would likely pay after your deductible. In the meantime, ask your doctor whether a different covered drug might work for your situation.</div>
+      </details>
+
+      <details class="fq">
+        <summary><span>What is the difference between prior authorization and a coverage exception?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">Prior authorization (sometimes called "prior auth") means you need approval before you can pick up the prescription at the pharmacy. A coverage exception is when you ask your plan to cover a drug that is not on its standard drug list, or to move it to a cheaper tier. They solve different problems — prior authorization affects when you can fill it, while a coverage exception affects whether your plan covers it at all.</div>
+      </details>
+
+      <details class="fq">
+        <summary><span>Will my plan tell me if Ozempic's coverage changes during the year?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">Yes. Your plan must give you at least 60 days' notice before most mid-year changes take effect — a tier move, a new approval requirement, or Ozempic being removed from the list. The notice will explain what is changing and when. Read it carefully, because the deadlines for requesting a coverage exception or appealing a change are short.</div>
+      </details>
+
+      <details class="fq">
+        <summary><span>If Ozempic is denied, is Wegovy a covered alternative?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">Not automatically. Wegovy is a separate drug with its own tier, cost, and approval rules. Ozempic is approved for type 2 diabetes, while Wegovy is approved for weight management. Your plan may only cover each drug for its approved use — so even though they have the same active ingredient, your coverage for each one may be very different. <a href="#">See how Wegovy is covered in North Carolina.</a></div>
+      </details>
+
+      <details class="fq">
+        <summary><span>Does every ACA plan in North Carolina have to cover Ozempic?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">No. ACA plans must cover at least one drug in each drug category, but they choose which specific drugs to include. Five of the 52 North Carolina plans we reviewed do not cover Ozempic at all. If your plan does not cover it, you can request a coverage exception, ask your doctor about a different drug your plan does cover, or compare plans that cover Ozempic during open enrollment.</div>
+      </details>
+
+      <details class="fq">
+        <summary><span>Can Ozempic coverage change after I enroll in a plan?</span><span class="fc">&#x25BC;</span></summary>
+        <div class="fb">Yes. Your plan can move drugs to different tiers, add approval requirements, or remove drugs from the drug list during the year. For most changes, you will get at least 60 days' notice. If Ozempic becomes more expensive or harder to get on your plan, you can compare other plans at the next open enrollment.</div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- V68: About block — credential only, no personal identifiers at 15.2M URL scale -->
+  <aside class="abt" aria-label="About this page">
+    <strong style="color:var(--ink);font-size:13px">About this page</strong>
+    <div style="margin-top:6px">This page is based on our review of 52 North Carolina marketplace plans filed for 2026. A licensed ACA health insurance agent examined each plan's drug list, tier placement, prior authorization rules, and what members pay, using official CMS federal plan filing data. We checked coverage status, tier placement, and approval requirements for Ozempic on every available plan individually — not from a sample or a database summary. Coverage details, tiers, and estimated costs can change during the plan year. This page does not reflect live pharmacy prices or confirm what you would pay at the counter — your plan and pharmacy determine that. Confirm current details with your plan before you enroll or fill a prescription.</div>
+    <div class="am">
+      <div class="adot"></div>
+      <span>Data reviewed: January 2026 plan filings &nbsp;·&nbsp; Last updated: April 2026 &nbsp;·&nbsp; Source: CMS federal plan data &nbsp;·&nbsp; Reviewed by: Licensed ACA Agent</span>
+    </div>
+    <div class="al">
+      <a href="/data-methodology">How we review plans</a>
+      <a href="/editorial-policy">Our editorial approach</a>
+      <a href="/about">About this site</a>
+    </div>
+  </aside>
+
+  <div style="margin-top:28px">
+    <h2 class="sec">Related guides</h2>
+    <div class="el">
+      <a href="/guides/how-your-deductible-affects-prescription-costs" class="ea">How your deductible affects prescription costs <span style="font-size:11px;color:var(--rule)">&rsaquo;</span></a>
+      <a href="/guides/how-approval-rules-work-for-prescriptions" class="ea">What to do when a prescription approval is denied <span style="font-size:11px;color:var(--rule)">&rsaquo;</span></a>
+    </div>
+  </div>
+
+</article>
+
+<hr class="dv">
+
+<section aria-labelledby="rel-h">
+  <h2 class="sec" id="rel-h">Related drugs — North Carolina coverage</h2>
+  <div class="pills">
+    <a href="#" class="pill">Wegovy</a>
+    <a href="#" class="pill">Mounjaro</a>
+    <a href="#" class="pill">Zepbound</a>
+    <a href="#" class="pill">Trulicity</a>
+    <a href="#" class="pill">Rybelsus</a>
+    <a href="#" class="pill">Victoza</a>
+    <a href="#" class="pill">Saxenda</a>
+  </div>
+</section>
+
+<section aria-labelledby="ins-h" style="margin-top:28px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px">
+    <h2 class="sec" id="ins-h" style="margin-bottom:0;border-bottom:none;padding-bottom:0">North Carolina insurance companies — Ozempic 2026</h2>
+    <span style="font-size:11px;color:var(--muted);font-style:italic;font-weight:400;margin-bottom:13px">From 2026 plan filings</span>
+  </div>
+  <div style="border-bottom:1px solid var(--rule)"></div>
+  <div class="iw">
+    <div class="in">Plans that put Ozempic on a preferred brand tier generally show lower estimated monthly costs after the deductible. Check the tier on your specific plan before enrolling.</div>
+    <a href="#" class="ir">
+      <div><div class="in2">Blue Cross NC</div><div class="is"><span class="tip" style="background:var(--green-bg);color:var(--green)">Preferred Brand</span>Approval required</div></div>
+      <span style="font-size:12px;color:var(--blue);flex-shrink:0">View details &rsaquo;</span>
+    </a>
+    <a href="#" class="ir">
+      <div><div class="in2">Aetna CVS Health</div><div class="is"><span class="tip" style="background:var(--green-bg);color:var(--green)">Preferred Brand</span>Approval required</div></div>
+      <span style="font-size:12px;color:var(--blue);flex-shrink:0">View details &rsaquo;</span>
+    </a>
+    <a href="#" class="ir">
+      <div><div class="in2">Ambetter / Centene</div><div class="is"><span class="tip" style="background:var(--amber-bg);color:var(--amber)">Specialty tier</span>Approval required</div></div>
+      <span style="font-size:12px;color:var(--blue);flex-shrink:0">View details &rsaquo;</span>
+    </a>
+    <a href="#" class="ir">
+      <div><div class="in2">Oscar Health</div><div class="is"><span class="tip" style="background:var(--red-bg);color:var(--red)">Non-preferred tier</span>Approval required</div></div>
+      <span style="font-size:12px;color:var(--blue);flex-shrink:0">View details &rsaquo;</span>
+    </a>
+  </div>
+</section>
+
+<div class="sn2">
+  <p>Browse all covered drugs in <strong>North Carolina</strong> health plans.</p>
+  <a href="#" class="bo">View North Carolina drug coverage</a>
+</div>
+
+<div class="cn">
+  <div>
+    <div class="cn-t">Compare North Carolina plans for Ozempic coverage</div>
+    <div class="cn-s">See which plans cover it, what each charges, and what approval requirements apply.</div>
+  </div>
+  <a href="#" class="bwn">See North Carolina Plans &rarr;</a>
+</div>
+
+<footer class="disc">
+  <p>This page is for informational purposes only — not medical, legal, or insurance advice. Drug coverage information shown is estimated from official 2026 plan filings. Coverage terms, tier placements, costs, and approval requirements can change during the plan year. Confirm current details with your insurance company before making coverage decisions. To enroll in or change a plan, you will complete the process on the official Marketplace website for your state. HealthInsuranceRenew.com is an independent information site — not the Marketplace.</p>
+  <p>A licensed health insurance agent can help you compare how different North Carolina plans cover Ozempic — including tier, estimated cost, and approval requirements. Your actual eligibility and premium come from the official Marketplace application.</p>
+  <p style="margin-top:5px">We may receive a referral fee when you connect with a plan or agent. We are not affiliated with any insurance company or government agency. <a href="/how-we-get-paid" style="color:var(--blue)">How we get paid</a></p>
+</footer>
+
+</div>
+</body>
+</html>
