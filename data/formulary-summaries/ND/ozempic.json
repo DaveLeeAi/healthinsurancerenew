@@ -1,0 +1,42 @@
+{
+  "state_code": "ND",
+  "drug_slug": "ozempic",
+  "plan_count": 59,
+  "carriers": [
+    {
+      "issuer_id": "73751",
+      "name": "Medica",
+      "plan_count": 27,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 81
+    },
+    {
+      "issuer_id": "89364",
+      "name": "Sanford Health Plan",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 528
+    },
+    {
+      "issuer_id": "37160",
+      "name": "Blue Cross Blue Shield of North Dakota",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

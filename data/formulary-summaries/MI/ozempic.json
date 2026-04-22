@@ -1,0 +1,72 @@
+{
+  "state_code": "MI",
+  "drug_slug": "ozempic",
+  "plan_count": 68,
+  "carriers": [
+    {
+      "issuer_id": "98185",
+      "name": "Blue Care Network of Michigan",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "71667",
+      "name": "UnitedHealthcare",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "58594",
+      "name": "Ambetter from Meridian",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "15560",
+      "name": "Blue Cross Blue Shield of Michigan Mutual Insurance Company",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "74917",
+      "name": "McLaren Health Plan Community",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 81
+    },
+    {
+      "issuer_id": "77739",
+      "name": "Oscar Insurance Company",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

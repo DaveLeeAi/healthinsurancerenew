@@ -1,0 +1,82 @@
+{
+  "state_code": "AZ",
+  "drug_slug": "ozempic",
+  "plan_count": 199,
+  "carriers": [
+    {
+      "issuer_id": "53901",
+      "name": "Blue Cross Blue Shield of Arizona",
+      "plan_count": 115,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 360
+    },
+    {
+      "issuer_id": "13877",
+      "name": "Oscar Health Plan, Inc.",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "91450",
+      "name": "Ambetter from Arizona Complete Health",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "68445",
+      "name": "Antidote Health Plan of Arizona, Inc.",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "97667",
+      "name": "Cigna HealthCare of Arizona, Inc",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "40702",
+      "name": "UnitedHealthcare",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "85533",
+      "name": "Imperial Insurance Companies, Inc.",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

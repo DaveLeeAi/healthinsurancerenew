@@ -1,0 +1,52 @@
+{
+  "state_code": "NE",
+  "drug_slug": "ozempic",
+  "plan_count": 128,
+  "carriers": [
+    {
+      "issuer_id": "29678",
+      "name": "Blue Cross and Blue Shield of Nebraska",
+      "plan_count": 78,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "57424",
+      "name": "Oscar Insurance Company",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "13484",
+      "name": "Ambetter Health",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "73102",
+      "name": "UnitedHealthcare",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

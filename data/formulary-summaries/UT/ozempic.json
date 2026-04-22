@@ -1,0 +1,52 @@
+{
+  "state_code": "UT",
+  "drug_slug": "ozempic",
+  "plan_count": 24,
+  "carriers": [
+    {
+      "issuer_id": "18167",
+      "name": "Molina Healthcare",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    },
+    {
+      "issuer_id": "22013",
+      "name": "Regence BlueCross BlueShield of Utah",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 720
+    },
+    {
+      "issuer_id": "98113",
+      "name": "Imperial Health Plan of the Southwest, Inc.",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "34541",
+      "name": "BridgeSpan Health Company",
+      "plan_count": 3,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 720
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

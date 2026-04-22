@@ -1,0 +1,72 @@
+{
+  "state_code": "AR",
+  "drug_slug": "ozempic",
+  "plan_count": 52,
+  "carriers": [
+    {
+      "issuer_id": "62141",
+      "name": "Ambetter from Arkansas Health & Wellness",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "70525",
+      "name": "Ambetter from Arkansas Health & Wellness",
+      "plan_count": 10,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "13262",
+      "name": "Health Advantage",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 24
+    },
+    {
+      "issuer_id": "37903",
+      "name": "Ambetter from Arkansas Health & Wellness",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "75293",
+      "name": "Arkansas Blue Cross and Blue Shield",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 21
+    },
+    {
+      "issuer_id": "48772",
+      "name": "Octave",
+      "plan_count": 6,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 18
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

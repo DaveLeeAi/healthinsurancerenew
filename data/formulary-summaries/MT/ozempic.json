@@ -1,0 +1,32 @@
+{
+  "state_code": "MT",
+  "drug_slug": "ozempic",
+  "plan_count": 75,
+  "carriers": [
+    {
+      "issuer_id": "30751",
+      "name": "Blue Cross and Blue Shield of Montana",
+      "plan_count": 67,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "23603",
+      "name": "PacificSource Health Plans",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 44
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

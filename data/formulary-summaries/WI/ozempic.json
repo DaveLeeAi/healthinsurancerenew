@@ -1,0 +1,92 @@
+{
+  "state_code": "WI",
+  "drug_slug": "ozempic",
+  "plan_count": 179,
+  "carriers": [
+    {
+      "issuer_id": "79475",
+      "name": "Anthem Blue Cross and Blue Shield",
+      "plan_count": 54,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "38166",
+      "name": "Security Health Plan",
+      "plan_count": 34,
+      "tier_placement": "unknown",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "81413",
+      "name": "Network Health",
+      "plan_count": 26,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 90
+    },
+    {
+      "issuer_id": "87416",
+      "name": "CareSource (Common Ground Healthcare)",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 9
+    },
+    {
+      "issuer_id": "20173",
+      "name": "HealthPartners",
+      "plan_count": 16,
+      "tier_placement": "generic",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 12
+    },
+    {
+      "issuer_id": "80180",
+      "name": "UnitedHealthcare",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "86584",
+      "name": "Aspirus Health Plan",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 7
+    },
+    {
+      "issuer_id": "58326",
+      "name": "MercyCare Health Plans",
+      "plan_count": 6,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 48
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

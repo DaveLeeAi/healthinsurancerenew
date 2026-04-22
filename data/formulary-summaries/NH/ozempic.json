@@ -1,0 +1,52 @@
+{
+  "state_code": "NH",
+  "drug_slug": "ozempic",
+  "plan_count": 46,
+  "carriers": [
+    {
+      "issuer_id": "75841",
+      "name": "Ambetter from NH Healthy Families",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "96751",
+      "name": "Anthem Blue Cross and Blue Shield",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "59025",
+      "name": "Harvard Pilgrim Health Care",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "13219",
+      "name": "WellSense Health Plan",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 21
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

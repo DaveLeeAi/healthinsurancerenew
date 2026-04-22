@@ -1,0 +1,62 @@
+{
+  "state_code": "KS",
+  "drug_slug": "ozempic",
+  "plan_count": 55,
+  "carriers": [
+    {
+      "issuer_id": "34368",
+      "name": "Ambetter from Sunflower Health Plan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "94968",
+      "name": "UnitedHealthcare",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "94248",
+      "name": "Blue Cross and Blue Shield of Kansas City",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "18558",
+      "name": "Blue Cross and Blue Shield of Kansas, Inc.",
+      "plan_count": 9,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "43490",
+      "name": "Oscar Insurance Company",
+      "plan_count": 6,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "state_code": "AL",
+  "drug_slug": "ozempic",
+  "plan_count": 54,
+  "carriers": [
+    {
+      "issuer_id": "53932",
+      "name": "Ambetter of Alabama",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "46944",
+      "name": "Blue Cross and Blue Shield of Alabama",
+      "plan_count": 14,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 63
+    },
+    {
+      "issuer_id": "69461",
+      "name": "UnitedHealthcare",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "17091",
+      "name": "Oscar Insurance Company",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

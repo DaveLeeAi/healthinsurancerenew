@@ -1,0 +1,73 @@
+{
+  "state_code": "OR",
+  "drug_slug": "ozempic",
+  "plan_count": 59,
+  "carriers": [
+    {
+      "issuer_id": "77969",
+      "name": "Regence BlueCross BlueShield of Oregon",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "39424",
+      "name": "Moda Health Plan, Inc.",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "56707",
+      "name": "Providence Health Plan",
+      "plan_count": 11,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 10
+    },
+    {
+      "issuer_id": "71287",
+      "name": "Kaiser Permanente",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "10091",
+      "name": "PacificSource Health Plans",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "63474",
+      "name": "BridgeSpan Health Company",
+      "plan_count": 3,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe",
+    "sbm"
+  ]
+}

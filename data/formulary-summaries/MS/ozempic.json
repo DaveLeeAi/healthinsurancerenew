@@ -1,0 +1,63 @@
+{
+  "state_code": "MS",
+  "drug_slug": "ozempic",
+  "plan_count": 48,
+  "carriers": [
+    {
+      "issuer_id": "97560",
+      "name": "UnitedHealthcare",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "90714",
+      "name": "Ambetter from Magnolia Health",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "56766",
+      "name": "Cigna Healthcare",
+      "plan_count": 10,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "20635",
+      "name": "Oscar Health Plan, Inc.",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "79975",
+      "name": "Molina Healthcare",
+      "plan_count": 2,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "enrichment:formulary_enrichment_cigna_MS.json",
+    "ffe"
+  ]
+}

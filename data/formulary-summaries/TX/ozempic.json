@@ -1,0 +1,172 @@
+{
+  "state_code": "TX",
+  "drug_slug": "ozempic",
+  "plan_count": 820,
+  "carriers": [
+    {
+      "issuer_id": "33602",
+      "name": "Blue Cross and Blue Shield of Texas",
+      "plan_count": 546,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "20069",
+      "name": "Oscar Insurance Company",
+      "plan_count": 100,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "76589",
+      "name": "Cigna Healthcare",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "47501",
+      "name": "WellPoint",
+      "plan_count": 21,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "40220",
+      "name": "UnitedHealthcare",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "87226",
+      "name": "Ambetter from Superior HealthPlan",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "66252",
+      "name": "CHRISTUS Health Plan",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 714
+    },
+    {
+      "issuer_id": "29418",
+      "name": "Ambetter from Superior HealthPlan",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "45786",
+      "name": "Molina Healthcare",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    },
+    {
+      "issuer_id": "70754",
+      "name": "UnitedHealthcare",
+      "plan_count": 11,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "27248",
+      "name": "Community Health Choice",
+      "plan_count": 11,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 76
+    },
+    {
+      "issuer_id": "34826",
+      "name": "Imperial Insurance Companies, Inc.",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "71837",
+      "name": "Sendero Health Plans, Local Nonprofit",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "11718",
+      "name": "Community Health Choice",
+      "plan_count": 6,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 76
+    },
+    {
+      "issuer_id": "17933",
+      "name": "Moda Health Plan, Inc.",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 120
+    },
+    {
+      "issuer_id": "63251",
+      "name": "Community First",
+      "plan_count": 4,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 20
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

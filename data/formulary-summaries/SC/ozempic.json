@@ -1,0 +1,72 @@
+{
+  "state_code": "SC",
+  "drug_slug": "ozempic",
+  "plan_count": 125,
+  "carriers": [
+    {
+      "issuer_id": "26065",
+      "name": "BlueCross BlueShield of South Carolina",
+      "plan_count": 74,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "33764",
+      "name": "UnitedHealthcare",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "42326",
+      "name": "Molina Healthcare",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    },
+    {
+      "issuer_id": "79222",
+      "name": "Ambetter from Absolute Total Care",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "73107",
+      "name": "First Choice Next",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 929
+    },
+    {
+      "issuer_id": "33863",
+      "name": "InStil Health",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "state_code": "TN",
+  "drug_slug": "ozempic",
+  "plan_count": 62,
+  "carriers": [
+    {
+      "issuer_id": "70111",
+      "name": "Ambetter of Tennessee",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "23552",
+      "name": "Oscar Insurance Company",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "69443",
+      "name": "UnitedHealthcare",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "99248",
+      "name": "Cigna Healthcare",
+      "plan_count": 10,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "29854",
+      "name": "Alliant Health Plans, Inc.",
+      "plan_count": 9,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "enrichment:formulary_enrichment_cigna_TN.json",
+    "ffe"
+  ]
+}

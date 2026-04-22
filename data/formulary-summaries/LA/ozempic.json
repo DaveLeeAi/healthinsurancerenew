@@ -1,0 +1,72 @@
+{
+  "state_code": "LA",
+  "drug_slug": "ozempic",
+  "plan_count": 100,
+  "carriers": [
+    {
+      "issuer_id": "19636",
+      "name": "HMO Louisiana",
+      "plan_count": 40,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 160
+    },
+    {
+      "issuer_id": "90787",
+      "name": "Ambetter from Louisiana Healthcare Connections",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "98780",
+      "name": "CHRISTUS Health Plan",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 714
+    },
+    {
+      "issuer_id": "69842",
+      "name": "UnitedHealthcare",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "38246",
+      "name": "AmeriHealth Caritas Next",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 3034
+    },
+    {
+      "issuer_id": "97176",
+      "name": "Blue Cross and Blue Shield of Louisiana",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 32
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

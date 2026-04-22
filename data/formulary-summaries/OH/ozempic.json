@@ -1,0 +1,122 @@
+{
+  "state_code": "OH",
+  "drug_slug": "ozempic",
+  "plan_count": 189,
+  "carriers": [
+    {
+      "issuer_id": "74313",
+      "name": "Paramount",
+      "plan_count": 26,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 78
+    },
+    {
+      "issuer_id": "64353",
+      "name": "Molina Healthcare",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    },
+    {
+      "issuer_id": "77552",
+      "name": "CareSource",
+      "plan_count": 21,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 9
+    },
+    {
+      "issuer_id": "52664",
+      "name": "SummaCare",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "33931",
+      "name": "UnitedHealthcare",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "29341",
+      "name": "Oscar Health Insurance",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "45845",
+      "name": "Oscar Insurance Corporation of Ohio",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "41047",
+      "name": "Ambetter from Buckeye Health Plan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "31981",
+      "name": "Antidote Health Plan of Ohio, Inc.",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "99969",
+      "name": "MedMutual",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 153
+    },
+    {
+      "issuer_id": "29276",
+      "name": "Anthem Blue Cross and Blue Shield",
+      "plan_count": 11,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

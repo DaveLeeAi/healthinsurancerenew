@@ -1,0 +1,42 @@
+{
+  "state_code": "DE",
+  "drug_slug": "ozempic",
+  "plan_count": 40,
+  "carriers": [
+    {
+      "issuer_id": "64004",
+      "name": "Ambetter Health of Delaware",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "76168",
+      "name": "Highmark Blue Cross Blue Shield Delaware",
+      "plan_count": 15,
+      "tier_placement": "generic",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "72760",
+      "name": "AmeriHealth Caritas Next",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 3034
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

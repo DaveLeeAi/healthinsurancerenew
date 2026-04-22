@@ -1,0 +1,32 @@
+{
+  "state_code": "AK",
+  "drug_slug": "ozempic",
+  "plan_count": 15,
+  "carriers": [
+    {
+      "issuer_id": "38344",
+      "name": "Premera Blue Cross Blue Shield of Alaska",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "73836",
+      "name": "Moda Health Plan, Inc.",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 120
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "state_code": "IN",
+  "drug_slug": "ozempic",
+  "plan_count": 80,
+  "carriers": [
+    {
+      "issuer_id": "54192",
+      "name": "CareSource",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 9
+    },
+    {
+      "issuer_id": "94419",
+      "name": "Cigna Healthcare",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "72850",
+      "name": "UnitedHealthcare",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "17575",
+      "name": "Anthem Blue Cross and Blue Shield",
+      "plan_count": 15,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "35065",
+      "name": "Ambetter Health",
+      "plan_count": 10,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "enrichment:formulary_enrichment_cigna_IN.json",
+    "ffe"
+  ]
+}

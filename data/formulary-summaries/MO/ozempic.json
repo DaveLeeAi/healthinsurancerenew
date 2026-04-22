@@ -1,0 +1,72 @@
+{
+  "state_code": "MO",
+  "drug_slug": "ozempic",
+  "plan_count": 81,
+  "carriers": [
+    {
+      "issuer_id": "32753",
+      "name": "Anthem Blue Cross and Blue Shield",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "99723",
+      "name": "Ambetter from Home State Health",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "34762",
+      "name": "Blue Cross and Blue Shield of Kansas City",
+      "plan_count": 14,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "95426",
+      "name": "UnitedHealthcare",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "69512",
+      "name": "Oscar Insurance Company",
+      "plan_count": 11,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "96384",
+      "name": "Cox HealthPlans",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 35
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

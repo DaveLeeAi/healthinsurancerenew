@@ -1,0 +1,152 @@
+{
+  "state_code": "FL",
+  "drug_slug": "ozempic",
+  "plan_count": 363,
+  "carriers": [
+    {
+      "issuer_id": "30252",
+      "name": "Florida Blue HMO (a BlueCross BlueShield FL company)",
+      "plan_count": 83,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 540
+    },
+    {
+      "issuer_id": "19898",
+      "name": "AvMed",
+      "plan_count": 64,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "49004",
+      "name": "Ambetter Health",
+      "plan_count": 38,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "21525",
+      "name": "Oscar Health Maintenance Organization of Florida",
+      "plan_count": 34,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "16842",
+      "name": "Florida Blue (BlueCross BlueShield FL)",
+      "plan_count": 33,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 540
+    },
+    {
+      "issuer_id": "48121",
+      "name": "Cigna Healthcare",
+      "plan_count": 26,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    },
+    {
+      "issuer_id": "54172",
+      "name": "Molina Healthcare",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 297
+    },
+    {
+      "issuer_id": "68398",
+      "name": "UnitedHealthcare",
+      "plan_count": 17,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "44228",
+      "name": "Wellpoint",
+      "plan_count": 13,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "67926",
+      "name": "AmeriHealth Caritas Next",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 3034
+    },
+    {
+      "issuer_id": "66966",
+      "name": "Capital Health Plan",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 27
+    },
+    {
+      "issuer_id": "86382",
+      "name": "Ambetter Health",
+      "plan_count": 7,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "13887",
+      "name": "22 Health",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "79850",
+      "name": "Cigna HealthCare of Florida, Inc.",
+      "plan_count": 5,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 918
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}

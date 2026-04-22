@@ -1,0 +1,42 @@
+{
+  "state_code": "IA",
+  "drug_slug": "ozempic",
+  "plan_count": 54,
+  "carriers": [
+    {
+      "issuer_id": "45819",
+      "name": "Oscar Insurance Company",
+      "plan_count": 26,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "48286",
+      "name": "Ambetter Health",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "56610",
+      "name": "UnitedHealthcare",
+      "plan_count": 12,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ]
+}
