@@ -1,8 +1,8 @@
 # Formulary URL Master Reference — 2027 Refresh Guide
 
-**Generated:** 2026-04-05 | **Last updated:** 2026-04-22
+**Generated:** 2026-04-05 | **Last updated:** 2026-04-22 (final audit)
 **Purpose:** Centralized list of ALL formulary data source URLs for annual refresh.
-**2026 Baseline:** 320/320 carriers, 15,245,850+ records, 46 enrichment files
+**2026 Baseline:** 320/320 carriers, 15,260,139 records (FFE 14,854,187 + SBM 405,952), 51 enrichment files
 
 ## How to Use for 2027 Refresh
 1. For URLs with year in path: replace `2026` with `2027`
@@ -102,6 +102,9 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 | 53 | MA | **UnitedHealthcare MA (HIOS 31779) — 3-Tier** | 2,590 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-MA_UHC_IFP_PY26.pdf | Replace `PY26` with `PY27` |
 | 54 | CO | **Kaiser Permanente CO (HIOS 00543) — 7-Tier** | 1,598 | https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/co/marketplace-formulary-co-en-2026.pdf | Replace `2026` with `2027` |
 | 55 | GA | **Cigna Healthcare Value 4-Tier GA (HIOS 15105)** | 1,284 | https://www.cigna.com/static/www-cigna-com/docs/ifp/value-4-tier-spec.pdf | Check carrier site — filename may change (no year in URL) |
+| 58 | WA | **Premera Blue Cross WA (HIOS 47570) — M4/B4/E4** | 7,112 | M4: premera.com/documents/052166_2026.pdf · B4: 052147_2026.pdf · E4: 052149_2025.pdf | Replace `2026` with `2027`; E4 lagged one year — verify. Requires `Referer: https://www.premera.com` header. |
+| 59 | WA | **Molina Healthcare of Washington (HIOS 00560)** | 2,183 | molinamarketplace.com/marketplace/wa/.../WAFormulary2026.pdf — VPN required; local copy: docs/WAFormulary2026.pdf | Replace `2026` with `2027` in filename. CVS Caremark PBM. 163pp bilingual EN/ES. |
+| 60 | PA | **UPMC Health Plan PA (HIOS 16322 / also covers 93688, 62560)** | 1,954 | https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf | Widen CDN — asset ID changes per year. FHIR API also available (public): apis.upmchp.com/fhir/R4/Group/RxFormulary/$exportStatus (Azure DNS blocks locally). EasyOCR extracted 2026 data. |
 
 ### BCBS NC Notes (added 2026-04-19)
 - **PBM:** Prime Therapeutics (myprime.com) — same PBM as BCBS IL (row 14 above)
@@ -336,28 +339,28 @@ Run `scripts/refresh/annual-formulary-refresh.py --from-year 2026 --to-year 2027
 
 | State | Carriers | Drugs | Exchange |
 |-------|----------|-------|----------|
-| CA | 10 | 0 | Covered California |
+| CA | 10 | 41,910 | Covered California |
 | CO | 7 | 20,096 | Connect for Health Colorado |
 | CT | 4 | 8,417 | Access Health CT |
 | DC | 4 | 15,394 | DC Health Link |
-| GA | 10 | 30,248 | Georgia Access |
+| GA | 10 | 31,503 | Georgia Access |
 | ID | 8 | 29,743 | Your Health Idaho |
 | IL | 4 | 10,099 | Get Covered Illinois |
 | KY | 4 | 11,268 | kynect |
 | MA | 9 | 17,301 | Massachusetts Health Connector |
 | MD | 5 | 19,784 | Maryland Health Connection |
-| ME | 4 | 16,705 | CoverME.gov |
+| ME | 4 | 16,692 | CoverME.gov |
 | MN | 6 | 13,075 | MNsure |
 | NJ | 5 | 12,741 | Get Covered New Jersey |
 | NM | 4 | 8,064 | beWellnm |
 | NV | 4 | 13,092 | Nevada Health Link |
 | NY | 13 | 30,978 | NY State of Health |
 | OR | 6 | 23,173 | Oregon Health Insurance Marketplace |
-| PA | 9 | 28,040 | Pennie |
-| RI | 2 | 7,042 | HealthSource RI |
+| PA | 9 | 28,725 | Pennie |
+| RI | 2 | 7,283 | HealthSource RI |
 | VA | 6 | 14,209 | Virginia Insurance Marketplace |
 | VT | 2 | 8,970 | Vermont Health Connect |
-| WA | 9 | 26,422 | Washington Healthplanfinder |
+| WA | 9 | 34,444 | Washington Healthplanfinder |
 
 ## 6. BCBS MA — Multi-PDF Compilation (13 Sources)
 
@@ -399,3 +402,80 @@ Base pattern: `https://www.cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-{stat
 | TX | TBD | TBD (placeholder for 2026) | Performance 4-Tier national spec used (state PDF pending) |
 
 **National fallback:** `https://www.cigna.com/static/www-cigna-com/docs/ifp/performance-4tier-spec.pdf`
+
+---
+
+### WA Notes (added 2026-04-22)
+
+**Premera Blue Cross WA (HIOS 47570) — 3-Tier Metal Plans**
+- **PBM:** Premera (self-managed)
+- **Three PDFs** (M4=Metallic, B4=Bronze-Specific, E4=EPO): download with `Referer: https://www.premera.com` header; direct GET without Referer → 403
+- **M4 URL:** https://www.premera.com/documents/052166_2026.pdf
+- **B4 URL:** https://www.premera.com/documents/052147_2026.pdf
+- **E4 URL:** https://www.premera.com/documents/052149_2025.pdf (NOTE: E4 lagged one year in 2026 — verify for 2027)
+- **2027 pattern:** replace `2026` with `2027` in filename; DOC IDs (052166, 052147, 052149) appear stable
+- **Drugs parsed:** 7,112 total (M4+B4+E4 deduped); 6,033 net-new to WA SBM
+- **Enrichment file:** `data/processed/formulary_enrichment_premera_wa_WA.json`
+
+**Molina Healthcare of Washington (HIOS 00560)**
+- **PBM:** CVS Caremark
+- **URL:** VPN required — molinamarketplace.com/marketplace/wa/.../WAFormulary2026.pdf
+- **Local copy:** `docs/WAFormulary2026.pdf` (163pp bilingual EN/ES; deleted after parse)
+- **2027 pattern:** replace `2026` with `2027` in filename
+- **Drugs parsed:** 2,183 (PA/QL/ST flags captured); 1,989 net-new to WA SBM
+- **Enrichment file:** `data/processed/formulary_enrichment_molina_wa_WA.json`
+- **Kaiser WA (HIOS 15690):** covered via KP NW (HIOS 23371) — same formulary, no separate parse needed
+
+---
+
+### PA Notes — UPMC (added 2026-04-22)
+
+**UPMC Health Plan PA (HIOS 16322 — also covers 93688, 62560)**
+- **PDF:** Advantage Choice 2026 Formulary Book (Widen CDN)
+- **Widen URL:** https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf
+- **2027 pattern:** Widen CDN asset ID (`02jjoeuifc`) changes per year — find new URL from upmchealthplan.com/formulary
+- **Parse method:** EasyOCR via PyMuPDF (fitz) pixel render at 1.5× scale; Value Choice PDF (29pp) OCR yield 0 — scanned quality insufficient
+- **7-tier:** SG/PG → PREFERRED-GENERIC, PBG → PREFERRED-BRAND, NP → NON-PREFERRED-BRAND, SP → SPECIALTY, ACA → ACA-PREVENTIVE
+- **Drugs parsed:** 1,954 (PA=712, QL=876, ST=36); 685 net-new to PA SBM
+- **Enrichment file:** `data/processed/formulary_enrichment_upmc_pa_PA.json`
+- **FHIR Bulk Data API (alternative for 2027):** `apis.upmchp.com/fhir/R4/Group/RxFormulary/$exportStatus` → Azure blob NDJSON; public, no auth; DNS blocked locally but may work from server/cloud environment
+- **IBC (HIOS 00116):** covered via IBC 33709 Value PDF (same formulary)
+
+---
+
+## 8. UHC FFE States — National OptumRx PDL (added 2026-04-22)
+
+All 19 UHC FFE states share a **single national OptumRx PDL** via the CMS MR-PUF bundle. No per-state PDF download required — data is in `formulary_intelligence.json` (14,854,187 plan-level records).
+
+**CMS MR-PUF index URL:** `https://www.uhc.com/content/dam/uhcdotcom/en/general/cms-data-index.json`
+- Year-agnostic URL — same endpoint for 2026 and 2027
+- Each UHC FFE issuer has exactly **4,347 records** (national PDL fingerprint)
+- PBM: OptumRx
+
+| State | HIOS | Carrier Name in Registry |
+|-------|------|--------------------------|
+| AL | 69461 | UnitedHealthcare (AL) |
+| AZ | 40702 | UnitedHealthcare (AZ) |
+| FL | 68398 | UnitedHealthcare (FL) |
+| IA | 56610 | UnitedHealthcare (IA) |
+| IN | 72850 | UnitedHealthcare (IN) |
+| KS | 94968 | UnitedHealthcare (KS) |
+| LA | 69842 | UnitedHealthcare (LA) |
+| MI | 71667 | UnitedHealthcare (MI) |
+| MO | 95426 | UnitedHealthcare (MO) |
+| MS | 97560 | UnitedHealthcare (MS) |
+| NC | 54332 | UnitedHealthcare (NC) |
+| NE | 73102 | UnitedHealthcare (NE) |
+| OH | 33931 | UnitedHealthcare (OH) |
+| OK | 45480 | UnitedHealthcare (OK) |
+| SC | 33764 | UnitedHealthcare (SC) |
+| TN | 69443 | UnitedHealthcare (TN) |
+| TX | 40220 | UnitedHealthcare (TX) — issuer 1 of 2 |
+| TX | 70754 | UnitedHealthcare (TX) — issuer 2 of 2 |
+| WI | 80180 | UnitedHealthcare (WI) |
+| WY | 49714 | UnitedHealthcare (WY) |
+
+**UHC SBM states (11)** — individual SBM formulary entries in registry (not CMS PUF):
+CO(97879) GA(13535) IL(42529) MA(31779) MD(72375) NJ(37777) NM(65428) NV(45142) NY(54235) VA(24251) WA(62650)
+
+**UHC non-participant states (confirmed):** CA CT DC ID KY ME MN OR PA RI VT
