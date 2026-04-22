@@ -4,28 +4,18 @@
   "plan_count": 1115,
   "carriers": [
     {
-      "issuer_id": "78124",
-      "name": "nan",
-      "plan_count": 224,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 1
-    },
-    {
       "issuer_id": "40064",
-      "name": "nan",
-      "plan_count": 210,
+      "name": "Excellus BCBS (NY)",
+      "plan_count": 434,
       "tier_placement": "preferred-brand",
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 1
+      "data_record_count": 2
     },
     {
       "issuer_id": "94788",
-      "name": "nan",
+      "name": "CDPHP (NY)",
       "plan_count": 109,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -35,7 +25,7 @@
     },
     {
       "issuer_id": "56184",
-      "name": "nan",
+      "name": "MVP Health Care (NY)",
       "plan_count": 103,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +35,7 @@
     },
     {
       "issuer_id": "91237",
-      "name": "nan",
+      "name": "Healthfirst (NY)",
       "plan_count": 94,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -55,7 +45,7 @@
     },
     {
       "issuer_id": "41046",
-      "name": "nan",
+      "name": "Anthem / Elevance (NY)",
       "plan_count": 92,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -65,7 +55,7 @@
     },
     {
       "issuer_id": "88582",
-      "name": "nan",
+      "name": "EmblemHealth (NY)",
       "plan_count": 92,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -75,7 +65,7 @@
     },
     {
       "issuer_id": "25303",
-      "name": "nan",
+      "name": "Ambetter / Fidelis Care (NY)",
       "plan_count": 88,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -85,7 +75,7 @@
     },
     {
       "issuer_id": "11177",
-      "name": "nan",
+      "name": "MetroPlus Health Plan (NY)",
       "plan_count": 57,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -95,7 +85,7 @@
     },
     {
       "issuer_id": "18029",
-      "name": "nan",
+      "name": "Independent Health (NY)",
       "plan_count": 46,
       "tier_placement": "preferred-brand",
       "pa_required": false,

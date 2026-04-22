@@ -24,6 +24,26 @@
       "data_record_count": 4
     },
     {
+      "issuer_id": "40220",
+      "name": "UnitedHealthcare",
+      "plan_count": 31,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "87226",
+      "name": "Ambetter from Superior HealthPlan",
+      "plan_count": 30,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 8
+    },
+    {
       "issuer_id": "76589",
       "name": "Cigna Healthcare",
       "plan_count": 22,
@@ -44,26 +64,6 @@
       "data_record_count": 3
     },
     {
-      "issuer_id": "40220",
-      "name": "UnitedHealthcare",
-      "plan_count": 20,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 3
-    },
-    {
-      "issuer_id": "87226",
-      "name": "Ambetter from Superior HealthPlan",
-      "plan_count": 18,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 4
-    },
-    {
       "issuer_id": "66252",
       "name": "CHRISTUS Health Plan",
       "plan_count": 18,
@@ -74,14 +74,14 @@
       "data_record_count": 714
     },
     {
-      "issuer_id": "29418",
-      "name": "Ambetter from Superior HealthPlan",
-      "plan_count": 12,
+      "issuer_id": "27248",
+      "name": "Community Health Choice",
+      "plan_count": 17,
       "tier_placement": "preferred-brand",
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 4
+      "data_record_count": 152
     },
     {
       "issuer_id": "45786",
@@ -92,26 +92,6 @@
       "quantity_limits": true,
       "step_therapy": true,
       "data_record_count": 297
-    },
-    {
-      "issuer_id": "70754",
-      "name": "UnitedHealthcare",
-      "plan_count": 11,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 3
-    },
-    {
-      "issuer_id": "27248",
-      "name": "Community Health Choice",
-      "plan_count": 11,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 76
     },
     {
       "issuer_id": "34826",
@@ -132,16 +112,6 @@
       "quantity_limits": true,
       "step_therapy": false,
       "data_record_count": 4
-    },
-    {
-      "issuer_id": "11718",
-      "name": "Community Health Choice",
-      "plan_count": 6,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 76
     },
     {
       "issuer_id": "17933",

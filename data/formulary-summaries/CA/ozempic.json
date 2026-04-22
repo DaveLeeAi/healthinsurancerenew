@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "70285",
-      "name": "nan",
+      "name": "Blue Shield of California",
       "plan_count": 254,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "67138",
-      "name": "nan",
+      "name": "Ambetter from Health Net (CA)",
       "plan_count": 206,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "27603",
-      "name": "nan",
+      "name": "Chinese Community Health Plan (CCHP)",
       "plan_count": 37,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "93689",
-      "name": "nan",
+      "name": "Western Health Advantage (CA)",
       "plan_count": 32,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "92499",
-      "name": "nan",
+      "name": "Anthem Blue Cross (CA)",
       "plan_count": 31,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -55,7 +55,7 @@
     },
     {
       "issuer_id": "40513",
-      "name": "nan",
+      "name": "Kaiser Permanente (CA)",
       "plan_count": 22,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -65,7 +65,7 @@
     },
     {
       "issuer_id": "20523",
-      "name": "nan",
+      "name": "Oscar Health Plan of California",
       "plan_count": 19,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -75,7 +75,7 @@
     },
     {
       "issuer_id": "18126",
-      "name": "nan",
+      "name": "Molina Healthcare (CA)",
       "plan_count": 16,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -85,7 +85,7 @@
     },
     {
       "issuer_id": "51396",
-      "name": "nan",
+      "name": "IEHP (Inland Empire Health Plan)",
       "plan_count": 16,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -95,7 +95,7 @@
     },
     {
       "issuer_id": "92815",
-      "name": "nan",
+      "name": "L.A. Care Health Plan",
       "plan_count": 16,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -105,7 +105,7 @@
     },
     {
       "issuer_id": "84014",
-      "name": "nan",
+      "name": "Valley Health Plan (CA)",
       "plan_count": 16,
       "tier_placement": "preferred-brand",
       "pa_required": false,

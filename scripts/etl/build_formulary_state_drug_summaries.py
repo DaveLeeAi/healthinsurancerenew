@@ -335,6 +335,16 @@ def normalise_tier(raw: str | None) -> str:
     return TIER_NORMALISE.get(key, "unknown")
 
 
+def sanitize_carrier_name(name: str | None, iid: str) -> str:
+    """Return a human-readable carrier name, falling back to 'Issuer {iid}' for NaN/empty values."""
+    if not name:
+        return f"Issuer {iid}"
+    s = str(name).strip()
+    if s.lower() in ("nan", "none", "null", ""):
+        return f"Issuer {iid}"
+    return s
+
+
 # ── Per-carrier drug accumulator ───────────────────────────────────────────────
 
 class CarrierDrugAccum:
@@ -395,6 +405,9 @@ def build_plan_map() -> dict[str, dict[str, dict]]:
         log.error("plan_intelligence.json not found")
         sys.exit(1)
 
+    registry_names = build_registry_name_map()
+    log.info("  Registry name map: %d entries", len(registry_names))
+
     plan_map: dict[str, dict[str, dict]] = defaultdict(lambda: defaultdict(
         lambda: {"name": "", "plan_ids": set()}
     ))
@@ -431,7 +444,12 @@ def build_plan_map() -> dict[str, dict[str, dict]]:
                     continue
                 entry = plan_map[iid][state]
                 if not entry["name"]:
-                    entry["name"] = info.get("name", f"Issuer {iid}")
+                    raw_name = info.get("name")
+                    entry["name"] = (
+                        sanitize_carrier_name(raw_name, iid)
+                        if raw_name and str(raw_name).strip().lower() not in ("nan", "none", "null", "")
+                        else registry_names.get(iid, f"Issuer {iid}")
+                    )
                 # Represent plan count as a set of synthetic IDs
                 plan_count = info.get("plan_count", 0)
                 for i in range(plan_count):
@@ -446,6 +464,27 @@ def build_plan_map() -> dict[str, dict[str, dict]]:
     total_states  = sum(len(v) for v in plan_map.values())
     log.info("  Total: %d issuers, %d state-issuer pairs in plan map", total_issuers, total_states)
     return plan_map
+
+
+# Module-level cache populated in main() before any summary building
+_REGISTRY_NAMES: dict[str, str] = {}
+
+# ── Registry name lookup ──────────────────────────────────────────────────────
+
+def build_registry_name_map() -> dict[str, str]:
+    """Returns {hios_prefix: carrier_name} from formulary URL registry."""
+    if not FORMULARY_URL_REG.exists():
+        return {}
+    with FORMULARY_URL_REG.open("r", encoding="utf-8") as fh:
+        registry = json.load(fh)
+    name_map: dict[str, str] = {}
+    for state_data in registry.get("states", {}).values():
+        for carrier in state_data.get("carriers", []):
+            prefix = str(carrier.get("hios_prefix") or carrier.get("hios_id") or "").strip()
+            name = str(carrier.get("carrier_name") or "").strip()
+            if prefix and name and name.lower() not in ("nan", "none", ""):
+                name_map.setdefault(prefix, name)
+    return name_map
 
 
 # ── Issuer → state map ────────────────────────────────────────────────────────
@@ -1016,7 +1055,11 @@ def build_state_summary(
         state_plan_info = plan_map.get(iid, {}).get(state, {})
         carrier_plan_ids = state_plan_info.get("plan_ids", set())
         carrier_plan_count = len(carrier_plan_ids)
-        carrier_name = state_plan_info.get("name", f"Issuer {iid}")
+        raw_name = state_plan_info.get("name")
+        if raw_name and str(raw_name).strip().lower() not in ("nan", "none", "null", ""):
+            carrier_name = sanitize_carrier_name(raw_name, iid)
+        else:
+            carrier_name = _REGISTRY_NAMES.get(iid, f"Issuer {iid}")
 
         if carrier_plan_count == 0:
             # Issuer has enrichment data but no plans in plan_intelligence — skip
@@ -1040,6 +1083,24 @@ def build_state_summary(
 
     if not carriers:
         return None
+
+    # Deduplicate carriers by name — same insurer may appear under multiple HIOS IDs.
+    # Merge plan_count and data_record_count; use OR for restriction flags.
+    seen: dict[str, dict] = {}
+    for c in carriers:
+        key = c["name"]
+        if key in seen:
+            existing = seen[key]
+            existing["plan_count"]       += c["plan_count"]
+            existing["data_record_count"] += c["data_record_count"]
+            existing["pa_required"]       = existing["pa_required"]       or c["pa_required"]
+            existing["quantity_limits"]   = existing["quantity_limits"]   or c["quantity_limits"]
+            existing["step_therapy"]      = existing["step_therapy"]      or c["step_therapy"]
+        else:
+            seen[key] = dict(c)
+    carriers = list(seen.values())
+    # Recalculate total after dedup (plan_counts were summed per-carrier above)
+    total_plan_count = sum(c["plan_count"] for c in carriers)
 
     # Sort carriers by plan_count descending (matches V79 table order)
     carriers.sort(key=lambda c: c["plan_count"], reverse=True)
@@ -1170,6 +1231,10 @@ def main() -> None:
     log.info("Drug: '%s'  slug: '%s'", args.drug, drug_slug)
     if target_states:
         log.info("States: %s", sorted(target_states))
+
+    # 0. Registry name map (module-level so build_state_summary can use it)
+    global _REGISTRY_NAMES
+    _REGISTRY_NAMES = build_registry_name_map()
 
     # 1. Plan map
     plan_map = build_plan_map()

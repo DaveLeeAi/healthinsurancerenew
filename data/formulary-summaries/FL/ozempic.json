@@ -26,12 +26,12 @@
     {
       "issuer_id": "49004",
       "name": "Ambetter Health",
-      "plan_count": 38,
+      "plan_count": 45,
       "tier_placement": "preferred-brand",
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 4
+      "data_record_count": 8
     },
     {
       "issuer_id": "21525",
@@ -112,16 +112,6 @@
       "quantity_limits": true,
       "step_therapy": false,
       "data_record_count": 27
-    },
-    {
-      "issuer_id": "86382",
-      "name": "Ambetter Health",
-      "plan_count": 7,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 4
     },
     {
       "issuer_id": "13887",

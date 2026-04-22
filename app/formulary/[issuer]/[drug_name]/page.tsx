@@ -570,6 +570,8 @@ function summaryDominantTier(s: FormularyStateDrugSummary): string {
 const summaryPaMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.pa_required).length  >= s.carriers.length / 2
 const summaryStMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.step_therapy).length >= s.carriers.length / 2
 const summaryQlMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.quantity_limits).length >= s.carriers.length / 2
+const summaryPaAll       = (s: FormularyStateDrugSummary) => s.carriers.every(c => c.pa_required)
+const summaryPaCount     = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.pa_required).length
 
 // ---------------------------------------------------------------------------
 // Page
@@ -680,12 +682,15 @@ export default async function FormularyDrugPage({ params }: Props) {
   )
 
   const hasPriorAuth = stateSummary ? summaryPaMajority(stateSummary) : results.some((r) => r.prior_authorization)
+  const paAll = stateSummary ? summaryPaAll(stateSummary) : false
+  const paMajorityCount = stateSummary ? summaryPaCount(stateSummary) : 0
   const priorAuthCount = results.filter((r) => r.prior_authorization).length
   const priorAuthPct = results.length > 0 ? (priorAuthCount / results.length) * 100 : 0
   const hasStepTherapy = stateSummary ? summaryStMajority(stateSummary) : results.some((r) => r.step_therapy)
   const stepTherapyCount = results.filter((r) => r.step_therapy).length
   const hasQuantityLimit = stateSummary ? summaryQlMajority(stateSummary) : results.some((r) => r.quantity_limit)
   const quantityLimitCount = results.filter((r) => r.quantity_limit).length
+  const displayPlanCount = stateSummary ? stateSummary.plan_count : results.length
   const isGenericAvailable = tiers.some((t) => t.toUpperCase().includes('GENERIC'))
   const rxnormId = results.find((r) => r.rxnorm_id)?.rxnorm_id
 
@@ -749,7 +754,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         : results.length > 50
           ? `Yes \u2014 ${titleCase(drugDisplay)} appeared on ${results.length} of the ${isState ? stateName : 'Marketplace'} health plans we reviewed for ${PLAN_YEAR}. ${dominantHumanTier.costHint}. Your cost depends on your plan\u2019s tier and deductible status.`
           : results.length >= 15
-            ? `${titleCase(drugDisplay)} is covered by some but not all ${isState ? stateName : 'Marketplace'} plans \u2014 ${results.length} in our review for ${PLAN_YEAR}. If your plan doesn\u2019t include it, you may be able to request a coverage exception.`
+            ? `${titleCase(drugDisplay)} is covered by some but not all ${isState ? stateName : 'Marketplace'} plans \u2014 ${results.length} in our review for ${PLAN_YEAR}. If your plan does not include it, you may be able to request a coverage exception.`
             : `${titleCase(drugDisplay)} appeared on only ${results.length} of the ${isState ? stateName : 'Marketplace'} plans we reviewed for ${PLAN_YEAR}. Coverage is limited \u2014 check your specific plan\u2019s drug list before enrolling, and ask about alternatives.`,
     },
     {
@@ -764,7 +769,9 @@ export default async function FormularyDrugPage({ params }: Props) {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
       answer: hasPriorAuth
         ? (isState && stateSummary
-          ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
+          ? (paAll
+            ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies offering individual marketplace plans require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
+            : `${paMajorityCount} of ${stateSummary.carriers.length} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`)
           : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount} of ${results.length} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`)
         : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
@@ -775,9 +782,9 @@ export default async function FormularyDrugPage({ params }: Props) {
         : `Tier details for ${titleCase(drugDisplay)} vary across plans. Check your specific plan's drug list for tier placement. Drug lists are updated annually, so verify coverage each Open Enrollment period.`,
     },
     {
-      question: `What if my ${isState ? stateName : 'Marketplace'} plan doesn't cover ${titleCase(drugDisplay)}?`,
+      question: `What if my ${isState ? stateName : 'Marketplace'} plan does not cover ${titleCase(drugDisplay)}?`,
       answer: isState && results.length > 0
-        ? `Of the ${results.length} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan doesn't, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
+        ? `Of the ${results.length} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan does not, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
         : `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. The plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review — the decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
     },
     {
@@ -787,10 +794,8 @@ export default async function FormularyDrugPage({ params }: Props) {
         : `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. If your current plan stops covering a drug mid-year or significantly raises its tier, that may qualify you for a Special Enrollment Period. Verify that your specific drug is covered on any new drug list before enrolling.`,
     },
     {
-      question: `What's the difference between a coverage exception and prior approval for ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}?`,
-      answer: isState && hasPriorAuth
-        ? `Prior authorization applies when a plan covers ${titleCase(drugDisplay)} but requires your doctor to document medical necessity first — that's the case for ${priorAuthCount} of ${results.length} ${stateName} plans we reviewed. A coverage exception is different: it asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list at all. Both require prescriber documentation, but they solve different problems. You can file both simultaneously if needed.`
-        : `Prior authorization requires your doctor to document medical necessity before your plan will cover a drug — it is about getting coverage activated. A coverage exception asks the plan to cover a drug at a lower tier or to cover a drug that is not on the drug list — it is about getting coverage at a lower cost or for a drug the plan does not normally include. Both require prescriber documentation, but they solve different problems.`,
+      question: `What is the difference between a coverage exception and prior approval for ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}?`,
+      answer: `Prior authorization (sometimes called 'prior auth') means your plan has to approve ${titleCase(drugDisplay)} before the pharmacy can fill it. A coverage exception is different — it is when you ask your plan to cover a drug that is not on its drug list, or to move it to a cheaper tier. Prior auth is about timing. A coverage exception is about whether it is covered at all.`,
     },
   ]
   // --- Triple schema (@graph) ---
@@ -830,7 +835,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     hasPriorAuth,
     hasStepTherapy,
     hasQuantityLimit,
-    planCount: results.length,
+    planCount: displayPlanCount,
     costSharingSpecs,
     breadcrumbItems,
     faqItems: formularyFaqs,
@@ -953,8 +958,8 @@ export default async function FormularyDrugPage({ params }: Props) {
   const costRows: { name: string; desc: string; figure: string; unit: string; hint?: string }[] = []
   if (humanTiers.length > 0) {
     costRows.push({
-      name: "Before you've met your deductible",
-      desc: `Estimated from ${results.length} ${isState ? stateName : 'Marketplace'} plan filing${results.length === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
+      name: "Before you have met your deductible",
+      desc: `Estimated from ${displayPlanCount} ${isState ? stateName : 'Marketplace'} plan filing${displayPlanCount === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
       figure: displayBeforeDeductibleRange,
       unit: 'month',
       hint: `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, this is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until your deductible is met.`,
@@ -997,7 +1002,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
       <ProcessBar items={[
         `${PLAN_YEAR} federal plan data`,
-        `${results.length} plan${results.length === 1 ? '' : 's'} reviewed`,
+        `${displayPlanCount} plan${displayPlanCount === 1 ? '' : 's'} reviewed`,
         'Licensed agent reviewed',
         'Updated March 2026',
       ]} />
@@ -1046,7 +1051,7 @@ export default async function FormularyDrugPage({ params }: Props) {
             <AeoBlock
               answer={narrativeData && narrativePattern
                 ? generateQuickAnswer(narrativeData, narrativePattern)
-                : `${titleCase(drugDisplay)} is covered by ${results.length} ${isState ? stateName : 'Marketplace'} plans for ${PLAN_YEAR}. ${hasPriorAuth ? `${priorAuthCount} require prior approval.` : 'Prior approval is not required on reviewed plans.'}`
+                : `${titleCase(drugDisplay)} is covered by ${displayPlanCount} ${isState ? stateName : 'Marketplace'} plans for ${PLAN_YEAR}. ${hasPriorAuth ? `${priorAuthCount} require prior approval.` : 'Prior approval is not required on reviewed plans.'}`
               }
               caveat={`Based on ${PLAN_YEAR} federal plan data. Actual cost depends on your plan, pharmacy, and deductible status.`}
             />
@@ -1055,10 +1060,10 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 4. EvidenceBlock ── */}
           {results.length > 0 && (
             <EvidenceBlock
-              title={`What we found across ${results.length} ${isState ? stateName : ''} plans`}
+              title={`What we found across ${displayPlanCount} ${isState ? stateName : ''} plans`}
               meta={`${PLAN_YEAR} plan year \u00b7 data snapshot March 2026`}
               stats={[
-                { label: 'Plans covering', value: String(results.length), sub: 'of plans reviewed', highlight: true },
+                { label: 'Plans covering', value: String(displayPlanCount), sub: 'of plans reviewed', highlight: true },
                 {
                   label: 'Typical tier',
                   value: dominantGroup === 'generic' ? 'Lowest cost tier'
@@ -1202,7 +1207,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 rows={costRows}
                 note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
                 varyRows={[
-                  { key: 'Tier placement matters', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you're considering.` },
+                  { key: 'Tier placement matters', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you are considering.` },
                   { key: 'Pharmacy choice', value: localizedSections?.pharmacyChoice ?? `Your plan's price for ${titleCase(drugDisplay)} varies by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill.` },
                   { key: 'How your deductible works', value: localizedSections?.deductibleContext ?? `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${titleCase(drugDisplay)} kicks in.` },
                 ]}
@@ -1270,7 +1275,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                       : 'not found in plans we reviewed',
                     body: hasStepTherapy
                       ? `Some plans require you to try a lower-cost alternative before covering ${titleCase(drugDisplay)}. If your doctor believes step therapy is not clinically appropriate, they can file a step therapy exception request with supporting documentation.`
-                      : `None of the ${results.length} ${isState ? `${stateCode} ` : ''}plans we reviewed required you to try a cheaper drug before covering ${titleCase(drugDisplay)}. That said, if you\u2019re using a related medication for a different indication, the rules may be different \u2014 ${relatedDrugs.length > 0 ? `see <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> for comparison` : 'check your plan\u2019s benefit documents for details'}.`,
+                      : `None of the ${results.length} ${isState ? `${stateCode} ` : ''}plans we reviewed required you to try a cheaper drug before covering ${titleCase(drugDisplay)}. That said, if you are using a related medication for a different indication, the rules may be different \u2014 ${relatedDrugs.length > 0 ? `see <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> for comparison` : 'check your plan\u2019s benefit documents for details'}.`,
                   },
                   {
                     badge: hasQuantityLimit ? 'gray' : 'green',
@@ -1304,7 +1309,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               <TimelineSteps
                 steps={[
                   { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting information directly to your ${isState ? stateName + ' ' : ''}health plan. ${priorAuthCount > 0 ? `${priorAuthCount} of ${results.length} plans we reviewed require this step for ${titleCase(drugDisplay)}.` : 'The documentation required varies by plan.'}`, time: 'Day 1' },
-                  { title: 'Plan reviews the request', desc: `${isState ? stateName + ' ' : 'Your '}plan checks the request against its coverage requirements. Your doctor and the plan's review team handle this — you don't need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
+                  { title: 'Plan reviews the request', desc: `${isState ? stateName + ' ' : 'Your '}plan checks the request against its coverage requirements. Your doctor and the plan's review team handle this — you do not need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
                   { title: 'Decision issued', desc: `Response times vary by plan and urgency. Your plan's benefit documents explain the timeline that applies to your coverage — urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
                   { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Your plan's benefit documents explain how long the approval is valid.`, time: 'After approval' },
                   { title: 'If not approved \u2014 you have options', desc: `Your plan has an appeal process you can use. If the appeal is also denied, you may be able to request an independent external review. Your plan's benefit documents outline the steps and deadlines.`, time: 'Review your plan documents for deadlines' },
@@ -1400,9 +1405,9 @@ export default async function FormularyDrugPage({ params }: Props) {
           {results.length > 0 && (
             <div style={{ marginTop: '44px' }}>
               <LimitsBlock
-                title="What we can't confirm from plan documents alone"
+                title="What we cannot confirm from plan documents alone"
                 items={[
-                  `Your exact cost at a specific pharmacy. Prices at the counter can differ from what\u2019s in plan filings.`,
+                  `Your exact cost at a specific pharmacy. Prices at the counter can differ from what is in plan filings.`,
                   `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval requirements \u2014 that depends on your plan\u2019s rules and your situation.`,
                   `Whether your plan has updated its drug list or tier since our January ${PLAN_YEAR} snapshot. Plans can make mid-year changes.`,
                   `The exact timelines and appeal steps that apply to your plan. Those details are in your plan\u2019s benefit documents.`,
