@@ -1,15 +1,32 @@
 # DESIGN.md — HealthInsuranceRenew Full Site Framework
-## Version: 3.0 | Standard: V35 (content/schema) · V19 (layout) | Updated: April 2026
+## Version: 3.0 | Standard: V35 (deployed) · V69 (lock candidate) · V19 (layout) | Updated: April 2026
 
 > Single source of truth for every page on the site.
 > Claude Code must read this file at the start of every session.
 > Do not deviate without a documented reason in the commit message.
-> V19 (ozempic_nc_formulary_v19.html) is the approved visual/layout reference.
-> V35 (healthinsurancerenew_v35_formulary.html) is the locked content, copy, and schema reference.
-> All page types inherit from V19 layout; formulary pages follow V35 content standard.
-> The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) is locked at **9.5/10**.
+
+## Version status (April 2026)
+
+| Standard | Role | Status |
+|---|---|---|
+| **V19** (`ozempic_nc_formulary_v19.html`) | Visual/layout reference | LOCKED — every page inherits this layout |
+| **V35** (`healthinsurancerenew_v35_formulary.html`) | Previously deployed content/schema standard | Rendering live on formulary pages now. Being superseded by V69. |
+| **V69** (`docs/healthinsurancerenew_v69_formulary.html`) | New content/copy/schema lock candidate | **Not yet deployed.** Blocked on: ChatGPT score 93+, Tier 1/3/4 voice rewrites (Claude.ai task), Phase 0 QA. |
+| **ACA-IFP Content Standard v3.0** (`docs/ACA-IFP-Content-Standard-v3.md`) | Voice rules for all consumer-facing copy | ACTIVE — governs any new copy Claude.ai writes |
+
+**Claude Code constraint:** Continue rendering V35 on live pages. Do not migrate formulary pages to V69 until Claude.ai explicitly signals V69 is locked and Tier 1/3/4 copy rewrites are complete.
+
+See `docs/` for the full governance stack: `CLAUDE.md` at repo root defines authority order and anti-drift rules.
+
+---
+
+> V19 is the approved visual/layout reference.
+> V35 is the currently deployed content, copy, and schema standard.
+> V69 is the next content/copy/schema standard — lock candidate, not yet deployed.
+> All page types inherit from V19 layout; formulary pages currently follow V35 content standard, migrating to V69 when locked.
+> The formulary template (`app/formulary/[issuer]/[drug_name]/page.tsx`) was locked at **9.5/10** under V35.
 > Canonical public URL: `/{state}/{drug}` — routed via middleware.ts rewrite.
-> V35 is the locked template for ~37,500 drug-in-state pages. Phase 4 drug+plan pages need their own template.
+> V35 is currently rendering for ~37,500 drug-in-state pages. Phase 4 drug+plan pages need their own template.
 
 ---
 

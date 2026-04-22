@@ -128,7 +128,7 @@ function buildContent(plan: PlanRecord, countyPlans: PlanRecord[]): MetalContent
           ? `These plans carry the highest deductibles on the Marketplace. This plan's ${fmt(deductible)} individual deductible means you pay the full contracted rate for virtually all covered services until that threshold is met.`
           : `Catastrophic deductibles are typically at or near the federal out-of-pocket maximum — review the plan documents for the exact amount.`,
         `The limited benefit structure: three primary care visits per year are covered before the deductible, and all ACA-mandated preventive services are covered at $0. Beyond those, the plan pays nothing until the deductible is exhausted.`,
-        `Catastrophic plans generally cannot be purchased with Advance Premium Tax Credits (APTC). They are primarily a financial safety net — not a substitute for comprehensive coverage — and are best suited for otherwise healthy individuals whose primary concern is protection against a catastrophic medical event.`,
+        `Catastrophic plans generally cannot be purchased with Advance Premium Tax Credits (APTC). They are primarily a financial safety net — not a full-benefit plan — and are best suited for otherwise healthy individuals whose primary concern is protection against a catastrophic medical event.`,
       ],
     }
   }

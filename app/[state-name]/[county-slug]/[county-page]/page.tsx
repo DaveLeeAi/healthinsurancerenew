@@ -373,46 +373,42 @@ async function CountyPlanDetailPage({ params }: Props) {
         </nav>
 
         {/* ── Plan Snapshot Card ── */}
-        <div className="bg-primary-50 border border-primary-200 rounded-xl p-4 mb-6">
+        <div className="border-l-4 border-primary-400 bg-primary-50/40 rounded-r-lg px-5 py-4 mb-6">
           <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-3">Plan Snapshot</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">Metal Level</div>
-              <MetalBadge level={plan.metal_level} />
+          <dl className="space-y-2.5">
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">Metal Level</dt>
+              <dd><MetalBadge level={plan.metal_level} /></dd>
             </div>
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">Plan Type</div>
-              <div className="text-sm font-semibold text-navy-800">{plan.plan_type}</div>
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">Plan Type</dt>
+              <dd className="font-semibold text-navy-800">{plan.plan_type}</dd>
             </div>
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">Monthly Premium (Age 40)</div>
-              <div className="text-sm font-semibold text-navy-800">
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">Monthly Premium (Age 40)</dt>
+              <dd className="font-semibold text-navy-800">
                 {plan.premiums?.age_40 != null
                   ? `$${plan.premiums.age_40.toLocaleString()}`
                   : 'Get a quote'}
-              </div>
+              </dd>
             </div>
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">Deductible (Individual)</div>
-              <div className="text-sm font-semibold text-navy-800">{dollars(plan.deductible_individual)}</div>
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">Deductible (Individual)</dt>
+              <dd className="font-semibold text-navy-800">{dollars(plan.deductible_individual)}</dd>
             </div>
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">OOP Max (Individual)</div>
-              <div className="text-sm font-semibold text-primary-800">{dollars(plan.moop_individual)}</div>
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">OOP Max (Individual)</dt>
+              <dd className="font-semibold text-navy-800">{dollars(plan.moop_individual)}</dd>
             </div>
-            <div>
-              <div className="text-xs text-neutral-500 mb-1">Location</div>
-              <div className="text-sm font-semibold text-navy-800">{countyDisplay}, {stateCode}</div>
+            <div className="flex items-baseline justify-between gap-4 text-sm">
+              <dt className="text-neutral-500">Location</dt>
+              <dd className="font-semibold text-navy-800">{countyDisplay}, {stateCode}</dd>
             </div>
-          </div>
+          </dl>
         </div>
 
         {/* ── Header ── */}
         <header className="mb-6">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <MetalBadge level={plan.metal_level} />
-            <span className="text-sm text-neutral-500">{plan.plan_type}</span>
-          </div>
           <h1 className="text-3xl font-bold text-navy-900 mb-1">
             {plan.plan_name} — Benefits &amp; Coverage {PLAN_YEAR}
           </h1>
@@ -428,36 +424,6 @@ async function CountyPlanDetailPage({ params }: Props) {
 
         {/* 1. PlanHeroBLUF — direct answer for AI + user */}
         <PlanHeroBLUF plan={plan} countyDisplay={countyDisplay} countyPlans={countyPlans} />
-
-        {/* ── Key cost boxes ── */}
-        <section aria-label="Key cost figures" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <CostBox
-            label="Deductible"
-            sublabel="Individual"
-            value={dollars(plan.deductible_individual)}
-            tooltip="The amount you pay before your plan begins to pay for most covered services."
-          />
-          <CostBox
-            label="Deductible"
-            sublabel="Family"
-            value={dollars(plan.deductible_family)}
-            tooltip="Combined amount all family members must pay before the plan pays."
-          />
-          <CostBox
-            label="Out-of-Pocket Max"
-            sublabel="Individual"
-            value={dollars(plan.moop_individual)}
-            tooltip="After reaching this limit, the plan pays 100% of covered in-network costs."
-            highlight
-          />
-          <CostBox
-            label="Out-of-Pocket Max"
-            sublabel="Family"
-            value={dollars(plan.moop_family)}
-            tooltip={`Combined family maximum. ACA sets a federal cap for ${PLAN_YEAR}.`}
-            highlight
-          />
-        </section>
 
         {/* 2. PlanFitSummary — who is this plan good for? */}
         <PlanFitSummary plan={plan} countyPlans={countyPlans} />
@@ -930,12 +896,12 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const METAL_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  bronze:           { bg: 'bg-amber-100',  text: 'text-amber-800',   border: 'border-amber-300' },
-  expanded_bronze:  { bg: 'bg-amber-100',  text: 'text-amber-800',   border: 'border-amber-300' },
+  bronze:           { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
+  expanded_bronze:  { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
   silver:           { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
-  gold:             { bg: 'bg-yellow-100', text: 'text-yellow-800',  border: 'border-yellow-400' },
-  platinum:         { bg: 'bg-slate-200',  text: 'text-slate-800',   border: 'border-slate-400' },
-  catastrophic:     { bg: 'bg-red-100',    text: 'text-red-800',     border: 'border-red-300' },
+  gold:             { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
+  platinum:         { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
+  catastrophic:     { bg: 'bg-neutral-100', text: 'text-neutral-700', border: 'border-neutral-300' },
 }
 
 function MetalBadge({ level }: { level: string }) {

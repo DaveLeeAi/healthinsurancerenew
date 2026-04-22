@@ -1,6 +1,6 @@
 # Formulary URL Master Reference — 2027 Refresh Guide
 
-**Generated:** 2026-04-05
+**Generated:** 2026-04-05 | **Last updated:** 2026-04-22
 **Purpose:** Centralized list of ALL formulary data source URLs for annual refresh.
 **2026 Baseline:** 320/320 carriers, 15,245,850+ records, 46 enrichment files
 
@@ -45,13 +45,13 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 
 | # | ST | Carrier | Drugs | URL | Refresh Pattern |
 |---|-----|---------|-------|-----|-----------------|
-| 1 | RI | BCBSRI-5T | 1,521 | 2026_RI_5T_Direct_HIM.pdf | Check carrier website |
+| 1 | RI | BCBS Rhode Island (15287) — 5-Tier | 2,950 | https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_RI_5T_Direct_HIM.pdf | Replace `2025` with `2026` (then `2027`) |
 | 2 | NY | Independent Health (NY) Essential Plan | 2,199 | https://fm.formularynavigator.com/FBO/43/2026Essential.pdf | Replace `2026` with `2027` |
 | 3 | VA | Oscar-VA-4T | 2,438 | Oscar_4T_VA_STND_Member_Doc__April_2026__as_of_03252026.pdf | Check carrier website |
 | 4 | CA | CCHP-CA | 1,716 | 2026_CCHP_March_Commercial_Exchange_Formulary_26.03.01.pdf | Check carrier website |
 | 5 | ? | ? | 7,425 | LOCAL PDF | Check carrier website for new PDF |
 | 6 | CA | Blue-Shield-CA | 721 | RXFLEX-PRINTABLE-FORMULARY-(PDF)-PLUS-GF_CDI-2026-V2.PDF | Check carrier website |
-| 7 | RI | NHPRI-6T | 4,206 | NHPRI_6T_Formulary.pdf | Check carrier website |
+| 7 | RI | Neighborhood Health Plan of RI (77514) — 6-Tier | 4,092 | https://www.caremark.com/content/dam/enterprise/headless/caremark/cmk/en/assets/clinical/drug-lists-client/ltr-n/NHPRI_6T_Formulary.pdf | Caremark CDN — filename may be stable; HEAD-check annually |
 | 8 | CA | ValleyHealth-CA | 2,077 | covered-california-and-individual-and-family-plan-formulary-2026-110525.pdf | Check carrier website |
 | 9 | CA | Anthem-CA-5T | 3,519 | Essential_5_Tier_ABC.pdf | Check carrier website |
 | 10 | CA | LACare-CA | 2,841 | la2133_lacc_formulary_202603rev.pdf | Check carrier website |
@@ -74,23 +74,248 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 | 27 | MULTI | Cigna Healthcare Performance 4-Tier | 1,406 | https://www.cigna.com/static/www-cigna-com/docs/ifp/performance-4tier-spec.pdf | Replace `26` with `27` in URL path |
 | 28 | PA | Highmark (PA) Commercial Formulary | 7,921 | https://client.formularynavigator.com/Search.aspx?siteCode=8103967260 | Selenium scrape (same URL, new year data) |
 | 29 | CA | Imperial Health Plan (CA/NV) | 2,970 | https://imperialhealthplan.com/wp-content/uploads/2025/09/2026_September_Formula | Replace `2026` with `2027` |
-| 30 | ME | Mending ME (WellPoint) | 2,359 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_ME_IND_Split.pdf | Replace `2026` with `2027` |
+| 30 | ME | Anthem Blue Cross / WellPoint (ME) (HIOS 48396) — 4-Tier | 3,905 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_ME_IND_Split.pdf | Replace `2026` with `2027` |
+| 49 | ME+OK | **Mending (formerly TARO Health) — SmithRx 3-Tier (ME HIOS 54879 / OK HIOS TBD)** | 6,698 | https://smithrx.adaptiverx.com/web/pdf?key=8F02B26A288102C27BAC82D14C006C6FC54D480F80409B68152E2998CC6B2D92 | Key changes annually — rediscover via carrier pharmacy page |
 | 31 | IL | MercyCare HMO (IL) | 2,058 | mercycarehealthplans.com il-qhp-formulary-individual-small-group-2026.pdf | Replace `2026` with `2027` |
 | 32 | WI | MercyCare HMO (WI) | 4,151 | mercycarehealthplans.com 2026 QHP formulary | Replace `2026` with `2027` |
-| 33 | MA | Mass General Brigham Health Plan (MA) 6- | 2,525 | https://fm.formularynavigator.com/FBO/192/2026_6_Tier_Formulary.pdf | Replace `2026` with `2027` |
+| 33 | MA | **Mass General Brigham Health Plan (MA) (HIOS 36096) — 6-Tier** | 3,052 | https://fm.formularynavigator.com/FBO/192/2026_6_Tier_Formulary.pdf | Replace `2026` with `2027` |
 | 34 | ID | Mountain Health CO-OP (ID) | 33,862 | https://cbg.adaptiverx.com/webSearch/index?key=8F02B26A288102C27BAC82D14C006C6FC | Selenium scrape (key may change) |
 | 35 | ID | Molina Healthcare of Idaho (Utah) | 2,409 | molinamarketplace.com IDFormulary2026.pdf | Replace `2026` with `2027` in filename |
 | 36 | IL | Molina Healthcare of Illinois | 2,546 | molinamarketplace.com ILFormulary2026.pdf | Replace `2026` with `2027` in filename |
 | 37 | NM | Presbyterian Health Plan (NM) - IFP Meta | 16,561 | https://client.formularynavigator.com/Search.aspx?siteCode=0324498195 | Selenium scrape (same URL, new year data) |
 | 38 | NV | SelectHealth (NV) | 942 | selecthealth.org nevada-tier6-rxcore.pdf | Check carrier site for new PDF |
 | 39 | CA | Sharp Health Plan (CA) | 1,521 | sharphealthplan.com 2026 formulary | Replace `01012026` with `01012027` |
-| 40 | IL | UnitedHealthcare Illinois IFP | 4,064 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP-M58644-UHC-IFP-PY26-IL | Replace `PY26` with `PY27` |
+| 40 | IL | **UnitedHealthcare IL (HIOS 42529) — 4-Tier** | 3,357 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP-M58644-UHC-IFP-PY26-IL-PDL-2026.pdf | Replace `PY26` with `PY27` |
+| 56 | CO | **UnitedHealthcare CO (HIOS 97879) — 5-Tier** | 1,477 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP1432766-CO_UHC_IFP_PY26.pdf | Replace `PY26` with `PY27` |
+| 57 | NY | **UnitedHealthcare NY (HIOS 54235) — 3-Tier** | 3,349 | https://www.uhc.com/content/dam/uhcdotcom/en/Pharmacy/PDFs/IFP_M58643_UHC_NY-PDL-12312025.pdf | Replace year in filename (`12312025` → `12312026`) |
 | 41 | MN | IFB-MN | 2,316 | 2026-IFB-Formulary-MN.pdf | Check carrier website |
 | 42 | WI | IFB-WI | 2,338 | 2026-IFB-Formulary-WI.pdf | Check carrier website |
 | 43 | FL | WellPoint FL Select 4-Tier IND | 2,354 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_FL_IND_.pdf | Replace `2026` with `2027` |
 | 44 | MD | WellPoint MD Select 4-Tier IND | 2,319 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_MD_IND.pdf | Replace `2026` with `2027` |
 | 45 | TX | WellPoint TX Select 4-Tier IND | 2,161 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_TX_IND.pdf | Replace `2026` with `2027` |
 | 46 | WA | WellPoint Washington Select 4-Tier IND | 2,351 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_WA_IND.pdf | Replace `2026` with `2027` |
+| 47 | NC | **Blue Cross Blue Shield of NC (11512) — 4-Tier** | 1,378 | https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_NC_4T_HealthInsuranceMarketplace.pdf | Replace `2026` with `2027` |
+| 48 | NC | **Blue Cross Blue Shield of NC (11512) — 5-Tier** | 1,392 | https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_NC_5T_HealthInsuranceMarketplace.pdf | Replace `2026` with `2027` |
+| 50 | MN | **HealthPartners (MN) (HIOS 79888) — 3-Tier** | 2,244 | https://www.healthpartners.com/content/dam/plan/b2c/pharmacy/comm-2026-formulary-shelf.pdf | Replace `2026` with `2027` |
+| 51 | OR | **Regence BCBS OR (HIOS 77969 + 63474) — 4-Tier** | 2,215 | https://regence.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_RBO_Four_Tier_Drug_List_Metallic.pdf | Replace `2026` with `2027` in both path and filename |
+| 52 | MA | **WellSense Health Plan MA (HIOS 82569) — 4-Tier** | 2,414 | https://www.wellsense.org/hubfs/Pharmacy/MA_Clarity_Formulary_Guidebook_2026.pdf | Replace `2026` with `2027` in filename |
+| 53 | MA | **UnitedHealthcare MA (HIOS 31779) — 3-Tier** | 2,590 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-MA_UHC_IFP_PY26.pdf | Replace `PY26` with `PY27` |
+| 54 | CO | **Kaiser Permanente CO (HIOS 00543) — 7-Tier** | 1,598 | https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/co/marketplace-formulary-co-en-2026.pdf | Replace `2026` with `2027` |
+| 55 | GA | **Cigna Healthcare Value 4-Tier GA (HIOS 15105)** | 1,284 | https://www.cigna.com/static/www-cigna-com/docs/ifp/value-4-tier-spec.pdf | Check carrier site — filename may change (no year in URL) |
+
+### BCBS NC Notes (added 2026-04-19)
+- **PBM:** Prime Therapeutics (myprime.com) — same PBM as BCBS IL (row 14 above)
+- **Not in CMS MR-PUF electronic feed** — PDF download + pdfplumber parse required
+- **Parse script:** `c:/tmp/bcbs_nc_pdf_extract.py`
+- **Output:** `data/processed/formulary_enrichment_bcbs_nc.json` (2,770 records)
+- **Market share:** 117/206 NC health plans (57%) — largest NC issuer
+- **2026 Ozempic:** 4T=Tier 2, 5T=Tier 3; PA+QL required on both; Wegovy NOT listed
+- **2026 myprime.com 2025-year URL (for regression check):** https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_NC_5T_HealthInsuranceMarketplace.pdf
+- **SBC URL pattern (CAPTCHA-protected, manual only):** https://buyonline.bcbsnc.com/assets/bol/public/pdf/sbc/Blue_Value_Silver_Preferred_350_CSR87_2026.pdf
+- **ACA preventive list (separate from formulary):** https://www.bluecrossnc.com/content/dam/bcbsnc/pdf/members/preventive-care/aca-preventive-list-26.pdf — change `26` to `27`
+- **Machine-readable files page:** https://www.bluecrossnc.com/policies-best-practices/machine-readable-files (provider rates only, not formulary)
+
+### NY Notes (added 2026-04-22)
+
+**Fidelis Care / Ambetter NY (HIOS 25303)**
+- **Direct URL confirmed:** https://www.fideliscare.org/Portals/0/Formularies/QHP-2026-formulary-Fidelis-Care.pdf
+- **2027 pattern:** replace `2026` with `2027` in filename
+- **Format:** two-column table layout; use `pdfplumber` `page.extract_tables()` (NOT text-line parser)
+- **3-tier:** Generic / Preferred-Brand / Non-Preferred-Brand
+- **Drugs parsed:** 2,343 (PA=647, QL=1,135, ST=123)
+- **Previously:** marked `blocked` — data obtained via proxy. Now fully direct.
+
+**Excellus BCBS NY — Essential Plan (HIOS 78124)**
+- **Direct URL confirmed:** https://fm.formularynavigator.com/FBO/251/Excellus_Essential_Plan_Formulary_5930_v26.pdf
+- **2027 pattern:** `fm.formularynavigator.com/FBO/251/Excellus_Essential_Plan_Formulary_{NUM}_v27.pdf` — the `{NUM}` (5930) may change; check FormularyNavigator FBO/251 listing
+- **3-tier (Express Scripts PBM):** Generic / Preferred-Brand / Non-Preferred-Brand
+- **Drugs parsed:** 1,747 — separate product from Metal Plans (2981); add as distinct issuer entry
+- **Tier-changes companion doc:** https://www.excellusbcbs.com/documents/d/global/tier-changes_hix_2026_updated — this is actually a PDF; check same path for 2027
+
+**Excellus BCBS NY — Metal Plans (HIOS 40064 + 78124)**
+- **Direct URL confirmed:** https://fm.formularynavigator.com/FBO/251/Excellus_2026_Metal_Plans_Base___Simply_Blue_Plus___College_Blue_Plans_Formulary_Guide_2981_v26.pdf
+- **2027 pattern:** replace `2026` with `2027`; `2981` and `v26` suffix may also change — check FBO/251
+
+**EmblemHealth NY (HIOS 88582)**
+- **Primary URL:** https://www.emblemhealth.com/content/dam/emblemhealth/pdfs/resources/formularies/2026/essential-plan-individual-family-plans-small-group-formulary-2026-emblemhealth.pdf
+- **Alternate CDN (identical file):** `zt.emblemhealth.com` subdomain — same path, same MD5; either URL works
+- **2027 pattern:** replace `2026` with `2027` in both path segments
+
+---
+
+### RI Notes (added 2026-04-22)
+
+**BCBS Rhode Island (HIOS 15287) — 5-Tier**
+- **PBM:** Prime Therapeutics (myprime.com) — same CDN as BCBS IL and BCBS NC
+- **Confirmed URL (2025 year):** https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_RI_5T_Direct_HIM.pdf
+- **2026 URL (for current baseline):** replace `2025` with `2026` — verify it exists before refresh
+- **2027 pattern:** replace year in both path segment and filename
+- **Parsed file:** `data/processed/formulary_sbm_ri_bcbsri.json` (2,950 records, parsed 2026-04-22)
+- **Note:** currently in SBM as a separate carrier file, not merged into a combined RI SBM file
+
+**Neighborhood Health Plan of RI (HIOS 77514) — 6-Tier**
+- **PBM:** CVS Caremark (caremark.com CDN)
+- **Confirmed URL:** https://www.caremark.com/content/dam/enterprise/headless/caremark/cmk/en/assets/clinical/drug-lists-client/ltr-n/NHPRI_6T_Formulary.pdf
+- **2027 pattern:** filename (`NHPRI_6T_Formulary.pdf`) appears stable — Caremark updates in-place; HEAD-check for Last-Modified header to detect refresh
+- **Tiers:** 0=Preventive/Generic ($0), 1=Preferred Generic, 2=Non-Preferred Generic, 3=Preferred Brand, 4=Non-Preferred Brand, 5=Specialty, 6=Non-Preferred Specialty
+- **Parsed file:** `data/processed/formulary_sbm_ri_nhpri.json` (4,092 records, parsed 2026-04-22)
+
+---
+
+### ME Notes (added 2026-04-22)
+
+**Mending (formerly TARO Health) (HIOS 54879) — SmithRx / AdaptiveRx**
+- **PBM:** SmithRx (adaptiverx.com delivery platform)
+- **3-tier:** Generic / Preferred-Brand / Non-Preferred-Brand
+- **Drugs parsed:** 6,698 (PA=209, QL=1,119, ST=86)
+- **Parsed file:** `data/processed/formulary_sbm_me_mending.json`
+- **Four PDFs — all confirmed 2026-04-22 (direct GET, no auth):**
+
+| Document | URL |
+|----------|-----|
+| Formulary | `https://smithrx.adaptiverx.com/web/pdf?key=...152E2998CC6B2D92` |
+| Prior Auth list | `https://smithrx.adaptiverx.com/web/pdf?key=...4A92B9441814F0D7` |
+| Step Therapy criteria | `https://smithrx.adaptiverx.com/web/pdf?key=...772B497B2D96BB32` |
+| Step Therapy drug list | `https://smithrx.adaptiverx.com/web/pdf?key=...2F7BA2F1A45C4F2D` |
+
+- **Key prefix:** all four share `8F02B26A288102C27BAC82D14C006C6FC54D480F80409B68` — suffix differs per document
+- **Multi-state:** Mending operates in both **ME and OK (FFE)**. All four PDF keys are byte-for-byte identical across both states — single national SmithRx formulary.
+- **OK web search interface** (different key suffix, same plan data): `smithrx.adaptiverx.com/webSearch/index?key=...80F20571612BC46E`
+- **OK HIOS prefix:** pending MR-PUF lookup. Drug data already captured via ME parse — no separate OK parse needed.
+- **2027 refresh:** keys will change; rediscover by searching AdaptiveRx portal for "Mending" or via carrier pharmacy page. The shared 48-char prefix (`8F02B26A...09B68`) may be stable; only the trailing 16 hex chars differ per document type.
+- **Parse method:** pdfplumber word-level positional extraction (3-column: name x0<305, tier x0 305–345, UM x0>355). Multi-line drug names handled via row continuation logic. Supplement PDFs cross-referenced for PA and ST flags.
+
+---
+
+### MN Notes (added 2026-04-22)
+
+**HealthPartners (MN) (HIOS 79888) — 3-Tier**
+- **Direct URL confirmed:** https://www.healthpartners.com/content/dam/plan/b2c/pharmacy/comm-2026-formulary-shelf.pdf
+- **UM edits PDF:** https://www.healthpartners.com/content/dam/plan/b2c/pharmacy/comm-2026-formulary-shelf-um-edits.pdf (91 pages — PA criteria + ST criteria by drug name)
+- **2027 pattern:** replace `2026` with `2027` in both URLs
+- **3-tier:** 1=Low Cost Generic (GENERIC), 2=High Cost Generic (PREFERRED-BRAND), 3=Formulary Brand (NON-PREFERRED-BRAND)
+- **Non-Formulary (NF) tier:** listed in PDF but excluded from parsed output — use for coverage-gap identification only
+- **Drugs parsed:** 2,244 (PA=638, QL=557, ST=12) — replaced 3,763 proxy records
+- **PA/QL flags:** captured directly from Requirements/Limits column in main formulary PDF
+- **Parse method:** pdfplumber word-level positional extraction (3-column: name x0<308, tier x0 308–375, UM x0>388)
+- **Anthem ME fix (row 30):** row 30 in this table was previously mislabelled "Mending ME (WellPoint)" — corrected to "Anthem Blue Cross / WellPoint (ME) (HIOS 48396)" on 2026-04-22. Drug count updated from 2,359 (stale) to 3,905 (from registry JSON API).
+
+---
+
+### UHC CO / NY / IL Notes (added 2026-04-22)
+
+**UnitedHealthcare CO (HIOS 97879) — 5-Tier**
+- **Direct URL confirmed:** https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP1432766-CO_UHC_IFP_PY26.pdf
+- **2027 pattern:** replace `PY26` with `PY27`; DOC_ID 1432766 is CO-specific (differs from MA/NJ/MD DOC_ID 2895550)
+- **PBM:** OptumRx
+- **5-tier:** 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND, 4+5=NON-PREFERRED-BRAND (specialty); $0=GENERIC (ACA preventive)
+- **Drugs parsed:** 1,477 (QL=159, SP=107); replaced 1,299 proxy/pattern records
+- **Parse method:** word-level two-column positional extraction (L: name<207, tier 207–235, notes>235; R: name 322–484, tier 484–512, notes>512)
+- **Parse script:** `c:/tmp/parse_uhc_co.py`
+- **Registry:** 97879 updated from `pattern` → `verified`, tiers updated 4→5
+
+**UnitedHealthcare NY (HIOS 54235) — 3-Tier**
+- **Direct URL confirmed:** https://www.uhc.com/content/dam/uhcdotcom/en/Pharmacy/PDFs/IFP_M58643_UHC_NY-PDL-12312025.pdf
+- **2027 pattern:** replace `12312025` with `12312026` in filename (date-stamped, not year-keyed)
+- **PBM:** OptumRx; UHC Compass network
+- **3-tier + $0:** $0=GENERIC (preventive), 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND
+- **Drugs parsed:** 3,349 (PA=637, QL=1,627, ST=52, SP=427); replaced 3,373 proxy records
+- **Format:** 174-page single-column table per page — Brand name | Generic name | Tier | Notes; generic name used as drug_name
+- **Parse method:** `pdfplumber` `page.extract_tables()` (single-column, generic name = row[1])
+- **Parse script:** `c:/tmp/parse_uhc_ny.py`
+- **Registry:** 54235 updated source_type `blocked` → `direct_download`, status confirmed `verified`
+
+**UnitedHealthcare IL (HIOS 42529) — 4-Tier**
+- **Direct URL confirmed:** https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP-M58644-UHC-IFP-PY26-IL-PDL-2026.pdf
+- **2027 pattern:** replace `PY26` with `PY27`; DOC_ID M58644 is IL-specific
+- **HIOS confirmed:** 42529 — extracted from plan IDs embedded in PDF (pages 2–3 list `42529IL0070xxx` / `42529IL0080xxx`)
+- **Exchange:** GetCoveredIllinois (SBM) — not an FFE state
+- **PBM:** OptumRx
+- **4-tier:** 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND, 4=NON-PREFERRED-BRAND (specialty); $0=GENERIC
+- **Drugs parsed:** 3,357 (PA=334, QL=1,161); previous enrichment file had 4,064 (TIER-1/2/3 format, no HIOS)
+- **Format:** 164-page single-column layout; name x0<372, tier x0=372–400, notes x0>396
+- **Parse method:** word-level single-column positional extraction (not table extraction — two-col table fragmentation)
+- **Parse script:** `c:/tmp/parse_uhc_il.py`
+- **Registry:** 42529 added as new IL carrier entry (was missing entirely)
+
+---
+
+### CO Notes (added 2026-04-22)
+
+**Kaiser Permanente CO (HIOS 00543) — 7-Tier**
+- **Direct URL confirmed:** https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/co/marketplace-formulary-co-en-2026.pdf
+- **2027 pattern:** replace `2026` with `2027`
+- **PBM:** Kaiser Permanente (self-managed)
+- **7-tier system:** Tiers 1+2=GENERIC, 3=PREFERRED-BRAND, 4=NON-PREFERRED-BRAND, 5=NON-PREFERRED-BRAND (specialty), 6=Medical Service (excluded), 7=Diabetic Supplies (excluded)
+- **Tiers 6+7 excluded** from parsed output — not pharmacy benefit
+- **Drugs parsed:** 1,598 (PA=68, QL=49, ST=9); resolved from `blocked` (0 drugs) to `verified`
+- **Parse method:** `pdfplumber` `page.extract_tables()` (3-column table); section headers have empty/None tier cell; drug data starts page 8
+- **EPO variant:** `exclusive-provider-organization-formulary-co-en-2026-drug-formulary.pdf` is self-funded, not ACA — excluded
+
+### OR Notes (added 2026-04-22)
+
+**Regence BlueCross BlueShield OR / Cambia (HIOS 77969 + 63474) — 4-Tier**
+- **Direct URL confirmed:** https://regence.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_RBO_Four_Tier_Drug_List_Metallic.pdf
+- **2027 pattern:** replace `2026` with `2027` in both path segments and filename
+- **PBM:** Prime Therapeutics (myprime.com CDN)
+- **Shared formulary:** HIOS 77969 (Regence BCBS OR #2) and 63474 (Cambia/Regence BCBS OR) share this PDF; records tagged with both issuer IDs
+- **4-tier:** 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND, 4=NON-PREFERRED-BRAND (specialty)
+- **ACA:** "ACA" restriction code = ACA preventive drug (zero cost share)
+- **Drugs parsed:** 2,215 (PA=247, QL=703, SP=346, ST=0)
+- **Parse method:** `pdfplumber` `page.extract_tables()` (3-column table: drug name | tier digit | notes); drug data starts page 5
+- **Registry note:** replaced 6,421 proxy records shared between 77969 and 63474
+
+### MA Notes — WellSense + UHC + MGB (added 2026-04-22)
+
+**WellSense Health Plan MA (HIOS 82569) — 4-Tier**
+- **Direct URL confirmed:** https://www.wellsense.org/hubfs/Pharmacy/MA_Clarity_Formulary_Guidebook_2026.pdf
+- **2027 pattern:** replace `2026` with `2027` in filename (`?hsLang=en` query param optional)
+- **4-tier:** 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND, 4=GENERIC (Zero Cost Share Preventative)
+- **Restriction codes:** PA, ST, QL, SP, DS (diabetic supply), SRX
+- **Drugs parsed:** 2,414 (PA=649, QL=844, ST=82, SP=486); replaced 3,319 proxy records
+- **Parse method:** `pdfplumber` `page.extract_tables()` (3-column table); drug data starts around page 12
+
+**UnitedHealthcare MA (HIOS 31779) — 3-Tier**
+- **Direct URL confirmed:** https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-MA_UHC_IFP_PY26.pdf
+- **2027 pattern:** replace `PY26` with `PY27`
+- **PBM:** OptumRx
+- **3-tier + $0:** $0=GENERIC (zero-cost preventive), 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND
+- **Two-column page layout:** each page has two side-by-side drug listing columns; requires word-level positional extraction (not table extraction)
+- **Left column:** name x0<205, tier x0 205–228, notes x0>228; **Right column:** name x0 322–480, tier x0 480–503, notes x0>503
+- **Drugs parsed:** 2,590 (PA=630, QL=1,191, ST=131, SP=437); drug data starts page 8
+- **Parse method:** `parse_uhc_ma.py` — `pdfplumber` word-level two-column extraction
+
+**Mass General Brigham Health Plan MA (HIOS 36096) — 6-Tier**
+- **Direct URL confirmed:** https://fm.formularynavigator.com/FBO/192/2026_6_Tier_Formulary.pdf
+- **2027 pattern:** replace `2026` with `2027`
+- **FormularyNavigator:** FBO code 192 (MGB Health Plan)
+- **6-tier:** 1+2=GENERIC, 3=PREFERRED-BRAND, 4+5+6=NON-PREFERRED-BRAND (specialty in tiers 5–6)
+- **$0 status:** zero-cost preventive drugs (mapped to GENERIC tier)
+- **Notes column format:** "PA; SP; QL" semicolon-separated
+- **HIOS confirmed:** 36096 (present in formulary_sbm_MA.json; previously listed as `unknown_mgb_ma`)
+- **Drugs parsed:** 3,052 (PA=708, QL=982, ST=109, SP=505); replaced 3,267 prior records
+- **Parse method:** `pdfplumber` `page.extract_tables()` (4-column: Drug | Reference | Status | Notes); Status = "Tier N" or "$0"
+
+**Cigna Healthcare Value 4-Tier GA (HIOS 15105)**
+- **Direct URL confirmed:** https://www.cigna.com/static/www-cigna-com/docs/ifp/value-4-tier-spec.pdf
+- **2027 pattern:** no year in URL — check cigna.com/ifp/pharmacy for updated link annually
+- **Effective:** July 1, 2026 (mid-year formulary)
+- **Distinct from 5-tier Plus plan:** same HIOS 15105 but different plan design; 29 drugs overlap, 1,255 unique to Value
+- **4-tier:** 1=GENERIC, 2=PREFERRED-BRAND, 3=NON-PREFERRED-BRAND, 4=NON-PREFERRED-BRAND (specialty)
+- **Restriction codes:** PA, SP, QL, ST, PPACA (ACA preventive)
+- **Drugs parsed:** 1,284 (PA=387, QL=331, ST=30, SP=350)
+- **Parse method:** `pdfplumber` `page.extract_tables()` (3-column: Medication | Tier | Notes); drug data starts page 6
+- **Enrichment file:** `data/processed/formulary_enrichment_cigna_ga_value_GA.json`
+- **GA SBM:** 1,255 net-new drugs added to GA SBM (additive merge under HIOS 15105)
+
+**Highmark ACA Preventive Drug List (SUPPLEMENT ONLY — NOT full formulary)**
+- **Preventive PDF URL:** https://www.highmark.com/content/dam/digital-marketing/en/highmark/highmarkdotcom/aon/documents/aca-preventive-drug-list-bcbs.pdf
+- **Format:** 5-page, 4-column layout (drug names only — no tier column); all drugs are $0 ACA preventive
+- **Full formulary:** requires Selenium from FormularyNavigator siteCode=8103967260 (see section 4)
+- **HIOS:** 22444 (Highmark PA) — currently absent from formulary_sbm_PA.json; Selenium scrape needed
+- **Health Plans Inc. / Community Care (88806 MA):** NOT an ACA marketplace carrier — TPA for self-funded employer groups only. Status set to `not_applicable` in registry. No ACA formulary exists.
+
+---
 
 ## 4. Selenium-Scraped Sources (Headless Chrome Required)
 
@@ -112,24 +337,24 @@ Run `scripts/refresh/annual-formulary-refresh.py --from-year 2026 --to-year 2027
 | State | Carriers | Drugs | Exchange |
 |-------|----------|-------|----------|
 | CA | 10 | 0 | Covered California |
-| CO | 6 | 18,320 | Connect for Health Colorado |
+| CO | 7 | 20,096 | Connect for Health Colorado |
 | CT | 4 | 8,417 | Access Health CT |
 | DC | 4 | 15,394 | DC Health Link |
 | GA | 10 | 30,248 | Georgia Access |
 | ID | 8 | 29,743 | Your Health Idaho |
-| IL | 3 | 6,742 | Get Covered Illinois |
+| IL | 4 | 10,099 | Get Covered Illinois |
 | KY | 4 | 11,268 | kynect |
-| MA | 9 | 15,831 | Massachusetts Health Connector |
+| MA | 9 | 17,301 | Massachusetts Health Connector |
 | MD | 5 | 19,784 | Maryland Health Connection |
-| ME | 4 | 10,007 | CoverME.gov |
-| MN | 6 | 14,594 | MNsure |
+| ME | 4 | 16,705 | CoverME.gov |
+| MN | 6 | 13,075 | MNsure |
 | NJ | 5 | 12,741 | Get Covered New Jersey |
 | NM | 4 | 8,064 | beWellnm |
 | NV | 4 | 13,092 | Nevada Health Link |
-| NY | 13 | 31,126 | NY State of Health |
-| OR | 6 | 27,379 | Oregon Health Insurance Marketplace |
-| PA | 9 | 20,119 | Pennie |
-| RI | 2 | 7,283 | HealthSource RI |
+| NY | 13 | 30,978 | NY State of Health |
+| OR | 6 | 23,173 | Oregon Health Insurance Marketplace |
+| PA | 9 | 28,040 | Pennie |
+| RI | 2 | 7,042 | HealthSource RI |
 | VA | 6 | 14,209 | Virginia Insurance Marketplace |
 | VT | 2 | 8,970 | Vermont Health Connect |
 | WA | 9 | 26,422 | Washington Healthplanfinder |

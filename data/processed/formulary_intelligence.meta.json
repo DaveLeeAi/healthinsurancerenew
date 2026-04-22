@@ -5,13 +5,50 @@
   "issuers_successful": 106,
   "issuers_failed": 4,
   "success_rate_pct": 96.4,
-  "total_drug_records": 20497198,
+  "total_drug_records": 14854187,
   "unique_drug_names": 49872,
   "unique_rxnorm_ids": 12249,
-  "unique_issuer_ids_with_data": 114,
+  "unique_issuer_ids_with_data": 199,
   "priority_drug_records": 678998,
   "priority_drug_names": 1421,
   "generated_at": "2026-03-10T02:19:00",
+  "last_audited": "2026-04-22",
   "schema_version": "1.0",
-  "note": "Metadata reconstructed post-run (finalize OOM on 7.2GB file - now fixed)"
+  "note": "Metadata reconstructed post-run (finalize OOM on 7.2GB file - now fixed) | BCBS NC (11512) enrichment added 2026-04-19: 2770 records from myprime.com PDFs. | BCBS RI (15287) re-parsed 2026-04-22 via VPN: 2950 records in formulary_sbm_ri_bcbsri.json (was 3046 from prior parse, new file has PA/QL/ST/SP flags per drug). | NHPRI RI (77514) parsed 2026-04-22 via VPN: 4092 records in formulary_sbm_ri_nhpri.json (CVS Caremark PDF, 6-tier, effective 04/01/2026, single-column layout).",
+  "note2": "UPMC Health Plan PA (16322/93688) added 2026-04-22: 1954 records via EasyOCR on Advantage Choice 2026 PDF (Widen CDN). 685 net-new added to formulary_sbm_PA.json (28,040 -> 28,725).",
+  "note3": "Audit 2026-04-22: unique_issuer_ids_with_data corrected 114->199 and total_drug_records corrected 20,497,198->14,854,187 via streaming scan of full 4.44GB file. Original meta was reconstructed post-OOM and did not account for batch 1 (32 issuers, 12.7M records), FN issuers (6, 25.9K), batch 2 (6 carriers, 1.65M), Dean WI (38345, 119.8K), Medica MO (47840, 98.3K).",
+  "enrichment_files": [
+    {
+      "issuer_id": "11512",
+      "issuer_name": "Blue Cross and Blue Shield of NC",
+      "file": "data/processed/formulary_enrichment_bcbs_nc.json",
+      "records": 2770,
+      "unique_drugs": 1461,
+      "source": "myprime.com PDF (4T + 5T)",
+      "added": "2026-04-19"
+    },
+    {
+      "issuer_id": "15105",
+      "issuer_name": "Cigna Healthcare Value 4-Tier (GA)",
+      "file": "data/processed/formulary_enrichment_cigna_ga_value_GA.json",
+      "records": 1284,
+      "unique_drugs": 1284,
+      "source": "cigna.com Value 4-tier spec PDF (Express Scripts)",
+      "plan_design": "Value",
+      "notes": "Distinct from Cigna Plus 5-tier (GA). Effective July 1, 2026. 1,255 net-new added additively to GA SBM.",
+      "added": "2026-04-22"
+    }
+    ,{
+      "issuer_id": "16322",
+      "issuer_name": "UPMC Health Plan (PA)",
+      "file": "data/processed/formulary_enrichment_upmc_pa_PA.json",
+      "records": 1954,
+      "unique_drugs": 1954,
+      "source": "EasyOCR on Advantage Choice 2026 PDF (Widen CDN)",
+      "also_covers": ["93688", "62560"],
+      "net_new_to_sbm": 685,
+      "notes": "7-tier: SG/PG/PBG/NP/SP/ACA. Value Choice PDF (29pp) OCR yield 0 - scanned quality insufficient. FHIR Bulk Data API also available: apis.upmchp.com/fhir/R4/Group/RxFormulary/$exportStatus",
+      "added": "2026-04-22"
+    }
+  ]
 }
