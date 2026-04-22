@@ -807,7 +807,7 @@
         {
           "carrier_name": "Cigna Healthcare (GA)",
           "hios_prefix": "15105",
-          "formulary_url": null,
+          "formulary_url": "https://www.cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-ga-989876-cigna-rx-plus-5-tier-pdl.pdf",
           "formulary_type": "pdf",
           "source_type": "direct_download",
           "pbm": "Express Scripts",
@@ -818,7 +818,8 @@
           "year_pattern": "See url_patterns section",
           "notes": "URL pattern: cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-ga-[CODE]-cigna-rx-plus-5-tier-pdl.pdf  -  exact doc code needs discovery. VALUE 4-TIER: 1284 drugs parsed 2026-04-22 from cigna.com/static/.../value-4-tier-spec.pdf (effective 2026-07-01). 1255 drugs unique to Value plan added to GA SBM.",
           "fetch_method": "auto_download",
-          "fetch_notes": "Direct download"
+          "fetch_notes": "Direct download",
+          "formulary_url_note": "Pattern: m-26-rx-ga-989876-cigna-rx-plus-5-tier-pdl.pdf; replace 26->27 and verify code 989876 unchanged"
         },
         {
           "carrier_name": "Kaiser Permanente (GA)",
@@ -1795,7 +1796,7 @@
         {
           "carrier_name": "Quartz Health Plan (MN)",
           "hios_prefix": "70373",
-          "formulary_url": null,
+          "formulary_url": "https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf",
           "formulary_type": "pdf",
           "source_type": "manual_download",
           "pbm": "Unknown",
@@ -1806,7 +1807,9 @@
           "year_pattern": "Check quartzhealthplan.com pharmacy page annually",
           "notes": "Already have quartz_4tier_2026.pdf locally. Wisconsin/Minnesota regional plan.",
           "fetch_method": "auto_download",
-          "fetch_notes": "Direct download"
+          "fetch_notes": "Direct download",
+          "formulary_url_note": "Domain changed from quartzhealthplan.com to quartzbenefits.com. Also appears as HIOS 30242 in MN formulary file.",
+          "hios_also": "30242"
         },
         {
           "carrier_name": "UCare (MN)",
@@ -3097,7 +3100,7 @@
         {
           "carrier_name": "BlueCross BlueShield of RI",
           "hios_prefix": "15287",
-          "formulary_url": null,
+          "formulary_url": "https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_RI_5T_Direct_HIM.pdf",
           "formulary_type": "pdf",
           "source_type": "local_hd_pdf",
           "pbm": "Prime Therapeutics",
@@ -3108,12 +3111,13 @@
           "year_pattern": "Annual: download from Prime Therapeutics member portal or BCBS RI pharmacy page. Web access blocked  -  manual download required.",
           "notes": "PDF downloaded 2026-04-22 via VPN (Seattle) from myprime.com. 2025_RI_5T_Direct_HIM.pdf (39MB, 125 pages, December 2025 edition). Parsed via parse_ri_final.py (PyMuPDF, 2-column positional word extraction, pages 7-94, skipping alphabetical index). Output: formulary_sbm_ri_bcbsri.json. 2950 records / 2949 unique. Tier breakdown: 1:236, 2:880, 3:888, 4:356, 5:473, A:103.",
           "fetch_method": "remote_pdf_vpn",
-          "fetch_notes": "URL: https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_RI_5T_Direct_HIM.pdf  -  accessible only from non-cloud US IP (VPN required). Parsed via c:/tmp/parse_ri_final.py."
+          "fetch_notes": "URL: https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2025/Formularies/HIM/2025_RI_5T_Direct_HIM.pdf  -  accessible only from non-cloud US IP (VPN required). Parsed via c:/tmp/parse_ri_final.py.",
+          "formulary_url_note": "2025-year URL; replace 2025->2026->2027 in path+filename"
         },
         {
           "carrier_name": "Neighborhood Health Plan of RI",
           "hios_prefix": "77514",
-          "formulary_url": null,
+          "formulary_url": "https://www.caremark.com/content/dam/enterprise/headless/caremark/cmk/en/assets/clinical/drug-lists-client/ltr-n/NHPRI_6T_Formulary.pdf",
           "formulary_type": "pdf",
           "source_type": "local_hd_pdf",
           "pbm": "CVS Caremark",
@@ -3124,7 +3128,8 @@
           "year_pattern": "Annual: download from NHPRI pharmacy page or FormularyNavigator. No static PDF URL  -  FormularyNavigator is search-only.",
           "notes": "PDF downloaded 2026-04-22 via VPN (Seattle) from CVS Caremark. NHPRI_6T_Formulary.pdf (208 pages, effective 04/01/2026). Parsed via parse_nhpri_final.py (PyMuPDF, single-column, Tier N text format). Output: formulary_sbm_ri_nhpri.json. 4092 total / 4061 unique. Tier breakdown: 0:238, 1:547, 2:2174, 3:389, 4:203, 5:449, 6:84. Flags: pa:841, ql:1165, st:126, otc:507, contraceptive:90.",
           "fetch_method": "remote_pdf_vpn",
-          "fetch_notes": "URL: https://www.caremark.com/content/dam/enterprise/headless/caremark/cmk/en/assets/clinical/drug-lists-client/ltr-n/NHPRI_6T_Formulary.pdf -- accessible only from non-cloud US IP (VPN required). Parsed via c:/tmp/parse_nhpri_final.py (PyMuPDF single-column positional)."
+          "fetch_notes": "URL: https://www.caremark.com/content/dam/enterprise/headless/caremark/cmk/en/assets/clinical/drug-lists-client/ltr-n/NHPRI_6T_Formulary.pdf -- accessible only from non-cloud US IP (VPN required). Parsed via c:/tmp/parse_nhpri_final.py (PyMuPDF single-column positional).",
+          "formulary_url_note": "Caremark CDN — filename appears stable; HEAD-check Last-Modified annually"
         }
       ]
     },

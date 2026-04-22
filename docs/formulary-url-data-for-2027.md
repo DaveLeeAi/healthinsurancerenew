@@ -88,8 +88,8 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 | 40 | IL | **UnitedHealthcare IL (HIOS 42529) — 4-Tier** | 3,357 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP-M58644-UHC-IFP-PY26-IL-PDL-2026.pdf | Replace `PY26` with `PY27` |
 | 56 | CO | **UnitedHealthcare CO (HIOS 97879) — 5-Tier** | 1,477 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP1432766-CO_UHC_IFP_PY26.pdf | Replace `PY26` with `PY27` |
 | 57 | NY | **UnitedHealthcare NY (HIOS 54235) — 3-Tier** | 3,349 | https://www.uhc.com/content/dam/uhcdotcom/en/Pharmacy/PDFs/IFP_M58643_UHC_NY-PDL-12312025.pdf | Replace year in filename (`12312025` → `12312026`) |
-| 41 | MN | IFB-MN | 2,316 | 2026-IFB-Formulary-MN.pdf | Check carrier website |
-| 42 | WI | IFB-WI | 2,338 | 2026-IFB-Formulary-WI.pdf | Check carrier website |
+| 41 | MN | IFB-MN (HealthPartners-branded) | 2,316 | 2026-IFB-Formulary-MN.pdf | Check carrier website |
+| 42 | WI | IFB-WI (HealthPartners-branded) | 2,338 | 2026-IFB-Formulary-WI.pdf | Check carrier website |
 | 43 | FL | WellPoint FL Select 4-Tier IND | 2,354 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_FL_IND_.pdf | Replace `2026` with `2027` |
 | 44 | MD | WellPoint MD Select 4-Tier IND | 2,319 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_MD_IND.pdf | Replace `2026` with `2027` |
 | 45 | TX | WellPoint TX Select 4-Tier IND | 2,161 | https://fm.formularynavigator.com/FBO/143/2026_Select_4_Tier_TX_IND.pdf | Replace `2026` with `2027` |
@@ -97,6 +97,7 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 | 47 | NC | **Blue Cross Blue Shield of NC (11512) — 4-Tier** | 1,378 | https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_NC_4T_HealthInsuranceMarketplace.pdf | Replace `2026` with `2027` |
 | 48 | NC | **Blue Cross Blue Shield of NC (11512) — 5-Tier** | 1,392 | https://www.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_NC_5T_HealthInsuranceMarketplace.pdf | Replace `2026` with `2027` |
 | 50 | MN | **HealthPartners (MN) (HIOS 79888) — 3-Tier** | 2,244 | https://www.healthpartners.com/content/dam/plan/b2c/pharmacy/comm-2026-formulary-shelf.pdf | Replace `2026` with `2027` |
+| 50b | MN | **Quartz Health Plan (MN) (HIOS 70373 / also 30242)** | 1,666 | https://quartzbenefits.com/wp-content/uploads/docs/members/pharmacy/2026/2026-Individual-Family-Standard-Formulary.pdf | Replace `2026` with `2027`; domain changed from quartzhealthplan.com to quartzbenefits.com in 2026 |
 | 51 | OR | **Regence BCBS OR (HIOS 77969 + 63474) — 4-Tier** | 2,215 | https://regence.myprime.com/content/dam/prime/memberportal/WebDocs/2026/Formularies/HIM/2026_RBO_Four_Tier_Drug_List_Metallic.pdf | Replace `2026` with `2027` in both path and filename |
 | 52 | MA | **WellSense Health Plan MA (HIOS 82569) — 4-Tier** | 2,414 | https://www.wellsense.org/hubfs/Pharmacy/MA_Clarity_Formulary_Guidebook_2026.pdf | Replace `2026` with `2027` in filename |
 | 53 | MA | **UnitedHealthcare MA (HIOS 31779) — 3-Tier** | 2,590 | https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-MA_UHC_IFP_PY26.pdf | Replace `PY26` with `PY27` |
@@ -190,7 +191,13 @@ Base: `https://esbgatewaypub.medica.com/rest/QHP/{STATE}/{HIOS}/cms-data-index.j
 
 ---
 
-### MN Notes (added 2026-04-22)
+### MN Notes (updated 2026-04-22)
+
+**HealthPartners Insurance Company (MN) (HIOS unknown) — NEW 2026 ENTRANT ⚠️**
+- New to MNsure for 2026. Separate legal entity from HealthPartners Inc (HIOS 79888).
+- HIOS prefix not confirmed — may appear as issuer 31822 (1,506 records) in formulary_sbm_MN.json
+- Formulary likely shared with HealthPartners Inc — same OptumRx PBM
+- **2027 action:** confirm HIOS via MNsure carrier list; verify formulary URL separately or confirm shared with 79888
 
 **HealthPartners (MN) (HIOS 79888) — 3-Tier**
 - **Direct URL confirmed:** https://www.healthpartners.com/content/dam/plan/b2c/pharmacy/comm-2026-formulary-shelf.pdf
