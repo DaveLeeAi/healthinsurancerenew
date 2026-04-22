@@ -1,0 +1,541 @@
+{
+  "metadata": {
+    "description": "Manually curated drug cost ranges by drug slug and state. Used by build_formulary_state_drug_summaries.py as Priority-1 source. Values sourced from V79 locked spec, plan SBC documents, CMS drug pricing transparency data, and carrier formulary documentation.",
+    "schema_version": "1.1",
+    "generated_at": "2026-04-22",
+    "fields": {
+      "after_deductible": "Copay or coinsurance range the consumer pays for this drug AFTER meeting their medical/pharmacy deductible. Source: plan SBC cost-sharing tables.",
+      "before_deductible": "Full negotiated drug price the consumer pays BEFORE meeting their deductible (for plans that subject this drug to the deductible). Source: insurer negotiated rates, CMS drug pricing transparency data."
+    },
+    "priority_note": "When after_deductible is null for an FFE state, the ETL falls back to bencs_preferred_brand_rx_ranges.json (state-level BenCS PUF data, Priority 2). before_deductible must always be provided here \u2014 BenCS does not contain it."
+  },
+  "drugs": {
+    "ozempic": {
+      "AK": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[AK] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "AL": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[AL] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "AR": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[AR] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "AZ": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[AZ] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "CA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[CA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "CO": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[CO] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "CT": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[CT] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "DC": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[DC] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "DE": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[DE] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "FL": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[FL] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "GA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[GA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "HI": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[HI] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "IA": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[IA] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "ID": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[ID] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "IL": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[IL] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "IN": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[IN] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "KS": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[KS] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "KY": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[KY] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "LA": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[LA] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "MA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[MA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "MD": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[MD] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "ME": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[ME] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "MI": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[MI] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "MN": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[MN] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "MO": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[MO] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "MS": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[MS] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "MT": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[MT] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "NC": {
+        "after_deductible": {
+          "low": 30,
+          "high": 75
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 650
+        },
+        "source": "V79-NC-Ozempic-locked",
+        "notes": "V79 locked spec (April 2026). After-deductible range reflects preferred-brand tier copays across 6 NC ACA carriers. Before-deductible range reflects negotiated GLP-1 pricing in NC ACA plans for semaglutide injection."
+      },
+      "ND": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[ND] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "NE": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[NE] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "NH": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[NH] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "NJ": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[NJ] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "NM": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[NM] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "NV": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[NV] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "NY": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[NY] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "OH": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[OH] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "OK": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[OK] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "OR": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[OR] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "PA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[PA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "RI": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[RI] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "SC": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[SC] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "SD": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[SD] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "TN": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[TN] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "TX": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[TX] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "UT": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[UT] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "VA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[VA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "VT": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[VT] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "WA": {
+        "after_deductible": {
+          "low": 30,
+          "high": 100
+        },
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-sbm-2026",
+        "notes": "[WA] after_deductible: Preferred-brand tier copay range for Ozempic/semaglutide in ACA SBM plans. Source: carrier plan benefit summaries and state exchange formulary filings (2026). Range reflects typical GLP-1 injectable copay structure across SBM carriers. before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec."
+      },
+      "WI": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[WI] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "WV": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[WV] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      },
+      "WY": {
+        "after_deductible": null,
+        "before_deductible": {
+          "low": 400,
+          "high": 800
+        },
+        "source": "estimated-aca-ffe-2026",
+        "notes": "[WY] before_deductible: Estimated negotiated price range for semaglutide injection (Ozempic) in ACA individual market plans before deductible is met. Source: CMS drug pricing transparency data and insurer SBC documents (2026). Lower bound consistent with NC V79 locked spec. after_deductible: derived from CMS BenCS PUF state-level preferred-brand copay range at ETL time (bencs_preferred_brand_rx_ranges.json)."
+      }
+    }
+  }
+}

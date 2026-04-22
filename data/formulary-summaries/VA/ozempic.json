@@ -1,0 +1,90 @@
+{
+  "state_code": "VA",
+  "drug_slug": "ozempic",
+  "plan_count": 255,
+  "carriers": [
+    {
+      "issuer_id": "25922",
+      "name": "Anthem HealthKeepers (VA)",
+      "plan_count": 55,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "10207",
+      "name": "CareFirst BlueCross BlueShield (VA)",
+      "plan_count": 50,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 12
+    },
+    {
+      "issuer_id": "24251",
+      "name": "UnitedHealthcare of Virginia",
+      "plan_count": 40,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "20507",
+      "name": "Optima Health / Sentara (VA)",
+      "plan_count": 35,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "40308",
+      "name": "CareFirst BlueChoice (VA)",
+      "plan_count": 30,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 12
+    },
+    {
+      "issuer_id": "95185",
+      "name": "Kaiser Foundation Health Plan of the Mid-Atlantic",
+      "plan_count": 25,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "88380",
+      "name": "Molina Healthcare of Virginia",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "enrichment:formulary_enrichment_25922_VA.json",
+    "ffe",
+    "sbm"
+  ]
+}

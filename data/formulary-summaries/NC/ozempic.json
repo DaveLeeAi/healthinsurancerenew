@@ -58,15 +58,22 @@
       "name": "AmeriHealth Caritas Next",
       "plan_count": 8,
       "tier_placement": "preferred-brand",
-      "pa_required": false,
+      "pa_required": true,
       "quantity_limits": true,
-      "step_therapy": true,
+      "step_therapy": false,
       "data_record_count": 3034
     }
   ],
-  "cost_range_after_deductible": null,
-  "cost_range_before_deductible": null,
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 75
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 650
+  },
   "data_sources": [
+    "enrichment:formulary_enrichment_amerihealth_nc.json",
     "enrichment:formulary_enrichment_bcbs_nc.json",
     "enrichment:formulary_enrichment_cigna_NC.json",
     "ffe"

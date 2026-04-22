@@ -1,0 +1,40 @@
+{
+  "state_code": "RI",
+  "drug_slug": "ozempic",
+  "plan_count": 85,
+  "carriers": [
+    {
+      "issuer_id": "15287",
+      "name": "nan",
+      "plan_count": 55,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "77514",
+      "name": "nan",
+      "plan_count": 30,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "enrichment:formulary_enrichment_15287_RI.json",
+    "enrichment:formulary_enrichment_77514_RI.json",
+    "sbm"
+  ]
+}

@@ -68,10 +68,10 @@ const TIER_GROUPS: Record<TierGroup, Omit<HumanTier, 'group'>> = {
     border: 'border-green-200',
   },
   'preferred-brand': {
-    label: 'Preferred brand (moderate cost)',
+    label: 'Preferred brand (lower-cost brand tier)',
     shortLabel: 'Preferred Brand',
-    costHint: 'Brand-name drug with plan-negotiated pricing — moderate copay',
-    costRange: '$30–$60',
+    costHint: 'Brand-name drug with plan-negotiated pricing — lower-cost brand tier',
+    costRange: '$30–$75',
     sortOrder: 2,
     color: 'text-blue-700',
     bg: 'bg-blue-50',
@@ -216,7 +216,7 @@ export function summarizeTierPlacement(
       case 'generic':
         return `${drugName} is placed on a generic (lowest-cost) tier across all plans in this dataset — typically $5–$20 per month.`
       case 'preferred-brand':
-        return `${drugName} is listed as a preferred brand drug — moderate cost-sharing, typically $30–$60 per month.`
+        return `${drugName} is listed as a preferred brand drug — lower-cost brand tier, typically $30–$75 per month.`
       case 'non-preferred-brand':
         return `${drugName} is classified as a non-preferred brand — higher cost-sharing, typically $60–$100+ per month.`
       case 'specialty':
@@ -279,7 +279,7 @@ export function interpretCoverage(opts: {
       result = `${drugName} is covered on most Marketplace plans as a low-cost generic, typically $5–$20 per month.`
       break
     case 'preferred-brand':
-      result = `${drugName} is covered on most Marketplace plans as a preferred brand drug, with moderate costs typically $30–$60 per month.`
+      result = `${drugName} is covered on most Marketplace plans as a preferred brand drug — lower-cost brand tier, typically $30–$75 per month.`
       break
     case 'non-preferred-brand':
       result = `${drugName} is covered on most Marketplace plans but classified as non-preferred, meaning higher out-of-pocket costs ($60–$100+ per month).`

@@ -1,0 +1,68 @@
+{
+  "state_code": "MA",
+  "drug_slug": "ozempic",
+  "plan_count": 97,
+  "carriers": [
+    {
+      "issuer_id": "34484",
+      "name": "nan",
+      "plan_count": 21,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "36046",
+      "name": "nan",
+      "plan_count": 21,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "42690",
+      "name": "nan",
+      "plan_count": 19,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "82569",
+      "name": "nan",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "31779",
+      "name": "nan",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "sbm"
+  ]
+}

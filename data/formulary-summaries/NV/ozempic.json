@@ -1,0 +1,68 @@
+{
+  "state_code": "NV",
+  "drug_slug": "ozempic",
+  "plan_count": 498,
+  "carriers": [
+    {
+      "issuer_id": "60156",
+      "name": "nan",
+      "plan_count": 292,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "95865",
+      "name": "nan",
+      "plan_count": 76,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "45142",
+      "name": "nan",
+      "plan_count": 66,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "41094",
+      "name": "nan",
+      "plan_count": 43,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 7
+    },
+    {
+      "issuer_id": "43314",
+      "name": "nan",
+      "plan_count": 21,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 7
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "sbm"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "state_code": "IL",
+  "drug_slug": "ozempic",
+  "plan_count": 200,
+  "carriers": [
+    {
+      "issuer_id": "42529",
+      "name": "Blue Cross and Blue Shield of Illinois",
+      "plan_count": 80,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "99167",
+      "name": "Centene/Ambetter (IL)",
+      "plan_count": 60,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 7
+    },
+    {
+      "issuer_id": "27833",
+      "name": "Ambetter (IL)",
+      "plan_count": 36,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "11574",
+      "name": "Oscar Health (IL)",
+      "plan_count": 24,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "ffe",
+    "sbm"
+  ]
+}

@@ -1,4 +1,6 @@
 // NOTE: No name/NPN on this page — generic byline only
+import { readFile } from 'fs/promises'
+import path from 'path'
 import { notFound, redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import siteConfig from '@/data/config/config.json'
@@ -536,6 +538,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // ---------------------------------------------------------------------------
+// State drug summary — data/formulary-summaries/{state}/{drug}.json
+// ---------------------------------------------------------------------------
+
+interface FormularyStateDrugSummaryCarrier {
+  issuer_id: string
+  name: string
+  plan_count: number
+  tier_placement: string
+  pa_required: boolean
+  quantity_limits: boolean
+  step_therapy: boolean
+  data_record_count: number
+}
+
+interface FormularyStateDrugSummary {
+  state_code: string
+  drug_slug: string
+  plan_count: number
+  carriers: FormularyStateDrugSummaryCarrier[]
+  cost_range_after_deductible: { low: number; high: number } | null
+  cost_range_before_deductible: { low: number; high: number } | null
+  data_sources: string[]
+}
+
+function summaryDominantTier(s: FormularyStateDrugSummary): string {
+  const counts: Record<string, number> = {}
+  for (const c of s.carriers) counts[c.tier_placement] = (counts[c.tier_placement] ?? 0) + c.plan_count
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'preferred-brand'
+}
+const summaryPaMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.pa_required).length  >= s.carriers.length / 2
+const summaryStMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.step_therapy).length >= s.carriers.length / 2
+const summaryQlMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.quantity_limits).length >= s.carriers.length / 2
+
+// ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
@@ -571,7 +607,7 @@ export default async function FormularyDrugPage({ params }: Props) {
   const isSBMState = stateConfig?.ownExchange ?? false
 
   // --- Load drug results ---
-  const results = await searchFormulary({
+  let results = await searchFormulary({
     drug_name: drugDisplay,
     state_code: stateCode,
     issuer_id: isSpecificIssuer ? issuer : undefined,
@@ -588,7 +624,31 @@ export default async function FormularyDrugPage({ params }: Props) {
     state_code: stateCode,
   })
 
-  // ── SBM state or state with no formulary data — show explanation page ──
+  // --- Load state drug summary when issuer is a state ---
+  let stateSummary: FormularyStateDrugSummary | null = null
+  if (isState && stateCode) {
+    try {
+      const fp = path.join(process.cwd(), 'data/formulary-summaries', stateCode, `${drugSlug}.json`)
+      stateSummary = JSON.parse(await readFile(fp, 'utf-8')) as FormularyStateDrugSummary
+    } catch { /* summary not available for this state/drug */ }
+  }
+
+  // For SBM states with no FFE data, synthesize results from state summary
+  if (isState && results.length === 0 && stateSummary) {
+    const synthTier = summaryDominantTier(stateSummary)
+    const synthPa   = summaryPaMajority(stateSummary)
+    const synthSt   = summaryStMajority(stateSummary)
+    const synthQl   = summaryQlMajority(stateSummary)
+    results = Array.from({ length: stateSummary.plan_count }, () => ({
+      drug_name: drugDisplay,
+      drug_tier: synthTier,
+      prior_authorization: synthPa,
+      step_therapy: synthSt,
+      quantity_limit: synthQl,
+    } as FormularyDrug))
+  }
+
+  // ── State with no data and no summary — show explanation page ──
   if (isState && results.length === 0) {
     return <SBMExplanationPage
       issuer={stateSlug ?? issuer}
@@ -619,12 +679,12 @@ export default async function FormularyDrugPage({ params }: Props) {
     drugDisplay,
   )
 
-  const hasPriorAuth = results.some((r) => r.prior_authorization)
+  const hasPriorAuth = stateSummary ? summaryPaMajority(stateSummary) : results.some((r) => r.prior_authorization)
   const priorAuthCount = results.filter((r) => r.prior_authorization).length
   const priorAuthPct = results.length > 0 ? (priorAuthCount / results.length) * 100 : 0
-  const hasStepTherapy = results.some((r) => r.step_therapy)
+  const hasStepTherapy = stateSummary ? summaryStMajority(stateSummary) : results.some((r) => r.step_therapy)
   const stepTherapyCount = results.filter((r) => r.step_therapy).length
-  const hasQuantityLimit = results.some((r) => r.quantity_limit)
+  const hasQuantityLimit = stateSummary ? summaryQlMajority(stateSummary) : results.some((r) => r.quantity_limit)
   const quantityLimitCount = results.filter((r) => r.quantity_limit).length
   const isGenericAvailable = tiers.some((t) => t.toUpperCase().includes('GENERIC'))
   const rxnormId = results.find((r) => r.rxnorm_id)?.rxnorm_id
@@ -650,7 +710,7 @@ export default async function FormularyDrugPage({ params }: Props) {
   const tierPlain = (() => {
     const g = dominantGroup
     if (g === 'generic') return 'low-cost generic'
-    if (g === 'preferred-brand') return 'moderate-cost brand'
+    if (g === 'preferred-brand') return 'lower-cost brand tier'
     if (g === 'non-preferred-brand') return 'higher-cost brand'
     if (g === 'specialty') return 'highest-cost'
     return dominantHumanTier.shortLabel.toLowerCase()
@@ -667,6 +727,14 @@ export default async function FormularyDrugPage({ params }: Props) {
     if (g === 'preventive') return '$0'
     return '$200–$650'
   })()
+
+  // Cost range overrides from state drug summary (Priority 1 source)
+  const displayBeforeDeductibleRange = stateSummary?.cost_range_before_deductible
+    ? `$${stateSummary.cost_range_before_deductible.low}–$${stateSummary.cost_range_before_deductible.high}`
+    : beforeDeductibleRange
+  const displayAfterDeductibleRange = stateSummary?.cost_range_after_deductible
+    ? `$${stateSummary.cost_range_after_deductible.low}–$${stateSummary.cost_range_after_deductible.high}`
+    : dominantHumanTier.costRange
 
   // ── FAQ data ────────────────────────────────────────────────────────────
   const tierSummaryText = summarizeTierPlacement(rawTiers, titleCase(drugDisplay))
@@ -687,15 +755,17 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible${isState ? ` on a ${stateName} plan` : ''}?`,
       answer: humanTiers.length > 0 && isState
-        ? `In ${stateName}, most ${results.length === 1 ? 'plans' : `of the ${results.length} plans`} covering ${titleCase(drugDisplay)} place it on a ${dominantHumanTier.shortLabel.toLowerCase()} tier. Before your deductible is met, you typically pay the plan's full price — roughly ${beforeDeductibleRange} per month for ${titleCase(drugDisplay)}. After your deductible, your copay drops to around ${dominantHumanTier.costRange} per month. A 90-day mail-order supply often costs about 67% of three 30-day fills. Check your Summary of Benefits and Coverage for exact numbers.`
+        ? `In ${stateName}, most ${results.length === 1 ? 'plans' : `of the ${results.length} plans`} covering ${titleCase(drugDisplay)} place it on a ${dominantHumanTier.shortLabel.toLowerCase()} tier. Before your deductible is met, you typically pay the plan's full price — roughly ${displayBeforeDeductibleRange} per month for ${titleCase(drugDisplay)}. After your deductible, your copay drops to around ${displayAfterDeductibleRange} per month. A 90-day mail-order supply often costs about 67% of three 30-day fills. Check your Summary of Benefits and Coverage for exact numbers.`
         : humanTiers.length > 0
-          ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${beforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${dominantHumanTier.costRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills.`
+          ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${displayBeforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${displayAfterDeductibleRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills.`
           : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
     },
     {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
       answer: hasPriorAuth
-        ? `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount} of ${results.length} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`
+        ? (isState && stateSummary
+          ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
+          : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount} of ${results.length} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`)
         : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
     {
@@ -885,14 +955,14 @@ export default async function FormularyDrugPage({ params }: Props) {
     costRows.push({
       name: "Before you've met your deductible",
       desc: `Estimated from ${results.length} ${isState ? stateName : 'Marketplace'} plan filing${results.length === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
-      figure: beforeDeductibleRange,
+      figure: displayBeforeDeductibleRange,
       unit: 'month',
       hint: `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, this is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until your deductible is met.`,
     })
     costRows.push({
       name: `After your deductible \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
       desc: `In ${results.length > 0 ? Math.round(results.length * 0.75) : ''} of ${results.length} plans reviewed \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
-      figure: dominantHumanTier.costRange,
+      figure: displayAfterDeductibleRange,
       unit: 'month',
       hint: dominantGroup === 'generic'
         ? `Generic tier drugs like ${titleCase(drugDisplay)} often have low copays even before your deductible is met on some ${isState ? stateName : 'Marketplace'} plans.`
@@ -992,7 +1062,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 {
                   label: 'Typical tier',
                   value: dominantGroup === 'generic' ? 'Lowest cost tier'
-                    : dominantGroup === 'preferred-brand' ? 'Moderate-cost brand tier'
+                    : dominantGroup === 'preferred-brand' ? 'Lower-cost brand tier'
                     : dominantGroup === 'non-preferred-brand' ? 'Higher-cost brand tier'
                     : dominantGroup === 'specialty' ? 'Highest cost tier'
                     : dominantHumanTier.shortLabel,

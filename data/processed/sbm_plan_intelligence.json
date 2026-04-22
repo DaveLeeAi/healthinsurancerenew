@@ -1,0 +1,1460 @@
+{
+  "metadata": {
+    "description": "Carrier plan counts for SBM-sourced states. Merged into plan_map by build_formulary_state_drug_summaries.py.",
+    "sbm_states": [
+      "CA",
+      "CO",
+      "CT",
+      "DC",
+      "GA",
+      "ID",
+      "IL",
+      "KY",
+      "MA",
+      "MD",
+      "ME",
+      "MN",
+      "NJ",
+      "NM",
+      "NV",
+      "NY",
+      "OR",
+      "PA",
+      "RI",
+      "VA",
+      "VT",
+      "WA"
+    ],
+    "states_covered": [
+      "CA",
+      "CO",
+      "CT",
+      "DC",
+      "GA",
+      "ID",
+      "IL",
+      "KY",
+      "MA",
+      "MD",
+      "ME",
+      "MN",
+      "NJ",
+      "NM",
+      "NV",
+      "NY",
+      "OR",
+      "PA",
+      "RI",
+      "VA",
+      "VT",
+      "WA"
+    ],
+    "total_issuers": 199,
+    "total_carrier_state_pairs": 200,
+    "sources": {
+      "sbm_puf": "SBM PUF Plans/Rates CSV from CMS SBE PUF zip files (2025 vintage)",
+      "manual": "Approximate plan counts from CMS Plan Finder 2026 data \u2014 update when 2026 PUF zips available"
+    },
+    "generated_at": "2026-04-22T22:20:39.888707"
+  },
+  "carriers": {
+    "10091": {
+      "OR": {
+        "name": "PacificSource Health Plans",
+        "plan_count": 25,
+        "source": "manual"
+      }
+    },
+    "10204": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "10207": {
+      "VA": {
+        "name": "CareFirst BlueCross BlueShield (VA)",
+        "plan_count": 50,
+        "source": "manual"
+      }
+    },
+    "10345": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "11177": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 57,
+        "source": "sbm_puf"
+      }
+    },
+    "11574": {
+      "IL": {
+        "name": "Oscar Health (IL)",
+        "plan_count": 24,
+        "source": "manual"
+      }
+    },
+    "11821": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "12553": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "13535": {
+      "GA": {
+        "name": "UnitedHealthcare of Georgia",
+        "plan_count": 40,
+        "source": "manual"
+      }
+    },
+    "13627": {
+      "VT": {
+        "name": "nan",
+        "plan_count": 52,
+        "source": "sbm_puf"
+      }
+    },
+    "14371": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "15105": {
+      "GA": {
+        "name": "Cigna Healthcare of Georgia (Value)",
+        "plan_count": 20,
+        "source": "manual"
+      }
+    },
+    "15287": {
+      "RI": {
+        "name": "nan",
+        "plan_count": 55,
+        "source": "sbm_puf"
+      }
+    },
+    "15614": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 12,
+        "source": "sbm_puf"
+      }
+    },
+    "15988": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 1,
+        "source": "sbm_puf"
+      }
+    },
+    "16322": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 105,
+        "source": "sbm_puf"
+      }
+    },
+    "16596": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "17859": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "17970": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 30,
+        "source": "sbm_puf"
+      }
+    },
+    "18029": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 46,
+        "source": "sbm_puf"
+      }
+    },
+    "18076": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "18126": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 16,
+        "source": "sbm_puf"
+      }
+    },
+    "18581": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 12,
+        "source": "sbm_puf"
+      }
+    },
+    "19702": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 36,
+        "source": "sbm_puf"
+      }
+    },
+    "19722": {
+      "NM": {
+        "name": "nan",
+        "plan_count": 18,
+        "source": "sbm_puf"
+      }
+    },
+    "20507": {
+      "VA": {
+        "name": "Optima Health / Sentara (VA)",
+        "plan_count": 35,
+        "source": "manual"
+      }
+    },
+    "20523": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 19,
+        "source": "sbm_puf"
+      }
+    },
+    "21032": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 104,
+        "source": "sbm_puf"
+      }
+    },
+    "22444": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 139,
+        "source": "sbm_puf"
+      }
+    },
+    "23371": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 32,
+        "source": "sbm_puf"
+      }
+    },
+    "23489": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "23818": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 31,
+        "source": "sbm_puf"
+      }
+    },
+    "24251": {
+      "VA": {
+        "name": "UnitedHealthcare of Virginia",
+        "plan_count": 40,
+        "source": "manual"
+      }
+    },
+    "25303": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 88,
+        "source": "sbm_puf"
+      }
+    },
+    "25922": {
+      "VA": {
+        "name": "Anthem HealthKeepers (VA)",
+        "plan_count": 55,
+        "source": "manual"
+      }
+    },
+    "26002": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 144,
+        "source": "sbm_puf"
+      }
+    },
+    "26075": {
+      "NM": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "26825": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "27603": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 37,
+        "source": "sbm_puf"
+      }
+    },
+    "27833": {
+      "IL": {
+        "name": "Ambetter (IL)",
+        "plan_count": 36,
+        "source": "manual"
+      }
+    },
+    "28052": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 6,
+        "source": "sbm_puf"
+      }
+    },
+    "28137": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 22,
+        "source": "sbm_puf"
+      }
+    },
+    "31609": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 28,
+        "source": "sbm_puf"
+      }
+    },
+    "31616": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 361,
+        "source": "sbm_puf"
+      }
+    },
+    "31779": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 18,
+        "source": "sbm_puf"
+      }
+    },
+    "32561": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "33653": {
+      "ME": {
+        "name": "nan",
+        "plan_count": 106,
+        "source": "sbm_puf"
+      }
+    },
+    "33670": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "33709": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 294,
+        "source": "sbm_puf"
+      }
+    },
+    "33871": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 48,
+        "source": "sbm_puf"
+      }
+    },
+    "34484": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 21,
+        "source": "sbm_puf"
+      }
+    },
+    "34962": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "35152": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 10,
+        "source": "sbm_puf"
+      }
+    },
+    "36046": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 21,
+        "source": "sbm_puf"
+      }
+    },
+    "36160": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "36239": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 231,
+        "source": "sbm_puf"
+      }
+    },
+    "37777": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 26,
+        "source": "sbm_puf"
+      }
+    },
+    "38128": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 51,
+        "source": "sbm_puf"
+      }
+    },
+    "38498": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 38,
+        "source": "sbm_puf"
+      }
+    },
+    "39424": {
+      "OR": {
+        "name": "Moda Health Plan",
+        "plan_count": 30,
+        "source": "manual"
+      }
+    },
+    "40064": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 210,
+        "source": "sbm_puf"
+      }
+    },
+    "40308": {
+      "VA": {
+        "name": "CareFirst BlueChoice (VA)",
+        "plan_count": 30,
+        "source": "manual"
+      }
+    },
+    "40513": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 22,
+        "source": "sbm_puf"
+      }
+    },
+    "41046": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 92,
+        "source": "sbm_puf"
+      }
+    },
+    "41094": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 43,
+        "source": "sbm_puf"
+      }
+    },
+    "41304": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 33,
+        "source": "sbm_puf"
+      }
+    },
+    "41809": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "42529": {
+      "IL": {
+        "name": "Blue Cross and Blue Shield of Illinois",
+        "plan_count": 80,
+        "source": "manual"
+      }
+    },
+    "42640": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "42690": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 19,
+        "source": "sbm_puf"
+      }
+    },
+    "43314": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 21,
+        "source": "sbm_puf"
+      }
+    },
+    "44113": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 8,
+        "source": "sbm_puf"
+      }
+    },
+    "44648": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 45,
+        "source": "sbm_puf"
+      }
+    },
+    "45127": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 74,
+        "source": "sbm_puf"
+      }
+    },
+    "45142": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 66,
+        "source": "sbm_puf"
+      }
+    },
+    "45334": {
+      "GA": {
+        "name": "Ambetter from Peach State Health Management",
+        "plan_count": 72,
+        "source": "manual"
+      }
+    },
+    "45495": {
+      "GA": {
+        "name": "Ambetter from Peach State Health Management (GA #2)",
+        "plan_count": 72,
+        "source": "manual"
+      }
+    },
+    "45532": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 14,
+        "source": "sbm_puf"
+      }
+    },
+    "45636": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 81,
+        "source": "sbm_puf"
+      }
+    },
+    "46641": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "47579": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 38,
+        "source": "sbm_puf"
+      }
+    },
+    "48396": {
+      "ME": {
+        "name": "nan",
+        "plan_count": 109,
+        "source": "sbm_puf"
+      }
+    },
+    "48608": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "48872": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "49375": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 50,
+        "source": "sbm_puf"
+      }
+    },
+    "49831": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 27,
+        "source": "sbm_puf"
+      }
+    },
+    "50165": {
+      "ME": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "51163": {
+      "GA": {
+        "name": "Alliant Health Plans",
+        "plan_count": 12,
+        "source": "manual"
+      }
+    },
+    "51396": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 16,
+        "source": "sbm_puf"
+      }
+    },
+    "53732": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 15,
+        "source": "sbm_puf"
+      }
+    },
+    "54172": {
+      "GA": {
+        "name": "Kaiser Permanente Georgia",
+        "plan_count": 30,
+        "source": "manual"
+      }
+    },
+    "54235": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 73,
+        "source": "sbm_puf"
+      }
+    },
+    "54879": {
+      "ME": {
+        "name": "nan",
+        "plan_count": 27,
+        "source": "sbm_puf"
+      }
+    },
+    "55584": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 84,
+        "source": "sbm_puf"
+      }
+    },
+    "56184": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 103,
+        "source": "sbm_puf"
+      }
+    },
+    "56707": {
+      "OR": {
+        "name": "Providence Health Plan",
+        "plan_count": 45,
+        "source": "manual"
+      }
+    },
+    "57129": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 354,
+        "source": "sbm_puf"
+      }
+    },
+    "57173": {
+      "NM": {
+        "name": "nan",
+        "plan_count": 33,
+        "source": "sbm_puf"
+      }
+    },
+    "58081": {
+      "GA": {
+        "name": "WellCare of Georgia",
+        "plan_count": 18,
+        "source": "manual"
+      }
+    },
+    "58105": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "59763": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 19,
+        "source": "sbm_puf"
+      }
+    },
+    "60156": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 292,
+        "source": "sbm_puf"
+      }
+    },
+    "60597": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 39,
+        "source": "sbm_puf"
+      }
+    },
+    "61589": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 251,
+        "source": "sbm_puf"
+      }
+    },
+    "61836": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 42,
+        "source": "sbm_puf"
+      }
+    },
+    "62560": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 22,
+        "source": "sbm_puf"
+      }
+    },
+    "62650": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 24,
+        "source": "sbm_puf"
+      }
+    },
+    "62683": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "63474": {
+      "OR": {
+        "name": "Regence BlueCross BlueShield of Oregon",
+        "plan_count": 35,
+        "source": "manual"
+      }
+    },
+    "63485": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "65428": {
+      "NM": {
+        "name": "nan",
+        "plan_count": 27,
+        "source": "sbm_puf"
+      }
+    },
+    "65779": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 30,
+        "source": "sbm_puf"
+      }
+    },
+    "66516": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 36,
+        "source": "sbm_puf"
+      }
+    },
+    "66699": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 30,
+        "source": "sbm_puf"
+      }
+    },
+    "67138": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 206,
+        "source": "sbm_puf"
+      }
+    },
+    "67380": {
+      "VT": {
+        "name": "nan",
+        "plan_count": 1,
+        "source": "sbm_puf"
+      }
+    },
+    "67499": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "68711": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "68744": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 1,
+        "source": "sbm_puf"
+      }
+    },
+    "69464": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "69556": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 1,
+        "source": "sbm_puf"
+      }
+    },
+    "70285": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 254,
+        "source": "sbm_puf"
+      }
+    },
+    "70373": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 70,
+        "source": "sbm_puf"
+      }
+    },
+    "70893": {
+      "GA": {
+        "name": "Ambetter from Peach State Health Management (GA #3)",
+        "plan_count": 36,
+        "source": "manual"
+      }
+    },
+    "71281": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 30,
+        "source": "sbm_puf"
+      }
+    },
+    "71287": {
+      "OR": {
+        "name": "Kaiser Permanente Northwest",
+        "plan_count": 18,
+        "source": "manual"
+      }
+    },
+    "71933": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "72001": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 54,
+        "source": "sbm_puf"
+      },
+      "GA": {
+        "name": "Oscar Health Plan of Georgia",
+        "plan_count": 24,
+        "source": "manual"
+      }
+    },
+    "72375": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 36,
+        "source": "sbm_puf"
+      }
+    },
+    "72545": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 37,
+        "source": "sbm_puf"
+      }
+    },
+    "73454": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "73891": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 24,
+        "source": "sbm_puf"
+      }
+    },
+    "74289": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 64,
+        "source": "sbm_puf"
+      }
+    },
+    "74869": {
+      "RI": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "75605": {
+      "NM": {
+        "name": "nan",
+        "plan_count": 33,
+        "source": "sbm_puf"
+      }
+    },
+    "75719": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "75729": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 60,
+        "source": "sbm_puf"
+      }
+    },
+    "75928": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "76680": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 182,
+        "source": "sbm_puf"
+      }
+    },
+    "76962": {
+      "CT": {
+        "name": "nan",
+        "plan_count": 22,
+        "source": "sbm_puf"
+      }
+    },
+    "77514": {
+      "RI": {
+        "name": "nan",
+        "plan_count": 30,
+        "source": "sbm_puf"
+      }
+    },
+    "77566": {
+      "VT": {
+        "name": "nan",
+        "plan_count": 52,
+        "source": "sbm_puf"
+      }
+    },
+    "77969": {
+      "OR": {
+        "name": "Cambia Health Solutions / Regence (OR #2)",
+        "plan_count": 20,
+        "source": "manual"
+      }
+    },
+    "78079": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 23,
+        "source": "sbm_puf"
+      }
+    },
+    "78124": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 224,
+        "source": "sbm_puf"
+      }
+    },
+    "79279": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 55,
+        "source": "sbm_puf"
+      }
+    },
+    "79363": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 24,
+        "source": "sbm_puf"
+      }
+    },
+    "79888": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 120,
+        "source": "sbm_puf"
+      }
+    },
+    "79962": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 98,
+        "source": "sbm_puf"
+      }
+    },
+    "80473": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 28,
+        "source": "sbm_puf"
+      }
+    },
+    "80538": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "80588": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 33,
+        "source": "sbm_puf"
+      }
+    },
+    "81334": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "82110": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "82569": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 18,
+        "source": "sbm_puf"
+      }
+    },
+    "83761": {
+      "GA": {
+        "name": "CareSource Georgia",
+        "plan_count": 36,
+        "source": "manual"
+      }
+    },
+    "84014": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 16,
+        "source": "sbm_puf"
+      }
+    },
+    "84445": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 48,
+        "source": "sbm_puf"
+      }
+    },
+    "84481": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 18,
+        "source": "sbm_puf"
+      }
+    },
+    "85427": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 2,
+        "source": "sbm_puf"
+      }
+    },
+    "85736": {
+      "MN": {
+        "name": "nan",
+        "plan_count": 59,
+        "source": "sbm_puf"
+      }
+    },
+    "86052": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 22,
+        "source": "sbm_puf"
+      }
+    },
+    "86199": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 78,
+        "source": "sbm_puf"
+      }
+    },
+    "86545": {
+      "CT": {
+        "name": "nan",
+        "plan_count": 38,
+        "source": "sbm_puf"
+      }
+    },
+    "86825": {
+      "KY": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "87269": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 3,
+        "source": "sbm_puf"
+      }
+    },
+    "87718": {
+      "WA": {
+        "name": "nan",
+        "plan_count": 21,
+        "source": "sbm_puf"
+      }
+    },
+    "88078": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 8,
+        "source": "sbm_puf"
+      }
+    },
+    "88380": {
+      "VA": {
+        "name": "Molina Healthcare of Virginia",
+        "plan_count": 20,
+        "source": "manual"
+      }
+    },
+    "88582": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 92,
+        "source": "sbm_puf"
+      }
+    },
+    "88806": {
+      "MA": {
+        "name": "nan",
+        "plan_count": 18,
+        "source": "sbm_puf"
+      }
+    },
+    "89217": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 21,
+        "source": "sbm_puf"
+      }
+    },
+    "89942": {
+      "GA": {
+        "name": "Ambetter from Alliant (GA)",
+        "plan_count": 12,
+        "source": "manual"
+      }
+    },
+    "90296": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 40,
+        "source": "sbm_puf"
+      }
+    },
+    "91237": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 94,
+        "source": "sbm_puf"
+      }
+    },
+    "91278": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 24,
+        "source": "sbm_puf"
+      }
+    },
+    "91661": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 37,
+        "source": "sbm_puf"
+      }
+    },
+    "91762": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 52,
+        "source": "sbm_puf"
+      }
+    },
+    "92170": {
+      "ID": {
+        "name": "nan",
+        "plan_count": 15,
+        "source": "sbm_puf"
+      }
+    },
+    "92479": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 8,
+        "source": "sbm_puf"
+      }
+    },
+    "92499": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 31,
+        "source": "sbm_puf"
+      }
+    },
+    "92815": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 16,
+        "source": "sbm_puf"
+      }
+    },
+    "93627": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "93689": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 32,
+        "source": "sbm_puf"
+      }
+    },
+    "93909": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 36,
+        "source": "sbm_puf"
+      }
+    },
+    "94084": {
+      "MD": {
+        "name": "nan",
+        "plan_count": 14,
+        "source": "sbm_puf"
+      }
+    },
+    "94506": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 49,
+        "source": "sbm_puf"
+      }
+    },
+    "94788": {
+      "NY": {
+        "name": "nan",
+        "plan_count": 109,
+        "source": "sbm_puf"
+      }
+    },
+    "94815": {
+      "CT": {
+        "name": "nan",
+        "plan_count": 17,
+        "source": "sbm_puf"
+      }
+    },
+    "95051": {
+      "DC": {
+        "name": "nan",
+        "plan_count": 4,
+        "source": "sbm_puf"
+      }
+    },
+    "95185": {
+      "VA": {
+        "name": "Kaiser Foundation Health Plan of the Mid-Atlantic",
+        "plan_count": 25,
+        "source": "manual"
+      }
+    },
+    "95865": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 76,
+        "source": "sbm_puf"
+      }
+    },
+    "96667": {
+      "ME": {
+        "name": "nan",
+        "plan_count": 79,
+        "source": "sbm_puf"
+      }
+    },
+    "97389": {
+      "CA": {
+        "name": "nan",
+        "plan_count": 1,
+        "source": "sbm_puf"
+      }
+    },
+    "97879": {
+      "CO": {
+        "name": "nan",
+        "plan_count": 141,
+        "source": "sbm_puf"
+      }
+    },
+    "98517": {
+      "PA": {
+        "name": "nan",
+        "plan_count": 52,
+        "source": "sbm_puf"
+      }
+    },
+    "99167": {
+      "IL": {
+        "name": "Centene/Ambetter (IL)",
+        "plan_count": 60,
+        "source": "manual"
+      }
+    },
+    "99298": {
+      "NV": {
+        "name": "nan",
+        "plan_count": 5,
+        "source": "sbm_puf"
+      }
+    },
+    "99708": {
+      "NJ": {
+        "name": "nan",
+        "plan_count": 6,
+        "source": "sbm_puf"
+      }
+    }
+  }
+}

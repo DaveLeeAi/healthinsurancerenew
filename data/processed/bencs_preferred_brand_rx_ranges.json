@@ -1,0 +1,223 @@
+{
+  "metadata": {
+    "description": "State-level preferred-brand Rx copay ranges extracted from CMS Benefits and Cost Sharing PUF (PY2026). Represents after-deductible copay range for preferred-brand drug tier across all ACA plans in the state. Used by build_formulary_state_drug_summaries.py as Priority-2 source for cost_range_after_deductible when drug_cost_ranges.json has no entry.",
+    "source_file": "data/raw/puf/benefits-and-cost-sharing-puf.csv",
+    "plan_year": 2026,
+    "states": [
+      "AK",
+      "AL",
+      "AR",
+      "AZ",
+      "DE",
+      "FL",
+      "HI",
+      "IA",
+      "IN",
+      "KS",
+      "LA",
+      "MI",
+      "MO",
+      "MS",
+      "MT",
+      "NC",
+      "ND",
+      "NE",
+      "NH",
+      "OH",
+      "OK",
+      "OR",
+      "SC",
+      "SD",
+      "TN",
+      "TX",
+      "UT",
+      "WI",
+      "WV",
+      "WY"
+    ],
+    "state_count": 30,
+    "generated_at": "2026-04-22"
+  },
+  "states": {
+    "AK": {
+      "low": 50,
+      "high": 100,
+      "n_copay_values": 19,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "AL": {
+      "low": 30,
+      "high": 250,
+      "n_copay_values": 117,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "AR": {
+      "low": 50,
+      "high": 250,
+      "n_copay_values": 112,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "AZ": {
+      "low": 10,
+      "high": 130,
+      "n_copay_values": 426,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "DE": {
+      "low": 30,
+      "high": 150,
+      "n_copay_values": 69,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "FL": {
+      "low": 30,
+      "high": 150,
+      "n_copay_values": 925,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "HI": {
+      "low": 50,
+      "high": 100,
+      "n_copay_values": 22,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "IA": {
+      "low": 30,
+      "high": 125,
+      "n_copay_values": 190,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "IN": {
+      "low": 40,
+      "high": 100,
+      "n_copay_values": 103,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "KS": {
+      "low": 30,
+      "high": 325,
+      "n_copay_values": 147,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "LA": {
+      "low": 30,
+      "high": 125,
+      "n_copay_values": 220,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "MI": {
+      "low": 30,
+      "high": 175,
+      "n_copay_values": 331,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "MO": {
+      "low": 30,
+      "high": 325,
+      "n_copay_values": 240,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "MS": {
+      "low": 30,
+      "high": 125,
+      "n_copay_values": 111,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "MT": {
+      "low": 30,
+      "high": 100,
+      "n_copay_values": 133,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "NC": {
+      "low": 20,
+      "high": 150,
+      "n_copay_values": 585,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "ND": {
+      "low": 50,
+      "high": 100,
+      "n_copay_values": 66,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "NE": {
+      "low": 15,
+      "high": 250,
+      "n_copay_values": 284,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "NH": {
+      "low": 25,
+      "high": 250,
+      "n_copay_values": 157,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "OH": {
+      "low": 30,
+      "high": 200,
+      "n_copay_values": 335,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "OK": {
+      "low": 30,
+      "high": 140,
+      "n_copay_values": 331,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "OR": {
+      "low": 10,
+      "high": 80,
+      "n_copay_values": 105,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "SC": {
+      "low": 30,
+      "high": 100,
+      "n_copay_values": 221,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "SD": {
+      "low": 50,
+      "high": 100,
+      "n_copay_values": 92,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "TN": {
+      "low": 30,
+      "high": 250,
+      "n_copay_values": 294,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "TX": {
+      "low": 25,
+      "high": 150,
+      "n_copay_values": 1378,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "UT": {
+      "low": 50,
+      "high": 125,
+      "n_copay_values": 105,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "WI": {
+      "low": 50,
+      "high": 175,
+      "n_copay_values": 556,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "WV": {
+      "low": 30,
+      "high": 150,
+      "n_copay_values": 39,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    },
+    "WY": {
+      "low": 50,
+      "high": 100,
+      "n_copay_values": 22,
+      "source": "bencs_puf_2026_preferred_brand_rx"
+    }
+  }
+}

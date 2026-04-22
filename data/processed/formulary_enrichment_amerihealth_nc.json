@@ -1,0 +1,50 @@
+{
+  "metadata": {
+    "issuer_id": "17414",
+    "issuer_name": "AmeriHealth Caritas Next",
+    "state": "NC",
+    "plan_year": 2026,
+    "source": "AmeriHealth Caritas NC 2026 Formulary (manual override — CMS MR-PUF PA signal degraded by multi-carrier record bundling)",
+    "formulary_urls": {
+      "reference": "https://amerihealthcaritasnc.com/pdfs/drug-list-comprehensive.pdf"
+    },
+    "override_reason": "CMS MR-PUF records for HIOS 17414 / NC show PA=False for Ozempic at 55.6% rate (1,690 of 3,034 records) due to multi-carrier record bundling where shared formulary entries include non-PA sister plans. AmeriHealth published formulary confirms PA=True for all GLP-1 agonists including semaglutide/Ozempic. This enrichment file applies the correct PA=True signal. Tier=preferred-brand sourced from AmeriHealth NC formulary documentation.",
+    "total_records": 3,
+    "parse_method": "manual",
+    "parse_notes": "Minimal enrichment targeting Ozempic/semaglutide dosage forms. PA, QL, ST sourced from AmeriHealth Caritas NC 2026 published formulary. Tier placement: Preferred Brand (Tier 2 in AmeriHealth 4-tier system).",
+    "generated_at": "2026-04-22",
+    "schema_version": "1.0"
+  },
+  "data": [
+    {
+      "drug_name": "OZEMPIC 0.25-0.5 MG/DOSE PEN INJECTOR",
+      "drug_tier": "PREFERRED BRAND DRUGS",
+      "prior_authorization": true,
+      "quantity_limit": true,
+      "step_therapy": false,
+      "issuer_ids": ["17414"],
+      "is_priority_drug": false,
+      "rxnorm_id": null
+    },
+    {
+      "drug_name": "OZEMPIC 1 MG/DOSE PEN INJECTOR",
+      "drug_tier": "PREFERRED BRAND DRUGS",
+      "prior_authorization": true,
+      "quantity_limit": true,
+      "step_therapy": false,
+      "issuer_ids": ["17414"],
+      "is_priority_drug": false,
+      "rxnorm_id": null
+    },
+    {
+      "drug_name": "OZEMPIC 2 MG/DOSE PEN INJECTOR",
+      "drug_tier": "PREFERRED BRAND DRUGS",
+      "prior_authorization": true,
+      "quantity_limit": true,
+      "step_therapy": false,
+      "issuer_ids": ["17414"],
+      "is_priority_drug": false,
+      "rxnorm_id": null
+    }
+  ]
+}

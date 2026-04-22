@@ -1,0 +1,28 @@
+{
+  "state_code": "VT",
+  "drug_slug": "ozempic",
+  "plan_count": 52,
+  "carriers": [
+    {
+      "issuer_id": "77566",
+      "name": "nan",
+      "plan_count": 52,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "sbm"
+  ]
+}

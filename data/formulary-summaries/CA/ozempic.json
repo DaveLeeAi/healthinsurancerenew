@@ -1,0 +1,131 @@
+{
+  "state_code": "CA",
+  "drug_slug": "ozempic",
+  "plan_count": 665,
+  "carriers": [
+    {
+      "issuer_id": "70285",
+      "name": "nan",
+      "plan_count": 254,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "67138",
+      "name": "nan",
+      "plan_count": 206,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "27603",
+      "name": "nan",
+      "plan_count": 37,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "93689",
+      "name": "nan",
+      "plan_count": 32,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "92499",
+      "name": "nan",
+      "plan_count": 31,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "40513",
+      "name": "nan",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "20523",
+      "name": "nan",
+      "plan_count": 19,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    },
+    {
+      "issuer_id": "18126",
+      "name": "nan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "51396",
+      "name": "nan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "92815",
+      "name": "nan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "84014",
+      "name": "nan",
+      "plan_count": 16,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 5
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "enrichment:formulary_enrichment_84014_CA.json",
+    "enrichment:formulary_enrichment_92499_CA.json",
+    "enrichment:formulary_enrichment_92815_CA.json",
+    "sbm"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "state_code": "MN",
+  "drug_slug": "ozempic",
+  "plan_count": 533,
+  "carriers": [
+    {
+      "issuer_id": "57129",
+      "name": "nan",
+      "plan_count": 354,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "79888",
+      "name": "nan",
+      "plan_count": 120,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "85736",
+      "name": "nan",
+      "plan_count": 59,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "sbm"
+  ]
+}

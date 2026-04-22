@@ -17,7 +17,7 @@
       "issuer_id": "38166",
       "name": "Security Health Plan",
       "plan_count": 34,
-      "tier_placement": "unknown",
+      "tier_placement": "non-preferred-brand",
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
@@ -84,8 +84,14 @@
       "data_record_count": 48
     }
   ],
-  "cost_range_after_deductible": null,
-  "cost_range_before_deductible": null,
+  "cost_range_after_deductible": {
+    "low": 50,
+    "high": 175
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
   "data_sources": [
     "ffe"
   ]

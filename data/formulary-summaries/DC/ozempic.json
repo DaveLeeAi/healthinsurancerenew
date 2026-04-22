@@ -1,0 +1,48 @@
+{
+  "state_code": "DC",
+  "drug_slug": "ozempic",
+  "plan_count": 94,
+  "carriers": [
+    {
+      "issuer_id": "94506",
+      "name": "nan",
+      "plan_count": 49,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "78079",
+      "name": "nan",
+      "plan_count": 23,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "86052",
+      "name": "nan",
+      "plan_count": 22,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 1
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "sbm"
+  ]
+}

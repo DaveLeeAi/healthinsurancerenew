@@ -44,8 +44,14 @@
       "data_record_count": 21
     }
   ],
-  "cost_range_after_deductible": null,
-  "cost_range_before_deductible": null,
+  "cost_range_after_deductible": {
+    "low": 25,
+    "high": 250
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
   "data_sources": [
     "ffe"
   ]

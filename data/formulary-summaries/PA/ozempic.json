@@ -1,0 +1,119 @@
+{
+  "state_code": "PA",
+  "drug_slug": "ozempic",
+  "plan_count": 896,
+  "carriers": [
+    {
+      "issuer_id": "33709",
+      "name": "nan",
+      "plan_count": 294,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "22444",
+      "name": "nan",
+      "plan_count": 139,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "16322",
+      "name": "nan",
+      "plan_count": 105,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "86199",
+      "name": "nan",
+      "plan_count": 78,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "45127",
+      "name": "nan",
+      "plan_count": 74,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "75729",
+      "name": "nan",
+      "plan_count": 60,
+      "tier_placement": "specialty",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "98517",
+      "name": "nan",
+      "plan_count": 52,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "19702",
+      "name": "nan",
+      "plan_count": 36,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "93909",
+      "name": "nan",
+      "plan_count": 36,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "62560",
+      "name": "nan",
+      "plan_count": 22,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "enrichment:formulary_enrichment_highmark_PA.json",
+    "sbm"
+  ]
+}

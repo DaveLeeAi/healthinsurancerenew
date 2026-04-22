@@ -49,9 +49,12 @@ DATA_CONFIG     = REPO_ROOT / "data" / "config"
 DATA_SUMMARIES  = REPO_ROOT / "data" / "formulary-summaries"
 
 PLAN_INTEL_FILE      = DATA_PROCESSED / "plan_intelligence.json"
+SBM_PLAN_INTEL_FILE  = DATA_PROCESSED / "sbm_plan_intelligence.json"
 FORMULARY_FILE       = DATA_PROCESSED / "formulary_intelligence.json"
 FORMULARY_URL_REG    = DATA_CONFIG    / "formulary-url-registry-2026.json"
 SBC_DECODED_FILE     = DATA_PROCESSED / "sbc_decoded.json"
+DRUG_COST_RANGES     = DATA_PROCESSED / "drug_cost_ranges.json"
+BENCS_STATE_RANGES   = DATA_PROCESSED / "bencs_preferred_brand_rx_ranges.json"
 
 SBM_PATTERN       = re.compile(r"^formulary_sbm_([A-Z]{2})\.json$")
 ENRICHMENT_PATTERN = re.compile(r"^formulary_enrichment_.*\.json$", re.IGNORECASE)
@@ -130,6 +133,7 @@ TIER_NORMALISE: dict[str, str] = {
     "tier-3": "non-preferred-brand", "tier-three": "non-preferred-brand", "tier3": "non-preferred-brand",
     "four-non-preferred-brand-and-generic": "non-preferred-brand",
     "non-preferred-generic-non-preferred-brand": "non-preferred-brand",
+    "non-preferred-generic-and-non-preferred-brand": "non-preferred-brand",
     "non-formulary": "non-preferred-brand", "non-formulary-drugs": "non-preferred-brand",
 
     # Specialty
@@ -383,7 +387,8 @@ class CarrierDrugAccum:
 def build_plan_map() -> dict[str, dict[str, dict]]:
     """
     Returns: {issuer_id: {state_code: {"name": str, "plan_ids": set[str]}}}
-    Loads plan_intelligence.json.
+    Loads plan_intelligence.json (FFE) and sbm_plan_intelligence.json (SBM).
+    SBM entries are merged after FFE so FFE takes precedence for carriers in both.
     """
     log.info("Building plan map from %s …", PLAN_INTEL_FILE.name)
     if not PLAN_INTEL_FILE.exists():
@@ -410,9 +415,36 @@ def build_plan_map() -> dict[str, dict[str, dict]]:
             if pid:
                 entry["plan_ids"].add(pid)
 
+    ffe_issuers = len(plan_map)
+    log.info("  FFE: %d issuers loaded from plan_intelligence.json", ffe_issuers)
+
+    # Merge SBM plan intelligence (carrier plan counts for SBM states)
+    if SBM_PLAN_INTEL_FILE.exists():
+        with SBM_PLAN_INTEL_FILE.open("r", encoding="utf-8") as fh:
+            sbm = json.load(fh)
+        sbm_carriers = sbm.get("carriers", {})
+        added = 0
+        for iid, state_data in sbm_carriers.items():
+            for state, info in state_data.items():
+                # Synthetic plan IDs: if FFE already has this carrier/state, skip
+                if state in plan_map.get(iid, {}):
+                    continue
+                entry = plan_map[iid][state]
+                if not entry["name"]:
+                    entry["name"] = info.get("name", f"Issuer {iid}")
+                # Represent plan count as a set of synthetic IDs
+                plan_count = info.get("plan_count", 0)
+                for i in range(plan_count):
+                    entry["plan_ids"].add(f"SBM-{iid}-{state}-{i:04d}")
+                added += 1
+        log.info("  SBM: %d carrier-state pairs merged from %s",
+                 added, SBM_PLAN_INTEL_FILE.name)
+    else:
+        log.warning("  sbm_plan_intelligence.json not found — SBM states will have no plan counts")
+
     total_issuers = len(plan_map)
     total_states  = sum(len(v) for v in plan_map.values())
-    log.info("  %d issuers, %d state-issuer pairs loaded", total_issuers, total_states)
+    log.info("  Total: %d issuers, %d state-issuer pairs in plan map", total_issuers, total_states)
     return plan_map
 
 
@@ -604,17 +636,106 @@ def build_enrichment_registry(
     return registry
 
 
-# ── SBC cost-range lookup ──────────────────────────────────────────────────────
+# ── Drug cost range lookup ─────────────────────────────────────────────────────
 
-def build_sbc_cost_ranges(state: str) -> dict[str, dict | None]:
+# Module-level cache so drug_cost_ranges.json is only loaded once per run.
+_DRUG_COST_RANGES_CACHE: dict | None = None
+
+
+def _load_drug_cost_ranges() -> dict:
+    global _DRUG_COST_RANGES_CACHE
+    if _DRUG_COST_RANGES_CACHE is not None:
+        return _DRUG_COST_RANGES_CACHE
+    if not DRUG_COST_RANGES.exists():
+        _DRUG_COST_RANGES_CACHE = {}
+        return _DRUG_COST_RANGES_CACHE
+    try:
+        with DRUG_COST_RANGES.open("r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        _DRUG_COST_RANGES_CACHE = data.get("drugs", {})
+        log.info("drug_cost_ranges.json: %d drug entries loaded", len(_DRUG_COST_RANGES_CACHE))
+    except Exception as exc:
+        log.warning("drug_cost_ranges.json load failed: %s", exc)
+        _DRUG_COST_RANGES_CACHE = {}
+    return _DRUG_COST_RANGES_CACHE
+
+
+_BENCS_STATE_RANGES_CACHE: dict | None = None
+
+
+def _load_bencs_state_ranges() -> dict:
+    global _BENCS_STATE_RANGES_CACHE
+    if _BENCS_STATE_RANGES_CACHE is not None:
+        return _BENCS_STATE_RANGES_CACHE
+    if not BENCS_STATE_RANGES.exists():
+        _BENCS_STATE_RANGES_CACHE = {}
+        return _BENCS_STATE_RANGES_CACHE
+    try:
+        with BENCS_STATE_RANGES.open("r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        _BENCS_STATE_RANGES_CACHE = data.get("states", {})
+        log.info("bencs_preferred_brand_rx_ranges.json: %d states loaded",
+                 len(_BENCS_STATE_RANGES_CACHE))
+    except Exception as exc:
+        log.warning("bencs_preferred_brand_rx_ranges.json load failed: %s", exc)
+        _BENCS_STATE_RANGES_CACHE = {}
+    return _BENCS_STATE_RANGES_CACHE
+
+
+def build_cost_ranges(drug_slug: str, state: str) -> dict[str, dict | None]:
     """
-    Try to derive preferred-brand drug copay ranges for a state from
-    sbc_decoded.json cost_sharing_grid.
+    Return cost ranges for a specific drug+state combination.
+
+    Priority:
+      1. drug_cost_ranges.json — manually curated overrides (V79-locked values,
+         insurer formulary docs, Ozempic per-state entries). Authoritative when present.
+      2. bencs_preferred_brand_rx_ranges.json — state-level preferred-brand copay
+         range extracted from CMS BenCS PUF. Drug-agnostic; covers after_deductible
+         only (before_deductible is not in BenCS). Covers 30 FFE states.
+      3. sbc_decoded.json cost_sharing_grid — BenCS PUF merged data (schema v2.0).
+         Only populated after build_bencs_cost_sharing.py has run against sbc_decoded.json.
 
     Returns {"after_deductible": {low, high} | None, "before_deductible": {low, high} | None}
     """
+    result: dict[str, dict | None] = {"after_deductible": None, "before_deductible": None}
+
+    # ── Priority 1: manual overrides ──────────────────────────────────────────
+    curated = _load_drug_cost_ranges()
+    drug_entry = curated.get(drug_slug, {}).get(state)
+    if drug_entry:
+        after  = drug_entry.get("after_deductible")
+        before = drug_entry.get("before_deductible")
+        if after:
+            result["after_deductible"]  = {"low": after["low"],  "high": after["high"]}
+        if before:
+            result["before_deductible"] = {"low": before["low"], "high": before["high"]}
+        if result["after_deductible"] and result["before_deductible"]:
+            log.debug("  cost_ranges %s/%s: from drug_cost_ranges.json", drug_slug, state)
+            return result
+        # If only partial, fall through to fill gaps
+
+    # ── Priority 2: bencs_preferred_brand_rx_ranges.json (state-level BenCS) ─
+    # State-level preferred-brand copay range from CMS BenCS PUF (30 FFE states).
+    # Drug-agnostic: reflects the range across all preferred-brand drugs in the
+    # state, so it may be wider than a drug-specific value. Cannot provide
+    # before_deductible (full negotiated drug price is not stored in BenCS PUF).
+    if result["after_deductible"] is None:
+        bencs_states = _load_bencs_state_ranges()
+        bencs_entry = bencs_states.get(state)
+        if bencs_entry:
+            result["after_deductible"] = {
+                "low":  bencs_entry["low"],
+                "high": bencs_entry["high"],
+            }
+            log.debug("  cost_ranges %s/%s: after_deductible from BenCS state ranges",
+                      drug_slug, state)
+
+    # ── Priority 3: sbc_decoded.json BenCS data (schema v2.0) ────────────────
+    # BenCS cost_sharing_grid structure (after build_bencs_cost_sharing.py runs):
+    #   cost_sharing_grid.services.preferred_brand_rx.in_network.tier1.copay
+    #   → {type, amount, after_deductible: bool}
     if not SBC_DECODED_FILE.exists():
-        return {"after_deductible": None, "before_deductible": None}
+        return result
 
     try:
         with SBC_DECODED_FILE.open("r", encoding="utf-8") as fh:
@@ -622,7 +743,7 @@ def build_sbc_cost_ranges(state: str) -> dict[str, dict | None]:
         records = sbc.get("data", sbc) if isinstance(sbc, dict) else sbc
     except Exception as exc:
         log.warning("  sbc_decoded.json load failed: %s", exc)
-        return {"after_deductible": None, "before_deductible": None}
+        return result
 
     after_vals:  list[float] = []
     before_vals: list[float] = []
@@ -631,34 +752,40 @@ def build_sbc_cost_ranges(state: str) -> dict[str, dict | None]:
         if (rec.get("state_code") or "").upper() != state:
             continue
         grid = rec.get("cost_sharing_grid") or {}
-        # BenCS PUF field names for preferred brand tier drug copay
-        for key in (
-            "preferred_brand_after_deductible",
-            "tier2_drug_copay_after_deductible",
-            "brand_preferred_after_deductible",
-        ):
-            v = grid.get(key)
-            if isinstance(v, (int, float)) and v >= 0:
-                after_vals.append(float(v))
-        for key in (
-            "preferred_brand_before_deductible",
-            "tier2_drug_copay_before_deductible",
-            "brand_preferred_before_deductible",
-            "preferred_brand_deductible_cost",
-        ):
-            v = grid.get(key)
-            if isinstance(v, (int, float)) and v >= 0:
-                before_vals.append(float(v))
+
+        # Schema v2.0 nested structure (post BenCS merge)
+        svc = grid.get("services", {})
+        pb  = svc.get("preferred_brand_rx", {})
+        in_net = pb.get("in_network", {})
+
+        for tier_key in ("tier1", "tier2"):
+            tier_data = in_net.get(tier_key, {})
+            copay = tier_data.get("copay") or {}
+            coins = tier_data.get("coinsurance") or {}
+
+            for cost in (copay, coins):
+                if not isinstance(cost, dict):
+                    continue
+                amount = cost.get("amount")
+                if not isinstance(amount, (int, float)) or amount < 0:
+                    continue
+                if cost.get("after_deductible"):
+                    after_vals.append(float(amount))
+                else:
+                    before_vals.append(float(amount))
 
     def _range(vals: list[float]) -> dict | None:
-        if not vals:
+        clean = [v for v in vals if 0 < v < 2000]  # sanity bounds
+        if not clean:
             return None
-        return {"low": int(min(vals)), "high": int(max(vals))}
+        return {"low": int(min(clean)), "high": int(max(clean))}
 
-    return {
-        "after_deductible":  _range(after_vals),
-        "before_deductible": _range(before_vals),
-    }
+    if result["after_deductible"] is None:
+        result["after_deductible"]  = _range(after_vals)
+    if result["before_deductible"] is None:
+        result["before_deductible"] = _range(before_vals)
+
+    return result
 
 
 # ── Stream FFE records ─────────────────────────────────────────────────────────
@@ -1084,7 +1211,7 @@ def main() -> None:
     nc_summary: dict | None = None
 
     for state in sorted(covered_states):
-        cost_ranges = build_sbc_cost_ranges(state)
+        cost_ranges = build_cost_ranges(drug_slug, state)
         summary = build_state_summary(state, drug_slug, accums, plan_map, cost_ranges)
         if summary is None:
             log.debug("  %s: no carriers with known plan counts — skip", state)

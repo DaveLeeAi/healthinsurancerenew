@@ -1,0 +1,110 @@
+{
+  "state_code": "GA",
+  "drug_slug": "ozempic",
+  "plan_count": 324,
+  "carriers": [
+    {
+      "issuer_id": "45495",
+      "name": "Ambetter from Peach State Health Management (GA #2)",
+      "plan_count": 72,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 8
+    },
+    {
+      "issuer_id": "45334",
+      "name": "Ambetter from Peach State Health Management",
+      "plan_count": 72,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "13535",
+      "name": "UnitedHealthcare of Georgia",
+      "plan_count": 40,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "70893",
+      "name": "Ambetter from Peach State Health Management (GA #3)",
+      "plan_count": 36,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 8
+    },
+    {
+      "issuer_id": "54172",
+      "name": "Kaiser Permanente Georgia",
+      "plan_count": 30,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 300
+    },
+    {
+      "issuer_id": "72001",
+      "name": "Oscar Health Plan of Georgia",
+      "plan_count": 24,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "15105",
+      "name": "Cigna Healthcare of Georgia (Value)",
+      "plan_count": 20,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 4
+    },
+    {
+      "issuer_id": "58081",
+      "name": "WellCare of Georgia",
+      "plan_count": 18,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 2
+    },
+    {
+      "issuer_id": "89942",
+      "name": "Ambetter from Alliant (GA)",
+      "plan_count": 12,
+      "tier_placement": "specialty",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "enrichment:formulary_enrichment_cigna_ga_value_GA.json",
+    "ffe",
+    "sbm"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "state_code": "ME",
+  "drug_slug": "ozempic",
+  "plan_count": 242,
+  "carriers": [
+    {
+      "issuer_id": "48396",
+      "name": "nan",
+      "plan_count": 109,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "33653",
+      "name": "nan",
+      "plan_count": 106,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "54879",
+      "name": "nan",
+      "plan_count": 27,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "ffe",
+    "sbm"
+  ]
+}

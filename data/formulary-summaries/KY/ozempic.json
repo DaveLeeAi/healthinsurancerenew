@@ -1,0 +1,49 @@
+{
+  "state_code": "KY",
+  "drug_slug": "ozempic",
+  "plan_count": 336,
+  "carriers": [
+    {
+      "issuer_id": "36239",
+      "name": "nan",
+      "plan_count": 231,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 6
+    },
+    {
+      "issuer_id": "45636",
+      "name": "nan",
+      "plan_count": 81,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 3
+    },
+    {
+      "issuer_id": "73891",
+      "name": "nan",
+      "plan_count": 24,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 6
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 30,
+    "high": 100
+  },
+  "cost_range_before_deductible": {
+    "low": 400,
+    "high": 800
+  },
+  "data_sources": [
+    "ffe",
+    "sbm"
+  ]
+}
