@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "91661",
-      "name": "nan",
+      "name": "Horizon BCBS NJ",
       "plan_count": 37,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "17970",
-      "name": "nan",
+      "name": "Centene/Ambetter (NJ)",
       "plan_count": 30,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "37777",
-      "name": "nan",
+      "name": "UnitedHealthcare (NJ)",
       "plan_count": 26,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,

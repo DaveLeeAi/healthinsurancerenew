@@ -4,24 +4,14 @@
   "plan_count": 52,
   "carriers": [
     {
-      "issuer_id": "62141",
+      "issuer_id": "37903",
       "name": "Ambetter from Arkansas Health & Wellness",
-      "plan_count": 14,
+      "plan_count": 31,
       "tier_placement": "preferred-brand",
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 4
-    },
-    {
-      "issuer_id": "70525",
-      "name": "Ambetter from Arkansas Health & Wellness",
-      "plan_count": 10,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 4
+      "data_record_count": 12
     },
     {
       "issuer_id": "13262",
@@ -32,16 +22,6 @@
       "quantity_limits": true,
       "step_therapy": false,
       "data_record_count": 24
-    },
-    {
-      "issuer_id": "37903",
-      "name": "Ambetter from Arkansas Health & Wellness",
-      "plan_count": 7,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
-      "quantity_limits": true,
-      "step_therapy": false,
-      "data_record_count": 4
     },
     {
       "issuer_id": "75293",

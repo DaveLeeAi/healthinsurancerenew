@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "61836",
-      "name": "nan",
+      "name": "Ambetter / Coordinated Care (WA)",
       "plan_count": 42,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "38498",
-      "name": "nan",
+      "name": "LifeWise Health Plan (WA)",
       "plan_count": 38,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "23371",
-      "name": "nan",
+      "name": "Kaiser Permanente (WA - NW)",
       "plan_count": 32,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "71281",
-      "name": "nan",
+      "name": "Cambia / Regence BCBS (ID)",
       "plan_count": 30,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "80473",
-      "name": "nan",
+      "name": "Molina Healthcare (WA)",
       "plan_count": 28,
       "tier_placement": "non-preferred-brand",
       "pa_required": false,
@@ -55,7 +55,7 @@
     },
     {
       "issuer_id": "49831",
-      "name": "nan",
+      "name": "Premera Blue Cross (WA)",
       "plan_count": 27,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -65,7 +65,7 @@
     },
     {
       "issuer_id": "62650",
-      "name": "nan",
+      "name": "UnitedHealthcare (WA)",
       "plan_count": 24,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -75,7 +75,7 @@
     },
     {
       "issuer_id": "87718",
-      "name": "nan",
+      "name": "Issuer 87718",
       "plan_count": 21,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -85,7 +85,7 @@
     },
     {
       "issuer_id": "53732",
-      "name": "nan",
+      "name": "BridgeSpan Health (WA)",
       "plan_count": 15,
       "tier_placement": "preferred-brand",
       "pa_required": true,

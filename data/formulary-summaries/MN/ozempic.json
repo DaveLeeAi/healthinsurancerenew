@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "57129",
-      "name": "nan",
+      "name": "Blue Plus / BCBS MN",
       "plan_count": 354,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "79888",
-      "name": "nan",
+      "name": "HealthPartners (MN)",
       "plan_count": 120,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "85736",
-      "name": "nan",
+      "name": "UCare (MN)",
       "plan_count": 59,
       "tier_placement": "non-preferred-brand",
       "pa_required": false,

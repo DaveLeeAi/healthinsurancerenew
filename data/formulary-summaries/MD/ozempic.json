@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "90296",
-      "name": "nan",
+      "name": "Kaiser Permanente (MD - MAS PDF)",
       "plan_count": 40,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "72375",
-      "name": "nan",
+      "name": "UnitedHealthcare (MD)",
       "plan_count": 36,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "28137",
-      "name": "nan",
+      "name": "CareFirst BCBS (DC/MD)",
       "plan_count": 22,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "45532",
-      "name": "nan",
+      "name": "Issuer 45532",
       "plan_count": 14,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "94084",
-      "name": "nan",
+      "name": "Issuer 94084",
       "plan_count": 14,
       "tier_placement": "preferred-brand",
       "pa_required": true,

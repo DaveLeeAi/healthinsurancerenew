@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "75605",
-      "name": "nan",
+      "name": "BCBS New Mexico",
       "plan_count": 33,
       "tier_placement": "preferred-brand",
       "pa_required": true,

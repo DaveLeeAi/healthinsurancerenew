@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "44648",
-      "name": "nan",
+      "name": "Blue Cross of Idaho (JSON)",
       "plan_count": 45,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "60597",
-      "name": "nan",
+      "name": "PacificSource (ID)",
       "plan_count": 39,
       "tier_placement": "preferred-brand",
       "pa_required": true,

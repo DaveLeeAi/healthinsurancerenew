@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "76680",
-      "name": "nan",
+      "name": "Anthem / Elevance Health (CO)",
       "plan_count": 182,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "97879",
-      "name": "nan",
+      "name": "Rocky Mountain HMO / UHC (CO)",
       "plan_count": 141,
       "tier_placement": "non-preferred-brand",
       "pa_required": false,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "21032",
-      "name": "nan",
+      "name": "Issuer 21032",
       "plan_count": 104,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "49375",
-      "name": "nan",
+      "name": "Issuer 49375",
       "plan_count": 50,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "66699",
-      "name": "nan",
+      "name": "Elevate Health / Denver Health (CO)",
       "plan_count": 30,
       "tier_placement": "preferred-brand",
       "pa_required": true,

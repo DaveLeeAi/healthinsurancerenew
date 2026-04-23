@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "34484",
-      "name": "nan",
+      "name": "Health New England (MA)",
       "plan_count": 21,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "36046",
-      "name": "nan",
+      "name": "Tufts Health Direct (MA)",
       "plan_count": 21,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "42690",
-      "name": "nan",
+      "name": "Harvard Pilgrim Health Care (MA)",
       "plan_count": 19,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "82569",
-      "name": "nan",
+      "name": "WellSense Health Plan (MA)",
       "plan_count": 18,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "31779",
-      "name": "nan",
+      "name": "UnitedHealthcare (MA)",
       "plan_count": 18,
       "tier_placement": "preferred-brand",
       "pa_required": true,

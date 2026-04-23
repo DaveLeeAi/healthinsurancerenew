@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "33709",
-      "name": "nan",
+      "name": "Independence Blue Cross (PA) - Value",
       "plan_count": 294,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "22444",
-      "name": "nan",
+      "name": "Highmark (PA)",
       "plan_count": 139,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "16322",
-      "name": "nan",
+      "name": "UPMC Health Plan (PA)",
       "plan_count": 105,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "86199",
-      "name": "nan",
+      "name": "AmeriHealth (PA)",
       "plan_count": 78,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "45127",
-      "name": "nan",
+      "name": "Ambetter (PA) - PDF",
       "plan_count": 74,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -55,7 +55,7 @@
     },
     {
       "issuer_id": "75729",
-      "name": "nan",
+      "name": "Geisinger Health Plan (PA)",
       "plan_count": 60,
       "tier_placement": "specialty",
       "pa_required": true,
@@ -65,7 +65,7 @@
     },
     {
       "issuer_id": "98517",
-      "name": "nan",
+      "name": "Oscar Health (PA)",
       "plan_count": 52,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -75,7 +75,7 @@
     },
     {
       "issuer_id": "19702",
-      "name": "nan",
+      "name": "Jefferson Health Plans (PA)",
       "plan_count": 36,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -85,7 +85,7 @@
     },
     {
       "issuer_id": "93909",
-      "name": "nan",
+      "name": "Issuer 93909",
       "plan_count": 36,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -95,7 +95,7 @@
     },
     {
       "issuer_id": "62560",
-      "name": "nan",
+      "name": "Issuer 62560",
       "plan_count": 22,
       "tier_placement": "preferred-brand",
       "pa_required": true,

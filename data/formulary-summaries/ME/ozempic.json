@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "48396",
-      "name": "nan",
+      "name": "Anthem Blue Cross / WellPoint (ME) (Elevance)",
       "plan_count": 109,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "33653",
-      "name": "nan",
+      "name": "Community Health Options (ME)",
       "plan_count": 106,
       "tier_placement": "non-preferred-brand",
       "pa_required": false,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "54879",
-      "name": "nan",
+      "name": "Mending (formerly TARO Health) (ME)",
       "plan_count": 27,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -43,6 +43,7 @@
     "high": 800
   },
   "data_sources": [
+    "enrichment:formulary_enrichment_mending_me_ME.json",
     "ffe",
     "sbm"
   ]

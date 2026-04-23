@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "76962",
-      "name": "nan",
+      "name": "ConnectiCare (CT  -  Choice plans)",
       "plan_count": 22,
       "tier_placement": "preferred-brand",
       "pa_required": false,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "94815",
-      "name": "nan",
+      "name": "ConnectiCare Insurance Company (Value plans)",
       "plan_count": 17,
       "tier_placement": "preferred-brand",
       "pa_required": true,

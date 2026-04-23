@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "77566",
-      "name": "nan",
+      "name": "MVP Health Plan (VT)",
       "plan_count": 52,
       "tier_placement": "preferred-brand",
       "pa_required": true,

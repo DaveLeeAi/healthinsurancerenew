@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "94506",
-      "name": "nan",
+      "name": "Kaiser Permanente (DC - MAS region)",
       "plan_count": 49,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "78079",
-      "name": "nan",
+      "name": "UPMC Health Plan (DC)",
       "plan_count": 23,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "86052",
-      "name": "nan",
+      "name": "Issuer 86052",
       "plan_count": 22,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,

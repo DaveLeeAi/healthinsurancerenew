@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "60156",
-      "name": "nan",
+      "name": "Anthem (NV) - Elevance Health",
       "plan_count": 292,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "95865",
-      "name": "nan",
+      "name": "SilverSummit/Ambetter (NV) - Centene",
       "plan_count": 76,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "45142",
-      "name": "nan",
+      "name": "Health Plan of Nevada (UHC)",
       "plan_count": 66,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "41094",
-      "name": "nan",
+      "name": "Hometown Health (NV)",
       "plan_count": 43,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "43314",
-      "name": "nan",
+      "name": "Issuer 43314",
       "plan_count": 21,
       "tier_placement": "preferred-brand",
       "pa_required": true,

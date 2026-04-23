@@ -5,7 +5,7 @@
   "carriers": [
     {
       "issuer_id": "15287",
-      "name": "nan",
+      "name": "BlueCross BlueShield of RI",
       "plan_count": 55,
       "tier_placement": "non-preferred-brand",
       "pa_required": false,
@@ -15,7 +15,7 @@
     },
     {
       "issuer_id": "77514",
-      "name": "nan",
+      "name": "Neighborhood Health Plan of RI",
       "plan_count": 30,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
