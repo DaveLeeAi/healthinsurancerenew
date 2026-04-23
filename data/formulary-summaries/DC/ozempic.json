@@ -25,7 +25,7 @@
     },
     {
       "issuer_id": "86052",
-      "name": "Issuer 86052",
+      "name": "CareFirst BlueChoice (DC)",
       "plan_count": 22,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,

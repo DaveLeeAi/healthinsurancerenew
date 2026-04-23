@@ -485,6 +485,38 @@
           "notes": "Denver Health regional plan. Data via FFE pipeline. Denver Health direct PDF",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via CMS MR-PUF Ã¢â€ ' carrier index.json Ã¢â€ ' drugs.json chain"
+        },
+        {
+          "carrier_name": "Kaiser Permanente (CO) - HIOS 21032",
+          "hios_prefix": "21032",
+          "formulary_url": "https://healthy.kaiserpermanente.org/content/dam/kporg/final/documents/formularies/co/marketplace-formulary-co-en-2026.pdf",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "Kaiser Permanente",
+          "tiers": 7,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 1639,
+          "year_pattern": "Shares marketplace formulary PDF with HIOS 00543. Path: healthy.kaiserpermanente.org/.../co/marketplace-formulary-co-en-{YEAR}.pdf",
+          "notes": "Second Kaiser CO HIOS entity. Shares formulary with HIOS 00543.",
+          "fetch_method": "auto_download",
+          "fetch_notes": "Direct PDF download, no auth needed"
+        },
+        {
+          "carrier_name": "Cigna Healthcare (CO) - HIOS 49375",
+          "hios_prefix": "49375",
+          "formulary_url": "https://www.cigna.com/sites/json/cms-data-index.json",
+          "formulary_type": "json",
+          "source_type": "cms_json",
+          "pbm": "Express Scripts",
+          "tiers": 4,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 5484,
+          "year_pattern": "Shares national Cigna index.json with HIOS 86830. Same URL works year to year; content updates.",
+          "notes": "Second Cigna CO HIOS entity. Shares formulary with HIOS 86830.",
+          "fetch_method": "json_api",
+          "fetch_notes": "Fetched via JSON API endpoint"
         }
       ]
     },
@@ -629,6 +661,22 @@
           "notes": "National Molina JSON endpoint. Contains DC plan IDs.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
+        },
+        {
+          "carrier_name": "CareFirst BlueChoice (DC)",
+          "hios_prefix": "86052",
+          "formulary_url": "https://member.carefirst.com/carefirst-resources/pdf/exchange-formulary-sum7277-2026.pdf",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "CareFirst Pharmacy",
+          "tiers": 5,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 1081,
+          "year_pattern": "Shares Exchange Formulary PDF with HIOS 28137, 45532, 94084.",
+          "notes": "CareFirst BlueChoice HMO entity in DC. Shares formulary with other CareFirst entities.",
+          "fetch_method": "auto_download",
+          "fetch_notes": "PDF downloads directly  -  no auth needed"
         }
       ]
     },
@@ -1613,6 +1661,38 @@
           "notes": "Shared Exchange Formulary with DC.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly  -  no auth needed"
+        },
+        {
+          "carrier_name": "CareFirst of Maryland (MD)",
+          "hios_prefix": "45532",
+          "formulary_url": "https://member.carefirst.com/carefirst-resources/pdf/exchange-formulary-sum7277-2026.pdf",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "CareFirst Pharmacy",
+          "tiers": 5,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 3584,
+          "year_pattern": "Shares Exchange Formulary PDF with HIOS 28137, 94084.",
+          "notes": "CareFirst of Maryland, Inc. (CFMI) legal entity. Shares formulary with other CareFirst entities.",
+          "fetch_method": "auto_download",
+          "fetch_notes": "PDF downloads directly  -  no auth needed"
+        },
+        {
+          "carrier_name": "GHMSI / CareFirst BlueCross BlueShield (MD)",
+          "hios_prefix": "94084",
+          "formulary_url": "https://member.carefirst.com/carefirst-resources/pdf/exchange-formulary-sum7277-2026.pdf",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "CareFirst Pharmacy",
+          "tiers": 5,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 3584,
+          "year_pattern": "Shares Exchange Formulary PDF with HIOS 28137, 45532.",
+          "notes": "Group Hospitalization and Medical Services, Inc. (GHMSI) legal entity. Shares formulary with other CareFirst entities.",
+          "fetch_method": "auto_download",
+          "fetch_notes": "PDF downloads directly  -  no auth needed"
         }
       ]
     },
@@ -2458,6 +2538,22 @@
           "notes": "Hometown Health/Renown. 4-tier IFP Exchange.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly  -  no auth needed"
+        },
+        {
+          "carrier_name": "Imperial Health Plan (NV)",
+          "hios_prefix": "43314",
+          "formulary_url": null,
+          "formulary_type": null,
+          "source_type": "blocked",
+          "pbm": "Unknown",
+          "tiers": null,
+          "status": "blocked",
+          "last_fetched": null,
+          "drugs_parsed": 6426,
+          "year_pattern": "New NV marketplace carrier for 2026. No downloadable endpoint discovered.",
+          "notes": "Imperial Insurance Companies, Inc. Data obtained via alternative source.",
+          "fetch_method": "online_only",
+          "fetch_notes": "No downloadable endpoint discovered"
         }
       ]
     },
@@ -3088,6 +3184,38 @@
           "notes": "Two formularies: 4T standard plans + 6T all other plans. Parsed 2026-04-04.",
           "fetch_method": "webfetch_pdf",
           "fetch_notes": "Double-underscore filename variant required"
+        },
+        {
+          "carrier_name": "Jefferson Health Plans (PA) - HMO",
+          "hios_prefix": "93909",
+          "formulary_url": "https://www.jeffersonhealthplans.com/content/dam/jeffersonhealthplans/documents/formularies/ifp/rxflex-formulary-jhp-ifp-2026-11012025.pdf",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "RxFlex",
+          "tiers": 4,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 1912,
+          "year_pattern": "Shares RxFlex IFP formulary PDF with HIOS 19702.",
+          "notes": "Second Jefferson Health Plans HIOS entity (HMO product line). Shares formulary with HIOS 19702.",
+          "fetch_method": "auto_download",
+          "fetch_notes": "PDF downloads directly  -  no auth needed"
+        },
+        {
+          "carrier_name": "UPMC Health Plan (PA) - HIOS 62560",
+          "hios_prefix": "62560",
+          "formulary_url": "https://upmc.widen.net/view/pdf/02jjoeuifc/25TOTEX6064850---2026-Advantage-Choice-Formulary-Book_WEB.pdf?t.download=true",
+          "formulary_type": "pdf",
+          "source_type": "direct_download",
+          "pbm": "UPMC Pharmacy",
+          "tiers": 7,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 2628,
+          "year_pattern": "Shares Advantage Choice 7-tier formulary with HIOS 16322, 93688.",
+          "notes": "UPMC Health Coverage, Inc. Shares formulary with HIOS 16322.",
+          "fetch_method": "manual_download",
+          "fetch_notes": "JS auth wall on download"
         }
       ]
     },
@@ -3702,6 +3830,22 @@
           "notes": "WA-specific via broker portal. Needs custom parser.",
           "fetch_method": "auto_download",
           "fetch_notes": "PDF downloads directly  -  no auth needed"
+        },
+        {
+          "carrier_name": "Regence BlueShield (WA)",
+          "hios_prefix": "87718",
+          "formulary_url": "https://cms-machine-readable.cambiahealth.com/index.json",
+          "formulary_type": "json",
+          "source_type": "cms_json",
+          "pbm": "Cambia Pharmacy",
+          "tiers": 4,
+          "status": "verified",
+          "last_fetched": "2026-04-24",
+          "drugs_parsed": 6421,
+          "year_pattern": "Shares Cambia index.json with HIOS 71281. Same URL, content updates.",
+          "notes": "Regence BlueShield WA HIOS 87718 entity. Shares formulary with HIOS 71281.",
+          "fetch_method": "json_api",
+          "fetch_notes": "Fetched via JSON API endpoint"
         }
       ]
     },

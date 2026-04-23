@@ -85,7 +85,7 @@
     },
     {
       "issuer_id": "93909",
-      "name": "Issuer 93909",
+      "name": "Jefferson Health Plans (PA) - HMO",
       "plan_count": 36,
       "tier_placement": "non-preferred-brand",
       "pa_required": true,
@@ -95,7 +95,7 @@
     },
     {
       "issuer_id": "62560",
-      "name": "Issuer 62560",
+      "name": "UPMC Health Plan (PA) - HIOS 62560",
       "plan_count": 22,
       "tier_placement": "preferred-brand",
       "pa_required": true,

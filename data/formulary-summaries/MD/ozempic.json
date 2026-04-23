@@ -35,7 +35,7 @@
     },
     {
       "issuer_id": "45532",
-      "name": "Issuer 45532",
+      "name": "CareFirst of Maryland (MD)",
       "plan_count": 14,
       "tier_placement": "preferred-brand",
       "pa_required": true,
@@ -45,7 +45,7 @@
     },
     {
       "issuer_id": "94084",
-      "name": "Issuer 94084",
+      "name": "GHMSI / CareFirst BlueCross BlueShield (MD)",
       "plan_count": 14,
       "tier_placement": "preferred-brand",
       "pa_required": true,
