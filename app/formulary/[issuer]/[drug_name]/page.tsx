@@ -573,6 +573,22 @@ const summaryQlMajority  = (s: FormularyStateDrugSummary) => s.carriers.filter(c
 const summaryPaAll       = (s: FormularyStateDrugSummary) => s.carriers.every(c => c.pa_required)
 const summaryPaCount     = (s: FormularyStateDrugSummary) => s.carriers.filter(c => c.pa_required).length
 
+// V79 voice: spell out small integers (one–twenty), digits beyond.
+const NUMBER_WORDS = [
+  'zero','one','two','three','four','five','six','seven','eight','nine',
+  'ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen',
+  'seventeen','eighteen','nineteen','twenty',
+]
+function spellNumber(n: number): string {
+  return n >= 0 && n <= 20 ? NUMBER_WORDS[n] : String(n)
+}
+
+// Render counts with US thousands separators: 1115 → "1,115".
+const NUMBER_FORMAT = new Intl.NumberFormat('en-US')
+function fmtN(n: number): string {
+  return NUMBER_FORMAT.format(n)
+}
+
 // ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
@@ -749,13 +765,15 @@ export default async function FormularyDrugPage({ params }: Props) {
   const formularyFaqs = [
     {
       question: `Is ${titleCase(drugDisplay)} covered by ${isState ? `${stateName} health plans` : 'Marketplace health plans'} in ${PLAN_YEAR}?`,
-      answer: results.length === 0
-        ? `${titleCase(drugDisplay)} was not found on ${isState ? stateName : 'Marketplace'} plan drug lists in the ${PLAN_YEAR} dataset. You may be able to request a coverage exception if your doctor demonstrates medical necessity.`
-        : results.length > 50
-          ? `Yes \u2014 ${titleCase(drugDisplay)} appeared on ${results.length} of the ${isState ? stateName : 'Marketplace'} health plans we reviewed for ${PLAN_YEAR}. ${dominantHumanTier.costHint}. Your cost depends on your plan\u2019s tier and deductible status.`
+      answer: (isState && stateSummary && stateName)
+        ? `Yes. All ${spellNumber(stateSummary.carriers.length)} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} list ${titleCase(drugDisplay)} as a covered drug — every health plan in the state’s marketplace. Coverage terms and tiers still vary by plan, so confirm your specific plan’s drug list before you enroll.`
+        : results.length === 0
+          ? `${titleCase(drugDisplay)} was not found on ${isState ? stateName : 'Marketplace'} plan drug lists in the ${PLAN_YEAR} dataset. You may be able to request a coverage exception if your doctor demonstrates medical necessity.`
+          : results.length > 50
+          ? `Yes \u2014 ${titleCase(drugDisplay)} appeared on ${fmtN(results.length)} of the ${isState ? stateName : 'Marketplace'} health plans we reviewed for ${PLAN_YEAR}. ${dominantHumanTier.costHint}. Your cost depends on your plan\u2019s tier and deductible status.`
           : results.length >= 15
-            ? `${titleCase(drugDisplay)} is covered by some but not all ${isState ? stateName : 'Marketplace'} plans \u2014 ${results.length} in our review for ${PLAN_YEAR}. If your plan does not include it, you may be able to request a coverage exception.`
-            : `${titleCase(drugDisplay)} appeared on only ${results.length} of the ${isState ? stateName : 'Marketplace'} plans we reviewed for ${PLAN_YEAR}. Coverage is limited \u2014 check your specific plan\u2019s drug list before enrolling, and ask about alternatives.`,
+            ? `${titleCase(drugDisplay)} is covered by some but not all ${isState ? stateName : 'Marketplace'} plans \u2014 ${fmtN(results.length)} in our review for ${PLAN_YEAR}. If your plan does not include it, you may be able to request a coverage exception.`
+            : `${titleCase(drugDisplay)} appeared on only ${fmtN(results.length)} of the ${isState ? stateName : 'Marketplace'} plans we reviewed for ${PLAN_YEAR}. Coverage is limited \u2014 check your specific plan\u2019s drug list before enrolling, and ask about alternatives.`,
     },
     {
       question: `How much will ${titleCase(drugDisplay)} cost me before I meet my deductible${isState ? ` on a ${stateName} plan` : ''}?`,
@@ -772,7 +790,7 @@ export default async function FormularyDrugPage({ params }: Props) {
           ? (paAll
             ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies offering individual marketplace plans require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
             : `${paMajorityCount} of ${stateSummary.carriers.length} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`)
-          : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${priorAuthCount} of ${results.length} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`)
+          : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`)
         : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
     {
@@ -784,13 +802,13 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `What if my ${isState ? stateName : 'Marketplace'} plan does not cover ${titleCase(drugDisplay)}?`,
       answer: isState && results.length > 0
-        ? `Of the ${results.length} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan does not, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
+        ? `Of the ${fmtN(results.length)} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan does not, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
         : `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. The plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review — the decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
     },
     {
       question: `Can I switch plans to get ${titleCase(drugDisplay)} covered${isState ? ` in ${stateName}` : ''}?`,
       answer: isState && results.length > 0
-        ? `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. In ${stateName}, ${results.length} marketplace plan${results.length === 1 ? '' : 's'} include${results.length === 1 ? 's' : ''} ${titleCase(drugDisplay)} for ${PLAN_YEAR} — verify tier placement and approval rules on any plan before enrolling. If your current plan drops coverage or raises the tier mid-year, that may qualify you for a Special Enrollment Period.`
+        ? `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. In ${stateName}, ${fmtN(results.length)} marketplace plan${results.length === 1 ? '' : 's'} include${results.length === 1 ? 's' : ''} ${titleCase(drugDisplay)} for ${PLAN_YEAR} — verify tier placement and approval rules on any plan before enrolling. If your current plan drops coverage or raises the tier mid-year, that may qualify you for a Special Enrollment Period.`
         : `Yes, but timing matters. You can switch during Open Enrollment (November 1–January 15) or during a qualifying Special Enrollment Period. If your current plan stops covering a drug mid-year or significantly raises its tier, that may qualify you for a Special Enrollment Period. Verify that your specific drug is covered on any new drug list before enrolling.`,
     },
     {
@@ -959,14 +977,14 @@ export default async function FormularyDrugPage({ params }: Props) {
   if (humanTiers.length > 0) {
     costRows.push({
       name: "Before you have met your deductible",
-      desc: `Estimated from ${displayPlanCount} ${isState ? stateName : 'Marketplace'} plan filing${displayPlanCount === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
+      desc: `Estimated from ${fmtN(displayPlanCount)} ${isState ? stateName : 'Marketplace'} plan filing${displayPlanCount === 1 ? '' : 's'} \u2014 varies by plan and pharmacy`,
       figure: displayBeforeDeductibleRange,
       unit: 'month',
       hint: `For ${titleCase(drugDisplay)}${isState ? ` in ${stateName}` : ''}, this is typically the highest out-of-pocket phase \u2014 you pay the full amount your plan owes the pharmacy until your deductible is met.`,
     })
     costRows.push({
       name: `After your deductible \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
-      desc: `In ${results.length > 0 ? Math.round(results.length * 0.75) : ''} of ${results.length} plans reviewed \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
+      desc: `In ${results.length > 0 ? fmtN(Math.round(results.length * 0.75)) : ''} of ${fmtN(results.length)} plans reviewed \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
       figure: displayAfterDeductibleRange,
       unit: 'month',
       hint: dominantGroup === 'generic'
@@ -979,7 +997,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         const secondTierCount = results.length - Math.round(results.length * 0.75)
         costRows.push({
           name: `After your deductible \u2014 ${secondTier.shortLabel.toLowerCase()} tier`,
-          desc: `A smaller number of ${isState ? stateName : 'Marketplace'} plans placed ${titleCase(drugDisplay)} here (${secondTierCount} of ${results.length})`,
+          desc: `A smaller number of ${isState ? stateName : 'Marketplace'} plans placed ${titleCase(drugDisplay)} here (${fmtN(secondTierCount)} of ${fmtN(results.length)})`,
           figure: secondTier.costRange,
           unit: 'month',
           hint: `${isState ? stateName : 'Marketplace'} plans that place ${titleCase(drugDisplay)} on a higher tier will cost more even after your deductible.`,
@@ -1002,7 +1020,7 @@ export default async function FormularyDrugPage({ params }: Props) {
 
       <ProcessBar items={[
         `${PLAN_YEAR} federal plan data`,
-        `${displayPlanCount} plan${displayPlanCount === 1 ? '' : 's'} reviewed`,
+        `${fmtN(displayPlanCount)} plan${displayPlanCount === 1 ? '' : 's'} reviewed`,
         'Licensed agent reviewed',
         'Updated March 2026',
       ]} />
@@ -1049,9 +1067,13 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 3. AeoBlock ── */}
           {results.length > 0 && (
             <AeoBlock
-              answer={narrativeData && narrativePattern
-                ? generateQuickAnswer(narrativeData, narrativePattern)
-                : `${titleCase(drugDisplay)} is covered by ${displayPlanCount} ${isState ? stateName : 'Marketplace'} plans for ${PLAN_YEAR}. ${hasPriorAuth ? `${priorAuthCount} require prior approval.` : 'Prior approval is not required on reviewed plans.'}`
+              answer={
+                // DEFECT-5 — PATTERN A (coverage summary cluster bullet 1) for state+summary case.
+                (isState && stateSummary && stateName)
+                  ? `All ${spellNumber(stateSummary.carriers.length)} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} list ${titleCase(drugDisplay)} as a covered drug. That covers all ${fmtN(stateSummary.plan_count)} health plans in the state’s marketplace. Confirm your specific plan’s drug list before you enroll.`
+                  : narrativeData && narrativePattern
+                    ? generateQuickAnswer(narrativeData, narrativePattern)
+                    : `${titleCase(drugDisplay)} is covered by ${fmtN(displayPlanCount)} ${isState ? stateName : 'Marketplace'} plans for ${PLAN_YEAR}. ${hasPriorAuth ? `${priorAuthCount} require prior approval.` : 'Prior approval is not required on reviewed plans.'}`
               }
               caveat={`Based on ${PLAN_YEAR} federal plan data. Actual cost depends on your plan, pharmacy, and deductible status.`}
             />
@@ -1060,10 +1082,10 @@ export default async function FormularyDrugPage({ params }: Props) {
           {/* ── 4. EvidenceBlock ── */}
           {results.length > 0 && (
             <EvidenceBlock
-              title={`What we found across ${displayPlanCount} ${isState ? stateName : ''} plans`}
+              title={`What we found across ${fmtN(displayPlanCount)} ${isState ? stateName : ''} plans`}
               meta={`${PLAN_YEAR} plan year \u00b7 data snapshot March 2026`}
               stats={[
-                { label: 'Plans covering', value: String(displayPlanCount), sub: 'of plans reviewed', highlight: true },
+                { label: 'Plans covering', value: fmtN(displayPlanCount), sub: 'of plans reviewed', highlight: true },
                 {
                   label: 'Typical tier',
                   value: dominantGroup === 'generic' ? 'Lowest cost tier'
@@ -1078,7 +1100,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 },
                 {
                   label: 'Prior authorization',
-                  value: hasPriorAuth ? `${priorAuthCount} plans` : 'Not required',
+                  value: hasPriorAuth ? `${fmtN(priorAuthCount)} plans` : 'Not required',
                   sub: hasPriorAuth
                     ? ['require approval', stateInsights?.paComparison ? ` ${stateInsights.paComparison}` : ''].join('')
                     : 'on plans reviewed',
@@ -1086,10 +1108,10 @@ export default async function FormularyDrugPage({ params }: Props) {
               ]}
               rows={[
                 ...(hasStepTherapy
-                  ? [{ key: 'Step therapy required', value: `${stepTherapyCount} plan${stepTherapyCount === 1 ? '' : 's'}`, variant: 'varies' as const }]
+                  ? [{ key: 'Step therapy required', value: `${fmtN(stepTherapyCount)} plan${stepTherapyCount === 1 ? '' : 's'}`, variant: 'varies' as const }]
                   : [{ key: 'Step therapy required', value: 'Not found in plans reviewed' }]),
                 ...(hasQuantityLimit
-                  ? [{ key: 'Supply limits', value: `${quantityLimitCount} plan${quantityLimitCount === 1 ? '' : 's'}`, variant: 'varies' as const }]
+                  ? [{ key: 'Supply limits', value: `${fmtN(quantityLimitCount)} plan${quantityLimitCount === 1 ? '' : 's'}`, variant: 'varies' as const }]
                   : [{ key: 'Supply limits', value: 'Not found in plans reviewed' }]),
               ]}
               note="Plan details can change. Confirm before enrolling."
@@ -1197,10 +1219,17 @@ export default async function FormularyDrugPage({ params }: Props) {
                 </span>
               </div>
               <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.65, marginBottom: '14px' }}>
-                {narrativeData && narrativePattern
-                  ? generateCostContext(narrativeData, narrativePattern)
-                  : stateInsights?.costContext
-                  || `Your cost for ${titleCase(drugDisplay)} depends on which ${isState ? stateName : 'Marketplace'} plan you choose and what tier it assigns. Deductible structure also plays a role — check whether your plan has a separate drug deductible.`
+                {
+                  // BONUS A — V79 locked cost intro. Renders for state+summary+preferred-brand case
+                  // with after-deductible cost range from the summary.
+                  (isState && stateSummary && stateName
+                    && dominantGroup === 'preferred-brand'
+                    && stateSummary.cost_range_after_deductible)
+                    ? `After your deductible, most people in ${stateName} pay an estimated $${stateSummary.cost_range_after_deductible.low} to $${stateSummary.cost_range_after_deductible.high} a month for ${titleCase(drugDisplay)}. All ${spellNumber(stateSummary.carriers.length)} ${stateName} insurance companies place ${titleCase(drugDisplay)} on a lower-cost brand tier — the cost variation within that range depends on what you would pay for ${titleCase(drugDisplay)} on that plan. Before your deductible, you may pay several hundred dollars a month.`
+                    : narrativeData && narrativePattern
+                      ? generateCostContext(narrativeData, narrativePattern)
+                      : stateInsights?.costContext
+                      || `Your cost for ${titleCase(drugDisplay)} depends on which ${isState ? stateName : 'Marketplace'} plan you choose and what tier it assigns. Deductible structure also plays a role — check whether your plan has a separate drug deductible.`
                 }
               </p>
               <CostBlock
@@ -1254,12 +1283,20 @@ export default async function FormularyDrugPage({ params }: Props) {
                   {
                     badge: hasPriorAuth ? 'blue' : 'green',
                     badgeText: hasPriorAuth ? '\u25B6' : '\u2713',
-                    title: `Prior approval ${hasPriorAuth ? 'is usually required' : 'not required'}`,
+                    // DEFECT-6 Pattern 3 — amber callout title parameterized by paAll vs paMajority.
+                    title: (isState && stateSummary && stateName && hasPriorAuth)
+                      ? (paAll
+                          ? `You may not be able to get ${titleCase(drugDisplay)} right away — approval required on every plan from all ${spellNumber(stateSummary.carriers.length)} ${stateName} insurance companies`
+                          : `You may not be able to get ${titleCase(drugDisplay)} right away — approval required on ${spellNumber(paMajorityCount)} of ${spellNumber(stateSummary.carriers.length)} ${stateName} insurance companies`)
+                      : `Prior approval ${hasPriorAuth ? 'is usually required' : 'not required'}`,
                     titleSuffix: '(Prior Authorization)',
                     observation: hasPriorAuth
-                      ? `${priorAuthCount} of ${results.length} plans we reviewed`
+                      ? `${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans we reviewed`
                       : 'not found in plans we reviewed',
-                    body: hasPriorAuth
+                    body: (isState && stateSummary && stateName && hasPriorAuth)
+                      // DEFECT-6 Pattern 3 body — V79 locked wording.
+                      ? `Many plans require approval first (called prior authorization), so you may have to wait several days before you can fill it. If you need ${titleCase(drugDisplay)} soon, ask your doctor’s office how to avoid delays.`
+                      : hasPriorAuth
                       ? [
                           `Before your pharmacy can fill ${titleCase(drugDisplay)}, most plans require your doctor to submit documentation to the plan first. Your doctor\u2019s office typically handles this. The approval requirements, process, and timelines vary by plan \u2014 check your benefit documents for the specifics that apply to yours. If a request is denied, your plan will have an appeal process you can use.`,
                           localizedSections?.paNote ? ` ${localizedSections.paNote}` : stateInsights?.paNote ? ` ${stateInsights.paNote}` : '',
@@ -1271,25 +1308,57 @@ export default async function FormularyDrugPage({ params }: Props) {
                     badgeText: hasStepTherapy ? '\u25B6' : '\u2713',
                     title: `Step therapy ${hasStepTherapy ? 'may be required' : 'not required'}`,
                     observation: hasStepTherapy
-                      ? `found in ${stepTherapyCount} plan${stepTherapyCount === 1 ? '' : 's'} we reviewed`
+                      ? `found in ${fmtN(stepTherapyCount)} plan${stepTherapyCount === 1 ? '' : 's'} we reviewed`
                       : 'not found in plans we reviewed',
                     body: hasStepTherapy
                       ? `Some plans require you to try a lower-cost alternative before covering ${titleCase(drugDisplay)}. If your doctor believes step therapy is not clinically appropriate, they can file a step therapy exception request with supporting documentation.`
-                      : `None of the ${results.length} ${isState ? `${stateCode} ` : ''}plans we reviewed required you to try a cheaper drug before covering ${titleCase(drugDisplay)}. That said, if you are using a related medication for a different indication, the rules may be different \u2014 ${relatedDrugs.length > 0 ? `see <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> for comparison` : 'check your plan\u2019s benefit documents for details'}.`,
+                      : `None of the ${fmtN(results.length)} ${isState ? `${stateCode} ` : ''}plans we reviewed required you to try a cheaper drug before covering ${titleCase(drugDisplay)}. That said, if you are using a related medication for a different indication, the rules may be different \u2014 ${relatedDrugs.length > 0 ? `see <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> for comparison` : 'check your plan\u2019s benefit documents for details'}.`,
                   },
                   {
                     badge: hasQuantityLimit ? 'gray' : 'green',
                     badgeText: hasQuantityLimit ? 'QL' : '\u2713',
                     title: `Supply limits per month`,
                     observation: hasQuantityLimit
-                      ? `found in ${quantityLimitCount} of ${results.length} plans`
+                      ? `found in ${fmtN(quantityLimitCount)} of ${fmtN(results.length)} plans`
                       : 'not found in plans reviewed',
                     body: hasQuantityLimit
-                      ? `${quantityLimitCount} of ${results.length} ${isState ? stateName : 'Marketplace'} plans we reviewed limit how much ${titleCase(drugDisplay)} you can fill at a time \u2014 typically one monthly supply. Mail order is often an exception and can allow a larger supply at a lower per-dose cost. Your doctor can request an exception if your prescribed amount exceeds the plan's limit.`
+                      ? `${fmtN(quantityLimitCount)} of ${fmtN(results.length)} ${isState ? stateName : 'Marketplace'} plans we reviewed limit how much ${titleCase(drugDisplay)} you can fill at a time \u2014 typically one monthly supply. Mail order is often an exception and can allow a larger supply at a lower per-dose cost. Your doctor can request an exception if your prescribed amount exceeds the plan's limit.`
                       : `No supply restrictions were found in the plans we reviewed. Your plan may still have fill-quantity guidelines \u2014 check your benefit documents for details.`,
                   },
                 ]}
               />
+            </section>
+          )}
+
+          {/* ── 8b. What to expect while you wait — DEFECT-6 Patterns 1 & 2 ── */}
+          {/* Renders only when paMajority === true (V79 locked). */}
+          {results.length > 0 && isState && stateSummary && hasPriorAuth && (
+            <section aria-labelledby="wait-heading" style={{ marginTop: '24px' }}>
+              <h3
+                id="wait-heading"
+                className="text-ink font-medium"
+                style={{ fontSize: '14px', lineHeight: 1.3, marginBottom: '10px' }}
+              >
+                What to expect while you wait
+              </h3>
+              <div className="bg-white border border-rule" style={{ borderRadius: '8px', padding: '12px 16px', marginBottom: '10px' }}>
+                {/* DEFECT-6 Pattern 2 — At the pharmacy (static, no variables). */}
+                <div className="text-ink font-medium" style={{ fontSize: '13px', marginBottom: '4px' }}>
+                  You may find out approval is needed when you try to pick it up
+                </div>
+                <div className="text-mid" style={{ fontSize: '13px', lineHeight: 1.6 }}>
+                  You may find out at the pharmacy that your plan requires approval first. If it does, you will not be able to fill it until your plan approves it.
+                </div>
+              </div>
+              <div className="bg-white border border-rule" style={{ borderRadius: '8px', padding: '12px 16px' }}>
+                {/* DEFECT-6 Pattern 1 — The wait (static, no variables). */}
+                <div className="text-ink font-medium" style={{ fontSize: '13px', marginBottom: '4px' }}>
+                  A few days is common, but it can take longer
+                </div>
+                <div className="text-mid" style={{ fontSize: '13px', lineHeight: 1.6 }}>
+                  A few days is common, but some requests take longer. If the situation is urgent, ask whether a faster review is possible.
+                </div>
+              </div>
             </section>
           )}
 
@@ -1308,7 +1377,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               </p>
               <TimelineSteps
                 steps={[
-                  { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting information directly to your ${isState ? stateName + ' ' : ''}health plan. ${priorAuthCount > 0 ? `${priorAuthCount} of ${results.length} plans we reviewed require this step for ${titleCase(drugDisplay)}.` : 'The documentation required varies by plan.'}`, time: 'Day 1' },
+                  { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting information directly to your ${isState ? stateName + ' ' : ''}health plan. ${priorAuthCount > 0 ? `${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans we reviewed require this step for ${titleCase(drugDisplay)}.` : 'The documentation required varies by plan.'}`, time: 'Day 1' },
                   { title: 'Plan reviews the request', desc: `${isState ? stateName + ' ' : 'Your '}plan checks the request against its coverage requirements. Your doctor and the plan's review team handle this — you do not need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
                   { title: 'Decision issued', desc: `Response times vary by plan and urgency. Your plan's benefit documents explain the timeline that applies to your coverage — urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
                   { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Your plan's benefit documents explain how long the approval is valid.`, time: 'After approval' },
@@ -1330,6 +1399,11 @@ export default async function FormularyDrugPage({ params }: Props) {
               </div>
               <SavingsRows
                 rows={
+                  // BONUS B — V79 locked "Compare specific plans, not just insurance companies" card.
+                  // Prepended across all drug-class branches.
+                  [
+                    { icon: '↗', title: 'Compare specific plans, not just insurance companies', desc: `Even when two plans both cover ${titleCase(drugDisplay)} on the same tier, your monthly cost can still be different based on the plan’s deductible, the ${titleCase(drugDisplay)} copay, and which pharmacies it uses. During open enrollment, check the specific plan you are considering — not just which insurance company offers it.` },
+                  ].concat(
                   drugClass === 'injectable-glp1'
                     ? [
                         { icon: '$', title: `${glp1Manufacturer ?? 'Manufacturer'} savings card`, desc: `${glp1Manufacturer ?? 'The manufacturer'} offers a savings card for ${titleCase(drugDisplay)} that can reduce your monthly cost if you have commercial insurance. ${isState ? `${stateName} residents with a marketplace plan generally qualify.` : ''} Eligibility and savings amounts change \u2014 ask your doctor's office or pharmacist for current details before factoring it into your budget.` },
@@ -1347,9 +1421,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                       : [
                           { icon: '$', title: 'Manufacturer copay card', desc: `The manufacturer of ${titleCase(drugDisplay)} may offer a copay card for commercially insured ${isState ? stateName + ' residents' : 'patients'}. Eligibility and savings amounts vary \u2014 ask your doctor\u2019s office or pharmacist for current details.` },
                           { icon: '\u2192', title: 'Check generic alternatives', desc: `Ask your doctor or pharmacist whether a generic equivalent or therapeutic alternative is on a lower tier on your ${isState ? stateName + ' ' : ''}plan.${relatedDrugs.length > 0 ? ` See <a href="${relatedDrugs[0].href}" class="text-vblue hover:underline">${relatedDrugs[0].name} coverage</a> to compare.` : ''}` },
-                          { icon: '\u2197', title: 'Choose a plan with a more favorable tier', desc: `Across the ${results.length} ${isState ? stateName : 'Marketplace'} plan${results.length === 1 ? '' : 's'} we reviewed, tier assignment for ${titleCase(drugDisplay)} ranged from ${dominantHumanTier.shortLabel.toLowerCase()} to other tiers. Choosing a plan with a preferred tier can reduce your monthly cost by $40\u2013$80 or more.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
+                          { icon: '\u2197', title: 'Choose a plan with a more favorable tier', desc: `Across the ${fmtN(results.length)} ${isState ? stateName : 'Marketplace'} plan${results.length === 1 ? '' : 's'} we reviewed, tier assignment for ${titleCase(drugDisplay)} ranged from ${dominantHumanTier.shortLabel.toLowerCase()} to other tiers. Choosing a plan with a preferred tier can reduce your monthly cost by $40\u2013$80 or more.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
                           { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some ${isState ? stateName : 'Marketplace'} plans offer lower rates at preferred pharmacies or through mail-order. Check your plan\u2019s pharmacy benefit summary to see whether this applies to ${titleCase(drugDisplay)}.` },
                         ]
+                  )
                 }
                 note="Eligibility for savings programs varies. Check directly with the manufacturer or your plan."
               />
@@ -1465,7 +1540,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── AboutBlock ── */}
         <div style={{ marginTop: '44px' }}>
           <AboutBlock
-            text={`The information here comes from reviewing plan information for ${results.length} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in federal plan data \u2014 not from live pharmacy transactions. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
+            text={`The information here comes from reviewing plan information for ${fmtN(results.length)} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in federal plan data \u2014 not from live pharmacy transactions. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
             reviewedLine={`Reviewed using a structured editorial process \u00b7 Data snapshot: January ${PLAN_YEAR} \u00b7 Last updated: March ${PLAN_YEAR}`}
             links={[
               { href: '/editorial-policy', label: 'Editorial process' },
@@ -1561,7 +1636,8 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
             {/* Insurer table intro */}
             <p className="text-muted" style={{ fontSize: '13px', lineHeight: 1.55, marginBottom: '10px' }}>
-              Plans from different insurance companies can place {titleCase(drugDisplay)} on different tiers — meaning your cost for the same drug can vary significantly depending on which plan you choose.
+              {/* DEFECT-7 — V79 locked comparison framing. */}
+              The same drug can cost more on one plan than another, even when the tier is the same. What you actually pay depends on what your plan charges — the deductible, the copay, and which pharmacy you use.
             </p>
             <div className="bg-white border border-rule rounded-[10px] overflow-hidden">
               {otherIssuers.slice(0, 12).map((ins, i) => {
@@ -1806,7 +1882,7 @@ function SBMExplanationPage({
             <p className="text-sm text-slate-600 mb-4">
               Across all states in our dataset, {titleCase(drugDisplay)} appears on{' '}
               {allResults.length} formulary {allResults.length === 1 ? 'record' : 'records'} from{' '}
-              {new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size} insurance companies.
+              {fmtN(new Set(allResults.map(r => (r.issuer_ids?.[0] ?? r.issuer_id))).size)} insurance companies.
               {allResults[0]?.drug_tier && (
                 <> It is typically listed as a {humanizeTierForDrug(allResults[0].drug_tier, drugDisplay).shortLabel.toLowerCase()} drug.</>
               )}
