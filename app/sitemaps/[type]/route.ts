@@ -46,6 +46,37 @@ const DATA_LASTMOD = '2026-01-15'       // Plan year data reviewed date
 const PLAN_YEAR_LASTMOD = '2026-01-01'  // Subsidy/enhanced-credits plan year start
 const EDITORIAL_LASTMOD = '2026-03-15'  // Last editorial review date
 const STATIC_LASTMOD = '2026-03-15'     // Last site content edit date
+const OZEMPIC_LASTMOD = '2026-04-23'    // Date Ozempic state summaries were regenerated
+                                         // (ETL re-run after V79 Pass 2 voice fixes)
+
+// Phase 5 Tier 2 Ozempic rollout — state+drug pairs blocked from the sitemap
+// until Claude.ai produces Tier 1/3/4 V79-voice conditional copy.  These four
+// states have a non-preferred-brand dominant placement for Ozempic, so the
+// Tier 2 locked patterns (BONUS A cost intro in particular) do not apply.
+// See docs/formulary-tier-conditional-copy.md and F01-V79-formulary-page-lock-spec.md.
+const BLOCKED_FORMULARY_PAIRS = new Set<string>([
+  'colorado/ozempic',
+  'district-of-columbia/ozempic',
+  'maryland/ozempic',
+  'rhode-island/ozempic',
+])
+
+// State+drug pairs whose underlying summary was regenerated on OZEMPIC_LASTMOD.
+// Pairs not in this set fall back to DATA_LASTMOD (plan-year snapshot date).
+const OZEMPIC_STATE_PAIRS = new Set<string>([
+  'alabama/ozempic','alaska/ozempic','arizona/ozempic','arkansas/ozempic',
+  'california/ozempic','connecticut/ozempic','delaware/ozempic','florida/ozempic',
+  'georgia/ozempic','hawaii/ozempic','idaho/ozempic','illinois/ozempic',
+  'indiana/ozempic','iowa/ozempic','kansas/ozempic','kentucky/ozempic',
+  'louisiana/ozempic','maine/ozempic','massachusetts/ozempic','michigan/ozempic',
+  'minnesota/ozempic','mississippi/ozempic','missouri/ozempic','montana/ozempic',
+  'nebraska/ozempic','nevada/ozempic','new-hampshire/ozempic','new-jersey/ozempic',
+  'new-mexico/ozempic','new-york/ozempic','north-carolina/ozempic','north-dakota/ozempic',
+  'ohio/ozempic','oklahoma/ozempic','oregon/ozempic','pennsylvania/ozempic',
+  'south-carolina/ozempic','south-dakota/ozempic','tennessee/ozempic','texas/ozempic',
+  'utah/ozempic','vermont/ozempic','virginia/ozempic','washington/ozempic',
+  'west-virginia/ozempic','wisconsin/ozempic','wyoming/ozempic',
+])
 
 
 interface StateEntry { slug: string; abbr: string; ownExchange?: boolean }
@@ -315,7 +346,8 @@ function buildSbcEntries(): SitemapEntry[] {
 
 function buildFormularyEntries(chunkIndex: number): SitemapEntry[] {
   const index = loadFormularySitemapIndex()
-  const pairs = index.pairs
+  // Strip pairs blocked pending Tier 1/3/4 V79-voice copy (see BLOCKED_FORMULARY_PAIRS).
+  const pairs = index.pairs.filter((p) => !BLOCKED_FORMULARY_PAIRS.has(p))
 
   // chunkIndex is 1-based: formulary-1 = pairs[0..49999], formulary-2 = pairs[50000..99999], etc.
   const start = (chunkIndex - 1) * MAX_URLS_PER_SITEMAP
@@ -325,10 +357,14 @@ function buildFormularyEntries(chunkIndex: number): SitemapEntry[] {
 
   const entries: SitemapEntry[] = []
   for (let i = start; i < end; i++) {
-    // Each pair is "state-slug/drug-slug"
+    // Each pair is "state-slug/drug-slug".
+    // Ozempic state summaries were regenerated on OZEMPIC_LASTMOD; everything
+    // else still reflects the plan-year data snapshot (DATA_LASTMOD).
+    const pair = pairs[i]
+    const lastmod = OZEMPIC_STATE_PAIRS.has(pair) ? OZEMPIC_LASTMOD : DATA_LASTMOD
     entries.push({
-      loc: `${BASE}/${pairs[i]}`,
-      lastmod: DATA_LASTMOD,
+      loc: `${BASE}/${pair}`,
+      lastmod,
       changefreq: 'yearly' as const,
       priority: 0.6,
     })
