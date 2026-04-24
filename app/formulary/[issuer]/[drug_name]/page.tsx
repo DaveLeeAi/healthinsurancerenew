@@ -727,14 +727,16 @@ export default async function FormularyDrugPage({ params }: Props) {
         { name: issuerName, url: `${SITE_URL}/${canonicalIssuerParam}/all` },
         { name: titleCase(drugDisplay), url: `${SITE_URL}/${canonicalIssuerParam}/${drugSlug}` },
       ]
-  // Plain-English tier label for interpretive sentences
+  // Plain-English tier label for interpretive sentences.
+  // Callers append " tier" — never include the word "tier" in the returned string,
+  // and strip a trailing " tier" from any fallback label so "tier tier" cannot render.
   const tierPlain = (() => {
     const g = dominantGroup
     if (g === 'generic') return 'low-cost generic'
-    if (g === 'preferred-brand') return 'lower-cost brand tier'
+    if (g === 'preferred-brand') return 'lower-cost brand'
     if (g === 'non-preferred-brand') return 'higher-cost brand'
     if (g === 'specialty') return 'highest-cost'
-    return dominantHumanTier.shortLabel.toLowerCase()
+    return dominantHumanTier.shortLabel.toLowerCase().replace(/\s*tier\s*$/, '')
   })()
 
   // Before-deductible cost range — varies by tier group (NOT the same as copay)
@@ -781,16 +783,16 @@ export default async function FormularyDrugPage({ params }: Props) {
         ? `In ${stateName}, most ${results.length === 1 ? 'plans' : `of the ${results.length} plans`} covering ${titleCase(drugDisplay)} place it on a ${dominantHumanTier.shortLabel.toLowerCase()} tier. Before your deductible is met, you typically pay the plan's full price — roughly ${displayBeforeDeductibleRange} per month for ${titleCase(drugDisplay)}. After your deductible, your copay drops to around ${displayAfterDeductibleRange} per month. A 90-day mail-order supply often costs about 67% of three 30-day fills. Check your Summary of Benefits and Coverage for exact numbers.`
         : humanTiers.length > 0
           ? `Before your deductible is met, you typically pay the plan's full price — not the listed copay. For ${titleCase(drugDisplay)}, that means roughly ${displayBeforeDeductibleRange} per month until your deductible is satisfied. After your deductible is met, your copay drops to around ${displayAfterDeductibleRange} per month on most plans. A 90-day mail-order supply often costs about 67% of three 30-day fills.`
-          : `Cost depends on your plan's specific tier placement and cost-sharing structure. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
+          : `Cost depends on which tier your plan places ${titleCase(drugDisplay)} on and how your plan structures copays and coinsurance. Before your deductible is met, you typically pay the full amount the plan owes the pharmacy. Check your Summary of Benefits and Coverage for exact copay or coinsurance amounts.`,
     },
     {
       question: `Will I need approval from my insurance before picking up ${titleCase(drugDisplay)}?`,
       answer: hasPriorAuth
         ? (isState && stateSummary
           ? (paAll
-            ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies offering individual marketplace plans require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
-            : `${paMajorityCount} of ${stateSummary.carriers.length} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`)
-          : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans${stateOrNational} — ${Math.round(priorAuthPct)}% of the ones we reviewed. Your doctor submits a request with your diagnosis and clinical rationale. Your plan must respond within 2–3 business days (24–72 hours for urgent cases). Most properly documented requests are approved. If denied, you can request a peer-to-peer review and then a formal appeal.`)
+            ? `You may not be able to get ${titleCase(drugDisplay)} right away. All ${stateSummary.carriers.length} ${stateName} insurance companies offering individual marketplace plans require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. A few days is common, but some requests take longer. If the situation is urgent, ask whether a faster review is possible. If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`
+            : `${paMajorityCount} of ${stateSummary.carriers.length} insurance companies offering individual marketplace plans in ${stateName} for ${PLAN_YEAR} require approval before you can fill the prescription (called prior authorization). Your doctor handles the paperwork — submitting your diagnosis and clinical rationale directly to your plan. A few days is common, but some requests take longer. If the situation is urgent, ask whether a faster review is possible. If a request is denied, you can request a peer-to-peer review and then file a formal appeal.`)
+          : `Yes, prior authorization is required for ${titleCase(drugDisplay)} on ${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans${stateOrNational}. Your doctor submits a request with your diagnosis and clinical rationale. A few days is common, but some requests take longer. If the situation is urgent, ask whether a faster review is possible. If denied, you can request a peer-to-peer review and then a formal appeal.`)
         : `No, prior authorization is not required for ${titleCase(drugDisplay)} on most plans${stateOrNational}. Your doctor can prescribe it and your pharmacy can fill it without advance plan approval. Drug list requirements can change during the plan year — always confirm current coverage with your plan.`,
     },
     {
@@ -802,8 +804,8 @@ export default async function FormularyDrugPage({ params }: Props) {
     {
       question: `What if my ${isState ? stateName : 'Marketplace'} plan does not cover ${titleCase(drugDisplay)}?`,
       answer: isState && results.length > 0
-        ? `Of the ${fmtN(results.length)} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan does not, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity, and the plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — well-documented appeals succeed roughly 40–50% of the time. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
-        : `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. The plan must respond within 72 hours for urgent cases or 30 days for standard requests. Second, if denied, file a formal internal appeal — appeals succeed approximately 40–50% of the time when well-documented. Third, request an independent External Review — the decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
+        ? `Of the ${fmtN(results.length)} ${stateName} plans we reviewed, ${results.length === 1 ? 'the one plan covers' : 'all cover'} ${titleCase(drugDisplay)} — but if your specific plan does not, you have three paths. First, request a coverage exception: your doctor submits a letter of medical necessity. A few days is common for the response, but some requests take longer; if the situation is urgent, ask whether a faster review is possible. Second, if denied, file a formal internal appeal. Third, request an independent External Review — the decision is binding. You can also ask your doctor about a therapeutic alternative covered on a lower tier.`
+        : `You have three main paths. First, request a coverage exception — your doctor submits a letter of medical necessity. A few days is common for the response, but some requests take longer; if the situation is urgent, ask whether a faster review is possible. Second, if denied, file a formal internal appeal. Third, request an independent External Review — the decision is binding on the plan. You can also ask your doctor about a covered therapeutic alternative.`,
     },
     {
       question: `Can I switch plans to get ${titleCase(drugDisplay)} covered${isState ? ` in ${stateName}` : ''}?`,
@@ -984,7 +986,7 @@ export default async function FormularyDrugPage({ params }: Props) {
     })
     costRows.push({
       name: `After your deductible \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
-      desc: `In ${results.length > 0 ? fmtN(Math.round(results.length * 0.75)) : ''} of ${fmtN(results.length)} plans reviewed \u2014 ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
+      desc: `On ${isState ? stateName : 'Marketplace'} plans where ${titleCase(drugDisplay)} is placed on a ${dominantHumanTier.shortLabel.toLowerCase()} tier`,
       figure: displayAfterDeductibleRange,
       unit: 'month',
       hint: dominantGroup === 'generic'
@@ -994,10 +996,9 @@ export default async function FormularyDrugPage({ params }: Props) {
     if (humanTiers.length > 1) {
       const secondTier = humanTiers.find(ht => ht.group !== dominantGroup)
       if (secondTier) {
-        const secondTierCount = results.length - Math.round(results.length * 0.75)
         costRows.push({
           name: `After your deductible \u2014 ${secondTier.shortLabel.toLowerCase()} tier`,
-          desc: `A smaller number of ${isState ? stateName : 'Marketplace'} plans placed ${titleCase(drugDisplay)} here (${fmtN(secondTierCount)} of ${fmtN(results.length)})`,
+          desc: `${isState ? stateName : 'Marketplace'} plans that place ${titleCase(drugDisplay)} on a ${secondTier.shortLabel.toLowerCase()} tier`,
           figure: secondTier.costRange,
           unit: 'month',
           hint: `${isState ? stateName : 'Marketplace'} plans that place ${titleCase(drugDisplay)} on a higher tier will cost more even after your deductible.`,
@@ -1234,7 +1235,7 @@ export default async function FormularyDrugPage({ params }: Props) {
               </p>
               <CostBlock
                 rows={costRows}
-                note={`These ranges come from plan information reviewed in January ${PLAN_YEAR} \u2014 not live pharmacy prices. Your actual cost depends on your specific plan, pharmacy, and where you are in your deductible year.`}
+                note={`Estimated from ${PLAN_YEAR} plan filings \u2014 not pharmacy prices and not a quote. What you pay at the counter depends on your specific plan, pharmacy, and deductible status. Confirm with your plan or pharmacist before relying on these numbers.`}
                 varyRows={[
                   { key: 'Tier placement matters', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you are considering.` },
                   { key: 'Pharmacy choice', value: localizedSections?.pharmacyChoice ?? `Your plan's price for ${titleCase(drugDisplay)} varies by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill.` },
@@ -1255,7 +1256,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                   See plans in {isState ? stateName : 'your area'} with lower out-of-pocket drug costs
                 </div>
                 <div className="text-muted" style={{ fontSize: '12px', marginTop: '2px' }}>
-                  Tier and deductible design vary — comparing plans can reveal a meaningfully lower total cost
+                  Tier and deductible design vary — comparing plans can reveal a lower total cost
                 </div>
               </div>
               <a
@@ -1407,8 +1408,10 @@ export default async function FormularyDrugPage({ params }: Props) {
                   drugClass === 'injectable-glp1'
                     ? [
                         { icon: '$', title: `${glp1Manufacturer ?? 'Manufacturer'} savings card`, desc: `${glp1Manufacturer ?? 'The manufacturer'} offers a savings card for ${titleCase(drugDisplay)} that can reduce your monthly cost if you have commercial insurance. ${isState ? `${stateName} residents with a marketplace plan generally qualify.` : ''} Eligibility and savings amounts change \u2014 ask your doctor's office or pharmacist for current details before factoring it into your budget.` },
-                        ...(oralAlt ? [{ icon: '\u2192', title: `Ask about the oral version`, desc: `If injectable ${titleCase(drugDisplay)} is hard to access or too expensive, ask your doctor about <a href="/${canonicalIssuerParam}/${oralAlt.slug}" class="text-vblue hover:underline">${oralAlt.name}</a> \u2014 an oral option with the same active ingredient that may be on a different tier.` }] : []),
-                        { icon: '\u2197', title: 'Compare plans by specialty tier', desc: `Specialty tier copays can vary by hundreds of dollars between ${isState ? stateName : 'Marketplace'} plans. Choosing a plan where ${titleCase(drugDisplay)} is on a more favorable tier can meaningfully reduce your monthly cost.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
+                        (drugSlug.toLowerCase() === 'ozempic'
+                          ? { icon: '\u2192', title: `Ask about the oral version`, desc: `If injectable ${titleCase(drugDisplay)} is hard to access or too expensive, ask your doctor about <a href="/${canonicalIssuerParam}/rybelsus" class="text-vblue hover:underline">Rybelsus</a> \u2014 an oral option with the same active ingredient that may be on a different tier.` }
+                          : { icon: '\u2192', title: `Ask about alternatives`, desc: `If cost or access is a problem, ask your doctor whether a different covered medication in the same class might work for your situation.` }),
+                        { icon: '\u2197', title: 'Compare plans by specialty tier', desc: `Specialty tier copays can vary by hundreds of dollars between ${isState ? stateName : 'Marketplace'} plans. Choosing a plan where ${titleCase(drugDisplay)} is on a more favorable tier can reduce your monthly cost.${isState && stateSlug ? ` <a href="/${stateSlug}/health-insurance-plans" class="text-vblue hover:underline">Browse ${stateName} plan options</a> before enrollment closes.` : ''}` },
                         { icon: '\u2713', title: 'Preferred pharmacy or mail-order benefits', desc: `Some plans offer lower rates at preferred pharmacies or through mail-order benefits. Check your plan\u2019s pharmacy benefit summary to see whether this applies and how to use it.` },
                       ]
                     : drugClass === 'generic'
@@ -1450,7 +1453,7 @@ export default async function FormularyDrugPage({ params }: Props) {
                 </li>
                 {hasPriorAuth && (
                   <li style={{ marginBottom: '8px' }}>
-                    <strong className="text-ink">If prior approval is denied</strong> &mdash; ask your doctor to request a peer-to-peer review with the plan&rsquo;s medical director. If that fails, file a formal appeal. Most plans must respond within 30 days (72 hours for urgent cases).
+                    <strong className="text-ink">If prior approval is denied</strong> &mdash; ask your doctor to request a peer-to-peer review with the plan&rsquo;s medical director. If that fails, file a formal appeal. A few days is common for a response, but some requests take longer &mdash; if the situation is urgent, ask whether a faster review is possible.
                   </li>
                 )}
                 {(dominantGroup === 'specialty' || dominantGroup === 'non-preferred-brand') && (
@@ -1540,7 +1543,7 @@ export default async function FormularyDrugPage({ params }: Props) {
         {/* ── AboutBlock ── */}
         <div style={{ marginTop: '44px' }}>
           <AboutBlock
-            text={`The information here comes from reviewing plan information for ${fmtN(results.length)} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We looked at drug list inclusion, tier placement, prior authorization requirements, and cost-sharing structures as documented in federal plan data \u2014 not from live pharmacy transactions. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
+            text={`The information here comes from reviewing plan information for ${fmtN(results.length)} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We reviewed whether each plan covers the drug, which tier it is on, whether prior approval is required, and the estimated cost after your deductible \u2014 based on 2026 plan filings, not live pharmacy prices. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
             reviewedLine={`Reviewed using a structured editorial process \u00b7 Data snapshot: January ${PLAN_YEAR} \u00b7 Last updated: March ${PLAN_YEAR}`}
             links={[
               { href: '/editorial-policy', label: 'Editorial process' },

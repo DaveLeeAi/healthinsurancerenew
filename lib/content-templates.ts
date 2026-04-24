@@ -819,7 +819,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
   const bodyHtml = `<section class="content-formulary">
   <h2>How drug tiers affect what you pay${stateCode ? ` in ${stateCode}` : ''}</h2>
   <p>
-    ${stateCode ? `${stateCode} ` : ''}Plans group covered drugs into tiers — lower tiers mean lower cost-sharing for you.
+    ${stateCode ? `${stateCode} ` : ''}Plans group covered drugs into tiers — lower tiers usually mean a lower copay or coinsurance for you.
     The most common tiers from lowest to highest cost are generic, preferred brand,
     non-preferred brand, and specialty. Across the ${planCount} ${stateLabel} plan${planCount !== 1 ? 's' : ''} we reviewed for ${planYear}, ${drugName} is most commonly
     classified as <strong>${topTier}</strong>.${genericCount > 0 ? ` ${genericCount} ${stateLabel} plan${genericCount !== 1 ? 's' : ''} place it on a generic tier.` : ''}
@@ -830,7 +830,7 @@ export function generateFormularyContent(params: FormularyTemplateParams): PageC
   <p>
     ${
       priorAuthCount > 0
-        ? `${priorAuthCount} of the ${planCount} ${stateLabel} plans we reviewed require your doctor to submit documentation before your plan will cover ${drugName}. Your doctor handles the request — you don\u2019t file it yourself. If the plan denies it, you have the right to appeal. For urgent situations, plans must respond within 72 hours.`
+        ? `${priorAuthCount} of the ${planCount} ${stateLabel} plans we reviewed require your doctor to submit documentation before your plan will cover ${drugName}. Your doctor handles the request — you don\u2019t file it yourself. A few days is common for the response, but some requests take longer. If the situation is urgent, ask whether a faster review is possible. If the plan denies it, you have the right to appeal.`
         : `None of the ${planCount} ${stateLabel} plans we reviewed required prior approval for ${drugName} — though this can change at annual drug list updates. Confirm with your specific plan before assuming it applies.`
     }
   </p>
@@ -855,7 +855,7 @@ ${
 
   <h2>How to request a drug list exception${stateCode ? ` in ${stateCode}` : ''}</h2>
   <p>
-    If ${drugName} is not covered by your ${stateLabel} plan or sits on a high-cost tier, your doctor can request an exception. They submit documentation explaining why the covered alternative isn\u2019t appropriate for you. Your plan must respond within 72 hours (24 hours for urgent cases). If denied, you can appeal — including an independent external review if the internal appeal fails.
+    If ${drugName} is not covered by your ${stateLabel} plan or sits on a high-cost tier, your doctor can request an exception. They submit documentation explaining why the covered alternative isn\u2019t appropriate for you. A few days is common for the response, but some requests take longer \u2014 if the situation is urgent, ask whether a faster review is possible. If denied, you can appeal — including an independent external review if the internal appeal fails.
   </p>
 </section>`.trim()
 
