@@ -120,8 +120,7 @@ export function buildAgentDisclaimerHtml(): string {
   <p>
     <strong>HealthInsuranceRenew.com</strong> is operated by a licensed insurance agent.
     This information is provided for educational purposes only. Specific plan details,
-    premium amounts, and coverage terms should be verified at
-    <a href="https://www.healthcare.gov" rel="noopener noreferrer" target="_blank">HealthCare.gov</a>
+    premium amounts, and coverage terms should be verified at Healthcare Gov
     or by consulting a licensed health insurance agent in your state.
     Plan availability and pricing are subject to change. Data sourced from federal marketplace plan data
     and plan benefit documents for the ${PLAN_YEAR} plan year.
@@ -130,75 +129,55 @@ export function buildAgentDisclaimerHtml(): string {
 }
 
 /**
- * Renders a data sources attribution section.
+ * Neutralized: detailed public source-stack disclosures were removed sitewide.
+ * Returns an empty string. Retained for backward compatibility with existing
+ * builders that still set `dataSourcesHtml`; the field is not rendered publicly.
  */
-export function buildDataSourcesHtml(sources: DataSourceEntry[]): string {
-  const items = sources
-    .map(
-      (s) =>
-        `<li><strong>${s.name}</strong> — ${s.description}. ` +
-        `<a href="${s.url}" rel="noopener noreferrer" target="_blank">View source</a></li>`
-    )
-    .join('\n    ')
-
-  return `<section class="data-sources" aria-labelledby="data-sources-heading">
-  <h2 id="data-sources-heading">Data Sources</h2>
-  <p>
-    All plan data, premium rates, and benefit information on this page is derived from official
-    government public use files published by the Centers for Medicare &amp; Medicaid Services (CMS).
-    Data is not independently modified by HealthInsuranceRenew.com.
-  </p>
-  <ul class="data-sources__list">
-    ${items}
-  </ul>
-  <p class="data-sources__note">
-    Data current as of the ${PLAN_YEAR} plan year. Always verify current plan details at
-    <a href="https://www.healthcare.gov" rel="noopener noreferrer" target="_blank">HealthCare.gov</a>.
-  </p>
-</section>`.trim()
+export function buildDataSourcesHtml(_sources: DataSourceEntry[]): string {
+  return ''
 }
 
 // ─── Standard data source definitions per pillar ─────────────────────────────
 
 const CMS_PUF_SOURCE: DataSourceEntry = {
   name: 'Federal Marketplace Plan Data',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: `Consumer-facing plan comparison data for ${PLAN_YEAR}, published by the federal government`,
 }
 
 const CMS_RATE_PUF_SOURCE: DataSourceEntry = {
   name: 'Federal Marketplace Rate Filings',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: `Premium rates by plan, age, tobacco use, and rating area for ${PLAN_YEAR}`,
 }
 
 const CMS_PLAN_ATTR_SOURCE: DataSourceEntry = {
   name: 'Federal Marketplace Plan Data',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: 'Benefits, cost-sharing, network, and metal level details for all QHP plans',
 }
 
 const CMS_BENCS_SOURCE: DataSourceEntry = {
   name: 'Federal Plan Benefit Documents',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: 'Service-level cost-sharing grid: copays, coinsurance, deductibles, and MOOP',
 }
 
 const CMS_MR_PUF_SOURCE: DataSourceEntry = {
   name: 'Federal Plan Benefit Documents',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: 'Carrier formulary JSON file URLs, mandated by ACA Section 1311(e)(3)',
 }
 
 const CMS_SADP_SOURCE: DataSourceEntry = {
   name: 'Federal Dental Plan Data',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: `Stand-alone dental plan benefits, waiting periods, and coverage percentages for ${PLAN_YEAR}`,
 }
 
 const CMS_RATE_REVIEW_SOURCE: DataSourceEntry = {
   name: 'Federal Marketplace Rate Filings',
-  url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
+  url: 'https://www.cms.gov/marketplace',
   description: 'Rate change justifications and year-over-year premium volatility data',
 }
 
@@ -206,18 +185,6 @@ const IRS_FPL_SOURCE: DataSourceEntry = {
   name: 'IRS Revenue Procedure — Federal Poverty Level Tables',
   url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/aca-premium-tax-credit-2025',
   description: `${PLAN_YEAR} Federal Poverty Level percentages and applicable contribution percentages under IRC Section 36B`,
-}
-
-const SERFF_SOURCE: DataSourceEntry = {
-  name: 'SERFF Rate Filing Database',
-  url: 'https://www.serff.com',
-  description: 'State-level rate change filings submitted by carriers to state insurance departments',
-}
-
-const STATE_DOI_SOURCE: DataSourceEntry = {
-  name: 'State Department of Insurance Publications',
-  url: 'https://www.naic.org/state_web_map.htm',
-  description: 'State-specific insurance regulations, rate approvals, and consumer advisories',
 }
 
 // ─── Internal helper ─────────────────────────────────────────────────────────
@@ -515,7 +482,7 @@ export function generateSbcContent(params: SbcTemplateParams): PageContent {
         )
         .join('\n      ')}
     </ul>`
-      : `<p>No categorical exclusions were identified in the PUF data for this plan.
+      : `<p>No categorical exclusions were identified in the available plan data.
     Review the full carrier SBC document to confirm exclusions for specific services.</p>`
 
   const pendingNote =
@@ -708,8 +675,6 @@ export function generateRateVolatilityContent(params: RateVolatilityTemplatePara
     dataSourcesHtml: buildDataSourcesHtml([
       CMS_RATE_PUF_SOURCE,
       CMS_RATE_REVIEW_SOURCE,
-      SERFF_SOURCE,
-      STATE_DOI_SOURCE,
     ]),
     disclaimerHtml: buildAgentDisclaimerHtml(),
   }
@@ -777,8 +742,7 @@ export function generateFrictionQAContent(params: FrictionQATemplateParams): Pag
   <p>${categoryIntro}</p>
   <p>
     This answer applies to the ${PLAN_YEAR} plan year. ACA rules, contribution percentages,
-    and subsidy eligibility thresholds are updated annually. Always confirm current rules at
-    <a href="https://www.healthcare.gov" rel="noopener noreferrer" target="_blank">HealthCare.gov</a>
+    and subsidy eligibility thresholds are updated annually. Always confirm current rules at Healthcare Gov
     or by consulting a licensed health insurance agent.
   </p>
 
@@ -1100,7 +1064,7 @@ export function generateBillingContent(params: BillingTemplateParams): PageConte
     introParagraph,
     bodyHtml,
     author: buildAuthorBlock(),
-    dataSourcesHtml: buildDataSourcesHtml([CMS_BENCS_SOURCE, CMS_PLAN_ATTR_SOURCE, STATE_DOI_SOURCE]),
+    dataSourcesHtml: buildDataSourcesHtml([CMS_BENCS_SOURCE, CMS_PLAN_ATTR_SOURCE]),
     disclaimerHtml: buildAgentDisclaimerHtml(),
   }
 }

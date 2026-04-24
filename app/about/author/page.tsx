@@ -155,15 +155,7 @@ export default function AuthorPage() {
                 Highest tier of the Marketplace Circle of Champions program,
                 awarded by the Centers for Medicare &amp; Medicaid Services to
                 agents who have enrolled 100 or more consumers through the
-                Health Insurance Marketplace.{' '}
-                <a
-                  href="https://www.cms.gov/marketplace/agents-brokers/circle-champions"
-                  className="text-blue-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Verify on CMS.gov →
-                </a>
+                Health Insurance Marketplace.
               </dd>
             </div>
 
@@ -172,15 +164,8 @@ export default function AuthorPage() {
                 National Producer Number (NPN)
               </dt>
               <dd className="text-gray-600 mt-0.5">
-                NPN: 7578729 — Verify on the{' '}
-                <a
-                  href="https://nipr.com/help/look-up-a-license"
-                  className="text-blue-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  National Insurance Producer Registry →
-                </a>
+                NPN: 7578729 — verifiable through the National Insurance
+                Producer Registry.
               </dd>
             </div>
 
@@ -194,16 +179,7 @@ export default function AuthorPage() {
                 Missouri, Michigan, Arizona, Wisconsin, Indiana, Georgia,
                 Illinois, Virginia, Pennsylvania, New Jersey, Oklahoma, and
                 Louisiana. Each license can be verified through the respective
-                state Department of Insurance or through the{' '}
-                <a
-                  href="https://nipr.com/help/look-up-a-license"
-                  className="text-blue-600 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  NIPR license lookup
-                </a>
-                .
+                state Department of Insurance.
               </dd>
             </div>
 
@@ -262,27 +238,30 @@ export default function AuthorPage() {
 
         {/* ── External validation ── */}
         <SectionHeading>Connect and verify</SectionHeading>
-        <p className="text-gray-700 leading-relaxed mb-4">
-          {/* TODO: Add real profile links */}
-          You can find me on{' '}
-          <a
-            href="https://www.linkedin.com/in/daveleenow"
-            className="text-blue-700 font-medium hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
-          </a>
-          . To verify my licensing status, search my NPN on the{' '}
-          <a
-            href="https://nipr.com/help/look-up-a-license"
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            National Insurance Producer Registry
-          </a>{' '}
-          or contact your state&rsquo;s Department of Insurance directly.
+        <dl className="border border-gray-200 rounded-lg p-5 mb-4 text-sm">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
+            <dt className="font-semibold text-gray-900 w-32 shrink-0">
+              LinkedIn Profile
+            </dt>
+            <dd>
+              <a
+                href="https://www.linkedin.com/in/daveleeai/"
+                className="text-blue-700 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View LinkedIn profile
+              </a>
+            </dd>
+          </div>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <dt className="font-semibold text-gray-900 w-32 shrink-0">NPN</dt>
+            <dd className="text-gray-700">NPN: 7578729</dd>
+          </div>
+        </dl>
+        <p className="text-sm text-gray-600 leading-relaxed mb-4">
+          Verify licensing through the National Insurance Producer Registry or
+          contact your state&rsquo;s Department of Insurance directly.
         </p>
 
         {/* ── Published content (placeholder for paginated list) ── */}

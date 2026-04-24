@@ -5,7 +5,6 @@ import AnswerBox from '../../../components/AnswerBox'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../../components/GenericByline'
 import LlmComment from '../../../components/LlmComment'
-import SourcesBox from '../../../components/SourcesBox'
 import GlobalCTA from '@/components/GlobalCTA'
 import { getCollectionSlugs, getCollectionEntry } from '../../../lib/markdown'
 import type { GuideFrontmatter } from '../../../lib/markdown'
@@ -137,11 +136,6 @@ export default async function GuideDetailPage({ params }: Props) {
           <li><a href="/states" className="text-primary-600 hover:text-primary-700 underline">Find Your State</a></li>
         </ul>
       </div>
-
-      <SourcesBox sources={[
-        { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
-        { title: 'IRS - Affordable Care Act', url: 'https://www.irs.gov/affordable-care-act' },
-      ]} />
 
       <GlobalCTA />
     </article>

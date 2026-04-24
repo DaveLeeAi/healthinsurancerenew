@@ -201,7 +201,8 @@ export function AuthorBioBox({ showFullName = false }: AuthorBioBoxProps) {
 }
 
 // ─── DataSourceAttribution ───────────────────────────────────────────────────
-// Inline data source block for transparency.
+// Neutralized: public source-stack disclosures removed sitewide.
+// Component retained as no-op for backward compatibility with existing imports.
 
 interface DataSourceAttributionProps {
   sources: Array<{
@@ -211,38 +212,8 @@ interface DataSourceAttributionProps {
   }>;
 }
 
-export function DataSourceAttribution({
-  sources,
-}: DataSourceAttributionProps) {
-  return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg px-5 py-4 mt-6 mb-6">
-      <p className="text-sm font-semibold text-slate-700 mb-2">
-        Data Sources
-      </p>
-      <ul className="text-sm text-slate-600 space-y-1.5">
-        {sources.map((source) => (
-          <li key={source.url} className="flex items-start gap-2">
-            <span className="text-blue-500 mt-1 shrink-0" aria-hidden="true">
-              ›
-            </span>
-            <span>
-              <a
-                href={source.url}
-                className="text-blue-600 hover:underline font-medium"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {source.name}
-              </a>
-              {source.description && (
-                <span className="text-slate-500"> — {source.description}</span>
-              )}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+export function DataSourceAttribution(_props: DataSourceAttributionProps) {
+  return null;
 }
 
 // ─── SectionHeading ──────────────────────────────────────────────────────────

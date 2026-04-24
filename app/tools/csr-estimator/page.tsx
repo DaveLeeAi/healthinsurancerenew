@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 import fplData from '../../../data/config/fpl-current.json'
 import csrData from '../../../data/config/csr-tiers.json'
 
@@ -248,11 +247,6 @@ export default function CsrEstimatorPage() {
         </ul>
       </div>
 
-      <SourcesBox sources={[
-        { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
-        { title: 'Federal Actuarial Value Standards', url: 'https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/minimum-essential-coverage' },
-        { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-      ]} />
     </div>
   )
 }

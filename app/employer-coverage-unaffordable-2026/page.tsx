@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
@@ -65,13 +64,6 @@ const faqs = [
     answer:
       'Take the monthly employee-only premium, multiply by 12 to get the annual cost, then divide by your total household income. If the result is above 0.0996 (9.96%), the plan fails the affordability test for 2026. Use our employer affordability tool for a quick check.',
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - Employer Coverage Affordability', url: 'https://www.healthcare.gov/have-job-based-coverage/if-its-unaffordable/' },
-  { title: 'IRS - Employer Shared Responsibility', url: 'https://www.irs.gov/affordable-care-act/employers/employer-shared-responsibility-provisions' },
-  { title: 'Federal Family Glitch Fix Rule', url: 'https://www.cms.gov/newsroom/fact-sheets/fact-sheet-2023-marketplace-related-rules' },
-  { title: 'Healthcare.gov - Premium Tax Credit', url: 'https://www.healthcare.gov/lower-costs/qualifying-for-lower-costs/' },
 ]
 
 export default function EmployerCoverageUnaffordablePage() {
@@ -221,7 +213,6 @@ export default function EmployerCoverageUnaffordablePage() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

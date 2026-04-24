@@ -188,7 +188,6 @@ export default function CountyPlansPage({ params }: Props) {
     description: `${planCount} plans from ${carrierCount} carriers in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}. Source: federal marketplace plan data.`,
     dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Plan Data',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const productSchema = buildPlansProductSchema({

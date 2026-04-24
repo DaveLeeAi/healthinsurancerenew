@@ -103,10 +103,7 @@ function getOrganizationSchema() {
       '@type': 'AdministrativeArea',
       name: state,
     })),
-    sameAs: [
-      'https://www.linkedin.com/in/daveleenow',
-      // Add other social profiles here
-    ],
+    sameAs: ['https://www.linkedin.com/in/daveleeai/'],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
@@ -151,7 +148,6 @@ function getPersonSchema() {
         issuedBy: {
           '@type': 'GovernmentOrganization',
           name: 'Centers for Medicare & Medicaid Services',
-          url: 'https://www.cms.gov',
         },
         certificationStatus: 'https://schema.org/CertificationActive',
         description:
@@ -193,10 +189,7 @@ function getPersonSchema() {
         name: 'Cost-Sharing Reductions (CSR)',
       },
     ],
-    sameAs: [
-      'https://www.linkedin.com/in/daveleenow',
-      // Add other profiles
-    ],
+    sameAs: ['https://www.linkedin.com/in/daveleeai/'],
   };
 }
 

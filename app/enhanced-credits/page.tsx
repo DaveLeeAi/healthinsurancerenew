@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: `Enhanced Premium Tax Credits — ${PLAN_YEAR} Subsidy Cliff Analysis by State & County`,
   description:
     `Enhanced health insurance subsidies expired end of 2025. See the county-level premium ` +
-    `impact for 2026 at ages 27–64 across 26 states. Source: federal marketplace rate data and IRS income guidelines.`,
+    `impact for 2026 at ages 27–64. Based on official CMS data and IRS income guidelines.`,
   alternates: { canonical: `${SITE_URL}/enhanced-credits` },
   openGraph: {
     type: 'article',
@@ -54,7 +54,6 @@ export default function EnhancedCreditsIndexPage() {
     description: `Enhanced credits expired end of 2025. See the 2026 premium impact across ${policy.records.length} counties in ${stateCount} states.`,
     dateModified: '2026-03-15',
     dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   // National averages

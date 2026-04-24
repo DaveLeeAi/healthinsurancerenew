@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 import SchemaScript from '../../../components/SchemaScript'
 import GenericByline from '../../../components/GenericByline'
 import LlmComment from '../../../components/LlmComment'
@@ -576,22 +575,6 @@ export default async function StateDetailPage({ params }: Props) {
 
       <GenericByline dataSource="Federal Marketplace Data" planYear={PLAN_YEAR} />
 
-      <SourcesBox
-        sources={[
-          {
-            title: 'Federal Marketplace Data',
-            url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
-          },
-          { title: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
-          ...(stateConfig?.ownExchange && stateConfig.exchangeUrl
-            ? [{ title: exchange, url: stateConfig.exchangeUrl }]
-            : []),
-          {
-            title: `${stateName} Marketplace Info`,
-            url: 'https://www.healthcare.gov/marketplace-in-your-state/',
-          },
-        ]}
-      />
     </article>
   )
 }

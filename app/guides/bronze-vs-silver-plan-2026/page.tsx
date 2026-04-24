@@ -4,7 +4,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   AuthorBioBox,
-  DataSourceAttribution,
   SectionHeading,
 } from '../../../components/trust'
 import Breadcrumbs from '../../../components/Breadcrumbs'
@@ -137,13 +136,6 @@ export default function BronzeVsSilverPlan2026Page() {
         costs depend on what services you use. A Bronze plan still covers preventive care
         at 100% before deductible, just like every other tier.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Healthcare.gov', url: 'https://www.healthcare.gov/', description: 'Metal tier definitions' },
-          { name: 'CMS', url: 'https://www.cms.gov/marketplace' },
-        ]}
-      />
-
       {/* ── Premiums and Deductibles ── */}
       <SectionHeading>2026 Premiums and Deductibles at a Glance</SectionHeading>
       <div className="overflow-x-auto mb-4">
@@ -175,13 +167,6 @@ export default function BronzeVsSilverPlan2026Page() {
         Estimated averages from published analyses. Actual premiums and deductibles vary
         by carrier, plan, age, and rating area.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Peterson-KFF Health System Tracker', url: 'https://www.healthsystemtracker.org/', description: 'Premium and deductible averages' },
-          { name: 'CMS 2026 Payment Notice', url: 'https://www.cms.gov/marketplace', description: 'Out-of-pocket maximum revision' },
-        ]}
-      />
-
       {/* ── Cost-Sharing Reductions ── */}
       <SectionHeading>Cost-Sharing Reductions: Why Silver Plans May Transform at Lower Incomes</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -224,13 +209,6 @@ export default function BronzeVsSilverPlan2026Page() {
         Estimated from federal cost-sharing reduction guidelines. Actual plan benefits
         vary by carrier and state.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF', url: 'https://www.kff.org/health-reform/', description: 'CSR enrollment and benefit analysis' },
-          { name: 'Federal Cost-Sharing Reduction Guidelines', url: 'https://www.cms.gov/marketplace' },
-        ]}
-      />
-
       {/* ── HSA Advantage ── */}
       <SectionHeading>The New HSA Advantage for Bronze Plans</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -256,13 +234,6 @@ export default function BronzeVsSilverPlan2026Page() {
         Bronze plans particularly attractive for healthy enrollees who want to maximize
         tax savings while maintaining catastrophic coverage.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'IRS Notice 2026-5', url: 'https://www.irs.gov/', description: 'OBBBA HSA provisions' },
-          { name: 'IRS Revenue Procedure 2025-19', url: 'https://www.irs.gov/', description: '2026 HSA limits' },
-        ]}
-      />
-
       {/* ── Silver Loading ── */}
       <SectionHeading>Silver Loading: How It May Make Bronze Plans Free</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -281,12 +252,6 @@ export default function BronzeVsSilverPlan2026Page() {
         may be $0. In some areas, a Gold plan may cost less than Silver after subsidies
         &mdash; sometimes called &ldquo;Gold plan arbitrage.&rdquo;
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF Silver Loading Analysis', url: 'https://www.kff.org/health-reform/', description: 'How CSR loading affects benchmark premiums' },
-        ]}
-      />
-
       {/* ── When Bronze Makes Sense ── */}
       <SectionHeading>When Bronze May Make More Sense</SectionHeading>
       <ul className="list-disc pl-6 text-gray-700 space-y-3 mb-4">

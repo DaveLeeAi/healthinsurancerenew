@@ -105,7 +105,6 @@ export default function EnhancedCreditsPage({ params }: Props) {
     description: `Enhanced credits expired end of 2025. See the ${PLAN_YEAR} premium increase in ${countyDisplay}, ${stateUpper}. Modeled at 6 income levels across 5 age brackets. Source: federal marketplace rate data and IRS income guidelines.`,
     dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Rate Data and IRS Income Guidelines',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const policySchemas = scenario
@@ -274,16 +273,8 @@ export default function EnhancedCreditsPage({ params }: Props) {
             </p>
             <p>
               With the enhanced credits now expired, the applicable
-              percentage table has reverted to the pre-ARP formula defined in{' '}
-              <a
-                href="https://www.law.cornell.edu/uscode/text/26/36B"
-                className="text-primary-600 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                26 U.S.C. &sect; 36B(b)(3)(A)
-              </a>
-              . This means lower subsidies at every income level below 400% FPL, and the complete
+              percentage table has reverted to the pre-ARP formula defined in
+              26 U.S.C. &sect; 36B(b)(3)(A). This means lower subsidies at every income level below 400% FPL, and the complete
               elimination of subsidies for anyone earning above 400% FPL — the so-called{' '}
               <strong>&ldquo;subsidy cliff.&rdquo;</strong> Congress may act to restore these credits
               retroactively, but as of {PLAN_YEAR} they are not in effect.

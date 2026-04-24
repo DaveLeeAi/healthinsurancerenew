@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
@@ -65,12 +64,6 @@ const faqs = [
     answer:
       "If the employee-only premium costs more than about 9.96% of your household income, the plan may be considered unaffordable under ACA rules. In that case, you could qualify for marketplace premium tax credits instead. Use our employer affordability tool to check.",
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - Young Adults and the ACA', url: 'https://www.healthcare.gov/young-adults/children-under-26/' },
-  { title: 'Healthcare.gov - Special Enrollment Period', url: 'https://www.healthcare.gov/glossary/special-enrollment-period/' },
-  { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
 ]
 
 export default function Turning26Page() {
@@ -221,7 +214,6 @@ export default function Turning26Page() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

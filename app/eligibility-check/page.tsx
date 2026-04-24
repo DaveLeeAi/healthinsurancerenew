@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
@@ -64,13 +63,6 @@ const faqs = [
     answer:
       'For 2026, the enhanced subsidies that removed the income cap have expired. Under the standard ACA rules now in effect, premium tax credits phase out entirely at 400% of the Federal Poverty Level ($62,600 for a single person). Above that threshold, no premium assistance is available.',
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - Eligibility', url: 'https://www.healthcare.gov/quick-guide/eligibility/' },
-  { title: 'Healthcare.gov - Qualifying Life Events', url: 'https://www.healthcare.gov/glossary/qualifying-life-event/' },
-  { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-  { title: 'Federal Medicaid Expansion Data', url: 'https://www.medicaid.gov/medicaid/national-medicaid-chip-program-information/medicaid-chip-enrollment-data/index.html' },
 ]
 
 export default function EligibilityCheckPage() {
@@ -364,7 +356,6 @@ export default function EligibilityCheckPage() {
       </section>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

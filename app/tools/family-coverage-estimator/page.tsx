@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 import fplData from '../../../data/config/fpl-current.json'
 import contributionData from '../../../data/config/contribution-scale.json'
 
@@ -255,10 +254,6 @@ export default function FamilyCoverageEstimatorPage() {
         </ul>
       </div>
 
-      <SourcesBox sources={[
-        { title: 'Healthcare.gov - Premium Tax Credit', url: 'https://www.healthcare.gov/lower-costs/' },
-        { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-      ]} />
     </div>
   )
 }

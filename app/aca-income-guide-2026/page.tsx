@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 import csrData from '../../data/config/csr-tiers.json'
@@ -70,13 +69,6 @@ const faqs = [
   },
 ]
 
-const sources = [
-  { title: 'Healthcare.gov - How Savings Work', url: 'https://www.healthcare.gov/lower-costs/' },
-  { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-  { title: 'Federal Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
-  { title: 'Medicaid.gov - Eligibility', url: 'https://www.medicaid.gov/medicaid/eligibility/index.html' },
-]
-
 export default function ACAIncomeGuidePage() {
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: 'https://healthinsurancerenew.com' },
@@ -87,7 +79,6 @@ export default function ACAIncomeGuidePage() {
     description: 'Understand what health insurance savings you qualify for at every income level.',
     dateModified: '2026-03-19',
     dataSourceName: 'IRS Premium Tax Credit & federal marketplace data',
-    dataSourceUrl: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit',
   })
 
   return (
@@ -256,7 +247,6 @@ export default function ACAIncomeGuidePage() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

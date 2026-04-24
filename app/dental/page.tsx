@@ -35,13 +35,13 @@ const FAQ_ITEMS = [
 export const metadata: Metadata = {
   title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
   description:
-    `Compare ${PLAN_YEAR} stand-alone dental plan (SADP) options across 30 states. ` +
-    `Annual maximums, coverage percentages, waiting periods, and issuer details from federal dental plan data.`,
+    `Compare ${PLAN_YEAR} stand-alone dental plan (SADP) options. ` +
+    `Annual maximums, coverage percentages, waiting periods, and issuer details based on official CMS data.`,
   alternates: { canonical: `${SITE_URL}/dental` },
   openGraph: {
     type: 'article',
     title: `Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State`,
-    description: `1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from federal dental plan data.`,
+    description: `Stand-alone dental plan coverage. Tiers, annual maximums, and waiting periods based on official CMS data.`,
     url: `${SITE_URL}/dental`,
     siteName: 'HealthInsuranceRenew',
     locale: 'en_US',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Stand-Alone Dental Plans (SADP) ${PLAN_YEAR} — Compare Coverage by State',
     description:
-      '1,389 dental plan variants across 30 states. Coverage tiers, annual maximums, and waiting periods from federal dental plan data.',
+      'Stand-alone dental plan coverage. Tiers, annual maximums, and waiting periods based on official CMS data.',
   },
 }
 
@@ -80,7 +80,6 @@ export default function DentalIndexPage() {
     description: `${dataset.data.length.toLocaleString()} dental plan variants across ${states.length} states. Source: federal dental plan data.`,
     dateModified: '2026-03-15',
     dataSourceName: 'federal dental plan data',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   return (

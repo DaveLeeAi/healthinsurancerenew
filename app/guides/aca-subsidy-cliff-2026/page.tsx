@@ -4,7 +4,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   AuthorBioBox,
-  DataSourceAttribution,
   SectionHeading,
 } from '../../../components/trust'
 import Breadcrumbs from '../../../components/Breadcrumbs'
@@ -127,13 +126,6 @@ export default function AcaSubsidyCliff2026Page() {
         premium contribution percentages range from 2.10% to 9.96% of income, and anyone
         earning above 400% FPL receives zero subsidy.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'IRS Revenue Procedure 2025-25', url: 'https://www.irs.gov/irb/2025-25_IRB' },
-          { name: 'CMS.gov', url: 'https://www.cms.gov/marketplace' },
-        ]}
-      />
-
       {/* ── Section: 2026 Premium Contribution Percentages ── */}
       <SectionHeading>2026 Premium Contribution Percentages</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -167,12 +159,6 @@ export default function AcaSubsidyCliff2026Page() {
         now pay approximately 4.19% of income &mdash; roughly $82 per month for a
         single person.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'IRS Revenue Procedure 2025-25', url: 'https://www.irs.gov/irb/2025-25_IRB', description: 'Applicable percentage table for 2026' },
-        ]}
-      />
-
       {/* ── Section: 2026 Federal Poverty Level Guidelines ── */}
       <SectionHeading>2026 Federal Poverty Level Guidelines</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -241,12 +227,6 @@ export default function AcaSubsidyCliff2026Page() {
         at $15,960, but those apply to 2027 coverage. Actual amounts depend on your
         modified adjusted gross income (MAGI).
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'HHS Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines', description: 'Federal Register, 2025 guidelines' },
-        ]}
-      />
-
       {/* ── Section: How Much More May You Pay? ── */}
       <SectionHeading>How Much More May You Pay?</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -296,13 +276,6 @@ export default function AcaSubsidyCliff2026Page() {
         Estimated figures based on published analyses. Actual premium changes depend on
         your specific plan, age, tobacco use, and rating area.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF Analysis', url: 'https://www.kff.org/health-reform/', description: 'Marketplace premium impact estimates' },
-          { name: 'Congressional Budget Office', url: 'https://www.cbo.gov/', description: 'Coverage loss projections' },
-        ]}
-      />
-
       {/* ── Section: What Congress Has Done So Far ── */}
       <SectionHeading>What Congress Has Done So Far</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -323,12 +296,6 @@ export default function AcaSubsidyCliff2026Page() {
         selected plans for 2026, down from 24.3 million in 2025 &mdash; at least 1.2
         million fewer plan selections.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Congress.gov', url: 'https://www.congress.gov/', description: 'H.R. 5145 status' },
-        ]}
-      />
-
       {/* ── Section: State-Level Responses ── */}
       <SectionHeading>State-Level Responses</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -343,20 +310,11 @@ export default function AcaSubsidyCliff2026Page() {
         Most states have not taken action. If you live in a state without supplemental
         subsidies, the federal rules apply in full.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'State Exchange Reports', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files', description: 'State-level subsidy replacement programs' },
-        ]}
-      />
-
       {/* ── Section: What You May Do Next ── */}
       <SectionHeading>What You May Do Next</SectionHeading>
       <ul className="list-disc pl-6 text-gray-700 space-y-3 mb-4">
         <li>
-          <strong>Check your 2026 subsidy eligibility</strong> at{' '}
-          <a href="https://www.healthcare.gov" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-            Healthcare.gov
-          </a>.
+          <strong>Check your 2026 subsidy eligibility</strong> at Healthcare Gov.
           Your premium tax credit amount depends on your income, household size, and the
           benchmark Silver plan premium in your area.
         </li>

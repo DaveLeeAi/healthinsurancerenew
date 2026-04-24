@@ -4,7 +4,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   AuthorBioBox,
-  DataSourceAttribution,
   SectionHeading,
 } from '../../../components/trust'
 import Breadcrumbs from '../../../components/Breadcrumbs'
@@ -15,13 +14,13 @@ const PAGE_URL = `${SITE_URL}/guides/how-to-read-your-sbc`
 export const metadata: Metadata = {
   title: 'How to Read Your Summary of Benefits and Coverage (SBC) in 2026',
   description:
-    'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC on Healthcare.gov.',
+    'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC.',
   alternates: { canonical: PAGE_URL },
   openGraph: {
     type: 'article',
     title: 'How to Read Your Summary of Benefits and Coverage (SBC) in 2026',
     description:
-      'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC on Healthcare.gov.',
+      'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC.',
     url: PAGE_URL,
     siteName: 'HealthInsuranceRenew',
   },
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'How to Read Your Summary of Benefits and Coverage (SBC) in 2026',
     description:
-      'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC on Healthcare.gov.',
+      'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC.',
   },
 }
 
@@ -40,9 +39,9 @@ const FAQS = [
       'A Summary of Benefits and Coverage (SBC) is a standardized document that every health plan must provide under ACA Section 2715. It uses a uniform template so you can compare any two plans side by side. The SBC shows your deductible, copays, coinsurance, out-of-pocket maximum, and covered services in plain language.',
   },
   {
-    question: 'How do I find my SBC on Healthcare.gov?',
+    question: 'How do I find my SBC?',
     answer:
-      'Sign in to your Healthcare.gov account, find your plan name, and look for the Plan Documents section. The SBC is typically labeled "Summary of Benefits and Coverage" as a downloadable PDF. You may also request a copy directly from your insurance company, which must provide it within 7 business days.',
+      'Sign in to your Marketplace account, find your plan name, and look for the Plan Documents section. The SBC is typically labeled "Summary of Benefits and Coverage" as a downloadable PDF. You may also request a copy directly from your insurance company, which must provide it within 7 business days.',
   },
   {
     question: 'What is the out-of-pocket maximum for 2026 ACA plans?',
@@ -72,7 +71,7 @@ export default function HowToReadYourSbcPage() {
     article: {
       title: 'How to Read Your Summary of Benefits and Coverage (SBC) in 2026',
       description:
-        'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC on Healthcare.gov.',
+        'Your SBC is a standardized document that shows exactly what your health plan covers. Learn how to read each section, compare plans, and find your SBC.',
       url: PAGE_URL,
       datePublished: '2026-03-29',
       dateModified: '2026-03-29',
@@ -124,13 +123,6 @@ export default function HowToReadYourSbcPage() {
         <li>Current template: April 2017 edition (OMB control number 0938-1146, PRA expiration May 31, 2026)</li>
         <li>The September 2025 CLAS Guidance update added new language taglines and translated SBC versions but made no substantive content changes to the template</li>
       </ul>
-      <DataSourceAttribution
-        sources={[
-          { name: 'CMS SBC Template', url: 'https://www.cms.gov/marketplace', description: 'Uniform SBC template requirements' },
-          { name: 'ACA Section 2715', url: 'https://www.healthcare.gov/', description: 'Public Health Service Act amendment' },
-        ]}
-      />
-
       {/* ── Page-by-Page Guide ── */}
       <SectionHeading>Page-by-Page Guide to Your SBC</SectionHeading>
 
@@ -182,13 +174,6 @@ export default function HowToReadYourSbcPage() {
         Three standardized scenarios showing estimated total costs. These are identical
         across all SBCs so you can compare plans directly.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'CMS SBC Template', url: 'https://www.cms.gov/marketplace' },
-          { name: 'Healthcare.gov', url: 'https://www.healthcare.gov/' },
-        ]}
-      />
-
       {/* ── Key Insurance Terms ── */}
       <SectionHeading>Key Insurance Terms You Need to Know</SectionHeading>
       <div className="space-y-4 mb-4">
@@ -225,12 +210,6 @@ export default function HowToReadYourSbcPage() {
           <p className="text-gray-700">The group of doctors, hospitals, and pharmacies your plan has contracted with for lower rates. Using out-of-network providers usually costs more, and some plan types (HMO, EPO) may not cover out-of-network care at all except in emergencies.</p>
         </div>
       </div>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Healthcare.gov Uniform Glossary', url: 'https://www.healthcare.gov/', description: 'Standardized health insurance terms' },
-        ]}
-      />
-
       {/* ── Coverage Examples ── */}
       <SectionHeading>The Three Coverage Examples Explained</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -256,17 +235,11 @@ export default function HowToReadYourSbcPage() {
         costs gives you a direct apples-to-apples view of how different plans handle
         the same situation.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'CMS SBC Template', url: 'https://www.cms.gov/marketplace', description: 'Standardized coverage example scenarios' },
-        ]}
-      />
-
       {/* ── How to Find Your SBC ── */}
       <SectionHeading>How to Find Your SBC</SectionHeading>
       <ol className="list-decimal pl-6 text-gray-700 space-y-3 mb-4">
         <li>
-          <strong>On Healthcare.gov:</strong> Sign in, find your plan name, and look
+          <strong>On Healthcare Gov:</strong> Sign in, find your plan name, and look
           for &ldquo;Plan Documents.&rdquo; The SBC is usually a downloadable PDF
           labeled &ldquo;Summary of Benefits and Coverage.&rdquo;
         </li>
@@ -280,7 +253,7 @@ export default function HowToReadYourSbcPage() {
           days.
         </li>
         <li>
-          <strong>Healthcare.gov Plan Comparison Tool:</strong> During open enrollment,
+          <strong>Marketplace Plan Comparison Tool:</strong> During open enrollment,
           you can view SBC information electronically for side-by-side comparison.
         </li>
         <li>
@@ -288,12 +261,6 @@ export default function HowToReadYourSbcPage() {
           and Navigators can help you find and understand your SBC at no cost.
         </li>
       </ol>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Healthcare.gov', url: 'https://www.healthcare.gov/', description: 'Plan lookup and SBC access' },
-        ]}
-      />
-
       {/* ── Tips for Comparing ── */}
       <SectionHeading>Tips for Comparing SBCs Across Plans</SectionHeading>
       <ol className="list-decimal pl-6 text-gray-700 space-y-3 mb-4">

@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
@@ -65,13 +64,6 @@ const faqs = [
     answer:
       'For many early retirees, health insurance is one of the largest expenses between retirement and Medicare eligibility at 65. However, marketplace subsidies can reduce this cost dramatically. Planning your income withdrawals strategically is one of the most effective ways to control this expense.',
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - How Savings Work', url: 'https://www.healthcare.gov/lower-costs/' },
-  { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-  { title: 'Medicare.gov - When to Sign Up', url: 'https://www.medicare.gov/basics/get-started-with-medicare/sign-up/when-does-medicare-coverage-start' },
-  { title: 'IRS - Modified Adjusted Gross Income', url: 'https://www.irs.gov/e-file-providers/definition-of-adjusted-gross-income' },
 ]
 
 export default function EarlyRetirementPage() {
@@ -233,7 +225,6 @@ export default function EarlyRetirementPage() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

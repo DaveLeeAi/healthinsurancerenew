@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 
@@ -74,13 +73,6 @@ const faqs = [
     answer:
       "Yes. Most new employers have a waiting period (up to 90 days) before benefits begin. A marketplace plan or short-term COBRA can bridge that gap. You can cancel marketplace coverage once your employer plan starts.",
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - Job Loss and Coverage', url: 'https://www.healthcare.gov/have-job-based-coverage/if-you-lose-job-based-coverage/' },
-  { title: 'DOL - COBRA Information', url: 'https://www.dol.gov/general/topic/health-plans/cobra' },
-  { title: 'Healthcare.gov - Special Enrollment Period', url: 'https://www.healthcare.gov/glossary/special-enrollment-period/' },
-  { title: 'Medicaid.gov', url: 'https://www.medicaid.gov/' },
 ]
 
 export default function LostJobPage() {
@@ -211,7 +203,6 @@ export default function LostJobPage() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

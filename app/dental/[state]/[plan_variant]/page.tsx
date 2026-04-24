@@ -201,7 +201,6 @@ export default function DentalPlanPage({ params }: Props) {
     description: `Stand-alone dental plan (SADP) from ${plan.issuer_name}. Coverage tiers, annual maximum, waiting periods, and what's included. Source: federal dental plan data.`,
     dateModified: '2026-01-15',
     dataSourceName: 'federal dental plan data',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const dentalSchema = buildDentalPlanSchema({ dental: plan, planYear: PLAN_YEAR })

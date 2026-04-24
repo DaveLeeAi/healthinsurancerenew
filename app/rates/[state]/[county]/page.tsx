@@ -119,7 +119,6 @@ export default function RatesPage({ params }: Props) {
     description: `Premium rate analytics for ${countyDisplay}, ${stateUpper}. ${rates?.plan_count ?? 0} plans across ${rates?.carrier_count ?? 0} carriers. Source: federal marketplace rate filings.`,
     dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Rate Filings',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const datasetSchema = rates

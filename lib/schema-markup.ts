@@ -100,7 +100,7 @@ export interface ArticleSchema {
   author: { '@type': string; name: string; url?: string }
   publisher: { '@type': string; name: string; url: string }
   dateModified: string
-  isBasedOn?: { '@type': string; name: string; url: string }
+  isBasedOn?: { '@type': string; name: string }
 }
 
 export function buildArticleSchema(params: {
@@ -108,6 +108,7 @@ export function buildArticleSchema(params: {
   description: string
   dateModified: string
   dataSourceName?: string
+  /** @deprecated outbound data-source URL no longer emitted publicly; retained for caller compatibility */
   dataSourceUrl?: string
 }): ArticleSchema {
   return {
@@ -126,12 +127,11 @@ export function buildArticleSchema(params: {
       url: 'https://healthinsurancerenew.com',
     },
     dateModified: params.dateModified,
-    ...(params.dataSourceName && params.dataSourceUrl
+    ...(params.dataSourceName
       ? {
           isBasedOn: {
             '@type': 'Dataset',
             name: params.dataSourceName,
-            url: params.dataSourceUrl,
           },
         }
       : {}),
@@ -175,7 +175,6 @@ export function buildStatePlansArticleSchema(params: {
     isBasedOn: {
       '@type': 'Dataset',
       name: 'Federal Marketplace Plan Data',
-      url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
     about: {
       '@type': 'State',
@@ -307,7 +306,7 @@ export function buildSubsidySchemas(params: {
     '@type': 'GovernmentService',
     name: 'ACA Marketplace — Advance Premium Tax Credit (APTC)',
     description:
-      'Federal subsidy program reducing marketplace health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL). Administered via HealthCare.gov.',
+      'Federal subsidy program reducing marketplace health insurance premiums for eligible households based on income relative to the Federal Poverty Level (FPL).',
     serviceType: 'Health Insurance Subsidy',
     provider: {
       '@type': 'GovernmentOrganization',
@@ -318,7 +317,7 @@ export function buildSubsidySchemas(params: {
       '@type': 'State',
       name: stateCode,
     },
-    url: 'https://www.healthcare.gov/lower-costs/',
+    url: 'https://www.cms.gov/marketplace',
   }
 
   return [faqSchema, govServiceSchema]
@@ -451,18 +450,9 @@ export function buildRateVolatilityDatasetSchema(params: {
       '@type': 'AdministrativeArea',
       name: `${countyName}, ${record.state_code}`,
     },
-    distribution: [
-      {
-        '@type': 'DataDownload',
-        encodingFormat: 'application/json',
-        contentUrl: 'https://healthinsurancerenew.com/data/rate_volatility.json',
-        name: 'Rate Volatility Dataset (federal data-derived)',
-      },
-    ],
     isBasedOn: {
       '@type': 'Dataset',
       name: 'Federal Marketplace Rate Filings',
-      url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
   }
 }
@@ -751,18 +741,9 @@ export function buildPolicyScenarioSchema(params: {
       '@type': 'AdministrativeArea',
       name: `${countyName}, ${record.state_code}`,
     },
-    distribution: [
-      {
-        '@type': 'DataDownload',
-        encodingFormat: 'application/json',
-        contentUrl: 'https://healthinsurancerenew.com/data/policy_scenarios.json',
-        name: 'Policy Scenarios Dataset (federal data + IRS-derived)',
-      },
-    ],
     isBasedOn: {
       '@type': 'Dataset',
       name: 'Federal Marketplace Rate Data and IRS Income Guidelines',
-      url: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
     },
   }
 
@@ -907,7 +888,7 @@ export function buildFinancialProductSchema(params: {
     isRelatedTo: {
       '@type': 'Service',
       name: 'ACA Marketplace Health Insurance',
-      url: 'https://www.healthcare.gov',
+      url: 'https://www.cms.gov/marketplace',
     },
   }
 }

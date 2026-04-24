@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -260,11 +259,6 @@ export default function WhatIncomeCountsPage() {
         </ul>
       </div>
 
-      <SourcesBox sources={[
-        { title: 'Healthcare.gov - Income and Household Information', url: 'https://www.healthcare.gov/income-and-household-information/income/' },
-        { title: 'IRS - Modified Adjusted Gross Income (MAGI)', url: 'https://www.irs.gov/e-file-providers/definition-of-adjusted-gross-income' },
-        { title: 'IRS - Premium Tax Credit Eligibility', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-      ]} />
     </div>
   )
 }

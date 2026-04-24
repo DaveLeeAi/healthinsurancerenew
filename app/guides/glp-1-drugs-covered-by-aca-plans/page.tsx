@@ -4,7 +4,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   AuthorBioBox,
-  DataSourceAttribution,
   SectionHeading,
 } from '../../../components/trust'
 import Breadcrumbs from '../../../components/Breadcrumbs'
@@ -192,12 +191,6 @@ export default function Glp1DrugsCoveredPage() {
         CagriSema (Novo Nordisk, cagrilintide/semaglutide combo, FDA response expected 2026),
         and aleniglipron (Structure Therapeutics, positive Phase 2 data announced March 2026).
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'FDA Drug Approvals', url: 'https://www.fda.gov/drugs', description: 'FDA-approved indications and approval dates' },
-        ]}
-      />
-
       {/* ── Marketplace Coverage Rates ── */}
       <SectionHeading>Marketplace Formulary Coverage Rates</SectionHeading>
       <div className="overflow-x-auto mb-4">
@@ -237,13 +230,6 @@ export default function Glp1DrugsCoveredPage() {
         Estimated from federal plan data and published analyses. Actual formulary
         inclusion varies by carrier, state, and plan year.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF Marketplace Formulary Analysis', url: 'https://www.kff.org/health-reform/' },
-          { name: 'Federal EHB Framework', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
-        ]}
-      />
-
       {/* ── Typical Costs With Insurance ── */}
       <SectionHeading>Typical Costs With Insurance</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -264,22 +250,10 @@ export default function Glp1DrugsCoveredPage() {
         Estimated from 2026 federal plan data. Actual cost depends on your plan, tier
         placement, pharmacy, and deductible status.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Federal Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
-        ]}
-      />
-
       {/* ── How to Check Your Plan's Formulary ── */}
       <SectionHeading>How to Check Your Plan&apos;s Formulary</SectionHeading>
       <ol className="list-decimal pl-6 text-gray-700 space-y-3 mb-4">
-        <li>
-          Go to{' '}
-          <a href="https://www.healthcare.gov" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-            Healthcare.gov
-          </a>{' '}
-          and sign in to your account.
-        </li>
+        <li>Go to Healthcare Gov and sign in to your account.</li>
         <li>Find your plan and look for &ldquo;Plan Documents&rdquo; or &ldquo;Formulary.&rdquo;</li>
         <li>Download the prescription drug list PDF.</li>
         <li>Search for the drug by brand name or generic name.</li>
@@ -297,13 +271,6 @@ export default function Glp1DrugsCoveredPage() {
         necessary, you may request a formulary exception. Your plan must respond within
         72 hours (24 hours for urgent requests).
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Healthcare.gov', url: 'https://www.healthcare.gov/', description: 'Plan lookup and formulary access' },
-          { name: 'KFF', url: 'https://www.kff.org/health-reform/' },
-        ]}
-      />
-
       {/* ── States With GLP-1 Weight Loss Coverage ── */}
       <SectionHeading>States With GLP-1 Weight Loss Coverage</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -338,13 +305,6 @@ export default function Glp1DrugsCoveredPage() {
           due to fiscal concerns.
         </li>
       </ul>
-      <DataSourceAttribution
-        sources={[
-          { name: 'State Exchange Data', url: 'https://www.cms.gov/marketplace', description: 'EHB benchmark plans by state' },
-          { name: 'Pharmacy Times', url: 'https://www.pharmacytimes.com/', description: 'State mandate tracking' },
-        ]}
-      />
-
       {/* ── Costs Without Insurance ── */}
       <SectionHeading>Estimated Costs Without Insurance</SectionHeading>
       <div className="overflow-x-auto mb-4">
@@ -373,12 +333,6 @@ export default function Glp1DrugsCoveredPage() {
         Estimated from manufacturer pricing and published sources. Actual cost depends
         on dose, pharmacy, and eligibility for assistance programs.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'NovoCare.com', url: 'https://www.novocare.com/', description: 'Self-pay and PAP pricing' },
-        ]}
-      />
-
       {/* ── FAQ Section ── */}
       <SectionHeading id="faq">Frequently Asked Questions</SectionHeading>
       <div className="space-y-4 mb-8">

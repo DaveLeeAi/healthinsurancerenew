@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import csrData from '../../data/config/csr-tiers.json'
 import fplData from '../../data/config/fpl-current.json'
@@ -75,12 +74,6 @@ const faqs = [
   },
 ]
 
-const sources = [
-  { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
-  { title: 'Federal Actuarial Value Standards', url: 'https://www.cms.gov/cciio/programs-and-initiatives/health-insurance-market-reforms/minimum-essential-coverage' },
-  { title: 'IRS - Premium Tax Credit', url: 'https://www.irs.gov/affordable-care-act/individuals-and-families/premium-tax-credit' },
-]
-
 const tierColors: Record<string, { bg: string; badge: string }> = {
   'Silver 94': { bg: 'bg-green-50 border-green-200', badge: 'bg-green-100 text-green-800' },
   'Silver 87': { bg: 'bg-blue-50 border-blue-200', badge: 'bg-blue-100 text-blue-800' },
@@ -98,7 +91,6 @@ export default function CSRExplainedPage() {
     description: 'Plain-English explanation of cost-sharing reductions (CSR) for 2026.',
     dateModified: '2026-03-19',
     dataSourceName: 'federal actuarial value standards',
-    dataSourceUrl: 'https://www.healthcare.gov/choose-a-plan/plans-categories/',
   })
 
   return (
@@ -269,7 +261,6 @@ export default function CSRExplainedPage() {
       </section>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

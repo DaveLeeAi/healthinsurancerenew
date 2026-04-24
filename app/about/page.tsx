@@ -9,7 +9,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   SectionHeading,
-  DataSourceAttribution,
 } from '@/components/trust';
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
@@ -186,36 +185,6 @@ export default function AboutPage() {
           </a>{' '}
           explain this in detail.
         </p>
-
-        <DataSourceAttribution
-          sources={[
-            {
-              name: 'CMS.gov',
-              url: 'https://www.cms.gov',
-              description: 'Plan benefit data, enrollment statistics, marketplace regulations',
-            },
-            {
-              name: 'HealthCare.gov',
-              url: 'https://www.healthcare.gov',
-              description: 'Plan availability, premium data, enrollment information',
-            },
-            {
-              name: 'HHS ASPE',
-              url: 'https://aspe.hhs.gov',
-              description: 'Policy research and health insurance coverage analyses',
-            },
-            {
-              name: 'KFF',
-              url: 'https://www.kff.org',
-              description: 'Health policy research, subsidy calculator methodology',
-            },
-            {
-              name: 'State Insurance Departments',
-              url: 'https://content.naic.org/state-insurance-departments',
-              description: 'Rate filings, carrier approvals, network adequacy data',
-            },
-          ]}
-        />
 
         {/* ── Related pages ── */}
         <SectionHeading>Learn more</SectionHeading>

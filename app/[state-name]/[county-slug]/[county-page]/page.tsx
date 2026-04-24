@@ -294,7 +294,6 @@ async function CountyPlanDetailPage({ params }: Props) {
     description: `Detailed cost-sharing, deductible, OOP max, and exclusion data for ${plan.plan_name} by ${plan.issuer_name}.`,
     dateModified: '2026-01-15',
     dataSourceName: 'Federal Marketplace Plan Data',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const medicalWebPageSchema = buildWebPageSchema({
@@ -647,7 +646,6 @@ async function CountyDrugPage({ params, drugSlug }: DrugPageProps) {
     description: `${drugName} formulary coverage across Marketplace plans in ${countyDisplay}, ${stateName} for plan year ${PLAN_YEAR}.`,
     dateModified: '2026-01-15',
     dataSourceName: 'Federal Formulary Data Files',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources/data/public-use-files',
   })
 
   const breadcrumbSchema = buildBreadcrumbSchema([

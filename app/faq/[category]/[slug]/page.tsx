@@ -118,7 +118,6 @@ export default function FAQDetailPage({ params }: Props) {
     description: qa.answer.slice(0, 155),
     dateModified: '2026-03-15',
     dataSourceName: 'ACA regulations & federal enrollment guidance',
-    dataSourceUrl: 'https://www.cms.gov/marketplace/resources',
   })
 
   const breadcrumbSchema = buildBreadcrumbSchema([

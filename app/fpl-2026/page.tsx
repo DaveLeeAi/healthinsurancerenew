@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 import fplData from '../../data/config/fpl-current.json'
 
@@ -85,12 +84,6 @@ const faqs = [
   },
 ]
 
-const sources = [
-  { title: 'HHS 2026 Federal Poverty Guidelines', url: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines' },
-  { title: 'Healthcare.gov - Eligibility', url: 'https://www.healthcare.gov/quick-guide/eligibility/' },
-  { title: 'Federal Cost-Sharing Reductions', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
-]
-
 export default function FPL2026Page() {
   const breadcrumbSchema = buildBreadcrumbSchema([
     { name: 'Home', url: 'https://healthinsurancerenew.com' },
@@ -101,7 +94,6 @@ export default function FPL2026Page() {
     description: '2026 Federal Poverty Level guidelines and health insurance eligibility thresholds.',
     dateModified: '2026-03-19',
     dataSourceName: 'HHS Federal Poverty Guidelines',
-    dataSourceUrl: 'https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines',
   })
 
   return (
@@ -220,7 +212,6 @@ export default function FPL2026Page() {
       </section>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

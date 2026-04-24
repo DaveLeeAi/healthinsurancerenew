@@ -4,7 +4,6 @@ import {
   BLUFBox,
   CMSDisclaimer,
   AuthorBioBox,
-  DataSourceAttribution,
   SectionHeading,
 } from '../../../components/trust'
 import Breadcrumbs from '../../../components/Breadcrumbs'
@@ -151,13 +150,6 @@ export default function DoesAcaCoverOzempic2026Page() {
       <p className="text-gray-700 leading-relaxed mb-4">
         Same injection, same drug, completely different coverage outcome.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF Marketplace Formulary Analysis', url: 'https://www.kff.org/health-reform/', description: 'Coverage rate estimates' },
-          { name: 'Federal Essential Health Benefits Framework', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files', description: 'EHB framework and USP categories' },
-        ]}
-      />
-
       {/* ── Ozempic for Diabetes ── */}
       <SectionHeading>Ozempic Coverage for Type 2 Diabetes</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -183,13 +175,6 @@ export default function DoesAcaCoverOzempic2026Page() {
         Estimated from 2026 federal plan data. Actual copays depend on your specific
         plan, tier placement, and deductible status.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'KFF Formulary Analysis', url: 'https://www.kff.org/health-reform/' },
-          { name: 'Federal Formulary Data', url: 'https://www.cms.gov/marketplace/resources/data/public-use-files' },
-        ]}
-      />
-
       {/* ── Ozempic for Weight Loss ── */}
       <SectionHeading>Ozempic for Weight Loss: Why Plans Do Not Cover It</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -219,13 +204,6 @@ export default function DoesAcaCoverOzempic2026Page() {
           included on an estimated 0% of marketplace formularies.
         </li>
       </ul>
-      <DataSourceAttribution
-        sources={[
-          { name: 'CMS CY2026 Final Rule', url: 'https://www.cms.gov/marketplace', description: 'USP classification decision' },
-          { name: 'KFF Marketplace Formulary Analysis', url: 'https://www.kff.org/health-reform/' },
-        ]}
-      />
-
       {/* ── Medicare GLP-1 Coverage ── */}
       <SectionHeading>What About Medicare GLP-1 Coverage?</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -253,13 +231,6 @@ export default function DoesAcaCoverOzempic2026Page() {
           for Medicare and Medicaid beneficiaries.
         </p>
       </div>
-      <DataSourceAttribution
-        sources={[
-          { name: 'CMS BALANCE Model', url: 'https://www.cms.gov/', description: 'Medicare/Medicaid GLP-1 program' },
-          { name: 'IRA Drug Negotiation Program', url: 'https://www.cms.gov/inflation-reduction-act-and-medicare' },
-        ]}
-      />
-
       {/* ── Out-of-Pocket Costs ── */}
       <SectionHeading>Estimated Out-of-Pocket Costs in 2026</SectionHeading>
       <p className="text-gray-700 leading-relaxed mb-4">
@@ -289,22 +260,10 @@ export default function DoesAcaCoverOzempic2026Page() {
         Estimated from manufacturer pricing and federal plan data. Actual cost depends
         on your plan, pharmacy, deductible status, and eligibility for assistance programs.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Novo Nordisk / NovoCare.com', url: 'https://www.novocare.com/', description: 'Self-pay and PAP pricing' },
-        ]}
-      />
-
       {/* ── How to Check Your Plan ── */}
       <SectionHeading>How to Check if Your Plan Covers Ozempic</SectionHeading>
       <ol className="list-decimal pl-6 text-gray-700 space-y-3 mb-4">
-        <li>
-          Go to{' '}
-          <a href="https://www.healthcare.gov" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
-            Healthcare.gov
-          </a>{' '}
-          and sign in to your account.
-        </li>
+        <li>Go to Healthcare Gov and sign in to your account.</li>
         <li>Find your plan name and look for &ldquo;Plan Documents.&rdquo;</li>
         <li>Open the prescription drug list (formulary) PDF.</li>
         <li>
@@ -321,13 +280,6 @@ export default function DoesAcaCoverOzempic2026Page() {
         If Ozempic is not on your formulary and your doctor believes it is medically
         necessary, you may request a formulary exception from your insurance company.
       </p>
-      <DataSourceAttribution
-        sources={[
-          { name: 'Healthcare.gov', url: 'https://www.healthcare.gov/', description: 'Plan lookup and formulary access' },
-          { name: 'CMS Marketplace Guidance', url: 'https://www.cms.gov/marketplace' },
-        ]}
-      />
-
       {/* ── Patient Assistance ── */}
       <SectionHeading>Savings and Assistance Programs</SectionHeading>
       <ul className="list-disc pl-6 text-gray-700 space-y-3 mb-4">
@@ -348,13 +300,6 @@ export default function DoesAcaCoverOzempic2026Page() {
           insurance ($349 per month for lower doses, $499 per month for 2mg dose).
         </li>
       </ul>
-      <DataSourceAttribution
-        sources={[
-          { name: 'NovoCare.com', url: 'https://www.novocare.com/', description: 'Patient assistance and savings programs' },
-          { name: 'Ozempic.com', url: 'https://www.ozempic.com/', description: 'Savings card details' },
-        ]}
-      />
-
       {/* ── FAQ Section ── */}
       <SectionHeading id="faq">Frequently Asked Questions</SectionHeading>
       <div className="space-y-4 mb-8">

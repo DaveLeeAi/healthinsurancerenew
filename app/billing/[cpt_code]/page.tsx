@@ -220,7 +220,6 @@ export default function BillingScenarioPage({ params }: Props) {
     description: scenario.description,
     dateModified: '2026-03-15',
     dataSourceName: 'AMA CPT codes and federal ACA regulations',
-    dataSourceUrl: 'https://www.cms.gov/nosurprises',
   })
 
   const billingSchema = buildBillingProcedureSchema({ scenario })

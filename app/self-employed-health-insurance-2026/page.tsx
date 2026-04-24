@@ -5,7 +5,6 @@ import AeoBlock from '../../components/AeoBlock'
 import PageFaq from '@/components/PageFaq'
 import GenericByline from '../../components/GenericByline'
 import LlmComment from '../../components/LlmComment'
-import SourcesBox from '../../components/SourcesBox'
 import { buildBreadcrumbSchema, buildArticleSchema } from '../../lib/schema-markup'
 
 export const metadata: Metadata = {
@@ -65,13 +64,6 @@ const faqs = [
     answer:
       'You can enroll during the annual open enrollment period. If you are newly self-employed and just lost employer coverage, that is a qualifying life event that opens a 60-day special enrollment period. If you were already self-employed without coverage, you must wait for open enrollment unless you have another qualifying event.',
   },
-]
-
-const sources = [
-  { title: 'Healthcare.gov - Self-Employed', url: 'https://www.healthcare.gov/self-employed/' },
-  { title: 'IRS - Self-Employed Health Insurance Deduction', url: 'https://www.irs.gov/taxtopics/tc502' },
-  { title: 'IRS - HSA Contribution Limits', url: 'https://www.irs.gov/publications/p969' },
-  { title: 'Healthcare.gov - Estimating Income', url: 'https://www.healthcare.gov/income-and-household-information/how-to-report/' },
 ]
 
 export default function SelfEmployedPage() {
@@ -228,7 +220,6 @@ export default function SelfEmployedPage() {
       </div>
 
       <PageFaq faqs={faqs} />
-      <SourcesBox sources={sources} />
       {/* NOTE: No name/NPN on this page — generic byline only */}
       <GenericByline dataSource="HealthInsuranceRenew editorial team" lastReviewed="2026-03-19" />
     </div>

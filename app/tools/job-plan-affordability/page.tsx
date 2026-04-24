@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 import affordabilityData from '../../../data/config/affordability-threshold.json'
 
 const breadcrumbs = [
@@ -235,10 +234,6 @@ export default function JobPlanAffordabilityPage() {
         </ul>
       </div>
 
-      <SourcesBox sources={[
-        { title: 'IRS - Employer Health Plan Affordability', url: 'https://www.irs.gov/affordable-care-act/employers/employer-shared-responsibility-provisions' },
-        { title: 'Healthcare.gov - Employer Coverage and ACA', url: 'https://www.healthcare.gov/have-job-based-coverage/' },
-      ]} />
     </div>
   )
 }

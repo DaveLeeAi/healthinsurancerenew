@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import AeoBlock from '../../../components/AeoBlock'
-import SourcesBox from '../../../components/SourcesBox'
 import metalTiers from '../../../data/config/metal-tiers.json'
 
 const breadcrumbs = [
@@ -156,11 +155,6 @@ export default function PlanComparisonPage() {
         </ul>
       </div>
 
-      <SourcesBox sources={[
-        { title: 'Healthcare.gov - Plan Categories', url: 'https://www.healthcare.gov/choose-a-plan/plans-categories/' },
-        { title: 'Healthcare.gov - Cost-Sharing Reductions', url: 'https://www.healthcare.gov/lower-costs/save-on-out-of-pocket-costs/' },
-        { title: 'Federal Actuarial Value and Cost Sharing Standards', url: 'https://www.cms.gov/cciio/resources/data-resources/marketplace-puf' },
-      ]} />
     </div>
   )
 }
