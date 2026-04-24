@@ -7,12 +7,12 @@ import SchemaScript from '../../components/SchemaScript'
 export const metadata: Metadata = {
   title: 'Editorial Policy | HealthInsuranceRenew',
   description:
-    'How HealthInsuranceRenew creates, reviews, and updates health insurance content. Reviewed by licensed professionals with CMS Circle of Champions recognition.',
+    'How HealthInsuranceRenew reviews and updates its health insurance guides, corrects errors, and keeps editorial content independent from advertisers and insurance companies.',
   alternates: { canonical: 'https://healthinsurancerenew.com/editorial-policy' },
   openGraph: {
     title: 'Editorial Policy | HealthInsuranceRenew',
     description:
-      'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals.',
+      'How HealthInsuranceRenew reviews and updates its health insurance guides, corrects errors, and keeps editorial content independent from advertisers and insurance companies.',
     url: 'https://healthinsurancerenew.com/editorial-policy',
     type: 'website',
     siteName: 'HealthInsuranceRenew',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Editorial Policy | HealthInsuranceRenew',
     description:
-      'Learn how HealthInsuranceRenew creates, reviews, and updates its health insurance educational content. Content is reviewed by licensed health insurance professionals.',
+      'How HealthInsuranceRenew reviews and updates its health insurance guides, corrects errors, and keeps editorial content independent from advertisers and insurance companies.',
   },
 }
 
@@ -46,10 +46,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'Is HealthInsuranceRenew.com affiliated with the government or Healthcare.gov?',
+      name: 'Is HealthInsuranceRenew.com affiliated with the government or Healthcare Gov?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'No. HealthInsuranceRenew.com is an independent platform. It uses federal marketplace data as its data source but is not affiliated with Healthcare.gov, CMS, or any government agency.',
+        text: 'No. HealthInsuranceRenew.com is an independent platform. It is based on official CMS data but is not affiliated with Healthcare Gov, CMS, or any government agency.',
       },
     },
     {
@@ -84,79 +84,67 @@ export default function EditorialPolicyPage() {
       <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">Editorial Policy</h1>
 
       <div className="prose prose-neutral max-w-none">
-        {/* Section 1 — Who We Are */}
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Who We Are</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          HealthInsuranceRenew.com is operated by licensed health insurance professionals. The site operator holds
-          CMS Marketplace Elite Circle of Champions recognition from the Centers for Medicare &amp; Medicaid Services
-          (CCIIO division) for the 2022-2023 Open Enrollment Period — a designation awarded based on verified
-          enrollment volume and consumer service standards.
-        </p>
-        <p className="text-slate-700 leading-relaxed mb-4">
-          <a href="/circle-of-champions" className="text-primary-600 hover:text-primary-700 underline">
-            View full credential details on the Elite Circle of Champions page &rarr;
-          </a>
+          Health insurance is a big decision for most people. The plan you choose affects what you pay each month, which
+          doctors you can see, what your prescriptions cost, and how protected you are when you need care. We want the
+          information on this site to be clear, honest, and useful when you are trying to figure out your options.
         </p>
 
-        {/* Section 2 — Content Standards */}
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Content Standards</h2>
-        <ul className="list-disc pl-5 text-slate-700 leading-relaxed mb-4 space-y-2">
-          <li>All guides and data pages are reviewed by a licensed health insurance professional before publication.</li>
-          <li>Content must cite regulatory sources (ACA statute, CFR, CMS guidance) where applicable.</li>
-          <li>
-            Dollar figures, income thresholds, and plan data are sourced directly from federal marketplace data — not
-            estimated or extrapolated.
-          </li>
-          <li>Pages are updated annually following federal marketplace data release cycles.</li>
-          <li>
-            YMYL standard: all health insurance content is treated as financial/health advice and held to the highest
-            accuracy standard.
-          </li>
-        </ul>
-
-        {/* Section 3 — Data Sources */}
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Data Sources</h2>
+        {/* Section 1 — Review and accuracy */}
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Review and accuracy</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          All plan, rate, subsidy, and formulary data on this site is sourced from federal marketplace data files published
-          by the Centers for Medicare &amp; Medicaid Services. These datasets are public domain and updated annually.
+          Every guide and data page on HealthInsuranceRenew is reviewed by a licensed health insurance professional
+          before it goes live. That means a licensed professional reads the page before it goes live to make sure the
+          information is accurate, clear, and easy to understand.
         </p>
-        <ul className="list-disc pl-5 text-slate-700 leading-relaxed mb-4 space-y-2">
-          <li><strong>Federal marketplace plan data</strong> — Plan-level data for all qualified health plans on the ACA Marketplace</li>
-          <li><strong>Federal marketplace rate filings</strong> — Premium rates by plan, age, tobacco use, and rating area</li>
-          <li><strong>Federal plan benefit documents</strong> — Benefits, cost-sharing, and network details</li>
-          <li><strong>Federal drug formulary data</strong> — Drug formulary files from every marketplace carrier</li>
-          <li><strong>Federal dental plan data</strong> — Stand-alone dental plan data</li>
-        </ul>
         <p className="text-slate-700 leading-relaxed mb-4">
-          Full details are available on the federal marketplace data page:{' '}
-          <a
-            href="https://www.cms.gov/marketplace/resources/data/public-use-files"
-            className="text-primary-600 hover:text-primary-700 underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Federal Marketplace Data Files
-          </a>
+          Pages get updated when things change. New plans come out each year. Premiums move. Deductibles move. Drug
+          tiers change. The rules about who can get help with costs change. When any of that happens, the pages that
+          cover it get updated, so you are not reading last year&apos;s numbers.
         </p>
 
-        {/* Section 4 — Corrections Policy */}
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Corrections Policy</h2>
+        {/* Section 2 — Corrections */}
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Corrections</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          If you find an error in any published content, please{' '}
-          <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">contact us</a>.
-          We review correction requests within 5 business days and correct verified errors within 24 hours
-          of confirmation.
+          If something on the site is wrong, we want to correct it. If you spot a number that looks off, a rule that
+          does not match what you are seeing on your own plan, or anything else that seems incorrect, you can tell us
+          through our{' '}
+          <a href="/contact" className="text-primary-600 hover:text-primary-700 underline">contact page</a>.
+          A licensed professional reviews every correction request. If the error is real, we fix it quickly and update
+          the page so the next person who reads it gets the right information. We do not leave clear mistakes up while
+          we think about it.
         </p>
 
-        {/* Section 5 — Independence */}
-        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Independence</h2>
+        {/* Section 3 — Editorial independence */}
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Editorial independence</h2>
         <p className="text-slate-700 leading-relaxed mb-4">
-          We do not accept payment to recommend specific plans or insurance companies. How we earn revenue is fully disclosed
-          at{' '}
+          What we say about plans, insurance companies, and coverage is not influenced by who pays us. Commissions,
+          advertising, and relationships with insurance companies do not decide which plans we describe favorably, which
+          insurance companies we mention, or what we tell you to think about when you are comparing options. No
+          insurance company pays us to recommend its plans. No advertiser has any say in what our guides say.
+        </p>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          We are open about how the business side works. You can read about how the site earns money on our{' '}
           <a href="/how-we-get-paid" className="text-primary-600 hover:text-primary-700 underline">
             How We Get Paid
-          </a>
-          . No advertiser influences content.
+          </a>{' '}
+          page. It is kept separate from the guides on purpose, so the two never get mixed up.
+        </p>
+
+        {/* Section 4 — Our information basis */}
+        <h2 className="text-xl font-semibold text-slate-900 mt-8 mb-3">Our information basis</h2>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Our content is based on official CMS data, plan documents filed by insurance companies, and related
+          government guidance. When we tell you what a plan covers, what a drug costs on a specific plan, or how help
+          with premiums is calculated, we are working from the original sources — not from what someone else wrote
+          about them. Working from the source is what lets us give you specific numbers you can act on, instead of
+          general claims you cannot verify.
+        </p>
+        <p className="text-slate-700 leading-relaxed mb-4">
+          Things can still change during the year. A plan can change its coverage, costs, or rules during the year. A
+          drug can move to a different tier. An insurance company can update its requirements. Before you enroll in a
+          plan or fill a prescription, check the details directly with the plan or pharmacy — these pages are here to
+          help you understand your options, not replace what your specific plan says.
         </p>
       </div>
 
@@ -165,7 +153,7 @@ export default function EditorialPolicyPage() {
       <div className="bg-white/70 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-5 mt-8">
         <p className="text-sm text-slate-600 leading-relaxed">
           <strong className="text-slate-700">Non-Government Disclaimer:</strong> HealthInsuranceRenew.com is not a
-          government website. This site is not affiliated with the federal Health Insurance Marketplace, HealthCare.gov,
+          government website. This site is not affiliated with the federal Health Insurance Marketplace, Healthcare Gov,
           or any state-based exchange. It is independently operated by licensed insurance professionals and provides
           educational information only. Nothing on this site constitutes legal, tax, or benefits advice.
         </p>
