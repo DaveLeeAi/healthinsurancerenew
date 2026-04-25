@@ -181,7 +181,7 @@ export function detectNarrativePattern(data: NarrativeData): NarrativePattern {
   if (isBelowMedian && paDiff > 10) return 'narrow-high-friction'
   if (isBelowMedian && paDiff < -10) return 'narrow-low-friction'
 
-  // Tier-dominant — PA similar but tier placement differs
+  // Tier-dominant — PA similar but the dominant tier differs
   if (Math.abs(paDiff) <= 10 && tierLabel(dominantTier) !== tierLabel(nationalDominantTier)) return 'tier-dominant'
 
   // Issuer variation — wide tier spread within the state
@@ -212,74 +212,74 @@ function archetypeOpener(data: NarrativeData, pattern: NarrativePattern): string
     case 'common-generic-chronic':
       // Cost-first, reassuring, brief.
       if (totalPlans >= data.medianPlansPerState) {
-        return `${drug} is one of the most widely covered drugs in ${stateName} — ${totalPlans} of the marketplace plans for ${YEAR} include it, almost always on a ${tier} tier.`
+        return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans we reviewed for ${YEAR}, almost always on a ${tier} tier. What you pay each month depends mainly on the tier your plan assigns and whether your deductible has been met.`
       }
-      return `${drug} is a widely used generic, covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Cost depends mainly on which tier your plan assigns.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. What you pay each month comes down to the tier your plan assigns it to.`
 
     case 'common-generic-acute':
       // Brief, simple, near-universal.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR} — coverage is near-universal, and out-of-pocket cost is typically minimal for a short course.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. A typical short course costs the generic copay after your deductible — usually a few dollars.`
 
     case 'statin-cholesterol':
       // Very brief, "tier is the only question".
-      return `Statins like ${drug} are among the most broadly covered drugs nationwide. In ${stateName}, ${totalPlans} marketplace plans include it for ${YEAR}, almost always on a low-cost tier.`
+      return `Statins like ${drug} are on the drug list of nearly every ${stateName} marketplace plan — ${totalPlans} plans we reviewed for ${YEAR} list it, almost always on a low-cost generic tier.`
 
     case 'thyroid-hormone':
       // Brand vs generic substitution matters.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Because thyroid drugs have a narrow therapeutic range, brand-versus-generic substitution can matter — check whether your plan covers the specific version your doctor prescribes.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Brand and generic thyroid drugs are not always interchangeable for the same person — check whether your plan covers the exact version your doctor prescribes.`
 
     case 'mental-health':
       // Respectful, parity-aware.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Mental health medication coverage is protected by federal parity law — plans must cover it comparably to physical health drugs.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Federal parity law requires plans to cover mental health drugs on comparable terms to physical health drugs — including the tier, approval rules, and supply limits.`
 
     case 'inhaler-respiratory':
       // Device-focused.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. For inhalers, the device type your doctor prescribes affects coverage — check whether your plan covers the exact form, not just the active ingredient.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. For inhalers, the device matters as much as the drug — confirm your plan covers the exact form your doctor prescribes, not just the active ingredient.`
 
     case 'controlled-substance':
       // Refill-rules-first, no judgment.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Because it is a controlled substance, refill rules and quantity limits are tighter than other drugs — most plans cap fills at a 30-day supply.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. As a controlled substance, refill rules are stricter than for most drugs — most plans cap fills at a 30-day supply.`
 
     case 'injectable-diabetes':
       // IRA $35 cap is the lead story.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Inflation Reduction Act, your insulin copay is capped at $35 per month on every marketplace plan — regardless of tier placement.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Inflation Reduction Act, every marketplace plan caps your insulin copay at $35 a month — regardless of the tier the plan assigns.`
 
     case 'brand-chronic':
       // Cost + PA-aware.
-      return `${drug} is a brand-name drug covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. ${Math.round(priorAuthPct)}% require prior approval, and tier placement varies widely by carrier — both factors affect what you pay.`
+      return `${drug} is a brand-name drug on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. ${Math.round(priorAuthPct)}% require approval before you can fill the prescription, and the tier differs from one insurance company to another — both affect what you pay.`
 
     case 'glp1-weight-diabetes':
       // Access-first, three-things framing.
       if (priorAuthPct >= 70) {
-        return `${drug} access in ${stateName} is restricted — ${totalPlans} marketplace plans cover it for ${YEAR}, and ${Math.round(priorAuthPct)}% require prior approval. Coverage alone does not guarantee easy access.`
+        return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}, but access is restricted. ${Math.round(priorAuthPct)}% of those plans require approval before you can fill the prescription — being on the drug list does not guarantee a quick first fill.`
       }
-      return `${drug} access in ${stateName} depends on three things: whether the plan covers it (${totalPlans} of the marketplace plans for ${YEAR} do), whether it requires prior approval (${Math.round(priorAuthPct)}%), and what the supply limits look like (${Math.round(quantityLimitPct)}% of plans cap monthly fills).`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Three things shape what you pay and how quickly you can start: which tier the plan uses, whether the plan requires approval (${Math.round(priorAuthPct)}% do), and the supply limit (${Math.round(quantityLimitPct)}% of plans cap monthly fills).`
 
     case 'specialty-biologic':
       // Serious, plan-shopping-critical.
       if (priorAuthPct >= 80) {
-        return `${drug} is a specialty biologic covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR} — but ${Math.round(priorAuthPct)}% require prior approval and nearly all assign it to a specialty tier. If you take ${drug}, plan selection is one of the most consequential healthcare decisions you make this year.`
+        return `${drug} is a specialty biologic on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. ${Math.round(priorAuthPct)}% require approval before you can fill the prescription, and nearly every plan places it on a specialty tier — the highest-cost tier most plans use. The plan you pick can move your annual cost by thousands of dollars.`
       }
-      return `${drug} is a specialty biologic covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a specialty tier with prior approval required. Cost ranges are wide, so plan selection has an outsized financial impact.`
+      return `${drug} is a specialty biologic on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a specialty tier with approval required. Cost ranges are wide — the plan you pick can move your annual cost by thousands of dollars.`
 
     case 'anticoagulant':
       // Brand-vs-generic gap is the central decision.
       if (tier === 'generic') {
-        return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a low-cost generic tier. The bigger decision is whether your doctor wants you on a generic blood thinner or a brand-name option — the cost gap can be hundreds of dollars per month.`
+        return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}, almost always on a low-cost generic tier. The bigger question is whether your doctor wants you on a generic blood thinner or a brand-name one — the cost gap can be hundreds of dollars a month.`
       }
-      return `${drug} is a brand-name blood thinner covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Brand blood thinners cost much more than generic warfarin, but switching between them is not always straightforward — talk with your doctor before letting cost drive the choice.`
+      return `${drug} is a brand-name blood thinner on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Brand blood thinners cost much more than generic warfarin, but switching between them is a clinical decision — talk with your doctor before letting cost drive the choice.`
 
     case 'contraceptive':
       // ACA preventive — lead with the $0 mandate.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Affordable Care Act, marketplace plans must cover at least one form of FDA-approved birth control with no out-of-pocket cost — confirm whether the specific brand or method you want is the one your plan covers at $0.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Under the Affordable Care Act, marketplace plans must cover at least one form of FDA-approved birth control at $0 — confirm whether the brand or method you want is the one your plan covers at $0.`
 
     case 'ophthalmic':
       // Cost-first, formulation-aware.
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Eye drops, gels, and suspensions can be listed differently on the same formulary, so check whether the exact form your doctor prescribes is the one your plan covers — not just the active ingredient.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}. Eye drops, gels, and suspensions can be listed differently on the same drug list — check whether the exact form your doctor prescribes is the one your plan covers, not just the active ingredient.`
 
     case 'dermatology':
       // Cost-first, formulation-aware (cream vs ointment vs lotion).
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR}, usually on a low-cost generic tier. For topical drugs, the cream, ointment, and lotion versions can be priced differently — check that your plan covers the exact form your doctor prescribed.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}, usually on a low-cost generic tier. For topical drugs, the cream, ointment, and lotion versions can be priced differently — check that your plan covers the exact form your doctor prescribed.`
 
     case 'other':
       return null
@@ -295,29 +295,29 @@ function archetypeCta(data: NarrativeData): string | null {
   const profile = getArchetypeProfile(data.archetype)
   switch (profile.ctaAngle) {
     case 'compare-tier':
-      return `Compare tier placement across plans — that is where the cost difference lives.`
+      return `Compare specific plans on tier — that is where the cost difference lives.`
     case 'check-three-things':
-      return `Check three things on every plan: does it cover the drug, does it require prior approval, and what are the supply limits.`
+      return `Check three things on every plan: whether the drug is on the drug list, whether the plan requires approval first, and the supply limit.`
     case 'plan-shopping-critical':
-      return `For specialty drugs, plan selection has an outsized impact on your annual cost — compare formulary placement and prior approval timelines side by side.`
+      return `For specialty drugs, the plan you pick can move your annual cost by thousands of dollars — compare the tier and the approval rules side by side.`
     case 'verify-parity-coverage':
-      return `Federal parity law requires plans to cover mental health medications comparably to physical health drugs — verify that your plan applies the same tier and approval rules.`
+      return `Federal parity law requires plans to cover mental health drugs on comparable terms — confirm your plan applies the same tier and approval rules.`
     case 'check-quantity-rules':
-      return `Confirm the plan's monthly supply limit, refill timing, and whether prior approval applies before you enroll.`
+      return `Confirm the plan's monthly supply limit, refill timing, and whether approval is required before you enroll.`
     case 'cap-applies-everywhere':
-      return `Your insulin copay is capped at $35 per month on every marketplace plan — focus your comparison on premium and deductible instead.`
+      return `Your insulin copay is capped at $35 a month on every marketplace plan — focus your comparison on premium and deductible instead.`
     case 'verify-device-coverage':
       return `For inhalers, confirm your plan covers the specific device your doctor prescribes — generic substitution is not always 1:1.`
     case 'brand-vs-generic-matters':
-      return `If your doctor prescribes a specific brand, check whether the plan covers it or only the generic substitute.`
+      return `If your doctor prescribes a specific brand, check whether the plan covers that brand or only the generic substitute.`
     case 'compare-tier-and-pa':
-      return `Compare both tier placement and prior approval policy — for brand drugs, both affect your monthly cost.`
+      return `For brand drugs, compare both the tier and the approval rules — both affect your monthly cost.`
     case 'verify-aca-preventive':
-      return `Marketplace plans must cover at least one FDA-approved birth control method at $0 — confirm the specific product you want is on your plan's preventive list before enrolling.`
+      return `Marketplace plans must cover at least one FDA-approved birth control method at $0 — confirm the method you want is the one your plan covers at $0 before enrolling.`
     case 'doac-vs-warfarin':
-      return `The cost gap between generic warfarin and brand blood thinners is large — talk with your doctor about whether either option fits your situation, then compare plans on that basis.`
+      return `The cost gap between generic warfarin and brand blood thinners is large — talk with your doctor about whether either fits your situation, then compare plans.`
     case 'check-formulation-coverage':
-      return `Check the exact formulation your doctor prescribed — cream versus ointment, drops versus gel — because the same drug can be tiered differently on the same formulary.`
+      return `Check the exact formulation your doctor prescribed — cream versus ointment, drops versus gel — because the same drug can be on different tiers depending on the form.`
     case 'data-driven':
     default:
       return null
@@ -342,29 +342,29 @@ function quickAnswerPatternTail(data: NarrativeData, pattern: NarrativePattern):
 
   switch (pattern) {
     case 'broad-low-friction':
-      return `Most ${stateName} carriers also keep prior approval rates low — easier than the national average.`
+      return `Most ${stateName} insurance companies also keep approval rates low — fewer plans require it than the national average.`
     case 'broad-high-friction':
-      return `${stateName} sits well above the national average for prior approval — ${Math.round(priorAuthPct)}% vs. ${Math.round(nationalPaPct)}% nationally.`
+      return `${stateName} sits well above the national average for approval requirements — ${Math.round(priorAuthPct)}% versus ${Math.round(nationalPaPct)}% nationally.`
     case 'narrow-high-friction':
-      return `Few ${stateName} plans cover it, and most of those that do require prior approval — every plan rule has a bigger impact in a market this small.`
+      return `Few ${stateName} plans cover it, and most of those that do require approval first — every plan rule has a bigger effect on what you pay in a market this small.`
     case 'narrow-low-friction':
-      return `${stateName} has fewer plans than average, but the ones that cover it tend to have lower approval barriers.`
+      return `${stateName} has fewer plans than average, but the ones that cover it tend to require approval less often.`
     case 'tier-dominant':
-      return `${stateName} carriers cluster on a single tier — that placement drives most of what you pay here.`
+      return `${stateName} insurance companies cluster on a single tier — that tier drives most of what you pay here.`
     case 'issuer-variation':
-      return `${stateName} carriers split across ${tierSpread} different tier levels, so carrier choice matters as much as metal level.`
+      return `${stateName} insurance companies split across ${tierSpread} different tiers, so the one you pick matters as much as which metal level you choose.`
     case 'supply-limits-standout':
-      return `${quantityLimitCount} of ${totalPlans} ${stateName} plans cap the monthly fill — supply limits are the hidden friction here.`
+      return `${quantityLimitCount} of ${totalPlans} ${stateName} plans cap the monthly fill — supply limits are the hidden cost factor here.`
     case 'small-market':
-      return `With only ${totalPlans} ${stateName} plans, every formulary decision has outsized impact on your options.`
+      return `With only ${totalPlans} ${stateName} plans, each plan's rules carry more weight than usual.`
     case 'large-market-advantage':
-      return `${stateName}'s broad selection gives you room to compare and shop for favorable terms.`
+      return `${stateName}'s broad selection gives you room to compare plans on tier and approval rules.`
     case 'outlier':
       if (priorAuthPct > nationalPaPct + 25) {
-        return `${stateName} stands out nationally — ${Math.round(priorAuthPct)}% prior approval vs. ${Math.round(nationalPaPct)}% nationally.`
+        return `${stateName} stands out nationally — ${Math.round(priorAuthPct)}% require approval first versus ${Math.round(nationalPaPct)}% nationally.`
       }
       if (priorAuthPct < nationalPaPct - 25) {
-        return `${stateName} is unusually permissive — only ${Math.round(priorAuthPct)}% of plans require prior approval, well below the national norm.`
+        return `${stateName} is unusually permissive — only ${Math.round(priorAuthPct)}% of plans require approval first, well below the national norm.`
       }
       return `${stateName} offers an unusually large plan selection — far more comparison room than a typical state.`
   }
@@ -391,41 +391,41 @@ export function generateQuickAnswer(data: NarrativeData, pattern: NarrativePatte
 
   switch (pattern) {
     case 'broad-low-friction':
-      return `${drug} is widely covered across ${totalPlans} ${stateName} marketplace plans for ${YEAR}, and ${priorAuthPct < 30 ? 'few' : 'fewer than average'} require prior approval — ${Math.round(priorAuthPct)}% compared to the ${Math.round(nationalPaPct)}% national average. Most plans here place it on a ${tier} tier, keeping access relatively straightforward.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR}, and ${priorAuthPct < 30 ? 'few' : 'fewer than the national average'} require approval first — ${Math.round(priorAuthPct)}% compared to ${Math.round(nationalPaPct)}% nationally. Most plans place ${drug} on a ${tier} tier.`
 
     case 'broad-high-friction':
-      return `${totalPlans} ${stateName} marketplace plans include ${drug} for ${YEAR}, but access comes with extra steps. ${Math.round(priorAuthPct)}% require prior approval — well ${paDirection} the ${Math.round(nationalPaPct)}% national average — so your doctor will likely need to submit paperwork before your plan agrees to cover it.`
+      return `${totalPlans} ${stateName} marketplace plans include ${drug} for ${YEAR}, but access comes with extra steps. ${Math.round(priorAuthPct)}% require approval first — ${paDirection} the ${Math.round(nationalPaPct)}% national average — so your doctor will need to send paperwork to your plan before your first fill.`
 
     case 'narrow-high-friction':
-      return `Coverage for ${drug} is limited in ${stateName} — only ${totalPlans} marketplace plans include it for ${YEAR}. Of those, ${priorAuthCount} require prior approval, and most assign a ${tier} tier. With fewer plans to choose from, each carrier's requirements make a bigger difference in your access.`
+      return `${drug} coverage is limited in ${stateName} — only ${totalPlans} marketplace plans include it for ${YEAR}. Of those, ${priorAuthCount} require approval first, and most place ${drug} on a ${tier} tier. With fewer plans to choose from, each plan's rules have a bigger effect on what you pay.`
 
     case 'narrow-low-friction':
-      return `Only ${totalPlans} ${stateName} marketplace plans include ${drug} for ${YEAR}, but the ones that do make it relatively easy to access. Prior approval rates are below the national average at ${Math.round(priorAuthPct)}%, and most assign a ${tier} tier.`
+      return `Only ${totalPlans} ${stateName} marketplace plans include ${drug} for ${YEAR}, but the ones that do tend to make access easier. Approval is required by fewer plans than the national average — ${Math.round(priorAuthPct)}% — and most place ${drug} on a ${tier} tier.`
 
     case 'tier-dominant':
-      return `In ${stateName}, the bigger question for ${drug} is not whether plans cover it — ${totalPlans} do — but what tier they place it on. Most ${stateName} plans assign a ${tier} tier, while nationally the most common placement is ${tierLabel(data.nationalDominantTier)}. That tier difference directly affects your monthly cost.`
+      return `In ${stateName}, the bigger question for ${drug} is not whether plans cover it — ${totalPlans} do — but the tier they assign. Most ${stateName} plans place ${drug} on a ${tier} tier, while nationally the most common tier is ${tierLabel(data.nationalDominantTier)}. That difference directly affects your monthly cost.`
 
     case 'issuer-variation':
-      return `${drug} is on ${totalPlans} ${stateName} marketplace plans for ${YEAR}, but coverage quality varies sharply by carrier. Some place it on a lower-cost tier with no prior approval, while others assign a higher tier with approval required. In ${stateName}, which carrier you pick matters as much as which metal level you choose.`
+      return `${drug} is on ${totalPlans} ${stateName} marketplace plans for ${YEAR}, but coverage is uneven across insurance companies. Some place ${drug} on a lower-cost tier with no approval needed, while others assign a higher tier with approval required. Which insurance company you pick matters as much as which metal level you choose.`
 
     case 'supply-limits-standout':
-      return `${drug} appears on ${totalPlans} ${stateName} plans for ${YEAR}, and ${priorAuthPct < 40 ? "most don't require prior approval" : `${Math.round(priorAuthPct)}% require prior approval`}. But watch for supply limits — ${quantityLimitCount} of ${totalPlans} plans restrict how much you can get per month. Check your plan's quantity limits before assuming coverage means easy access.`
+      return `${drug} appears on ${totalPlans} ${stateName} plans for ${YEAR}, and ${priorAuthPct < 40 ? "most do not require approval first" : `${Math.round(priorAuthPct)}% require approval first`}. Watch for supply limits — ${quantityLimitCount} of ${totalPlans} plans restrict how much you can fill per month. Check the supply limit before assuming coverage means easy access.`
 
     case 'small-market':
-      return `Only ${totalPlans} ${stateName} marketplace plan${totalPlans === 1 ? '' : 's'} include${totalPlans === 1 ? 's' : ''} ${drug} for ${YEAR}. In a market this small, each carrier's formulary decision has an outsized impact on your options. Compare ${totalPlans === 1 ? 'this plan' : `all ${totalPlans} plans`} carefully — tier placement and approval rules vary between them.`
+      return `Only ${totalPlans} ${stateName} marketplace plan${totalPlans === 1 ? '' : 's'} include${totalPlans === 1 ? 's' : ''} ${drug} for ${YEAR}. In a market this small, each insurance company's drug list shapes your options more than usual. Compare ${totalPlans === 1 ? 'this plan' : `all ${totalPlans} plans`} carefully — the tier and approval rules differ between them.`
 
     case 'large-market-advantage':
-      return `${drug} is covered by ${totalPlans} ${stateName} marketplace plans for ${YEAR} — one of the broader selections in the country. With this many options, you have room to shop for a plan that places it on a lower tier or skips prior approval entirely.`
+      return `${drug} is on the drug list of ${totalPlans} ${stateName} marketplace plans for ${YEAR} — one of the broader selections in the country. With this many plans, you have room to find one that places ${drug} on a lower tier or does not require approval first.`
 
     case 'outlier': {
       if (priorAuthPct > nationalPaPct + 25) {
-        return `${stateName} has one of the highest prior approval rates for ${drug} in the country — ${Math.round(priorAuthPct)}% of plans require it, compared to a ${Math.round(nationalPaPct)}% national average. That means nearly every plan here adds an extra step before your first fill.`
+        return `${stateName} runs among the highest in the country for approval requirements on ${drug} — ${Math.round(priorAuthPct)}% of plans require it, compared to a ${Math.round(nationalPaPct)}% national average. Nearly every plan here adds an extra step before your first fill.`
       }
       if (priorAuthPct < nationalPaPct - 25) {
-        return `${stateName} stands out for easier access to ${drug}. Only ${Math.round(priorAuthPct)}% of the ${totalPlans} plans here require prior approval, well below the ${Math.round(nationalPaPct)}% national average. Most plans assign a ${tier} tier.`
+        return `${stateName} stands out for easier access to ${drug}. Only ${Math.round(priorAuthPct)}% of the ${totalPlans} plans here require approval first, well below the ${Math.round(nationalPaPct)}% national average. Most plans place ${drug} on a ${tier} tier.`
       }
       // Plan count outlier
-      return `${stateName} offers an unusually large selection for ${drug} — ${totalPlans} marketplace plans include it for ${YEAR}, far more than the typical state. That gives you significantly more room to compare tier placements, approval rules, and costs.`
+      return `${stateName} offers an unusually large selection for ${drug} — ${totalPlans} marketplace plans include it for ${YEAR}, far more than the typical state. That gives you more room to compare on tier, approval rules, and what you pay.`
     }
   }
 }
@@ -445,8 +445,8 @@ export function generateInsightBody(data: NarrativeData, pattern: NarrativePatte
       (pattern === 'broad-low-friction' || pattern === 'large-market-advantage' ||
        pattern === 'tier-dominant')) {
     const lead = pattern === 'broad-low-friction' || pattern === 'large-market-advantage'
-      ? `${drug} is one of the easier drugs to access in ${stateName}. With ${totalPlans} plans covering it and prior approval needed on just ${Math.round(priorAuthPct)}%, the main decision is which plan places it on the most favorable tier.`
-      : `For ${drug} in ${stateName}, tier placement is the main cost variable — most plans assign a ${tier} tier.`
+      ? `${drug} is one of the easier drugs to access in ${stateName}. With ${totalPlans} plans covering it and approval needed by just ${Math.round(priorAuthPct)}%, the main decision is which plan places ${drug} on a more favorable tier.`
+      : `For ${drug} in ${stateName}, the tier is the main cost variable — most plans assign a ${tier} tier.`
     return cta ? `${lead} ${cta}` : lead
   }
 
@@ -472,9 +472,9 @@ function archetypeLongLead(data: NarrativeData): string {
 
   switch (archetype) {
     case 'specialty-biologic':
-      return `${drug} sits in the highest-cost drug category for ${stateName} marketplace plans. Specialty drugs almost always require prior approval and are placed on the highest tier — meaning your out-of-pocket cost can range from $80 to several hundred dollars per month depending on the plan you choose.`
+      return `${drug} sits in the highest-cost drug category on ${stateName} marketplace plans. Specialty drugs almost always require approval first and land on the highest-cost tier — your monthly cost can run from $80 to several hundred dollars depending on the plan you pick.`
     case 'glp1-weight-diabetes':
-      return `${drug} has become one of the most-requested drugs in the marketplace, but coverage in ${stateName} is uneven. ${Math.round(priorAuthPct)}% of plans require prior approval, ${Math.round(quantityLimitPct)}% cap monthly fills, and weight-loss versus diabetes coverage is treated differently by carrier.`
+      return `${drug} has become one of the most-requested drugs on the marketplace, but coverage in ${stateName} is uneven. ${Math.round(priorAuthPct)}% of plans require approval first, ${Math.round(quantityLimitPct)}% cap monthly fills, and weight-loss versus diabetes coverage is treated differently from one insurance company to another.`
     default:
       return ''
   }
@@ -493,10 +493,10 @@ function generatePatternInsightBody(data: NarrativeData, pattern: NarrativePatte
 
   switch (pattern) {
     case 'broad-low-friction':
-      return `${drug} is one of the easier drugs to access in ${stateName}. With ${totalPlans} plans covering it and a prior approval rate of just ${Math.round(priorAuthPct)}%, the main decision is which plan places it on the most favorable tier. Focus on tier placement and deductible structure when comparing — those drive the cost difference between plans here.`
+      return `${drug} is one of the easier drugs to access in ${stateName}. With ${totalPlans} plans covering it and approval required by just ${Math.round(priorAuthPct)}%, the main decision is which plan places ${drug} on a more favorable tier. Compare on tier and on how the plan's deductible works — those drive the cost difference between plans here.`
 
     case 'broad-high-friction':
-      return `Even though ${totalPlans} ${stateName} plans include ${drug}, ${Math.round(priorAuthPct)}% of them require prior approval — ${Math.round(Math.abs(priorAuthPct - nationalPaPct))} percentage points above the national average. The high approval rate means your doctor will likely need to submit paperwork before your first fill. When choosing a plan, look for carriers with faster approval turnaround and lower tier placement.`
+      return `Even though ${totalPlans} ${stateName} plans include ${drug}, ${Math.round(priorAuthPct)}% of them require approval first — ${Math.round(Math.abs(priorAuthPct - nationalPaPct))} percentage points above the national average. Your doctor will need to send paperwork to your plan before your first fill. When comparing plans, look for ones with a lower tier and clear approval rules.`
 
     case 'narrow-high-friction': {
       // Vary by plan count + PA magnitude so similar narrow states diverge.
@@ -506,42 +506,42 @@ function generatePatternInsightBody(data: NarrativeData, pattern: NarrativePatte
           ? `Only ${totalPlans} plans cover`
           : `Fewer than a dozen plans (${totalPlans}) cover`
       const paPhrase = priorAuthPct >= 85
-        ? `nearly all of them — ${Math.round(priorAuthPct)}% — require prior approval`
+        ? `nearly all of them — ${Math.round(priorAuthPct)}% — require approval first`
         : priorAuthPct >= 75
-          ? `${Math.round(priorAuthPct)}% require prior approval`
-          : `${priorAuthCount} of those require prior approval`
+          ? `${Math.round(priorAuthPct)}% require approval first`
+          : `${priorAuthCount} of those require approval first`
       const tail = totalPlans <= 6
-        ? `With this few options, every plan rule has a bigger impact on your access. Compare each plan's tier, approval policy, and quantity limits before enrolling.`
-        : `Verify coverage, tier placement, and approval requirements before enrolling — switching plans mid-year is difficult, and each carrier's rules differ.`
-      return `${planPhrase} ${drug} in ${stateName}, and ${paPhrase}, leaving fewer easy paths than in most states. ${tail}`
+        ? `With this few plans, every rule has a bigger effect on what you pay. Compare each plan's tier, approval rules, and supply limits before enrolling.`
+        : `Confirm coverage, tier, and approval rules before enrolling — switching plans mid-year is difficult, and each plan's rules differ.`
+      return `${planPhrase} ${drug} in ${stateName}, and ${paPhrase} — fewer easy paths than in most states. ${tail}`
     }
 
     case 'narrow-low-friction':
-      return `${stateName} has fewer plans covering ${drug} than average, but the ones available tend to have lower approval barriers. The limited selection means your plan choice still matters — compare the ${totalPlans} available options on tier placement and how each handles your deductible for this drug.`
+      return `${stateName} has fewer plans covering ${drug} than average, but the ones available tend to require approval less often. The narrower selection means your plan choice still matters — compare the ${totalPlans} available plans on tier and on how each handles your deductible for ${drug}.`
 
     case 'tier-dominant':
-      return `For ${drug} in ${stateName}, tier placement is the main cost variable. Most plans here assign a ${tier} tier, while nationally ${natTier} is more common. That difference means your monthly cost in ${stateName} may be ${tier === 'generic' || tier === 'preferred brand' ? 'lower' : 'higher'} than the national norm — but it depends on which plan you choose.`
+      return `For ${drug} in ${stateName}, the tier is the main cost variable. Most plans here assign a ${tier} tier, while nationally ${natTier} is more common. Your monthly cost in ${stateName} may be ${tier === 'generic' || tier === 'preferred brand' ? 'lower' : 'higher'} than the national norm — but check what you would pay on the specific plan you are considering, not just the tier label.`
 
     case 'issuer-variation':
-      return `${stateName} carriers disagree on how to classify ${drug}. With ${tierSpread} different tier placements found across ${totalPlans} plans, the carrier you pick determines your cost more than any other factor. Check each carrier's tier assignment and prior approval policy side by side before deciding.`
+      return `${stateName} insurance companies disagree on how to classify ${drug}. With ${tierSpread} different tiers across ${totalPlans} plans, the insurance company you pick affects your cost more than any other factor. Check each insurance company's tier and approval rules side by side before deciding.`
 
     case 'supply-limits-standout':
-      return `The main access concern for ${drug} in ${stateName} is not prior approval — it is supply limits. ${quantityLimitCount} of ${totalPlans} plans (${Math.round(quantityLimitPct)}%) cap how much you can fill at once. If you need a larger monthly supply, look for plans that allow 90-day fills or mail-order exceptions.`
+      return `The main access concern for ${drug} in ${stateName} is not approval — it is supply limits. ${quantityLimitCount} of ${totalPlans} plans (${Math.round(quantityLimitPct)}%) cap how much you can fill at one time. If you need a larger monthly supply, look for plans that allow 90-day fills or mail-order options.`
 
     case 'small-market':
-      return `With only ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} in ${stateName}, every detail matters. Check each plan's tier assignment, prior approval policy, and quantity limits. A single plan difference can mean hundreds of dollars per year in out-of-pocket costs.`
+      return `With only ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} in ${stateName}, every detail matters. Check each plan's tier, approval rules, and supply limits. A single plan difference can mean hundreds of dollars a year in what you pay.`
 
     case 'large-market-advantage':
-      return `${stateName}'s large marketplace means more leverage for ${drug} shoppers. Across ${totalPlans} plans, you can find meaningful variation in tier placement, approval rules, and cost-sharing. Narrowing by tier and PA status is the fastest way to find your best option.`
+      return `${stateName}'s large marketplace gives you room to compare for ${drug}. Across ${totalPlans} plans, the tier, approval rules, and what plans charge can differ from one to another. Filtering by tier and by approval status is the fastest way to narrow the field.`
 
     case 'outlier': {
       if (priorAuthPct > nationalPaPct + 25) {
-        return `${stateName}'s prior approval rate for ${drug} is an outlier at ${Math.round(priorAuthPct)}% — the national average is ${Math.round(nationalPaPct)}%. Before enrolling, confirm that the plan you're considering has a manageable approval process. Some ${stateName} carriers process approvals faster than others.`
+        return `${stateName}'s approval rate for ${drug} runs well above the national average — ${Math.round(priorAuthPct)}% versus ${Math.round(nationalPaPct)}% nationally. Before enrolling, confirm the plan's approval rules and what documentation your doctor needs to send.`
       }
       if (priorAuthPct < nationalPaPct - 25) {
-        return `${stateName} is unusually permissive for ${drug} access — only ${Math.round(priorAuthPct)}% of plans require prior approval. That's a real advantage if approval paperwork is a concern. Focus your comparison on tier placement and deductible design instead.`
+        return `${stateName} is unusually permissive for ${drug} access — only ${Math.round(priorAuthPct)}% of plans require approval first. That is a real advantage if approval paperwork is a concern. Focus your comparison on tier and on how the plan's deductible works.`
       }
-      return `${stateName} has far more plan options for ${drug} than a typical state. Use that to your advantage — filter by tier placement first, then compare prior approval policies. With ${totalPlans} plans to choose from, you should be able to find favorable terms.`
+      return `${stateName} has far more plan options for ${drug} than a typical state. Use that to your advantage — filter by tier first, then compare approval rules. With ${totalPlans} plans to choose from, you have room to find favorable terms.`
     }
   }
 }
@@ -557,71 +557,71 @@ export function generateCostContext(data: NarrativeData, pattern: NarrativePatte
   // Archetype-specific overrides — these take precedence over the pattern voice
   // when the cost story is dominated by drug-class economics.
   if (archetype === 'injectable-diabetes') {
-    return `Insulin cost in ${stateName} is capped at $35 per month on every marketplace plan thanks to the Inflation Reduction Act. That cap applies regardless of tier placement or deductible — focus your plan comparison on premium and overall benefits instead of insulin copay.`
+    return `Your insulin copay in ${stateName} is capped at $35 a month on every marketplace plan thanks to the Inflation Reduction Act. That cap applies regardless of the tier or your deductible — focus your plan comparison on premium and overall benefits instead of insulin copay.`
   }
   if (archetype === 'specialty-biologic') {
-    return `${drug} is almost always placed on a specialty tier in ${stateName} — the highest cost tier most plans use. Out-of-pocket costs typically run $80 to several hundred dollars per month, and most plans require you to meet your full deductible before coinsurance kicks in. The plan you choose can move your annual cost by thousands of dollars.`
+    return `${drug} is almost always placed on a specialty tier in ${stateName} — the highest-cost tier most plans use. Your monthly cost typically runs $80 to several hundred dollars, and most plans require you to meet your full deductible before coinsurance kicks in. The plan you pick can move your annual cost by thousands of dollars.`
   }
   if (archetype === 'glp1-weight-diabetes') {
-    return `${drug} pricing in ${stateName} varies dramatically by plan. Carriers split it across tier levels, and prior approval requirements add a step before your first fill. Compare both the tier placement and the approval timeline — and confirm that the version your doctor prescribes (diabetes vs. weight loss) is the one your plan covers.`
+    return `${drug} pricing in ${stateName} differs from one plan to another. Insurance companies split it across tier levels, and approval requirements add a step before your first fill. Compare both the tier and the approval rules — and confirm that the version your doctor prescribes (diabetes versus weight loss) is the one your plan covers.`
   }
   if (archetype === 'controlled-substance') {
-    return `${drug} cost in ${stateName} is straightforward — most plans place it on a generic or preferred-brand tier — but refill rules and quantity limits matter more than the per-fill copay. Plans cap monthly fills, and some require new prescriptions each refill. Your annual cost depends on whether the supply rules match your prescription pattern.`
+    return `${drug} cost in ${stateName} is straightforward — most plans place it on a generic or preferred brand tier — but refill rules and supply limits matter more than the per-fill copay. Plans cap monthly fills, and some require a new prescription each refill. What you pay over a year depends on whether the supply rules match how you use the prescription.`
   }
   if (archetype === 'statin-cholesterol') {
-    return `Statins like ${drug} are nearly always on a low-cost generic tier in ${stateName} — your monthly cost is typically a small copay. Tier placement is the only meaningful cost variable.`
+    return `Statins like ${drug} are nearly always on a low-cost generic tier in ${stateName} — your monthly cost is typically a small copay. The tier is the only meaningful cost variable.`
   }
   if (archetype === 'common-generic-acute') {
-    return `${drug} is a short-term generic with near-universal coverage in ${stateName}. A typical course costs only the generic copay — usually a few dollars after deductible.`
+    return `${drug} is a short-term generic with near-universal coverage in ${stateName}. A typical course costs only the generic copay — usually a few dollars after your deductible.`
   }
 
   switch (pattern) {
     case 'broad-low-friction':
-      return `With ${totalPlans} plans covering ${drug} in ${stateName}, you have room to shop for the best tier placement. Most plans here assign a ${tier} tier — your cost after deductible depends on where your chosen plan falls.`
+      return `With ${totalPlans} plans covering ${drug} in ${stateName}, you have room to compare for a more favorable tier. Most plans here assign a ${tier} tier — what you pay after your deductible depends on the tier the plan you pick uses.`
 
     case 'broad-high-friction':
-      return `Most ${stateName} plans place ${drug} on a ${tier} tier, but ${Math.round(priorAuthPct)}% also require prior approval — adding a step before your first fill. Your out-of-pocket cost depends on both the tier and how quickly your plan processes the approval.`
+      return `Most ${stateName} plans place ${drug} on a ${tier} tier, but ${Math.round(priorAuthPct)}% also require approval first — adding a step before your first fill. What you pay depends on both the tier and on how the plan's approval rules work.`
 
     case 'narrow-high-friction': {
       // Vary intro by market size so small narrow states diverge from larger ones.
       const intro = totalPlans <= 6
-        ? `${stateName}'s ${totalPlans}-plan field for ${drug} leaves little room to shop on price.`
+        ? `${stateName}'s ${totalPlans}-plan field for ${drug} leaves little room to compare on price.`
         : totalPlans <= 9
           ? `With only ${totalPlans} plans covering ${drug} in ${stateName}, you have a narrow set of cost options.`
           : `${totalPlans} ${stateName} plans cover ${drug} — a tighter selection than most states.`
-      const tierLine = `Most assign a ${tier} tier, and prior approval applies on ${Math.round(priorAuthPct)}% of them.`
+      const tierLine = `Most assign a ${tier} tier, and approval is required on ${Math.round(priorAuthPct)}% of them.`
       const tail = totalPlans <= 6
-        ? `Run the math on every plan you can — a single tier or copay difference can mean hundreds of dollars over the year.`
-        : `Compare all available plans before enrolling — small differences in tier or cost-sharing add up quickly with fewer choices.`
+        ? `Compare every plan you can — a single tier or copay difference can mean hundreds of dollars over the year.`
+        : `Compare all available plans before enrolling — small differences in tier or copay add up quickly with fewer choices.`
       return `${intro} ${tierLine} ${tail}`
     }
 
     case 'narrow-low-friction':
-      return `${stateName}'s ${totalPlans} plans covering ${drug} generally assign a ${tier} tier with below-average approval requirements. Your main cost variable is deductible structure — check whether your plan applies a separate drug deductible or combines it with medical.`
+      return `${stateName}'s ${totalPlans} plans covering ${drug} generally assign a ${tier} tier and require approval less often than the national average. Your main cost variable is how the plan's deductible works — check whether the plan applies a separate drug deductible or combines it with medical.`
 
     case 'tier-dominant':
-      return `In ${stateName}, the dominant tier for ${drug} is ${tier} — ${tier !== natTier ? `different from the national norm of ${natTier}` : 'matching the national average'}. Your monthly cost hinges on your plan's tier assignment and where you are in your deductible year.`
+      return `In ${stateName}, the dominant tier for ${drug} is ${tier} — ${tier !== natTier ? `different from the national norm of ${natTier}` : 'matching the national average'}. Your monthly cost depends on the tier the plan you pick uses and where you are in your deductible year.`
 
     case 'issuer-variation':
-      return `${stateName} carriers assign ${drug} to ${tierSpread} different tier levels. That spread means two ${stateName} plans can charge very different amounts for the same drug. Filter plans by tier placement first to narrow the field.`
+      return `${stateName} insurance companies place ${drug} on ${tierSpread} different tiers. That spread means two ${stateName} plans can charge very different amounts for the same drug — even at the same metal level. Filter plans by tier first to narrow the field.`
 
     case 'supply-limits-standout':
-      return `For ${drug} in ${stateName}, the tier placement drives your per-fill cost, but supply limits affect your total annual spending. Plans that restrict monthly quantities may cost you more over a year even if the per-fill copay looks lower.`
+      return `For ${drug} in ${stateName}, the tier drives your per-fill cost, but supply limits affect what you pay over a full year. Plans that restrict monthly quantities may cost you more even if the per-fill copay looks lower.`
 
     case 'small-market':
-      return `In ${stateName}'s small market, each of the ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} has its own tier assignment and cost-sharing rules. Your annual drug cost depends almost entirely on which plan you pick.`
+      return `In ${stateName}'s small market, each of the ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} has its own tier and copay rules. What you pay over a year depends almost entirely on which plan you pick.`
 
     case 'large-market-advantage':
-      return `With ${totalPlans} plans covering ${drug} in ${stateName}, cost variation is significant. Plans on the lowest available tier can save you $40–$80 per month or more compared to those on a higher tier — worth the time to filter and compare.`
+      return `With ${totalPlans} plans covering ${drug} in ${stateName}, the cost difference between plans is real. Plans on the lowest available tier can save you $40 to $80 a month compared to those on a higher tier — worth the time to filter and compare.`
 
     case 'outlier': {
       if (data.priorAuthPct > data.nationalPaPct + 25) {
-        return `In ${stateName}, nearly all plans require prior approval for ${drug}, which can delay your first fill. Once approved, your ongoing cost depends on tier placement — most plans here assign a ${tier} tier.`
+        return `In ${stateName}, nearly all plans require approval first for ${drug}, which can delay your first fill. Once approved, your ongoing cost depends on the tier — most plans here assign a ${tier} tier.`
       }
       if (data.priorAuthPct < data.nationalPaPct - 25) {
-        return `${stateName}'s low approval barriers for ${drug} mean your cost comparison can focus on tier placement and deductible design. Most plans assign a ${tier} tier — check whether your plan covers it before or after the deductible is met.`
+        return `${stateName}'s low approval rates for ${drug} mean your cost comparison can focus on the tier and on how the plan's deductible works. Most plans assign a ${tier} tier — check whether your plan covers it before or after the deductible is met.`
       }
-      return `${stateName}'s large plan selection for ${drug} means real cost variation between options. The difference between a favorable and unfavorable tier placement can mean $50–$100 per month. Use that competition to your advantage when comparing.`
+      return `${stateName}'s large plan selection for ${drug} means real cost differences between plans. The difference between a favorable and unfavorable tier can be $50 to $100 a month. Use that selection to your advantage when comparing.`
     }
   }
 }
@@ -646,55 +646,55 @@ export function generateLocalizedSections(data: NarrativeData, pattern: Narrativ
   switch (pattern) {
     case 'broad-low-friction':
     case 'large-market-advantage':
-      tierBreakdown = `Across ${totalPlans} ${stateName} plans, the most common tier for ${drug} is ${tier}. With this many plans, you can often find one that places it on a more favorable tier — worth checking before you enroll.`
+      tierBreakdown = `Across ${totalPlans} ${stateName} plans, the most common tier for ${drug} is ${tier}. With this many plans, you can often find one that places ${drug} on a more favorable tier — worth checking before you enroll.`
       break
     case 'broad-high-friction':
-      tierBreakdown = `Most ${stateName} plans assign ${drug} to a ${tier} tier, but the high prior approval rate means tier placement is only part of the picture. Compare both tier and approval speed when evaluating plans.`
+      tierBreakdown = `Most ${stateName} plans assign ${drug} to a ${tier} tier, but the high approval rate means the tier is only part of the picture. Compare both the tier and the approval rules when evaluating plans.`
       break
     case 'narrow-high-friction':
     case 'narrow-low-friction':
       // Vary tier breakdown by exact plan count band so similar narrow states diverge.
       tierBreakdown = totalPlans <= 6
-        ? `Across ${stateName}'s ${totalPlans} plans, ${drug} most often lands on a ${tier} tier. In a market this tight, that single tier choice drives most of what you'll pay.`
+        ? `Across ${stateName}'s ${totalPlans} plans, ${drug} most often lands on a ${tier} tier. In a market this tight, the tier choice drives most of what you pay.`
         : totalPlans <= 9
-          ? `${stateName}'s ${totalPlans} plans most commonly assign ${drug} to a ${tier} tier. With this few options, a one-tier difference between plans can swing your monthly cost noticeably.`
-          : `With ${totalPlans} plans available in ${stateName}, the typical placement for ${drug} is ${tier}. Fewer options means tier differences between plans have a bigger impact on your cost.`
+          ? `${stateName}'s ${totalPlans} plans most commonly assign ${drug} to a ${tier} tier. With this few plans, a one-tier difference between plans can swing your monthly cost by tens of dollars.`
+          : `With ${totalPlans} plans available in ${stateName}, the typical tier for ${drug} is ${tier}. Fewer plans means tier differences have a bigger effect on what you pay.`
       break
     case 'tier-dominant':
       tierBreakdown = `${stateName} plans most commonly assign ${drug} to a ${tier} tier — ${tier !== natTier ? `while nationally, ${natTier} is more typical` : 'in line with the national pattern'}. The tier your plan assigns is the biggest factor in what you pay each month.`
       break
     case 'issuer-variation':
-      tierBreakdown = `${stateName} carriers assign ${drug} across ${tierSpread} different tiers. That means two plans with the same metal level can charge very different amounts for this drug. Check the tier assignment on each plan you're considering.`
+      tierBreakdown = `${stateName} insurance companies place ${drug} across ${tierSpread} different tiers. That means two plans at the same metal level can charge very different amounts for ${drug}. Check the tier on each plan you are considering.`
       break
     case 'supply-limits-standout':
       tierBreakdown = `Most ${stateName} plans place ${drug} on a ${tier} tier, but ${quantityLimitCount} of ${totalPlans} also limit your monthly supply. A plan with a slightly higher copay but no supply limit could cost you less over the full year.`
       break
     case 'small-market':
-      tierBreakdown = `In ${stateName}'s small market, the ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} ${totalPlans === 1 ? 'assigns' : 'assign'} ${totalPlans === 1 ? 'a' : 'varying'} tier${totalPlans === 1 ? '' : 's'}. With so few options, that assignment drives most of your cost.`
+      tierBreakdown = `In ${stateName}'s small market, the ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} ${totalPlans === 1 ? 'assigns' : 'assign'} ${totalPlans === 1 ? 'a single' : 'varying'} tier${totalPlans === 1 ? '' : 's'}. With so few plans, that assignment drives most of your cost.`
       break
     case 'outlier':
-      tierBreakdown = `${stateName} stands out nationally for ${drug} coverage. The dominant tier here is ${tier}, and ${Math.round(priorAuthPct)}% of plans require prior approval — ${priorAuthPct > nationalPaPct ? 'above' : 'below'} the ${Math.round(nationalPaPct)}% national average.`
+      tierBreakdown = `${stateName} stands out nationally for ${drug} coverage. The dominant tier here is ${tier}, and ${Math.round(priorAuthPct)}% of plans require approval first — ${priorAuthPct > nationalPaPct ? 'above' : 'below'} the ${Math.round(nationalPaPct)}% national average.`
       break
   }
 
   // ── Pharmacy choice — varies by market size ──
   let pharmacyChoice: string
   if (totalPlans > 30) {
-    pharmacyChoice = `With ${totalPlans} plans in ${stateName}, preferred pharmacy networks vary widely. Check whether your regular pharmacy is in-network — and whether mail-order could save you more on ${drug}.`
+    pharmacyChoice = `With ${totalPlans} plans in ${stateName}, the preferred pharmacy networks differ from plan to plan. Check whether your regular pharmacy is in-network — and whether mail-order could lower what you pay for ${drug}.`
   } else if (totalPlans <= 5) {
-    pharmacyChoice = `In ${stateName}'s small market, your pharmacy options for ${drug} may be more limited. Confirm your preferred pharmacy is in-network on the plan you're considering, and ask about mail-order pricing.`
+    pharmacyChoice = `In ${stateName}'s small market, your pharmacy options for ${drug} may be limited. Confirm your preferred pharmacy is in-network on the plan you are considering, and ask about mail-order pricing.`
   } else {
-    pharmacyChoice = `Your plan's price for ${drug} varies by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill, especially in ${stateName} where plan options are more limited.`
+    pharmacyChoice = `Your plan's price for ${drug} differs by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill, especially in ${stateName} where plan options are more limited.`
   }
 
   // ── Deductible context — varies by tier ──
   let deductibleContext: string
   if (tier === 'generic' || tier === 'preventive') {
-    deductibleContext = `Some ${stateName} plans cover ${drug} before your deductible is met — meaning you'd pay just the copay from day one. Look for this in your Summary of Benefits and Coverage.`
+    deductibleContext = `Some ${stateName} plans cover ${drug} before your deductible is met — meaning you would pay just the copay from day one. Look for this in your plan's Summary of Benefits.`
   } else if (tier === 'specialty') {
-    deductibleContext = `For specialty-tier drugs like ${drug}, most ${stateName} plans require you to meet your full deductible first. That means higher out-of-pocket costs early in the year — your plan's deductible amount is a critical comparison point.`
+    deductibleContext = `For specialty-tier drugs like ${drug}, most ${stateName} plans require you to meet your full deductible before coinsurance kicks in. That means higher costs early in the year — your plan's deductible amount is a critical comparison point.`
   } else {
-    deductibleContext = `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${drug} kicks in. This structure varies across ${stateName} plans and is worth checking before enrollment.`
+    deductibleContext = `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${drug} kicks in. Check this in the plan documents before enrollment.`
   }
 
   // ── PA note — varies by pattern ──
@@ -702,29 +702,29 @@ export function generateLocalizedSections(data: NarrativeData, pattern: Narrativ
   switch (pattern) {
     case 'broad-high-friction':
     case 'narrow-high-friction':
-      paNote = `Prior approval rates for ${drug} in ${stateName} run above the national average at ${Math.round(priorAuthPct)}%. Confirm your plan's approval process and expected timeline before enrolling — it directly affects when you can start filling this prescription.`
+      paNote = `Approval rates for ${drug} in ${stateName} run above the national average at ${Math.round(priorAuthPct)}%. Confirm your plan's approval rules before enrolling — they directly affect when you can start filling this prescription.`
       break
     case 'broad-low-friction':
     case 'narrow-low-friction':
-      paNote = `${stateName} plans are less likely to require prior approval for ${drug} than the national average — ${Math.round(priorAuthPct)}% vs. ${Math.round(nationalPaPct)}% nationally. That's one fewer hurdle to deal with here.`
+      paNote = `${stateName} plans require approval first for ${drug} less often than the national average — ${Math.round(priorAuthPct)}% versus ${Math.round(nationalPaPct)}% nationally. That is one fewer hurdle to deal with here.`
       break
     case 'outlier':
       if (priorAuthPct > nationalPaPct + 25) {
-        paNote = `${stateName}'s ${Math.round(priorAuthPct)}% prior approval rate for ${drug} is among the highest in the country. Factor in the approval timeline when choosing a plan — some carriers process requests faster than others.`
+        paNote = `${stateName}'s ${Math.round(priorAuthPct)}% approval rate for ${drug} runs among the highest in the country. Confirm the plan's approval rules before enrolling — they directly affect when you can start filling the prescription.`
       } else if (priorAuthPct < nationalPaPct - 25) {
-        paNote = `${stateName}'s low prior approval rate for ${drug} — just ${Math.round(priorAuthPct)}% — means most plans here let you fill the prescription without extra steps.`
+        paNote = `${stateName}'s low approval rate for ${drug} — just ${Math.round(priorAuthPct)}% — means most plans here let you fill the prescription without an extra step.`
       } else {
-        paNote = `${priorAuthCount} of ${totalPlans} ${stateName} plans require prior approval for ${drug}. With this many plan options, you may be able to find one that does not require it.`
+        paNote = `${priorAuthCount} of ${totalPlans} ${stateName} plans require approval first for ${drug}. With this many plan options, you may be able to find one that does not require it.`
       }
       break
     case 'small-market':
-      paNote = `In ${stateName}'s small market, ${priorAuthCount === 0 ? 'none' : `${priorAuthCount} of ${totalPlans}`} plan${totalPlans === 1 ? '' : 's'} require${totalPlans === 1 ? 's' : ''} prior approval for ${drug}. With limited options, this is worth confirming before you enroll.`
+      paNote = `In ${stateName}'s small market, ${priorAuthCount === 0 ? 'none' : `${priorAuthCount} of ${totalPlans}`} plan${totalPlans === 1 ? '' : 's'} require${totalPlans === 1 ? 's' : ''} approval first for ${drug}. With limited plans, this is worth confirming before you enroll.`
       break
     default:
       if (priorAuthCount > 0) {
-        paNote = `${priorAuthCount} of ${totalPlans} ${stateName} plans require prior approval for ${drug}. Your doctor's office typically handles the paperwork, but timelines vary by carrier.`
+        paNote = `${priorAuthCount} of ${totalPlans} ${stateName} plans require approval first for ${drug}. Your doctor's office typically handles the paperwork, but how long that takes differs from one plan to another.`
       } else {
-        paNote = `None of the ${totalPlans} ${stateName} plans we reviewed require prior approval for ${drug}. Your doctor can prescribe it and your pharmacy can fill it without an extra approval step.`
+        paNote = `None of the ${totalPlans} ${stateName} plans we reviewed require approval first for ${drug}. Your doctor can prescribe it and your pharmacy can fill it without an extra step.`
       }
       break
   }
@@ -745,15 +745,15 @@ export function getInsightHeading(data: NarrativeData, pattern: NarrativePattern
     case 'glp1-weight-diabetes':
       return `What ${stateName} shoppers should check before assuming coverage`
     case 'specialty-biologic':
-      return `Why plan choice matters most for ${drug} in ${stateName}`
+      return `Why the plan you pick matters most for ${drug} in ${stateName}`
     case 'controlled-substance':
-      return `Refill rules and quantity limits for ${drug} in ${stateName}`
+      return `Refill rules and supply limits for ${drug} in ${stateName}`
     case 'mental-health':
       return `What federal parity law means for ${drug} in ${stateName}`
     case 'inhaler-respiratory':
-      return `Why device coverage matters for ${drug} in ${stateName}`
+      return `Why the device matters for ${drug} in ${stateName}`
     case 'thyroid-hormone':
-      return `Brand vs. generic for ${drug} in ${stateName}`
+      return `Brand versus generic for ${drug} in ${stateName}`
     case 'statin-cholesterol':
     case 'common-generic-acute':
       // Brief headings for short-copy archetypes.
@@ -764,9 +764,9 @@ export function getInsightHeading(data: NarrativeData, pattern: NarrativePattern
 
   switch (pattern) {
     case 'small-market':
-      return `Why plan choice matters more in ${stateName}`
+      return `Why the plan you pick matters more in ${stateName}`
     case 'broad-high-friction':
-      return `Where ${stateName} shoppers run into barriers`
+      return `Where ${stateName} shoppers run into barriers for ${drug}`
     case 'narrow-high-friction':
       return `What limits access to ${drug} in ${stateName}`
     case 'broad-low-friction':
@@ -774,9 +774,9 @@ export function getInsightHeading(data: NarrativeData, pattern: NarrativePattern
     case 'narrow-low-friction':
       return `What to know about ${drug} access in ${stateName}`
     case 'tier-dominant':
-      return `Why tier placement matters most in ${stateName}`
+      return `Why the tier matters most in ${stateName}`
     case 'issuer-variation':
-      return `Why your carrier choice matters in ${stateName}`
+      return `Why the insurance company you pick matters in ${stateName}`
     case 'supply-limits-standout':
       return `The hidden cost factor for ${drug} in ${stateName}`
     case 'large-market-advantage':
@@ -825,8 +825,8 @@ export function getConditionalBlocks(
   if (archetype === 'injectable-diabetes') {
     candidates.push({
       id: 'ira-insulin-cap',
-      heading: `Insulin is capped at $35/month on every ${stateName} marketplace plan`,
-      body: `Under the Inflation Reduction Act, every ACA marketplace plan in ${stateName} caps insulin copays at $35 per month — regardless of tier placement, deductible, or carrier. That means your insulin cost is the same on a Bronze plan as it is on a Platinum plan. Use the rest of your plan comparison (premium, deductible, network) to make your choice.`,
+      heading: `Insulin is capped at $35 a month on every ${stateName} marketplace plan`,
+      body: `Under the Inflation Reduction Act, every ACA marketplace plan in ${stateName} caps insulin copays at $35 a month — regardless of the tier, your deductible, or which insurance company offers the plan. Your insulin cost is the same on a Bronze plan as on a Platinum plan. Use the rest of your plan comparison (premium, deductible, network) to make your choice.`,
       strength: 100,
     })
   }
@@ -835,7 +835,7 @@ export function getConditionalBlocks(
     candidates.push({
       id: 'parity-callout',
       heading: `Federal parity law protects ${drug} coverage in ${stateName}`,
-      body: `The Mental Health Parity and Addiction Equity Act requires marketplace plans to cover mental health medications comparably to physical health drugs. That means plans cannot apply tougher tier placement, prior approval rules, or quantity limits to ${drug} than they apply to similar non-mental-health drugs. If a ${stateName} plan denies ${drug} coverage, you can appeal under federal parity rules.`,
+      body: `The Mental Health Parity and Addiction Equity Act requires marketplace plans to cover mental health drugs on comparable terms to physical health drugs. That means a plan cannot apply tougher tier rules, approval requirements, or supply limits to ${drug} than it applies to similar non-mental-health drugs. If a ${stateName} plan denies ${drug} coverage, you can appeal under federal parity rules.`,
       strength: 80,
     })
   }
@@ -843,8 +843,8 @@ export function getConditionalBlocks(
   if (archetype === 'controlled-substance') {
     candidates.push({
       id: 'controlled-refill-rules',
-      heading: `Refill and quantity rules for ${drug} in ${stateName}`,
-      body: `As a controlled substance, ${drug} has tighter refill rules than most drugs. Most ${stateName} plans cap fills at a 30-day supply, do not allow automatic refills, and may require a new prescription each fill. ${quantityLimitCount} of ${totalPlans} plans here apply explicit quantity limits. Confirm the rules match your prescription pattern before enrolling.`,
+      heading: `Refill and supply rules for ${drug} in ${stateName}`,
+      body: `As a controlled substance, ${drug} has stricter refill rules than most drugs. Most ${stateName} plans cap fills at a 30-day supply, do not allow automatic refills, and may require a new prescription each fill. ${quantityLimitCount} of ${totalPlans} plans here apply explicit supply limits. Confirm the rules match how you use the prescription before enrolling.`,
       strength: 90,
     })
   }
@@ -852,8 +852,8 @@ export function getConditionalBlocks(
   if (archetype === 'specialty-biologic') {
     candidates.push({
       id: 'specialty-plan-impact',
-      heading: `Why plan choice has outsized impact for ${drug} in ${stateName}`,
-      body: `Specialty drugs like ${drug} are placed on the highest cost tier on virtually every ${stateName} plan, and ${Math.round(priorAuthPct)}% require prior approval. The difference between the cheapest and most expensive plan for a specialty user can be thousands of dollars per year — significantly more than the difference for non-specialty drugs. Specialty users should compare formulary placement first, then evaluate everything else.`,
+      heading: `Why the plan you pick matters most for ${drug} in ${stateName}`,
+      body: `Specialty drugs like ${drug} land on the highest-cost tier on virtually every ${stateName} plan, and ${Math.round(priorAuthPct)}% require approval first. The difference between the cheapest and most expensive plan for a specialty user can be thousands of dollars a year — much more than the difference for non-specialty drugs. If you take ${drug}, compare the tier first, then everything else.`,
       strength: 85,
     })
   }
@@ -862,7 +862,7 @@ export function getConditionalBlocks(
     candidates.push({
       id: 'glp1-three-checks',
       heading: `Three things to verify for ${drug} in ${stateName}`,
-      body: `Before assuming coverage means access, verify three things on each ${stateName} plan: (1) is ${drug} on the formulary, (2) does the plan require prior approval (${Math.round(priorAuthPct)}% do), and (3) what monthly supply limit applies (${Math.round(quantityLimitPct)}% of plans cap fills). Carriers also distinguish weight-loss versus diabetes coverage — make sure the version your doctor prescribes is the one your plan covers.`,
+      body: `Before assuming coverage means access, verify three things on each ${stateName} plan: (1) is ${drug} on the drug list, (2) does the plan require approval first (${Math.round(priorAuthPct)}% do), and (3) what is the monthly supply limit (${Math.round(quantityLimitPct)}% of plans cap fills). Insurance companies also distinguish weight-loss versus diabetes coverage — make sure the version your doctor prescribes is the one your plan covers.`,
       strength: 85,
     })
   }
@@ -879,8 +879,8 @@ export function getConditionalBlocks(
   if (archetype === 'thyroid-hormone') {
     candidates.push({
       id: 'thyroid-brand-generic',
-      heading: `Brand vs. generic substitution for ${drug} in ${stateName}`,
-      body: `Thyroid hormone replacement has a narrow therapeutic range, which means brand-versus-generic substitution can produce different clinical results for some people. If your doctor specifically prescribes a brand name, check whether your ${stateName} plan covers that brand or only the generic. Plans differ on whether they require step therapy through the generic first.`,
+      heading: `Brand versus generic substitution for ${drug} in ${stateName}`,
+      body: `Thyroid hormone replacement has a narrow therapeutic range, which means brand and generic substitution can produce different results for some people. If your doctor specifically prescribes a brand name, check whether your ${stateName} plan covers that brand or only the generic. Plans differ on whether they require step therapy through the generic first.`,
       strength: 65,
     })
   }
@@ -892,7 +892,7 @@ export function getConditionalBlocks(
     candidates.push({
       id: 'small-market',
       heading: `Why plan count matters in ${stateName}`,
-      body: `With only ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} in ${stateName}, each carrier's formulary decision has an outsized impact. If one carrier drops coverage or tightens restrictions, your options shrink fast. Compare ${totalPlans === 1 ? 'this plan' : `all ${totalPlans} plans`} carefully before enrolling.`,
+      body: `With only ${totalPlans} plan${totalPlans === 1 ? '' : 's'} covering ${drug} in ${stateName}, each insurance company's drug list shapes your options more than usual. If one drops coverage or tightens restrictions, your choices narrow fast. Compare ${totalPlans === 1 ? 'this plan' : `all ${totalPlans} plans`} carefully before enrolling.`,
       strength: 30 + Math.max(0, 10 - totalPlans),
     })
   }
@@ -906,15 +906,15 @@ export function getConditionalBlocks(
     // Vary the sentence template by PA magnitude so similar high-PA states diverge.
     let body: string
     if (priorAuthPct >= 90) {
-      body = `Almost every ${stateName} plan — ${priorAuthCount} of ${totalPlans} — requires prior approval for ${drug}, far above the ${Math.round(nationalPaPct)}% national average. Plan on your doctor submitting paperwork before you can fill the prescription, and ask each plan how long approvals usually take.`
+      body = `Almost every ${stateName} plan — ${priorAuthCount} of ${totalPlans} — requires approval first for ${drug}, far above the ${Math.round(nationalPaPct)}% national average. Plan on your doctor sending paperwork to your plan before you can fill the prescription, and ask the plan what documentation it needs.`
     } else if (priorAuthPct >= 80) {
-      body = `In ${stateName}, ${Math.round(priorAuthPct)}% of plans require prior approval for ${drug} — well above the ${Math.round(nationalPaPct)}% national average. That extra step adds days or weeks before your first fill. Ask each plan about its approval timeline and whether expedited reviews are available.`
+      body = `In ${stateName}, ${Math.round(priorAuthPct)}% of plans require approval first for ${drug} — well above the ${Math.round(nationalPaPct)}% national average. That extra step adds time before your first fill. Ask each plan about its approval rules and what documentation your doctor needs to send.`
     } else {
-      body = `Roughly ${priorAuthCount} of ${totalPlans} ${stateName} plans require prior approval for ${drug}, putting the state above the ${Math.round(nationalPaPct)}% national average. Build that paperwork step into your timeline, and ask the plan what documentation your doctor needs to submit.`
+      body = `Roughly ${priorAuthCount} of ${totalPlans} ${stateName} plans require approval first for ${drug}, putting the state above the ${Math.round(nationalPaPct)}% national average. Build that step into your timeline, and ask the plan what documentation your doctor needs to send.`
     }
     candidates.push({
       id: 'high-pa-friction',
-      heading: `Prior approval is a bigger factor in ${stateName}`,
+      heading: `Approval is a bigger factor in ${stateName}`,
       body,
       strength: Math.max(Math.round(Math.abs(paDiff)), 5),
     })
@@ -925,14 +925,14 @@ export function getConditionalBlocks(
   const tierDiffersFromNational = tier !== natTier
   if (pattern === 'tier-dominant' || tierDiffersFromNational || tierIsHigher) {
     const costWord = tier === 'generic' || tier === 'preferred brand' ? 'less' : 'more'
-    const range = tier === 'specialty' ? '$80–$300' : tier === 'non-preferred brand' ? '$30–$80' : '$15–$50'
+    const range = tier === 'specialty' ? '$80 to $300' : tier === 'non-preferred brand' ? '$30 to $80' : '$15 to $50'
     const compareLine = tierDiffersFromNational
-      ? `In ${stateName}, most plans place ${drug} on a ${tier} tier, while the national average is ${natTier}. That tier gap alone can mean ${range} ${costWord} per month after your deductible.`
-      : `In ${stateName}, most plans place ${drug} on a ${tier} tier — the same as the national average — but tier placement still drives most of what you pay. Plans assigning ${drug} to a more favorable tier can save you ${range} per month after your deductible.`
+      ? `In ${stateName}, most plans place ${drug} on a ${tier} tier, while the national average is ${natTier}. That tier gap alone can mean ${range} ${costWord} a month after your deductible.`
+      : `In ${stateName}, most plans place ${drug} on a ${tier} tier — the same as the national average — but the tier still drives most of what you pay. A plan that places ${drug} on a more favorable tier can save you ${range} a month after your deductible.`
     candidates.push({
       id: 'tier-driven-cost',
-      heading: `Tier placement drives most of the cost difference in ${stateName}`,
-      body: `${compareLine} When comparing plans, check the tier assignment first — it has the biggest impact on what you actually pay.`,
+      heading: `The tier drives most of the cost difference in ${stateName}`,
+      body: `${compareLine} When comparing plans, check the tier first — it has the biggest effect on what you actually pay.`,
       // Strength: higher when tier differs from national or is a higher-cost tier
       strength: (tierDiffersFromNational ? 15 : 0) + (tierIsHigher ? 10 : 0) + 5,
     })
@@ -946,19 +946,19 @@ export function getConditionalBlocks(
     let body: string
     const marketSize = totalPlans <= 6 ? 'tiny' : totalPlans <= 12 ? 'small' : 'broader'
     if (tierSpread >= 5 && marketSize === 'tiny') {
-      body = `Even with only ${totalPlans} plans, ${stateName} carriers disagree sharply on ${drug} — ${tierSpread} different tier assignments show up across the ${totalPlans}-plan field. One carrier may put it on a ${tier1}-cost tier with no approval needed, while another places it on a ${tier2}-cost tier and requires prior approval. In a market this small, picking the right carrier shapes almost everything you'll pay.`
+      body = `Even with only ${totalPlans} plans, ${stateName} insurance companies disagree on ${drug} — ${tierSpread} different tier assignments show up across the ${totalPlans}-plan field. One insurance company may put it on a ${tier1}-cost tier with no approval needed, while another places it on a ${tier2}-cost tier and requires approval first. In a market this small, picking the right insurance company shapes almost everything you pay.`
     } else if (tierSpread >= 5 && marketSize === 'small') {
-      body = `${stateName}'s ${totalPlans} plans split ${drug} across ${tierSpread} tier levels — a wider spread than most small markets show. One plan might list it on a ${tier1}-cost tier with no approval needed; another puts it on a ${tier2}-cost tier with prior approval required. Carrier choice will move your monthly cost more than metal level here.`
+      body = `${stateName}'s ${totalPlans} plans split ${drug} across ${tierSpread} tier levels — a wider spread than most small markets show. One plan may list it on a ${tier1}-cost tier with no approval needed; another puts it on a ${tier2}-cost tier with approval required. The insurance company you pick will move your monthly cost more than the metal level here.`
     } else if (tierSpread >= 5) {
-      body = `${stateName}'s ${totalPlans} plans place ${drug} on ${tierSpread} different tiers depending on the carrier. With this much variation, comparing carriers side by side matters more than picking a metal level — two plans at the same Silver tier can charge very different amounts.`
+      body = `${stateName}'s ${totalPlans} plans place ${drug} on ${tierSpread} different tiers depending on the insurance company. Comparing insurance companies side by side matters more than picking a metal level — two plans at the same Silver tier can charge very different amounts.`
     } else if (tierSpread === 4) {
-      body = `Across ${totalPlans} ${stateName} plans, ${drug} lands on ${tierSpread} different tier levels depending on the carrier. That spread alone can swing your monthly cost by $30 or more. Compare carriers side by side before locking in a plan — the metal level alone won't tell you the full story.`
+      body = `Across ${totalPlans} ${stateName} plans, ${drug} lands on ${tierSpread} different tiers depending on the insurance company. That spread alone can swing your monthly cost by $30 or more. Compare insurance companies side by side before locking in a plan — the metal level alone will not tell you the full story.`
     } else {
-      body = `${stateName} plans split ${drug} across ${tierSpread} tier levels — fewer than the most fragmented states, but enough that two plans at the same metal level can charge meaningfully different amounts. Check each carrier's tier and approval rules before you decide.`
+      body = `${stateName} plans split ${drug} across ${tierSpread} tier levels — fewer than the most fragmented states, but enough that two plans at the same metal level can charge different amounts. Check each plan's tier and approval rules before you decide.`
     }
     candidates.push({
       id: 'carrier-comparison',
-      heading: `In ${stateName}, which carrier you choose matters most`,
+      heading: `In ${stateName}, the insurance company you pick matters most`,
       body,
       strength: tierSpread * 4,
     })
@@ -969,7 +969,7 @@ export function getConditionalBlocks(
     candidates.push({
       id: 'supply-limits',
       heading: `Watch for supply limits in ${stateName}`,
-      body: `${quantityLimitCount} of ${totalPlans} ${stateName} plans limit how much ${drug} you can get per month — typically a 30-day supply. If you need a larger quantity or use a higher dose, check whether your plan allows 90-day refills or mail-order options before enrolling.`,
+      body: `${quantityLimitCount} of ${totalPlans} ${stateName} plans limit how much ${drug} you can fill per month — typically a 30-day supply. If you need a larger quantity or use a higher dose, check whether your plan allows 90-day refills or mail-order options before enrolling.`,
       // Strength scales with how high QL pct is
       strength: Math.round(quantityLimitPct / 5),
     })
