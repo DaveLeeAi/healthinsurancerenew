@@ -22,7 +22,6 @@ import SchemaScript from '@/components/SchemaScript'
 import EntityLinkCard from '@/components/EntityLinkCard'
 import GenericByline from '@/components/GenericByline'
 import LlmComment from '@/components/LlmComment'
-import { generateFormularyContent } from '@/lib/content-templates'
 import { generateStateInsights } from '@/lib/formulary-insights'
 import {
   buildNarrativeData,
@@ -31,7 +30,6 @@ import {
   generateInsightBody,
   generateCostContext,
   generateLocalizedSections,
-  getConditionalBlocks,
   getInsightHeading,
 } from '@/lib/state-narrative'
 import type { NarrativePattern, NarrativeData } from '@/lib/state-narrative'
@@ -41,9 +39,7 @@ import AeoBlock from '@/components/AeoBlock'
 import EvidenceBlock from '@/components/EvidenceBlock'
 import CostBlock from '@/components/CostBlock'
 import PlanRulesBlock from '@/components/PlanRulesBlock'
-import TimelineSteps from '@/components/TimelineSteps'
 import SavingsRows from '@/components/SavingsRows'
-import LimitsBlock from '@/components/LimitsBlock'
 import AboutBlock from '@/components/AboutBlock'
 import {
   humanizeTier,
@@ -507,8 +503,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : 'All Plans'
 
   const title = isState
-    ? `${titleCase(drugDisplay)} in ${stateName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans | HealthInsuranceRenew`
-    : `${titleCase(drugDisplay)} — ${issuerName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans | HealthInsuranceRenew`
+    ? `${titleCase(drugDisplay)} Coverage in ${stateName} (${PLAN_YEAR}) | HealthInsuranceRenew`
+    : `${titleCase(drugDisplay)} Coverage — ${issuerName} (${PLAN_YEAR}) | HealthInsuranceRenew`
   const description = isState
     ? stateConf?.ownExchange
       ? `${titleCase(drugDisplay)} is covered by most ${stateName} health plans for ${PLAN_YEAR}. ${stateName} uses ${stateConf.exchange} for enrollment. See coverage details.`
@@ -861,11 +857,6 @@ export default async function FormularyDrugPage({ params }: Props) {
     faqItems: formularyFaqs,
   })
 
-  // --- Editorial content ---
-  const editorial = results.length > 0
-    ? generateFormularyContent({ drugName: drugDisplay, drugs: results, issuerName, stateCode: isState ? stateName : undefined })
-    : null
-
   // --- State-specific content insights ---
   const baseline = getDrugBaseline(drugSlug)
   const stateInsights =
@@ -912,9 +903,6 @@ export default async function FormularyDrugPage({ params }: Props) {
   const localizedSections = narrativeData && narrativePattern
     ? generateLocalizedSections(narrativeData, narrativePattern)
     : null
-  const conditionalBlocks = narrativeData && narrativePattern
-    ? getConditionalBlocks(narrativeData, narrativePattern)
-    : []
   const insightHeading = narrativeData && narrativePattern
     ? getInsightHeading(narrativeData, narrativePattern)
     : null
@@ -1020,10 +1008,9 @@ export default async function FormularyDrugPage({ params }: Props) {
       />
 
       <ProcessBar items={[
-        `${PLAN_YEAR} federal plan data`,
-        `${fmtN(displayPlanCount)} plan${displayPlanCount === 1 ? '' : 's'} reviewed`,
-        'Licensed agent reviewed',
-        'Updated March 2026',
+        `${fmtN(displayPlanCount)} ${isState ? `${stateName} ` : ''}health plan${displayPlanCount === 1 ? '' : 's'} reviewed`,
+        `Based on ${PLAN_YEAR} plan filings`,
+        'Updated April 2026',
       ]} />
 
       <main id="main-content" className="mx-auto" style={{ maxWidth: 800, padding: '0 20px 72px' }}>
@@ -1050,18 +1037,18 @@ export default async function FormularyDrugPage({ params }: Props) {
               style={{ fontSize: '27px', fontWeight: 500, lineHeight: 1.2, letterSpacing: '-0.3px', maxWidth: 680 }}
             >
               {isState
-                ? `${titleCase(drugDisplay)} in ${stateName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans`
+                ? `${titleCase(drugDisplay)} Coverage in ${stateName} (${PLAN_YEAR})`
                 : isSpecificIssuer
-                  ? `${titleCase(drugDisplay)} \u2014 ${issuerName}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans`
-                  : `${titleCase(drugDisplay)}: Coverage, Cost, and Prior Approval on ${PLAN_YEAR} Health Plans`
+                  ? `${titleCase(drugDisplay)} Coverage \u2014 ${issuerName} (${PLAN_YEAR})`
+                  : `${titleCase(drugDisplay)} Coverage on Marketplace Plans (${PLAN_YEAR})`
               }
             </h1>
 
             {/* ── 2. Date line (V19 .page-date) ── */}
             <p className="text-muted" style={{ fontSize: '12px', marginTop: '6px' }}>
-              <time dateTime="2026-03-20">Last reviewed March 2026</time>
+              <time dateTime={`${PLAN_YEAR}-01-01`}>Data from {PLAN_YEAR} plan filings</time>
               {' \u00a0·\u00a0 '}
-              {isState ? stateName : issuerName} {PLAN_YEAR}
+              Health Insurance Marketplace
             </p>
           </div>
 
@@ -1155,30 +1142,6 @@ export default async function FormularyDrugPage({ params }: Props) {
             </div>
           )}
 
-          {/* ── 4d. Conditional pattern blocks — render only when data triggers them ── */}
-          {results.length > 0 && conditionalBlocks.length > 0 && (
-            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {conditionalBlocks.map((block) => (
-                <div
-                  key={block.id}
-                  style={{
-                    background: '#f8fafc',
-                    borderLeft: '3px solid #64748b',
-                    borderRadius: '0 8px 8px 0',
-                    padding: '14px 18px',
-                  }}
-                >
-                  <p className="text-ink font-medium" style={{ fontSize: '13.5px', marginBottom: '4px' }}>
-                    {block.heading}
-                  </p>
-                  <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.6 }}>
-                    {block.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-
           {/* ── 5. Primary CTA (V19 .cta-primary) ── */}
           {results.length > 0 && (
             <div
@@ -1237,9 +1200,9 @@ export default async function FormularyDrugPage({ params }: Props) {
                 rows={costRows}
                 note={`Estimated from ${PLAN_YEAR} plan filings \u2014 not pharmacy prices and not a quote. What you pay at the counter depends on your specific plan, pharmacy, and deductible status. Confirm with your plan or pharmacist before relying on these numbers.`}
                 varyRows={[
-                  { key: 'Tier placement matters', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you are considering.` },
+                  { key: 'Drug tier', value: localizedSections?.tierBreakdown ?? stateInsights?.tierBreakdown ?? `Preferred and non-preferred tiers can differ by $40–$80 per month or more. Check the tier assignment on each ${isState ? stateName : 'Marketplace'} plan you are considering.` },
+                  { key: 'Prescription deductible', value: localizedSections?.deductibleContext ?? `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${titleCase(drugDisplay)} kicks in.` },
                   { key: 'Pharmacy choice', value: localizedSections?.pharmacyChoice ?? `Your plan's price for ${titleCase(drugDisplay)} varies by pharmacy. Preferred pharmacies and mail-order often come in lower — worth checking before your first fill.` },
-                  { key: 'How your deductible works', value: localizedSections?.deductibleContext ?? `Whether your plan has a separate drug deductible or combines it with medical determines when your lower copay for ${titleCase(drugDisplay)} kicks in.` },
                 ]}
               />
             </section>
@@ -1363,32 +1326,39 @@ export default async function FormularyDrugPage({ params }: Props) {
             </section>
           )}
 
-          {/* ── 9. Approval timeline (only if hasPriorAuth) ── */}
-          {results.length > 0 && hasPriorAuth && (
-            <section aria-labelledby="timeline-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
+          {/* ── 10. If it is taking too long or your plan denies coverage (V79 §7) ── */}
+          {results.length > 0 && (
+            <section aria-labelledby="problem-resolution-heading" style={{ marginTop: '44px' }}>
               <div
-                id="timeline-heading"
+                id="problem-resolution-heading"
                 className="text-faint uppercase font-medium border-b border-rule"
                 style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
               >
-                How the prior authorization process works
+                If it is taking too long or your plan denies coverage
               </div>
-              <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.65, marginBottom: '14px' }}>
-                If your {isState ? stateName : 'Marketplace'} plan requires prior approval for {titleCase(drugDisplay)}, your doctor handles the paperwork. The steps below outline how the process works.
-              </p>
-              <TimelineSteps
-                steps={[
-                  { title: 'Your doctor submits documentation', desc: `Your prescribing doctor sends your diagnosis and supporting information directly to your ${isState ? stateName + ' ' : ''}health plan. ${priorAuthCount > 0 ? `${fmtN(priorAuthCount)} of ${fmtN(results.length)} plans we reviewed require this step for ${titleCase(drugDisplay)}.` : 'The documentation required varies by plan.'}`, time: 'Day 1' },
-                  { title: 'Plan reviews the request', desc: `${isState ? stateName + ' ' : 'Your '}plan checks the request against its coverage requirements. Your doctor and the plan's review team handle this — you do not need to do anything at this stage.`, time: 'Days 1\u20133 typically' },
-                  { title: 'Decision issued', desc: `Response times vary by plan and urgency. Your plan's benefit documents explain the timeline that applies to your coverage — urgent cases may be handled faster than standard requests.`, time: 'Usually within a few business days' },
-                  { title: 'Prescription can be filled', desc: `Once approved, you can fill the prescription at your pharmacy. Your deductible status and tier determine your cost at the counter. Your plan's benefit documents explain how long the approval is valid.`, time: 'After approval' },
-                  { title: 'If not approved \u2014 you have options', desc: `Your plan has an appeal process you can use. If the appeal is also denied, you may be able to request an independent external review. Your plan's benefit documents outline the steps and deadlines.`, time: 'Review your plan documents for deadlines' },
-                ]}
-              />
+              <ol className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.7, paddingLeft: '20px', margin: 0 }}>
+                <li style={{ marginBottom: '10px' }}>
+                  <strong className="text-ink">Call your doctor&rsquo;s office for an update</strong>
+                  <div style={{ marginTop: '2px' }}>
+                    If you have been waiting longer than a few days and have not heard anything, call your doctor&rsquo;s office. They may be able to tell you whether the approval is still pending.
+                  </div>
+                </li>
+                <li style={{ marginBottom: '10px' }}>
+                  <strong className="text-ink">If denied, ask your doctor to request a peer-to-peer review</strong>
+                  <div style={{ marginTop: '2px' }}>
+                    A peer-to-peer review lets your doctor make the case for {titleCase(drugDisplay)} directly, rather than through paperwork. It is not offered by every plan, so ask your doctor&rsquo;s office early whether this is an option.
+                  </div>
+                </li>
+                <li>
+                  <strong className="text-ink">File a formal appeal &mdash; or switch plans at the next open enrollment</strong>
+                  <div style={{ marginTop: '2px' }}>
+                    If the denial stands, your plan will send you a notice explaining why and how to appeal. Check that notice closely &mdash; it will include the deadline and the steps to follow. If {titleCase(drugDisplay)} coverage continues to be a problem, open enrollment is your chance to switch to a different plan.
+                  </div>
+                </li>
+              </ol>
             </section>
           )}
-
-          {/* ── 10. How to reduce what you pay ── */}
+          {/* ── 10b. How to reduce what you pay (V79 §9) ── */}
           {results.length > 0 && (
             <section aria-labelledby="savings-heading" style={{ marginTop: '44px', borderTop: '1px solid var(--rule)', paddingTop: '44px' }}>
               <div
@@ -1434,64 +1404,21 @@ export default async function FormularyDrugPage({ params }: Props) {
             </section>
           )}
 
-          {/* ── 10b. What to do if you run into a problem ── */}
+          {/* ── 11. PLANS CHANGE DURING THE YEAR (V79 §9 callout, replaces LimitsBlock) ── */}
           {results.length > 0 && (
-            <section aria-labelledby="not-covered-heading" style={{ marginTop: '44px' }}>
-              <div
-                id="not-covered-heading"
-                className="text-faint uppercase font-medium border-b border-rule"
-                style={{ fontSize: '10.5px', letterSpacing: '0.1em', paddingBottom: '8px', marginBottom: '14px' }}
+            <div
+              className="bg-surface border border-rule"
+              style={{ borderRadius: '10px', padding: '16px 20px', marginTop: '44px' }}
+            >
+              <p
+                className="text-ink uppercase font-medium"
+                style={{ fontSize: '11.5px', letterSpacing: '0.08em', marginBottom: '8px' }}
               >
-                What to do if you run into a problem
-              </div>
-              <ol className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.7, paddingLeft: '20px', margin: 0 }}>
-                <li style={{ marginBottom: '8px' }}>
-                  <strong className="text-ink">Check whether prior approval is required</strong> &mdash; it may be covered but needs documentation from your doctor first.
-                </li>
-                <li style={{ marginBottom: '8px' }}>
-                  <strong className="text-ink">Ask your doctor about a coverage exception</strong> &mdash; your doctor can submit clinical justification explaining why {titleCase(drugDisplay)} is medically necessary for you.
-                </li>
-                {hasPriorAuth && (
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong className="text-ink">If prior approval is denied</strong> &mdash; ask your doctor to request a peer-to-peer review with the plan&rsquo;s medical director. If that fails, file a formal appeal. A few days is common for a response, but some requests take longer &mdash; if the situation is urgent, ask whether a faster review is possible.
-                  </li>
-                )}
-                {(dominantGroup === 'specialty' || dominantGroup === 'non-preferred-brand') && (
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong className="text-ink">If the cost is too high even after your deductible</strong> &mdash; ask about the manufacturer savings program, check whether a therapeutic alternative is on a lower tier, or compare plans at Open Enrollment with better brand-tier coverage.
-                  </li>
-                )}
-                {hasStepTherapy && (
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong className="text-ink">If step therapy is required</strong> &mdash; ask your doctor to document why alternatives are not appropriate for you. Many plans grant exceptions with proper clinical justification.
-                  </li>
-                )}
-                <li style={{ marginBottom: '8px' }}>
-                  <strong className="text-ink">Ask whether a therapeutic alternative is on your plan&rsquo;s drug list</strong> at a lower tier &mdash; a similar drug in the same class may be covered at a lower cost.
-                </li>
-                <li style={{ marginBottom: '8px' }}>
-                  <strong className="text-ink">If you&rsquo;re comparing plans during enrollment</strong> &mdash; check the drug list AND the tier for {titleCase(drugDisplay)} specifically. Two plans can both &ldquo;cover&rdquo; a drug but place it on very different tiers.
-                </li>
-                <li>
-                  <strong className="text-ink">If denied, file an appeal</strong> &mdash; most plans have an internal appeal process, and independent external review is available under federal law.
-                </li>
-              </ol>
-            </section>
-          )}
-
-          {/* ── 11. LimitsBlock ── */}
-          {results.length > 0 && (
-            <div style={{ marginTop: '44px' }}>
-              <LimitsBlock
-                title="What we cannot confirm from plan documents alone"
-                items={[
-                  `Your exact cost at a specific pharmacy. Prices at the counter can differ from what is in plan filings.`,
-                  `Whether your doctor\u2019s documentation will meet your specific plan\u2019s approval requirements \u2014 that depends on your plan\u2019s rules and your situation.`,
-                  `Whether your plan has updated its drug list or tier since our January ${PLAN_YEAR} snapshot. Plans can make mid-year changes.`,
-                  `The exact timelines and appeal steps that apply to your plan. Those details are in your plan\u2019s benefit documents.`,
-                  `Whether you qualify for the manufacturer savings card. Terms and eligibility can change \u2014 verify directly.`,
-                ]}
-              />
+                Plans change during the year
+              </p>
+              <p className="text-mid" style={{ fontSize: '13.5px', lineHeight: 1.6 }}>
+                Drug prices, approval rules, and savings programs can all change during the plan year, and they vary from plan to plan. Everything on this page is estimated from {PLAN_YEAR} plan filings, not confirmed prices. Check with your plan or pharmacy before you enroll or fill a prescription.
+              </p>
             </div>
           )}
         </article>
@@ -1531,20 +1458,11 @@ export default async function FormularyDrugPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ── Educational explainers (bodyHtml — tightened, below unique content) ── */}
-        {editorial?.bodyHtml && (
-          <div
-            className="content-formulary"
-            style={{ marginTop: '44px', fontSize: '13.5px', lineHeight: 1.7, color: 'var(--ink)' }}
-            dangerouslySetInnerHTML={{ __html: editorial.bodyHtml }}
-          />
-        )}
-
         {/* ── AboutBlock ── */}
         <div style={{ marginTop: '44px' }}>
           <AboutBlock
             text={`The information here comes from reviewing plan information for ${fmtN(results.length)} ${isState ? `${stateName} ` : ''}individual health plans available in ${PLAN_YEAR}. We reviewed whether each plan covers the drug, which tier it is on, whether prior approval is required, and the estimated cost after your deductible \u2014 based on 2026 plan filings, not live pharmacy prices. Plan details can change during the year, and your specific plan may differ from what we reviewed.`}
-            reviewedLine={`Reviewed using a structured editorial process \u00b7 Data snapshot: January ${PLAN_YEAR} \u00b7 Last updated: March ${PLAN_YEAR}`}
+            reviewedLine={`Data reviewed: January ${PLAN_YEAR} plan filings \u00b7 Last updated: April ${PLAN_YEAR} \u00b7 Source: CMS federal plan data \u00b7 Reviewed by: Licensed ACA Agent`}
             links={[
               { href: '/editorial-policy', label: 'Editorial process' },
               { href: '/review-process', label: 'How pages are reviewed' },
@@ -1763,24 +1681,19 @@ export default async function FormularyDrugPage({ params }: Props) {
           </a>
         </div>
 
-        {/* ── 19. GenericByline ── */}
-        <div style={{ marginTop: '24px' }}>
-          <GenericByline dataSource="Federal marketplace plan data" planYear={PLAN_YEAR} />
-        </div>
-
-        {/* ── 20. Page disclaimer footer (V19 .disc) ── */}
-        <footer className="border-t border-rule text-muted" style={{ fontSize: '11.5px', lineHeight: 1.65, paddingTop: '18px', marginTop: '24px' }}>
+        {/* ── 15. Disclaimer + agent block (V79 §15) ── */}
+        <footer
+          className="border-t border-rule text-muted"
+          style={{ fontSize: '11.5px', lineHeight: 1.65, paddingTop: '18px', marginTop: '32px' }}
+        >
+          <p style={{ marginBottom: '10px' }}>
+            This page is for informational purposes only &mdash; not medical, legal, or insurance advice. Drug coverage information shown is estimated from official {PLAN_YEAR} plan filings. Coverage terms, tier placements, costs, and approval requirements can change during the plan year. Confirm current details with your insurance company before making coverage decisions. To enroll in or change a plan, you will complete the process on the official Marketplace website for your state. HealthInsuranceRenew.com is an independent information site &mdash; not the Marketplace.
+          </p>
           <p>
-            This page is for informational purposes only and does not constitute
-            medical or insurance advice. Formulary data sourced from federal plan benefit
-            documents for plan year {PLAN_YEAR}. Drug tier placement, prior authorization
-            requirements, and quantity limits may change during the plan year. Always
-            verify current coverage with your insurance carrier or at healthcare.gov.
-            Consult a licensed health insurance agent to confirm coverage for your
-            specific plan.
+            A licensed health insurance agent can help you compare how different {isState ? `${stateName} ` : 'Marketplace '}plans cover {titleCase(drugDisplay)} &mdash; including tier, estimated cost, and approval requirements. Your actual eligibility and premium come from the official Marketplace application. We may receive a referral fee when you connect with a plan or agent. We are not affiliated with any insurance company or government agency.{' '}
+            <a href="/about/how-we-get-paid" className="text-vblue hover:underline">How we get paid</a>
           </p>
         </footer>
-
       </main>
     </>
   )
