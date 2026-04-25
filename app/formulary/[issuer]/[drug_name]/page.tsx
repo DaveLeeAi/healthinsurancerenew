@@ -1344,9 +1344,9 @@ export default async function FormularyDrugPage({ params }: Props) {
                   </div>
                 </li>
                 <li style={{ marginBottom: '10px' }}>
-                  <strong className="text-ink">If denied, ask your doctor to request a peer-to-peer review</strong>
+                  <strong className="text-ink">If denied, your doctor may be able to ask for another review directly</strong>
                   <div style={{ marginTop: '2px' }}>
-                    A peer-to-peer review lets your doctor make the case for {titleCase(drugDisplay)} directly, rather than through paperwork. It is not offered by every plan, so ask your doctor&rsquo;s office early whether this is an option.
+                    Your doctor may be able to ask for another review directly. This is sometimes called a peer-to-peer review. It is not offered by every plan, so ask your doctor&rsquo;s office early whether this is an option.
                   </div>
                 </li>
                 <li>
