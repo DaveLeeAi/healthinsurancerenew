@@ -1329,8 +1329,8 @@
       "state_drugs_total": 11268,
       "carriers": [
         {
-          "carrier_name": "Centene/Ambetter (KY) - JSON",
-          "hios_prefix": "72001",
+          "carrier_name": "Centene/Ambetter (KY) - JSON API",
+          "hios_prefix": "99168",
           "formulary_url": "https://api.centene.com/ambetter/reference/drugs-AMB-KY.json",
           "formulary_type": "json",
           "source_type": "centene_api",
@@ -1340,7 +1340,7 @@
           "last_fetched": "2026-03-17",
           "drugs_parsed": 4363,
           "year_pattern": "Centene API  -  same URL, content updates annually",
-          "notes": "Same Centene API pattern as NJ/PA/WA.",
+          "notes": "Same Centene API pattern as NJ/PA/WA. NOTE: Centene API returns issuer_id=99168 in drug records. CMS SBC data does not include this carrier separately - drug coverage is represented via the Ambetter PDF (45636). 99168 and 45636 are treated as the same Ambetter KY entity.",
           "fetch_method": "json_api",
           "fetch_notes": "Fetched via JSON API endpoint"
         },
@@ -1353,12 +1353,14 @@
           "pbm": "Centene/IngenioRx",
           "tiers": 5,
           "status": "verified",
-          "last_fetched": "2026-04-03",
-          "drugs_parsed": 2187,
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 2099,
           "year_pattern": "Replace '2026' with new year. Centene standard path: /content/dam/centene/{state}/ambetter/pdf/{YEAR}-{st}-formulary.pdf",
           "notes": "Centene standard format with 1A/1B/2/3/4 tiers.",
           "fetch_method": "auto_download",
-          "fetch_notes": "PDF downloads directly  -  no auth needed"
+          "fetch_notes": "PDF downloads directly  -  no auth needed",
+          "enrichment_file": "formulary_enrichment_ambetter_ky.json",
+          "parse_notes": "Re-parsed 2026-04-26 via parse_ambetter_ky.py. 2,099 deduped entries, pages 6-70 (index starts p71). Tiers: 1A/1B/2/3/4/NF."
         },
         {
           "carrier_name": "Anthem (KY) - Elevance Health",
@@ -2106,11 +2108,11 @@
             "5T": 5
           },
           "status": "verified",
-          "last_fetched": "2026-04-19",
-          "drugs_parsed": 2770,
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 4847,
           "enrichment_file": "data/processed/formulary_enrichment_bcbs_nc.json",
           "year_pattern": "URL pattern: /WebDocs/{YEAR}/Formularies/HIM/{YEAR}_NC_{4T|5T}_HealthInsuranceMarketplace.pdf  -  update year for each OEP cycle",
-          "notes": "BCBS NC uses Prime Therapeutics (myprime.com) as PBM. Not in CMS MR-PUF electronic formulary feed  -  PDF-only. Two formulary tiers: 4T (Essential QHP-S) and 5T (Essential QHP). Both cover Ozempic: Tier 2 (4T) / Tier 3 (5T), PA+QL required.",
+          "notes": "BCBS NC uses Prime Therapeutics (myprime.com) as PBM. Not in CMS MR-PUF electronic formulary feed — PDF-only. Two formulary tiers: 4T (Essential QHP-S, 2421 records) and 5T (Essential QHP, 2426 records). v2 parse (2026-04-26) fixes right-column dropout bug from v1 (2770→4847 records). GLP-1s: Ozempic/Mounjaro/Rybelsus/Trulicity covered (4T=Tier2 PA+QL, 5T=Tier3 PA+QL). Wegovy/Saxenda/Victoza/Zepbound: NOT on formulary.",
           "fetch_method": "pdf_download_pdfplumber",
           "fetch_notes": "Download PDF from myprime.com, parse with pdfplumber. Text extraction works; table structure is rotated-header format. Bullet markers (â€¢) indicate PA/QL restrictions.",
           "key_drugs_confirmed_2026": {
@@ -2166,39 +2168,174 @@
         },
         {
           "carrier_name": "Oscar Health (NC)",
-          "hios_prefix": "unknown",
-          "formulary_url": "https://assets.ctfassets.net/plyq12u1bv8a/7wGpJtAnWc9YH1kS2DSBAp/033ab63c7871b18598e56391f786bace/Oscar_4T_NC_STND_Member_Doc__January_2026__as_of_09162025.pdf",
+          "hios_prefix": "73943",
+          "formulary_url": {
+            "6T": "https://assets.ctfassets.net/plyq12u1bv8a/wAgwJr2jgOqJrULtqyZgS/28589b58eefb64d159f2ac8c20b4838d/Oscar_6T_NC_STND_Member_Doc__April_2026__as_of_03252026.pdf",
+            "4T": "https://assets.ctfassets.net/plyq12u1bv8a/12S0pkfd1BQNo87ab2uxID/a414081938f45285f09147de31b85e1d/Oscar_4T_NC_STND_Member_Doc__April_2026__as_of_03252026.pdf"
+          },
           "formulary_url_6t": "https://assets.ctfassets.net/plyq12u1bv8a/12rOjag2RmmE2q726U5KNk/f5e35f1442c4aa518f86fe6cdaf626a3/Oscar_6T_NC_STND_Member_Doc__January_2026__as_of_09162025.pdf",
           "formulary_type": "pdf",
-          "source_type": "contentful_cdn",
-          "pbm": "Oscar (in-house)",
-          "tiers": "4T/6T",
-          "status": "verified",
-          "last_fetched": "2026-04-04",
-          "drugs_parsed": {
-            "4t": 2332,
-            "6t": 1076
+          "source_type": "carrier_pdf",
+          "pbm": "Oscar",
+          "tiers": {
+            "6T": 6,
+            "4T": 4
           },
+          "status": "verified",
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 4867,
           "parsed_file": {
             "4t": "data/processed/formulary_oscar_nc_4t_2026.json",
             "6t": "data/processed/formulary_oscar_nc_6t_2026.json"
           },
-          "notes": "Parsed 2026-04-04.",
-          "fetch_method": "webfetch_pdf"
+          "notes": "Oscar NC has two formulary variants: 6T (6-tier, 2460 records) and 4T (4-tier, 2407 records). HIOS 73943 = Oscar \"Connect\" plans (plan_intelligence.json confirmed). GLP-1s: Ozempic/Mounjaro/Rybelsus/Trulicity covered (Tier 2 PA+QL both formularies). Wegovy/Saxenda/Zepbound: NOT on formulary.",
+          "fetch_method": "pdf_download_pdfplumber",
+          "enrichment_file": "data/processed/formulary_enrichment_oscar_nc.json"
         },
         {
           "carrier_name": "UnitedHealthcare (NC)",
           "hios_prefix": "54332",
-          "formulary_url": "https://www.uhc.com/content/dam/uhcdotcom/en/general/cms-data-index.json",
+          "formulary_url": {
+            "STD": "https://www.uhc.com/content/dam/uhcdotcom/en/ifp/pdls/IFP2895550-NC_UHC_IFP_PY26.pdf"
+          },
           "formulary_url_2027": "https://www.uhc.com/content/dam/uhcdotcom/en/general/cms-data-index.json",
-          "formulary_type": "json_api",
-          "source_type": "cms_puf",
+          "formulary_type": "pdf",
+          "source_type": "carrier_pdf",
           "pbm": "OptumRx",
           "records_in_ffe": 4347,
           "status": "verified",
-          "last_fetched": "2026-04-04",
-          "notes": "Covered via CMS MR-PUF. All FFE UHC states share national OptumRx PDL.",
-          "fetch_method": "cms_puf_bundle"
+          "last_fetched": "2026-04-26",
+          "notes": "UHC NC (OptumRx PDL). PDF parsed pages 9-36 (drug data); pages 37-53 = alphabetical index excluded. GLP-1s: Ozempic/Mounjaro/Rybelsus/Trulicity Tier 3 PA+QL. Wegovy/Saxenda/Zepbound: NOT on formulary.",
+          "fetch_method": "pdf_download_pdfplumber",
+          "drugs_parsed": 2023,
+          "enrichment_file": "data/processed/formulary_enrichment_uhc_nc.json"
+        },
+        {
+          "carrier_name": "Ambetter from WellCare of North Carolina",
+          "hios_prefix": "69803",
+          "formulary_url": {
+            "STD": "https://www.ambetterhealth.com/content/dam/centene/ambetternc/pdfs/2026-nc-formulary.pdf"
+          },
+          "formulary_type": "pdf",
+          "source_type": "carrier_pdf",
+          "pbm": "WellCare/Centene",
+          "tiers": {
+            "STD": 4
+          },
+          "status": "verified",
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 2463,
+          "enrichment_file": "data/processed/formulary_enrichment_ambetter_nc.json",
+          "year_pattern": "URL likely changes each year — check ambetterhealth.com/nc for updated PDF",
+          "fetch_method": "pdf_download_pdfplumber",
+          "notes": "Ambetter NC (Centene/WellCare subsidiary). HIOS 69803 confirmed via plan_intelligence.json. 3-column table format (Drug Name | Tier | Requirements). Sub-tiers: 1A, 1B, 2, 3, 4. GLP-1s: Ozempic/Rybelsus/Trulicity Tier 2 PA+QL. MOUNJARO/Tirzepatide: NOT on formulary. Wegovy/Saxenda/Zepbound: NOT on formulary.",
+          "key_drugs_confirmed_2026": {
+            "Ozempic": {
+              "tier": 2,
+              "PA": true,
+              "QL": true
+            },
+            "Mounjaro": "not_listed",
+            "Rybelsus": {
+              "tier": 2,
+              "PA": true,
+              "QL": true
+            },
+            "Trulicity": {
+              "tier": 2,
+              "PA": true,
+              "QL": true
+            },
+            "Wegovy": "not_listed"
+          }
+        },
+        {
+          "carrier_name": "AmeriHealth Caritas Next (North Carolina)",
+          "hios_prefix": "17414",
+          "formulary_url": {
+            "STD": "https://www.amerihealthcaritasnext.com/content/dam/amerihealth-caritas/acnext/pdf/nc/provider/resources/formulary-archive/nc-formulary-april-2026.pdf.coredownload.inline.pdf",
+            "update": "https://www.amerihealthcaritasnext.com/content/dam/amerihealth-caritas/acnext/pdf/nc/provider/news-updates/2026/041526-formulary-update.pdf.coredownload.inline.pdf"
+          },
+          "formulary_type": "pdf",
+          "source_type": "carrier_pdf",
+          "pbm": "AmeriHealth Caritas",
+          "tiers": {
+            "STD": 4
+          },
+          "status": "verified",
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 4532,
+          "enrichment_file": "data/processed/formulary_enrichment_amerihealth_nc.json",
+          "fetch_method": "pdf_download_pdfplumber",
+          "notes": "AmeriHealth Caritas Next NC. HIOS 17414 confirmed via plan_intelligence.json. 5-column table: col[0]=name, col[2]=tier (T1-T4), col[4]=notes. Notes stored in name row col[4] — required v2 parser fix. GLP-1s: Ozempic/Mounjaro/Rybelsus/Trulicity Tier 2 PA+QL. Wegovy/Saxenda/Zepbound: NOT on formulary.",
+          "key_drugs_confirmed_2026": {
+            "Ozempic": {
+              "tier": 2,
+              "PA": true,
+              "QL": true,
+              "notes": "PA; QL (3 ML per 28 days)"
+            },
+            "Mounjaro": {
+              "tier": 2,
+              "PA": true,
+              "QL": true,
+              "notes": "PA; QL (2 ML per 28 days)"
+            },
+            "Rybelsus": {
+              "tier": 2,
+              "PA": true,
+              "QL": true,
+              "notes": "PA; QL (30 EA per 30 days)"
+            },
+            "Trulicity": {
+              "tier": 2,
+              "PA": true,
+              "QL": true
+            },
+            "Wegovy": "not_listed"
+          }
+        },
+        {
+          "carrier_name": "Cigna Healthcare (North Carolina)",
+          "hios_prefix": "77264",
+          "formulary_url": {
+            "5T": "https://www.cigna.com/static/www-cigna-com/docs/ifp/m-26-rx-nc-989882-cigna-rx-plus-5-tier-pdl.pdf"
+          },
+          "formulary_type": "pdf",
+          "source_type": "carrier_pdf",
+          "pbm": "Cigna/Express Scripts",
+          "tiers": {
+            "5T": 5
+          },
+          "status": "verified",
+          "last_fetched": "2026-04-26",
+          "drugs_parsed": 5686,
+          "enrichment_file": "data/processed/formulary_enrichment_cigna_nc.json",
+          "fetch_method": "pdf_download_pdfplumber",
+          "notes": "Cigna Healthcare NC. HIOS 77264 estimated from plan_intelligence.json plan names. 2-column 3-col table (Medication Name | Tier | Notes). Alphabetical listing. GLP-1s: Ozempic/Mounjaro/Rybelsus/Trulicity Tier 3 PA+QL. Wegovy/Saxenda/Zepbound: NOT on formulary.",
+          "key_drugs_confirmed_2026": {
+            "Ozempic": {
+              "tier": 3,
+              "PA": true,
+              "QL": true
+            },
+            "Mounjaro": {
+              "tier": 3,
+              "PA": true,
+              "QL": true
+            },
+            "Rybelsus": {
+              "tier": 3,
+              "PA": true,
+              "QL": true
+            },
+            "Trulicity": {
+              "tier": 3,
+              "PA": true,
+              "QL": true
+            },
+            "Wegovy": "not_listed"
+          }
         }
       ]
     },

@@ -1,6 +1,6 @@
 {
   "state_code": "KY",
-  "drug_slug": "ozempic",
+  "drug_slug": "victoza",
   "plan_count": 336,
   "carriers": [
     {
@@ -11,17 +11,17 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 3
+      "data_record_count": 1
     },
     {
       "issuer_id": "45636",
       "name": "Ambetter (KY) - PDF",
       "plan_count": 81,
-      "tier_placement": "preferred-brand",
-      "pa_required": true,
+      "tier_placement": "generic",
+      "pa_required": false,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 3
+      "data_record_count": 1
     },
     {
       "issuer_id": "73891",
@@ -31,17 +31,11 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": true,
-      "data_record_count": 6
+      "data_record_count": 2
     }
   ],
-  "cost_range_after_deductible": {
-    "low": 30,
-    "high": 100
-  },
-  "cost_range_before_deductible": {
-    "low": 400,
-    "high": 800
-  },
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
   "data_sources": [
     "enrichment:formulary_enrichment_ambetter_ky.json",
     "sbm"

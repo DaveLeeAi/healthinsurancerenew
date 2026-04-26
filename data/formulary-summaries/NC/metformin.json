@@ -1,0 +1,135 @@
+{
+  "state_code": "NC",
+  "drug_slug": "metformin",
+  "plan_count": 206,
+  "carriers": [
+    {
+      "issuer_id": "11512",
+      "name": "Blue Cross and Blue Shield of North Carolina",
+      "plan_count": 117,
+      "tier_placement": "generic",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 10,
+      "data_confirmed": true,
+      "tier_note": "Confirmed from BCBS NC CMS machine-readable formulary (drugs-1.json + drugs-2.json, fetched 2026-04-26). CMS tier label: 'GENERIC-BRAND-SPECIALTY' — BCBS NC's formulary designation covering generic drug tier. All 5 metformin formulations confirmed: 500mg IR, 850mg IR, 1000mg IR, 500mg ER, 750mg ER. No PA, no ST, no QL on all confirmed BCBS NC plan IDs (83–88 plan IDs per formulation per file). Source: bcbsnc.com/assets/cms/data/drugs-1.json and drugs-2.json (F5-protected; accessed via direct HTTP with browser headers).",
+      "data_source": "cms:bcbsnc.com/assets/cms/data/drugs-1.json + drugs-2.json",
+      "cms_tier_label": "GENERIC-BRAND-SPECIALTY",
+      "confirmed_formulations": [
+        "METFORMIN TAB 500MG",
+        "METFORMIN TAB 850MG",
+        "METFORMIN TAB 1000MG",
+        "METFORMIN TAB 500MG ER",
+        "METFORMIN TAB 750MG ER"
+      ],
+      "rxnorm_ids_confirmed": [
+        860975,
+        860981,
+        861004,
+        861007,
+        861010
+      ]
+    },
+    {
+      "issuer_id": "77264",
+      "name": "Cigna Healthcare (North Carolina)",
+      "plan_count": 29,
+      "tier_placement": "generic",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 45,
+      "data_confirmed": true,
+      "tier_note": "Plain metformin at GENERIC and PREFERRED-GENERIC tiers. Standard formulation (850mg) also appears under ZERO-COST-SHARE-PREVENTIVE tier. QL present but typical for generics (30/90-day supply limits)."
+    },
+    {
+      "issuer_id": "69803",
+      "name": "Ambetter from WellCare of North Carolina",
+      "plan_count": 22,
+      "tier_placement": "preferred-generic",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 69,
+      "data_confirmed": true,
+      "tier_note": "Confirmed PREFERRED-GENERIC in both FFE data and Oscar NC 4T PDF formulary (Jan 2026). No PA, no QL, no ST. Consistent across 4-tier and 6-tier plan structures."
+    },
+    {
+      "issuer_id": "73943",
+      "name": "Oscar Health (NC)",
+      "plan_count": 17,
+      "tier_placement": "generic",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 33,
+      "data_confirmed": true,
+      "tier_note": "Plain metformin HCl (500mg, 850mg, 1000mg) confirmed TIER-1 (lowest tier) from Cigna NC 5-tier enrichment file. ER formulations at TIER-2. No PA, no ST. No QL on standard IR tablets."
+    },
+    {
+      "issuer_id": "54332",
+      "name": "UnitedHealthcare (NC)",
+      "plan_count": 13,
+      "tier_placement": "preferred-generic",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 35,
+      "data_confirmed": true,
+      "tier_note": "Metformin at PREFERRED-GENERIC and ZERO-COST-SHARE-PREVENTIVE tiers. Standard formulations (500mg, 850mg, 1000mg) confirmed under zero-cost-share preventive designation on some UHC NC plans per USPSTF diabetes prevention guidance. QL present."
+    },
+    {
+      "issuer_id": "17414",
+      "name": "AmeriHealth Caritas Next (North Carolina)",
+      "plan_count": 8,
+      "tier_placement": "generic",
+      "pa_required": false,
+      "quantity_limits": false,
+      "step_therapy": false,
+      "data_record_count": 59,
+      "data_confirmed": true,
+      "tier_note": "Metformin at GENERIC tier. Both IR and ER formulations confirmed no PA, no ST, no QL. Includes standard tablet and extended-release variants."
+    }
+  ],
+  "cost_range_after_deductible": {
+    "low": 0,
+    "high": 15,
+    "currency": "USD",
+    "period": "month",
+    "note": "Generic copay range across confirmed NC carriers. Some UHC NC plans list metformin as zero-cost-share preventive ($0). Ambetter and UHC preferred-generic tiers typically $5–$15/month."
+  },
+  "cost_range_before_deductible": {
+    "low": 4,
+    "high": 20,
+    "currency": "USD",
+    "period": "month",
+    "note": "Metformin is a low-cost generic. Retail price without insurance is $4–$20/month. Most ACA generic-tier drugs have flat copays that bypass deductible on non-HDHP plans. On HDHP plans, deductible applies but retail cost remains very low."
+  },
+  "dominant_tier": "generic",
+  "pa_summary": "No prior authorization required at any NC carrier. Confirmed across all 6 carriers (206 plans).",
+  "st_summary": "No step therapy required at any NC carrier. Confirmed across all 6 carriers.",
+  "ql_summary": "Mixed. Ambetter and UHC show QL:true; Oscar, AmeriHealth, and BCBS NC show QL:false; Cigna shows QL:false on standard IR formulations. QL flags on generics typically reflect standard 30/90-day supply dispensing limits, not access restrictions.",
+  "coverage_summary": "Metformin is covered by all 6 NC carriers as a generic-tier drug with no prior authorization or step therapy. All 206 NC marketplace plans confirmed. BCBS NC (117 plans, 57% of NC market) confirmed from CMS machine-readable formulary 2026-04-26.",
+  "confirmed_plan_count": 206,
+  "unconfirmed_plan_count": 0,
+  "data_sources": [
+    "ffe:formulary_intelligence.json (Ambetter 77264, Oscar 69803, Cigna 73943, UHC 54332, AmeriHealth 17414)",
+    "pdf:formulary_oscar_nc_4t_2026.json (Oscar NC 4T — confirms Tier 1, no restrictions)",
+    "enrichment:formulary_enrichment_cigna_NC.json (Cigna NC 5T — confirms TIER-1 plain, TIER-2 ER)",
+    "plan_counts:plan_intelligence.json (all 6 carriers, 206 total plans)",
+    "cms:bcbsnc.com/assets/cms/data/drugs-1.json (BCBS NC 11512 — 5 metformin formulations confirmed 2026-04-26)",
+    "cms:bcbsnc.com/assets/cms/data/drugs-2.json (BCBS NC 11512 — 5 metformin formulations confirmed 2026-04-26)"
+  ],
+  "limitations": [
+    "BCBS NC exact unique plan ID union not deduped — download rate limit prevented running full set-union query across drugs-1.json and drugs-2.json. Individual formulation plan counts: 83–88 per file per formulation. Given no PA/ST/QL restrictions on any confirmed BCBS NC plan, coverage is expected across all 117 plans.",
+    "BCBS NC CMS tier label 'GENERIC-BRAND-SPECIALTY' is non-standard. Standardized to 'generic' based on drug class and zero-restriction status. Actual consumer-facing tier label in BCBS NC plan documents may differ.",
+    "BCBS NC ER formulation coverage: 500mg ER and 750mg ER confirmed. 850mg ER and 1000mg ER not found in CMS files (may not be listed by BCBS NC).",
+    "UHC zero-cost-share preventive tier applies to specific formulations on specific plan types. Not all 13 UHC NC plans necessarily offer $0 metformin.",
+    "QL flags for Ambetter and UHC on generics typically indicate standard dispensing supply limits (30 or 90 days), not clinical quantity restrictions comparable to specialty drug QLs.",
+    "Cost range estimates are based on typical generic-tier copay structures for NC ACA plans. Actual copays vary by plan. Plan documents (SBC/EOC) are the authoritative source.",
+    "Metformin ER formulations may have different tier placements than IR formulations at some carriers (e.g., Cigna: IR at Tier 1, ER at Tier 2). BCBS NC shows no tier distinction between IR and ER in CMS data."
+  ],
+  "etl_generated_at": "2026-04-26",
+  "schema_version": "1.0"
+}

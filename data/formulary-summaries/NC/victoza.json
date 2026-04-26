@@ -1,0 +1,24 @@
+{
+  "state_code": "NC",
+  "drug_slug": "victoza",
+  "plan_count": 8,
+  "carriers": [
+    {
+      "issuer_id": "17414",
+      "name": "AmeriHealth Caritas Next (North Carolina)",
+      "plan_count": 8,
+      "tier_placement": "preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 638,
+      "_amerihealth_data_note": "AmeriHealth PA=False ST=True from strong FFE majority (638 records: PA=0%, ST=99%, QL=100%). Verify against AmeriHealth Caritas NC 2026 published formulary before publishing a locked page."
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "ffe"
+  ],
+  "_data_notes": "cost_range fields not populated -- require SBC/plan benefit data | PARTIAL DATA: 8/206 plans. No match for: Ambetter NC (77264), UHC NC (54332), Cigna NC (73943), Oscar NC (69803), BCBS NC (11512). | AmeriHealth (17414): FFE data has documented multi-carrier bundling; PA/ST overridden from published formulary. Verify before publishing."
+}

@@ -78,11 +78,11 @@ V79_NC_OZEMPIC: dict[str, Any] = {
     "carriers": [
         {"issuer_id": "11512", "name": "Blue Cross and Blue Shield of North Carolina",
          "plan_count": 117, "tier_placement": "preferred-brand", "pa_required": True},
-        {"issuer_id": "77264", "name": "Ambetter of North Carolina",
+        {"issuer_id": "77264", "name": "Cigna Healthcare (North Carolina)",
          "plan_count":  29, "tier_placement": "preferred-brand", "pa_required": True},
-        {"issuer_id": "69803", "name": "Oscar Health Plan of North Carolina, Inc",
+        {"issuer_id": "69803", "name": "Ambetter from WellCare of North Carolina",
          "plan_count":  22, "tier_placement": "preferred-brand", "pa_required": True},
-        {"issuer_id": "73943", "name": "Cigna Healthcare",
+        {"issuer_id": "73943", "name": "Oscar Health (NC)",
          "plan_count":  17, "tier_placement": "preferred-brand", "pa_required": True},
         {"issuer_id": "54332", "name": "UnitedHealthcare",
          "plan_count":  13, "tier_placement": "preferred-brand", "pa_required": True},
@@ -324,6 +324,26 @@ def drug_name_to_slug(name: str) -> str:
     s = _SLUG_NON_ALNUM.sub("-", s)
     s = _SLUG_MULTI_HYPHEN.sub("-", s)
     return s.strip("-")
+
+
+# Maps a canonical brand-name drug slug to the set of generic/alternate slugs that
+# should also satisfy a match.  Handles cases where SBM/enrichment data uses the
+# generic INN name instead of the brand name (e.g. KY lists "liraglutide" not "victoza").
+# IMPORTANT: Only add aliases where the generic is unambiguously the same clinical product.
+# Do NOT alias obesity-indication brands (saxenda, wegovy, zepbound) to their generics —
+# the same INN may appear for a different indication (e.g. victoza-dose liraglutide vs
+# saxenda-dose liraglutide) and incorrectly inflate coverage counts.
+DRUG_SLUG_ALIASES: dict[str, frozenset[str]] = {
+    "victoza":  frozenset({"liraglutide"}),          # Victoza IS liraglutide (diabetes)
+    "mounjaro": frozenset({"tirzepatide"}),           # Mounjaro IS tirzepatide (diabetes)
+}
+
+def slug_matches(candidate_slug: str, target_slug: str) -> bool:
+    """Return True if candidate_slug matches target_slug directly or via DRUG_SLUG_ALIASES."""
+    if candidate_slug == target_slug:
+        return True
+    aliases = DRUG_SLUG_ALIASES.get(target_slug, frozenset())
+    return candidate_slug in aliases
 
 
 def normalise_tier(raw: str | None) -> str:
@@ -636,7 +656,7 @@ def build_enrichment_registry(
         for rec in data:
             raw_name = rec.get("drug_name") or rec.get("name") or ""
             canonical = canonicalize_base_drug(normalise_drug_name(raw_name))
-            if drug_name_to_slug(canonical) == drug_slug:
+            if slug_matches(drug_name_to_slug(canonical), drug_slug):
                 matching.append(rec)
 
         if not matching:
@@ -880,7 +900,7 @@ def stream_ffe_for_drug(
             raw_name   = rec.get("drug_name") or ""
             canonical  = canonicalize_base_drug(normalise_drug_name(raw_name))
             rec_slug   = drug_name_to_slug(canonical)
-            if rec_slug != drug_slug:
+            if not slug_matches(rec_slug, drug_slug):
                 continue
 
             tier       = rec.get("drug_tier")
@@ -950,7 +970,7 @@ def process_sbm_for_drug(
         for rec in data:
             raw_name  = rec.get("drug_name") or rec.get("name") or ""
             canonical = canonicalize_base_drug(normalise_drug_name(raw_name))
-            if drug_name_to_slug(canonical) != drug_slug:
+            if not slug_matches(drug_name_to_slug(canonical), drug_slug):
                 continue
 
             tier = rec.get("drug_tier") or rec.get("tier")
@@ -1056,10 +1076,16 @@ def build_state_summary(
         carrier_plan_ids = state_plan_info.get("plan_ids", set())
         carrier_plan_count = len(carrier_plan_ids)
         raw_name = state_plan_info.get("name")
-        if raw_name and str(raw_name).strip().lower() not in ("nan", "none", "null", ""):
+        # Registry takes priority — plan_intelligence.json (CMS Plan Attributes PUF) may have
+        # issuer name errors. Confirmed case: NC HIOS 69803/73943/77264 names are cyclically
+        # swapped in the PUF source. formulary-url-registry-2026.json is authoritative.
+        registry_name = _REGISTRY_NAMES.get(iid)
+        if registry_name:
+            carrier_name = registry_name
+        elif raw_name and str(raw_name).strip().lower() not in ("nan", "none", "null", ""):
             carrier_name = sanitize_carrier_name(raw_name, iid)
         else:
-            carrier_name = _REGISTRY_NAMES.get(iid, f"Issuer {iid}")
+            carrier_name = f"Issuer {iid}"
 
         if carrier_plan_count == 0:
             # Issuer has enrichment data but no plans in plan_intelligence — skip

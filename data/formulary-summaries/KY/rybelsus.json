@@ -1,0 +1,33 @@
+{
+  "state_code": "KY",
+  "drug_slug": "rybelsus",
+  "plan_count": 105,
+  "carriers": [
+    {
+      "issuer_id": "45636",
+      "name": "Ambetter (KY) - PDF",
+      "plan_count": 81,
+      "tier_placement": "preferred-brand",
+      "pa_required": true,
+      "quantity_limits": true,
+      "step_therapy": false,
+      "data_record_count": 1
+    },
+    {
+      "issuer_id": "73891",
+      "name": "Molina Healthcare of KY (Passport)",
+      "plan_count": 24,
+      "tier_placement": "non-preferred-brand",
+      "pa_required": false,
+      "quantity_limits": true,
+      "step_therapy": true,
+      "data_record_count": 1
+    }
+  ],
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
+  "data_sources": [
+    "enrichment:formulary_enrichment_ambetter_ky.json",
+    "sbm"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "state_code": "NC",
-  "drug_slug": "ozempic",
+  "drug_slug": "trulicity",
   "plan_count": 206,
   "carriers": [
     {
@@ -31,7 +31,7 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 4
+      "data_record_count": 2
     },
     {
       "issuer_id": "73943",
@@ -41,7 +41,7 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 918
+      "data_record_count": 4
     },
     {
       "issuer_id": "54332",
@@ -51,7 +51,7 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 3
+      "data_record_count": 4
     },
     {
       "issuer_id": "17414",
@@ -61,24 +61,18 @@
       "pa_required": true,
       "quantity_limits": true,
       "step_therapy": false,
-      "data_record_count": 3034
+      "data_record_count": 3888,
+      "_amerihealth_data_note": "AmeriHealth PA overridden to True (GLP-1 class, published formulary). ST overridden to False (Ozempic pattern). FFE flags ambiguous (46% PA_true, 53% ST_true) due to documented multi-carrier bundling for issuer 17414."
     }
   ],
-  "cost_range_after_deductible": {
-    "low": 30,
-    "high": 75
-  },
-  "cost_range_before_deductible": {
-    "low": 400,
-    "high": 650
-  },
+  "cost_range_after_deductible": null,
+  "cost_range_before_deductible": null,
   "data_sources": [
-    "enrichment:formulary_enrichment_ambetter_nc.json",
-    "enrichment:formulary_enrichment_amerihealth_nc.json",
     "enrichment:formulary_enrichment_bcbs_nc.json",
     "enrichment:formulary_enrichment_cigna_NC.json",
-    "enrichment:formulary_enrichment_oscar_nc.json",
-    "enrichment:formulary_enrichment_uhc_nc.json",
+    "oscar:formulary_oscar_nc_4t_2026.json",
+    "oscar:formulary_oscar_nc_6t_2026.json",
     "ffe"
-  ]
+  ],
+  "_data_notes": "cost_range fields not populated -- require SBC/plan benefit data | AmeriHealth (17414): FFE data has documented multi-carrier bundling; PA/ST overridden from published formulary. Verify before publishing."
 }
